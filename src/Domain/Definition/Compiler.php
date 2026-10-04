@@ -42,7 +42,7 @@ final class Compiler {
 			'rules'         => [],
 			'pricing'       => [],
 			'preview'       => ['assets' => [], 'layers' => [], 'bindings' => []],
-			'style'         => ['palette' => 'iris-studio', 'overrides' => [], 'typography' => ['family' => 'inherit']],
+			'style'         => ['palette' => 'iris-studio', 'overrides' => [], 'typography' => ['family' => 'inherit', 'labelWeight' => 600, 'bodyWeight' => 400]],
 			'settings'      => ['showPriceBreakdown' => true, 'saveEnabled' => true, 'shareEnabled' => true],
 		];
 	}

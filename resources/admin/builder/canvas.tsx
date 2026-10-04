@@ -650,7 +650,8 @@ namespace WooOptionsPro.Builder {
       '--wof-preview-danger': tokens.danger ?? '#C7353A',
       '--wof-preview-on-primary': tokens.onPrimary ?? '#FFFFFF',
       '--wof-preview-font': fontStack[typography.family] ?? typography.family ?? 'inherit',
-      '--wof-preview-label-weight': String(typography.labelWeight ?? 650),
+      '--wof-preview-label-weight': String(typography.labelWeight ?? 600),
+      '--wof-preview-body-weight': String(typography.bodyWeight ?? 400),
       zoom: zoom / 100,
     } as any), [props.document.style, zoom]);
 

@@ -268,8 +268,8 @@ namespace WooOptionsPro.Builder {
       <div className="wof-style-divider" />
       <h3>{__('Typography', 'wooptions-pro')}</h3>
       <SelectControl label={__('Font family', 'wooptions-pro')} value={document.style.typography.family ?? 'inherit'} options={fonts.map((font) => ({ label: font === 'inherit' ? __('Inherit from theme', 'wooptions-pro') : font === 'system-ui' ? __('System UI', 'wooptions-pro') : font, value: font }))} onChange={(family: string) => updateTypography({ family })} />
-      <SelectControl label={__('Label weight', 'wooptions-pro')} value={String(document.style.typography.labelWeight ?? 650)} options={[400, 500, 600, 650, 700, 800].map((value) => ({ label: String(value), value: String(value) }))} onChange={(value: string) => updateTypography({ labelWeight: Number(value) })} />
-      <SelectControl label={__('Body weight', 'wooptions-pro')} value={String(document.style.typography.bodyWeight ?? 450)} options={[300, 400, 450, 500, 600, 700].map((value) => ({ label: String(value), value: String(value) }))} onChange={(value: string) => updateTypography({ bodyWeight: Number(value) })} />
+      <SelectControl label={__('Label weight', 'wooptions-pro')} value={String(document.style.typography.labelWeight ?? 600)} options={[400, 500, 600, 650, 700, 800].map((value) => ({ label: String(value), value: String(value) }))} onChange={(value: string) => updateTypography({ labelWeight: Number(value) })} />
+      <SelectControl label={__('Body weight', 'wooptions-pro')} value={String(document.style.typography.bodyWeight ?? 400)} options={[300, 400, 450, 500, 600, 700].map((value) => ({ label: String(value), value: String(value) }))} onChange={(value: string) => updateTypography({ bodyWeight: Number(value) })} />
       <div className="wof-style-divider" />
       <h3>{__('Layout & summary', 'wooptions-pro')}</h3>
       <ToggleControl label={__('Show itemized price breakdown', 'wooptions-pro')} checked={document.settings.showPriceBreakdown} onChange={(value: boolean) => updateSettings({ showPriceBreakdown: value })} />

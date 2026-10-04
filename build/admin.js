@@ -4976,7 +4976,8 @@ var WooOptionsPro;
                 '--wof-preview-danger': tokens.danger ?? '#C7353A',
                 '--wof-preview-on-primary': tokens.onPrimary ?? '#FFFFFF',
                 '--wof-preview-font': fontStack[typography.family] ?? typography.family ?? 'inherit',
-                '--wof-preview-label-weight': String(typography.labelWeight ?? 650),
+                '--wof-preview-label-weight': String(typography.labelWeight ?? 600),
+                '--wof-preview-body-weight': String(typography.bodyWeight ?? 400),
                 zoom: zoom / 100,
             }), [props.document.style, zoom]);
             useEffect(() => {
@@ -5233,8 +5234,8 @@ var WooOptionsPro;
                 wp.element.createElement("div", { className: "wof-style-divider" }),
                 wp.element.createElement("h3", null, __('Typography', 'wooptions-pro')),
                 wp.element.createElement(SelectControl, { label: __('Font family', 'wooptions-pro'), value: document.style.typography.family ?? 'inherit', options: fonts.map((font) => ({ label: font === 'inherit' ? __('Inherit from theme', 'wooptions-pro') : font === 'system-ui' ? __('System UI', 'wooptions-pro') : font, value: font })), onChange: (family) => updateTypography({ family }) }),
-                wp.element.createElement(SelectControl, { label: __('Label weight', 'wooptions-pro'), value: String(document.style.typography.labelWeight ?? 650), options: [400, 500, 600, 650, 700, 800].map((value) => ({ label: String(value), value: String(value) })), onChange: (value) => updateTypography({ labelWeight: Number(value) }) }),
-                wp.element.createElement(SelectControl, { label: __('Body weight', 'wooptions-pro'), value: String(document.style.typography.bodyWeight ?? 450), options: [300, 400, 450, 500, 600, 700].map((value) => ({ label: String(value), value: String(value) })), onChange: (value) => updateTypography({ bodyWeight: Number(value) }) }),
+                wp.element.createElement(SelectControl, { label: __('Label weight', 'wooptions-pro'), value: String(document.style.typography.labelWeight ?? 600), options: [400, 500, 600, 650, 700, 800].map((value) => ({ label: String(value), value: String(value) })), onChange: (value) => updateTypography({ labelWeight: Number(value) }) }),
+                wp.element.createElement(SelectControl, { label: __('Body weight', 'wooptions-pro'), value: String(document.style.typography.bodyWeight ?? 400), options: [300, 400, 450, 500, 600, 700].map((value) => ({ label: String(value), value: String(value) })), onChange: (value) => updateTypography({ bodyWeight: Number(value) }) }),
                 wp.element.createElement("div", { className: "wof-style-divider" }),
                 wp.element.createElement("h3", null, __('Layout & summary', 'wooptions-pro')),
                 wp.element.createElement(ToggleControl, { label: __('Show itemized price breakdown', 'wooptions-pro'), checked: document.settings.showPriceBreakdown, onChange: (value) => updateSettings({ showPriceBreakdown: value }) }),

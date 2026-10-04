@@ -1962,8 +1962,8 @@ final class Renderer {
 
 		$family = (string) ($typography['family'] ?? 'inherit');
 		$css[] = '--wof-font:' . $this->font_stack($family);
-		$css[] = '--wof-label-weight:' . max(400, min(800, (int) ($typography['labelWeight'] ?? 650)));
-		$css[] = '--wof-body-weight:' . max(300, min(700, (int) ($typography['bodyWeight'] ?? 450)));
+		$css[] = '--wof-label-weight:' . max(400, min(800, (int) ($typography['labelWeight'] ?? 600)));
+		$css[] = '--wof-body-weight:' . max(300, min(700, (int) ($typography['bodyWeight'] ?? 400)));
 		$css[] = '--wof-font-size:' . max(16, min(24, (int) ($typography['desktopSize'] ?? 16))) . 'px';
 		$css[] = '--wof-line-height:' . max(1.2, min(2.0, (float) ($typography['lineHeight'] ?? 1.5)));
 		return implode(';', $css);

@@ -2701,7 +2701,7 @@
 
 .wof-canvas-field__copy strong {
 	font-size: 14px;
-	font-weight: var(--wof-preview-label-weight, 650);
+	font-weight: var(--wof-preview-label-weight, 600);
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -8853,7 +8853,7 @@
 }
 
 .wof-canvas-field__copy strong {
-	font-weight: var(--wof-preview-label-weight, 650);
+	font-weight: var(--wof-preview-label-weight, 600);
 }
 
 /* option-set manager*/

@@ -111,8 +111,8 @@ final class PaletteRegistry {
 
 		return [
 			'family'      => $family,
-			'labelWeight' => max(400, min(800, (int) ($input['labelWeight'] ?? 650))),
-			'bodyWeight'  => max(300, min(700, (int) ($input['bodyWeight'] ?? 450))),
+			'labelWeight' => max(400, min(800, (int) ($input['labelWeight'] ?? 600))),
+			'bodyWeight'  => max(300, min(700, (int) ($input['bodyWeight'] ?? 400))),
 			'desktopSize' => max(16, min(24, (int) ($input['desktopSize'] ?? 16))),
 			'tabletSize'  => max(16, min(24, (int) ($input['tabletSize'] ?? 16))),
 			'mobileSize'  => max(16, min(24, (int) ($input['mobileSize'] ?? 16))),

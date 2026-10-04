@@ -915,7 +915,7 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 	align-items: center;
 	color: var(--wof-text, #0f172a);
 	font-size: .95rem;
-	font-weight: var(--wof-label-weight, 680);
+	font-weight: var(--wof-label-weight, 600);
 	margin: 0;
 	text-align: left;
 	line-height: 1.4;
@@ -1091,7 +1091,7 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 
 .wof-summary__title {
 	font-size: 1.15rem;
-	font-weight: 750;
+	font-weight: 600;
 	color: var(--wof-text, #0f172a);
 	letter-spacing: -0.015em;
 	line-height: 1.2;
@@ -1111,7 +1111,7 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 
 .wof-summary__total-val {
 	font-size: 1.6rem;
-	font-weight: 700;
+	font-weight: 600;
 	color: var(--wof-text, #0f172a);
 	letter-spacing: -0.03em;
 	line-height: 1;
@@ -2285,7 +2285,7 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 .wof-configurator {
 	font-family: var(--wof-font, inherit);
 	font-size: var(--wof-font-size, 16px);
-	font-weight: var(--wof-body-weight, 450);
+	font-weight: var(--wof-body-weight, 400);
 	line-height: var(--wof-line-height, 1.5);
 }
 
@@ -2299,7 +2299,7 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 .wof-summary__rows strong,
 .wof-summary__total strong,
 .wof-button {
-	font-weight: var(--wof-label-weight, 650);
+	font-weight: var(--wof-label-weight, 600);
 }
 
 .wof-summary__rows>div {
@@ -2323,7 +2323,7 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 	color: var(--wof-text) !important;
 	font-family: var(--wof-font) !important;
 	font-size: var(--wof-font-size, 16px);
-	font-weight: var(--wof-body-weight, 450);
+	font-weight: var(--wof-body-weight, 400);
 	line-height: var(--wof-line-height, 1.5);
 }
 
@@ -2333,7 +2333,7 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 }
 
 .wof-configurator :where(.wof-field__label, .wof-choice__body strong, .wof-boolean strong) {
-	font-weight: var(--wof-label-weight, 650) !important;
+	font-weight: var(--wof-label-weight, 600) !important;
 }
 
 .wof-configurator :where(.wof-field__description, .wof-field__help, .wof-choice__body small, .wof-choice__price, .wof-boolean small, .wof-content, .wof-summary__rows span, .wof-summary>small) {
@@ -2346,7 +2346,7 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 	border-color: var(--wof-border) !important;
 	color: var(--wof-text) !important;
 	font-family: var(--wof-font) !important;
-	font-weight: var(--wof-body-weight, 450) !important;
+	font-weight: var(--wof-body-weight, 400) !important;
 }
 
 .wof-configurator .wof-field :where(input, select, textarea):focus {
@@ -3014,7 +3014,7 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 	display: flex;
 	font-family: inherit;
 	font-size: max(14px, .9rem);
-	font-weight: var(--wof-body-weight, 450);
+	font-weight: var(--wof-body-weight, 400);
 	justify-content: space-between;
 	line-height: normal;
 	margin: 0;
@@ -3187,7 +3187,7 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 .wof-radio-item__label {
 	color: var(--wof-text);
 	font-size: .88rem;
-	font-weight: var(--wof-body-weight, 450);
+	font-weight: var(--wof-body-weight, 400);
 	line-height: 1.4;
 }
 
@@ -3268,7 +3268,7 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 .wof-checkbox-item__label {
 	color: var(--wof-text);
 	font-size: .88rem;
-	font-weight: var(--wof-body-weight, 450);
+	font-weight: var(--wof-body-weight, 400);
 	line-height: 1.4;
 }
 
