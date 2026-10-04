@@ -2,19 +2,19 @@
 /**
  * Capability installation.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Bootstrap;
+namespace WooOptionsPro\Bootstrap;
 
 final class Capabilities {
 	/**
 	 * @return list<string>
 	 */
 	public static function all(): array {
-		$capabilities = require WOOPTIONSFIC_PATH . 'config/capabilities.php';
+		$capabilities = require WOOPTIONS_PRO_PATH . 'config/capabilities.php';
 		return is_array($capabilities) ? array_values($capabilities) : [];
 	}
 

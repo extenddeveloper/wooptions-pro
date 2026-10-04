@@ -5,7 +5,7 @@
 
 (() => {
     "use strict";
-    const e = window.WooptionsFicStorefront?.i18n ?? {}, t = { checking: e.checking ?? "Checking your options…", confirmed: e.confirmed ?? "Configuration confirmed", couldNotQuote: e.couldNotQuote ?? "Please review your options before adding this product.", uploading: e.uploading ?? "Uploading…", uploadComplete: e.uploadComplete ?? "Upload complete" }, o = window.WooptionsFicStorefront?.restRoot ?? "/wp-json/wooptionsfic/v1/";
+    const e = window.WooOptionsProStorefront?.i18n ?? {}, t = { checking: e.checking ?? "Checking your options…", confirmed: e.confirmed ?? "Configuration confirmed", couldNotQuote: e.couldNotQuote ?? "Please review your options before adding this product.", uploading: e.uploading ?? "Uploading…", uploadComplete: e.uploadComplete ?? "Upload complete" }, o = window.WooOptionsProStorefront?.restRoot ?? "/wp-json/wooptions-pro/v1/";
     function r(e) { return window.CSS?.escape ? window.CSS.escape(e) : e.replace(/[^a-zA-Z0-9_-]/g, "\\$&"); }
     class a {
         quoteTimer = 0;
@@ -18,7 +18,7 @@
         productImageSnapshot = null;
         hasSubmitted = !1;
         constructor(e) { this.root = e; const t = e.querySelector("[data-wof-config]"); if (!t?.textContent)
-            throw new Error("WooptionsFic configuration payload is missing."); this.payload = JSON.parse(t.textContent), this.configuration = this.payload.configuration, this.form = e.closest("form.cart"), this.root.querySelectorAll("input, select, textarea").forEach(e => { e.disabled && (e.dataset.wofFixedDisabled = "true"), e.required = !1; });
+            throw new Error("WooOptionsPro configuration payload is missing."); this.payload = JSON.parse(t.textContent), this.configuration = this.payload.configuration, this.form = e.closest("form.cart"), this.root.querySelectorAll("input, select, textarea").forEach(e => { e.disabled && (e.dataset.wofFixedDisabled = "true"), e.required = !1; });
             (this.configuration?.fields ?? []).forEach(f => {
                 if (f && f.disabled && f.uuid) {
                     const el = this.root.querySelector(`[data-wof-field="${r(f.uuid)}"]`);
@@ -319,7 +319,7 @@
             });
             if (this.form && window.jQuery) {
             const e = () => this.scheduleQuote(50);
-            window.jQuery(this.form).on("found_variation.wooptionsfic reset_data.wooptionsfic", e);
+            window.jQuery(this.form).on("found_variation.wooptions-pro reset_data.wooptions-pro", e);
         }
             // Re-quote when the main product quantity changes so extendedTotal stays in sync.
             const qtyInput = this.form?.querySelector('input.qty');
@@ -1317,7 +1317,7 @@
             const price = opt?.dataset?.price ?? "";
             const regPrice = opt?.dataset?.regularPrice ?? "";
             const salePrice = opt?.dataset?.salePrice ?? "";
-            const currency = window.WooptionsFicStorefront?.currencySymbol || "$";
+            const currency = window.WooOptionsProStorefront?.currencySymbol || "$";
 
             if (price && sel.value) {
                 if (regPrice && salePrice && regPrice !== salePrice) {
@@ -1372,17 +1372,17 @@
             this.setPending(!1);
         } }
         acceptToken(e) { if ("string" != typeof e || !e)
-            return; this.payload.token = e; const t = this.root.querySelector('input[name="wooptionsfic_token"]'); t && (t.value = e); }
-        isTokenError(e) { const t = Array.isArray(e?.data?.errors) ? e.data.errors : Array.isArray(e?.errors) ? e.errors : []; return "wooptionsfic_public_token_invalid" === e?.code || t.some(e => "public_token_invalid" === e?.code || "session_required" === e?.code); }
-        restErrorMessage(e) { const o = Array.isArray(e?.data?.errors) ? e.data.errors : Array.isArray(e?.errors) ? e.errors : [], r = o.map(e => e?.code).filter(Boolean); return r.includes("rate_limited") ? "Price checking is temporarily busy. Wait a moment and try again." : r.includes("cross_set_duplicate_uuid") || "wooptionsfic_configuration_merge_failed" === e?.code ? "This product has conflicting option-set assignments. Review the assigned option sets and publish them again." : "string" == typeof e?.message && e.message ? e.message : t.couldNotQuote; }
+            return; this.payload.token = e; const t = this.root.querySelector('input[name="wooptions-pro_token"]'); t && (t.value = e); }
+        isTokenError(e) { const t = Array.isArray(e?.data?.errors) ? e.data.errors : Array.isArray(e?.errors) ? e.errors : []; return "wooptions-pro_public_token_invalid" === e?.code || t.some(e => "public_token_invalid" === e?.code || "session_required" === e?.code); }
+        restErrorMessage(e) { const o = Array.isArray(e?.data?.errors) ? e.data.errors : Array.isArray(e?.errors) ? e.errors : [], r = o.map(e => e?.code).filter(Boolean); return r.includes("rate_limited") ? "Price checking is temporarily busy. Wait a moment and try again." : r.includes("cross_set_duplicate_uuid") || "wooptions-pro_configuration_merge_failed" === e?.code ? "This product has conflicting option-set assignments. Review the assigned option sets and publish them again." : "string" == typeof e?.message && e.message ? e.message : t.couldNotQuote; }
         async refreshConfigurationToken() { const e = await fetch(`${o}products/${this.productId()}/configuration?variationId=${this.variationId()}&_wof=${Date.now()}`, { method: "GET", credentials: "same-origin", cache: "no-store", headers: { "Cache-Control": "no-cache" } }), t = await e.json().catch(() => ({})); if (!e.ok || !t?.token || !t?.configuration)
             return !1; const r = this.configuration?.revisionUuid ?? "", a = t.configuration.revisionUuid ?? ""; if (r && a && r !== a)
-            throw new Error("Product options were updated. Refresh this page before continuing."); this.payload = { ...this.payload, ...t }, this.configuration = t.configuration, this.applyConfigurationSettings(), this.applyConfigurationStyle(); const i = this.root.querySelector('input[name="wooptionsfic_token"]'), n = this.root.querySelector('input[name="wooptionsfic_revision"]'); return i && (i.value = t.token), n && (n.value = a), !0; }
+            throw new Error("Product options were updated. Refresh this page before continuing."); this.payload = { ...this.payload, ...t }, this.configuration = t.configuration, this.applyConfigurationSettings(), this.applyConfigurationStyle(); const i = this.root.querySelector('input[name="wooptions-pro_token"]'), n = this.root.querySelector('input[name="wooptions-pro_revision"]'); return i && (i.value = t.token), n && (n.value = a), !0; }
         applyConfigurationSettings() { const e = this.configuration?.settings ?? {}, t = this.root.querySelector("[data-wof-summary]"), o = this.root.querySelector("[data-wof-summary-rows]"), r = this.root.querySelector("[data-wof-save-panel]"), a = this.root.querySelector(".wof-configurator__grid"), i = this.root.querySelector("[data-wof-fields]"), breakdownBtn = this.root.querySelector("[data-wof-breakdown-trigger]"), saveModalTrigger = this.root.querySelector("[data-wof-save-modal-trigger]"), saveSection = this.root.querySelector("[data-wof-save-section]"), shareSection = this.root.querySelector("[data-wof-share-section]"), saveBtn = this.root.querySelector("[data-wof-save]"), shareBtn = this.root.querySelector("[data-wof-share]"), n = !1 !== e.showPriceBreakdown, s = !1 !== e.stickySummary, hasSave = Boolean(e.saveEnabled), hasShare = Boolean(e.shareEnabled), c = hasSave || hasShare; t?.classList.toggle("is-sticky", s), t && a && i && (s ? a.insertBefore(t, i) : a.append(t)), o && (o.hidden = !n), breakdownBtn && (breakdownBtn.hidden = !n), saveModalTrigger && (saveModalTrigger.hidden = !c), saveSection && (saveSection.hidden = !hasSave), shareSection && (shareSection.hidden = !hasShare), saveBtn && (saveBtn.hidden = !hasSave), shareBtn && (shareBtn.hidden = !hasShare), this.root.dataset.showPriceBreakdown = n ? "1" : "0", this.root.dataset.stickySummary = s ? "1" : "0", this.root.dataset.saveEnabled = hasSave ? "1" : "0"; const saveBtnText = this.root.querySelector("[data-wof-save-btn-text]"); if (saveBtnText) { saveBtnText.textContent = (hasSave && hasShare) ? "Save / Share" : (hasShare ? "Share link" : "Save"); } if (this.payload?.labels?.summaryTotal) { const totalSpan = t?.querySelector(".wof-summary__title") || t?.querySelector(".wof-summary__total span"); if (totalSpan) totalSpan.textContent = this.payload.labels.summaryTotal; const modalTotal = t?.querySelector(".wof-breakdown-modal__total-row span"); if (modalTotal) modalTotal.textContent = this.payload.labels.summaryTotal; } if (this.payload?.labels?.summaryNotice) { const noticeEl = t?.querySelector(".wof-summary__notice") || t?.querySelector("small"); if (noticeEl) noticeEl.textContent = this.payload.labels.summaryNotice; } }
         applyConfigurationStyle() { const e = this.configuration?.style ?? {}, t = e.tokens ?? {}; Object.entries(t).forEach(([e, t]) => { if ("string" != typeof t || !/^(?:#[0-9a-f]{6}|currentColor|Canvas|transparent)$/i.test(t))
             return; const o = e.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase(); this.root.style.setProperty(`--wof-${o}`, t); }), this.root.dataset.wofPalette = String(e.palette ?? ""), this.root.style.colorScheme = "night-studio" === e.palette ? "dark" : "light"; const o = e.typography ?? {}, r = o.family ?? "inherit", a = { inherit: "inherit", "system-ui": 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', Inter: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', Manrope: '"Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', Poppins: '"Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', Outfit: '"Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', "Plus Jakarta Sans": '"Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', Roboto: '"Roboto", Arial, sans-serif' }; this.root.style.setProperty("--wof-font", a[r] ?? "inherit"), this.root.style.setProperty("--wof-label-weight", String(Math.max(400, Math.min(800, Number(o.labelWeight ?? 650))))), this.root.style.setProperty("--wof-body-weight", String(Math.max(300, Math.min(700, Number(o.bodyWeight ?? 450))))), this.root.style.setProperty("--wof-font-size", `${Math.max(16, Math.min(24, Number(o.desktopSize ?? 16)))}px`), this.root.style.setProperty("--wof-line-height", String(Math.max(1.2, Math.min(2, Number(o.lineHeight ?? 1.5))))), this.ensureTypographyFont(r); }
         ensureTypographyFont(e) { const t = { Inter: "Inter:wght@300;400;500;600;700;800", Manrope: "Manrope:wght@300;400;500;600;700;800", Poppins: "Poppins:wght@300;400;500;600;700;800", Outfit: "Outfit:wght@300;400;500;600;700;800", "Plus Jakarta Sans": "Plus+Jakarta+Sans:wght@300;400;500;600;700;800", Roboto: "Roboto:wght@300;400;500;600;700;800" }[e]; if (!t)
-            return; const o = `wooptionsfic-font-${e.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`; if (document.getElementById(o))
+            return; const o = `wooptions-pro-font-${e.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`; if (document.getElementById(o))
             return; const r = document.createElement("link"); r.id = o, r.rel = "stylesheet", r.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(t).replace(/%3A/g, ":").replace(/%40/g, "@").replace(/%3B/g, ";").replace(/%2B/g, "+")}&display=swap`, r.crossOrigin = "anonymous", document.head.append(r); }
         readSelection() { const e = {}; return (this.configuration?.fields ?? []).forEach(t => { (!t.disabled && this.acceptsValue(t)) && (e[t.uuid] = this.readField(t, this.root)); }), e; }
         readField(e, t) { const o = t.querySelector(`[data-wof-field="${r(e.uuid)}"]`); if (!o)
@@ -1421,20 +1421,20 @@
         writeSelection(e) {
             const t = this.root.querySelector("[data-wof-selection-json]");
             t && (t.value = JSON.stringify(e));
-            let varInput = this.root.querySelector('input[name="wooptionsfic_product_variations"]');
+            let varInput = this.root.querySelector('input[name="wooptions-pro_product_variations"]');
             if (!varInput) {
                 varInput = document.createElement("input");
                 varInput.type = "hidden";
-                varInput.name = "wooptionsfic_product_variations";
+                varInput.name = "wooptions-pro_product_variations";
                 this.root.appendChild(varInput);
             }
             varInput.value = JSON.stringify(this.readProductVariations());
 
-            let qtyInput = this.root.querySelector('input[name="wooptionsfic_choice_quantities"]');
+            let qtyInput = this.root.querySelector('input[name="wooptions-pro_choice_quantities"]');
             if (!qtyInput) {
                 qtyInput = document.createElement("input");
                 qtyInput.type = "hidden";
-                qtyInput.name = "wooptionsfic_choice_quantities";
+                qtyInput.name = "wooptions-pro_choice_quantities";
                 this.root.appendChild(qtyInput);
             }
             qtyInput.value = JSON.stringify(this.readChoiceQuantities());
@@ -1515,7 +1515,7 @@
                 }
 
                 if (e.price?.formulas) {
-                    const currency = e.price.unitPrice?.currency || window.WooptionsFicStorefront?.currency || 'USD';
+                    const currency = e.price.unitPrice?.currency || window.WooOptionsProStorefront?.currency || 'USD';
                     Object.entries(e.price.formulas).forEach(([uuid, info]) => {
                         const outs = this.root.querySelectorAll(`[data-wof-calculated="${r(uuid)}"]`);
                         if (!outs.length) return;
@@ -2350,7 +2350,7 @@
         updateSelectPreviews() { this.root.querySelectorAll("[data-wof-select-wrap] select").forEach(e => this.updateSelectPreview(e)); }
         captureProductImageSnapshot() { if (this.productImageSnapshot) return; const e = this.root.closest(".product") ?? document, t = Array.from(e.querySelectorAll(".woocommerce-product-gallery__image.flex-active-slide img, .woocommerce-product-gallery__image:first-child img, .woocommerce-product-gallery .wp-post-image")).filter(e => !this.root.contains(e)), o = Array.from(new Set(t)); this.productImageSnapshot = o.map(e => ({ element: e, src: e.getAttribute("src"), srcset: e.getAttribute("srcset"), sizes: e.getAttribute("sizes"), dataSrc: e.getAttribute("data-src"), large: e.getAttribute("data-large_image"), parentHref: e.closest("a")?.getAttribute("href") ?? null })); }
         restoreProductImage() { if (!this.productImageSnapshot) return; this.productImageSnapshot.forEach(e => { const t = e.element, o = (r, a) => { null === a ? t.removeAttribute(r) : t.setAttribute(r, a); }; o("src", e.src), o("srcset", e.srcset), o("sizes", e.sizes), o("data-src", e.dataSrc), o("data-large_image", e.large); const r = t.closest("a"); r && (null === e.parentHref ? r.removeAttribute("href") : r.setAttribute("href", e.parentHref)); }); }
-        updateProductImage(e = null) { const t = e?.closest?.('[data-wof-update-product-image="1"]') ?? this.root.querySelector('[data-wof-update-product-image="1"]'); if (!t) return; const o = t.querySelector('input:checked[data-wof-product-image-url]'), r = o?.dataset?.wofProductImageUrl ?? ""; if (!r) { o || this.restoreProductImage(); return; } this.captureProductImageSnapshot(), this.productImageSnapshot?.forEach(e => { const t = e.element; t.setAttribute("src", r), t.setAttribute("data-src", r), t.setAttribute("data-large_image", r), t.removeAttribute("srcset"), t.removeAttribute("sizes"); const o = t.closest("a"); o && o.setAttribute("href", r); }), this.root.dispatchEvent(new CustomEvent("wooptionsfic:product-image-updated", { detail: { url: r } })); }
+        updateProductImage(e = null) { const t = e?.closest?.('[data-wof-update-product-image="1"]') ?? this.root.querySelector('[data-wof-update-product-image="1"]'); if (!t) return; const o = t.querySelector('input:checked[data-wof-product-image-url]'), r = o?.dataset?.wofProductImageUrl ?? ""; if (!r) { o || this.restoreProductImage(); return; } this.captureProductImageSnapshot(), this.productImageSnapshot?.forEach(e => { const t = e.element; t.setAttribute("src", r), t.setAttribute("data-src", r), t.setAttribute("data-large_image", r), t.removeAttribute("srcset"), t.removeAttribute("sizes"); const o = t.closest("a"); o && o.setAttribute("href", r); }), this.root.dispatchEvent(new CustomEvent("wooptions-pro:product-image-updated", { detail: { url: r } })); }
         addRow(e) {
             const t = e.closest?.("[data-wof-repeater]") ?? (e.hasAttribute?.("data-wof-repeater") ? e : null),
                 o = t?.querySelector("[data-wof-repeater-rows]"),
@@ -2585,8 +2585,8 @@
         money(e, t) {
             const o = Number(e);
             if (Number.isFinite(o)) {
-                const symbol = window.WooptionsFicStorefront?.currencySymbol || '$';
-                const pos = window.WooptionsFicStorefront?.currencyPosition || 'left_space';
+                const symbol = window.WooOptionsProStorefront?.currencySymbol || '$';
+                const pos = window.WooOptionsProStorefront?.currencyPosition || 'left_space';
                 const dec = (String(e).split('.')[1] || '00').length;
                 const formattedNum = o.toFixed(Math.min(6, Math.max(2, dec)));
                 if (pos === 'right') return `${formattedNum}${symbol}`;
@@ -2606,7 +2606,7 @@
             new a(e);
         }
         catch (e) {
-            window.console.error("WooptionsFic could not initialize.", e);
+            window.console.error("WooOptionsPro could not initialize.", e);
         }
     } }); }
     "loading" === document.readyState ? document.addEventListener("DOMContentLoaded", i, { once: !0 }) : i();

@@ -2,12 +2,12 @@
 /**
  * Bounded fixed-scale decimal arithmetic.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Pricing;
+namespace WooOptionsPro\Domain\Pricing;
 
 use InvalidArgumentException;
 use RuntimeException;
@@ -33,7 +33,7 @@ final class Decimal {
 
 	public static function from_int(int $value): self {
 		if (0 !== $value && abs($value) > intdiv(PHP_INT_MAX, self::FACTOR)) {
-			throw new InvalidArgumentException('wooptionsfic_decimal_out_of_range');
+			throw new InvalidArgumentException('wooptions-pro_decimal_out_of_range');
 		}
 		return new self($value * self::FACTOR);
 	}
@@ -41,13 +41,13 @@ final class Decimal {
 	public static function from_string(string|int $value): self {
 		$value = trim((string) $value);
 		if (1 !== preg_match('/\A([+-]?)(\d+)(?:\.(\d+))?\z/', $value, $matches)) {
-			throw new InvalidArgumentException('wooptionsfic_invalid_decimal');
+			throw new InvalidArgumentException('wooptions-pro_invalid_decimal');
 		}
 
 		$integer = ltrim($matches[2], '0');
 		$integer = '' === $integer ? '0' : $integer;
 		if (strlen($integer) > 12) {
-			throw new InvalidArgumentException('wooptionsfic_decimal_out_of_range');
+			throw new InvalidArgumentException('wooptions-pro_decimal_out_of_range');
 		}
 
 		$fraction = $matches[3] ?? '';
@@ -73,7 +73,7 @@ final class Decimal {
 		if (($other->raw > 0 && $this->raw > PHP_INT_MAX - $other->raw)
 			|| ($other->raw < 0 && $this->raw < PHP_INT_MIN - $other->raw)
 		) {
-			throw new RuntimeException('wooptionsfic_decimal_overflow');
+			throw new RuntimeException('wooptions-pro_decimal_overflow');
 		}
 		return new self($this->raw + $other->raw);
 	}
@@ -84,7 +84,7 @@ final class Decimal {
 
 	public function negate(): self {
 		if (PHP_INT_MIN === $this->raw) {
-			throw new RuntimeException('wooptionsfic_decimal_overflow');
+			throw new RuntimeException('wooptions-pro_decimal_overflow');
 		}
 		return new self(-$this->raw);
 	}
@@ -101,7 +101,7 @@ final class Decimal {
 		$a = abs($this->raw);
 		$b = abs($other->raw);
 		if ($a > intdiv(PHP_INT_MAX, $b)) {
-			throw new RuntimeException('wooptionsfic_decimal_overflow');
+			throw new RuntimeException('wooptions-pro_decimal_overflow');
 		}
 
 		return new self(self::rounded_divide($this->raw * $other->raw, self::FACTOR));
@@ -109,12 +109,12 @@ final class Decimal {
 
 	public function divide(self $other): self {
 		if (0 === $other->raw) {
-			throw new RuntimeException('wooptionsfic_formula_division_by_zero');
+			throw new RuntimeException('wooptions-pro_formula_division_by_zero');
 		}
 
 		$a = abs($this->raw);
 		if (0 !== $a && $a > intdiv(PHP_INT_MAX, self::FACTOR)) {
-			throw new RuntimeException('wooptionsfic_decimal_overflow');
+			throw new RuntimeException('wooptions-pro_decimal_overflow');
 		}
 
 		return new self(self::rounded_divide($this->raw * self::FACTOR, $other->raw));
@@ -122,14 +122,14 @@ final class Decimal {
 
 	public function modulo(self $other): self {
 		if (0 === $other->raw) {
-			throw new RuntimeException('wooptionsfic_formula_division_by_zero');
+			throw new RuntimeException('wooptions-pro_formula_division_by_zero');
 		}
 		return new self($this->raw % $other->raw);
 	}
 
 	public function power(int $exponent): self {
 		if ($exponent < 0 || $exponent > 10) {
-			throw new RuntimeException('wooptionsfic_formula_exponent_out_of_range');
+			throw new RuntimeException('wooptions-pro_formula_exponent_out_of_range');
 		}
 
 		$result = self::one();
@@ -201,7 +201,7 @@ final class Decimal {
 
 	private static function rounded_divide(int $numerator, int $denominator): int {
 		if (0 === $denominator) {
-			throw new RuntimeException('wooptionsfic_formula_division_by_zero');
+			throw new RuntimeException('wooptions-pro_formula_division_by_zero');
 		}
 
 		$negative = ($numerator < 0) xor ($denominator < 0);

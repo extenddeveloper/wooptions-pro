@@ -1,13 +1,13 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "wooptionsfic/product-options",
+  "name": "wooptions-pro/product-options",
   "version": "1.0.0",
-  "title": "WooptionsFic Product Options",
+  "title": "WooOptions Pro Product Options",
   "category": "woocommerce",
   "icon": "screenoptions",
   "description": "Displays the effective product options for the current WooCommerce product.",
-  "textdomain": "wooptionsfic",
+  "textdomain": "wooptions-pro",
   "attributes": {
     "productId": {
       "type": "integer",

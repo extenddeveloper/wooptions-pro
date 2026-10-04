@@ -2,12 +2,12 @@
 /**
  * Field type contract.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Definition;
+namespace WooOptionsPro\Domain\Definition;
 
 interface FieldType {
 	public function key(): string;

@@ -2,14 +2,14 @@
 /**
  * Choice field type.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Definition\Type;
+namespace WooOptionsPro\Domain\Definition\Type;
 
-use WooptionsFic\Domain\Support\Uuid;
+use WooOptionsPro\Domain\Support\Uuid;
 
 final class ChoiceFieldType extends AbstractFieldType {
 	public function __construct(

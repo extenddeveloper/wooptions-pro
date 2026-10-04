@@ -2,20 +2,20 @@
 /**
  * Deterministic assignment resolver and compiler merge.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Application;
+namespace WooOptionsPro\Application;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use WooptionsFic\Domain\Support\CanonicalJson;
-use WooptionsFic\Domain\Support\Uuid;
-use WooptionsFic\Infrastructure\Persistence\AssignmentRepository;
-use WooptionsFic\Infrastructure\Persistence\OptionSetRepository;
-use WooptionsFic\Infrastructure\Persistence\Transaction;
+use WooOptionsPro\Domain\Support\CanonicalJson;
+use WooOptionsPro\Domain\Support\Uuid;
+use WooOptionsPro\Infrastructure\Persistence\AssignmentRepository;
+use WooOptionsPro\Infrastructure\Persistence\OptionSetRepository;
+use WooOptionsPro\Infrastructure\Persistence\Transaction;
 
 final class AssignmentService {
 	public function __construct(
@@ -31,7 +31,7 @@ final class AssignmentService {
 	public function for_set(string $set_uuid): array {
 		$set = $this->sets->find_set($set_uuid);
 		if (! $set) {
-			throw new NotFoundException('wooptionsfic_set_not_found');
+			throw new NotFoundException('wooptions-pro_set_not_found');
 		}
 		return $this->assignments->for_set((int) $set['id']);
 	}
@@ -43,7 +43,7 @@ final class AssignmentService {
 	public function replace(string $set_uuid, array $assignments): array {
 		$set = $this->sets->find_set($set_uuid);
 		if (! $set) {
-			throw new NotFoundException('wooptionsfic_set_not_found');
+			throw new NotFoundException('wooptions-pro_set_not_found');
 		}
 		$normalized = $this->normalize_assignments($assignments);
 		$this->transaction->run(
@@ -65,7 +65,7 @@ final class AssignmentService {
 			CanonicalJson::encode(
 				[
 					'generation' => $this->assignments->generation(),
-					'revisions'  => (int) get_option('wooptionsfic_revision_generation', 1),
+					'revisions'  => (int) get_option('wooptions-pro_revision_generation', 1),
 					'product'    => (int) ($context['productId'] ?? 0),
 					'variation'  => (int) ($context['variationId'] ?? 0),
 					'categories' => array_values(array_map('intval', (array) ($context['categoryIds'] ?? []))),
@@ -77,7 +77,7 @@ final class AssignmentService {
 				]
 			)
 		);
-		$cached = wp_cache_get($cache_key, 'wooptionsfic');
+		$cached = wp_cache_get($cache_key, 'wooptions-pro');
 		if (is_array($cached)) {
 			return $cached['configuration'] ?? null;
 		}
@@ -124,7 +124,7 @@ final class AssignmentService {
 		}
 
 		$configuration = $this->merge($ordered_revisions);
-		wp_cache_set($cache_key, ['configuration' => $configuration], 'wooptionsfic', 300);
+		wp_cache_set($cache_key, ['configuration' => $configuration], 'wooptions-pro', 300);
 		return $configuration;
 	}
 
@@ -154,9 +154,9 @@ final class AssignmentService {
 			$context = is_array($assignment['context'] ?? null) ? $assignment['context'] : [];
 			$uuid    = (string) ($assignment['uuid'] ?? '');
 			$normalized[] = [
-				'uuid'       => \WooptionsFic\Domain\Support\Uuid::is_valid($uuid)
+				'uuid'       => \WooOptionsPro\Domain\Support\Uuid::is_valid($uuid)
 					? strtolower($uuid)
-					: \WooptionsFic\Domain\Support\Uuid::v4(),
+					: \WooOptionsPro\Domain\Support\Uuid::v4(),
 				'targetType' => $type,
 				'targetId'   => $target_id,
 				'mode'       => 'exclude' === ($assignment['mode'] ?? '') ? 'exclude' : 'include',

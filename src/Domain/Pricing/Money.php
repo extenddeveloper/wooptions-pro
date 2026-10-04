@@ -2,12 +2,12 @@
 /**
  * Integer-minor-unit money.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Pricing;
+namespace WooOptionsPro\Domain\Pricing;
 
 use InvalidArgumentException;
 
@@ -18,10 +18,10 @@ final class Money {
 		private readonly int $scale
 	) {
 		if ($scale < 0 || $scale > 6) {
-			throw new InvalidArgumentException('wooptionsfic_invalid_currency_scale');
+			throw new InvalidArgumentException('wooptions-pro_invalid_currency_scale');
 		}
 		if (1 !== preg_match('/\A[A-Z]{3}\z/', $currency)) {
-			throw new InvalidArgumentException('wooptionsfic_invalid_currency');
+			throw new InvalidArgumentException('wooptions-pro_invalid_currency');
 		}
 	}
 
@@ -101,7 +101,7 @@ final class Money {
 
 	private function assert_same_currency(self $other): void {
 		if ($this->currency !== $other->currency || $this->scale !== $other->scale) {
-			throw new InvalidArgumentException('wooptionsfic_money_currency_mismatch');
+			throw new InvalidArgumentException('wooptions-pro_money_currency_mismatch');
 		}
 	}
 }

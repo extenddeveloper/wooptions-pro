@@ -2,12 +2,12 @@
 /**
  * Semantic storefront palette resolution.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Style;
+namespace WooOptionsPro\Domain\Style;
 
 final class PaletteRegistry {
 	/** @var array<string, array<string,mixed>> */
@@ -28,7 +28,7 @@ final class PaletteRegistry {
 		if (function_exists('did_action') && did_action('init')) {
 			foreach ($palettes as &$palette) {
 				if (isset($palette['name']) && is_string($palette['name'])) {
-					$palette['name'] = translate($palette['name'], 'wooptionsfic');
+					$palette['name'] = translate($palette['name'], 'wooptions-pro');
 				}
 			}
 			unset($palette);

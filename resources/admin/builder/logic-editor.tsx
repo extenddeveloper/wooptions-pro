@@ -1,4 +1,4 @@
-namespace WooptionsFic.Builder {
+namespace WooOptionsPro.Builder {
   const { SelectControl, TextControl, ToggleControl } = wp.components;
   const { __, sprintf } = wp.i18n;
   const { useMemo } = wp.element;
@@ -43,14 +43,14 @@ namespace WooptionsFic.Builder {
   const contentOnlyTypes = ['heading', 'paragraph', 'help', 'separator', 'spacer', 'formula'];
 
   const operatorOptions = [
-    { label: __('equals', 'wooptionsfic'), value: 'equals' },
-    { label: __('does not equal', 'wooptionsfic'), value: 'not_equals' },
-    { label: __('contains / is selected', 'wooptionsfic'), value: 'contains' },
-    { label: __('does not contain', 'wooptionsfic'), value: 'not_contains' },
-    { label: __('is greater than', 'wooptionsfic'), value: 'greater_than' },
-    { label: __('is less than', 'wooptionsfic'), value: 'less_than' },
-    { label: __('is empty', 'wooptionsfic'), value: 'empty' },
-    { label: __('is not empty', 'wooptionsfic'), value: 'not_empty' },
+    { label: __('equals', 'wooptions-pro'), value: 'equals' },
+    { label: __('does not equal', 'wooptions-pro'), value: 'not_equals' },
+    { label: __('contains / is selected', 'wooptions-pro'), value: 'contains' },
+    { label: __('does not contain', 'wooptions-pro'), value: 'not_contains' },
+    { label: __('is greater than', 'wooptions-pro'), value: 'greater_than' },
+    { label: __('is less than', 'wooptions-pro'), value: 'less_than' },
+    { label: __('is empty', 'wooptions-pro'), value: 'empty' },
+    { label: __('is not empty', 'wooptions-pro'), value: 'not_empty' },
   ];
 
   function cloneGroups(groups: LogicGroupState[]): LogicGroupState[] {
@@ -60,7 +60,7 @@ namespace WooptionsFic.Builder {
     }));
   }
 
-  function defaultCondition(fieldUuid: string, fields: WooptionsFic.FieldDefinition[]): LogicConditionRow {
+  function defaultCondition(fieldUuid: string, fields: WooOptionsPro.FieldDefinition[]): LogicConditionRow {
     const source = fields.find((field) => field.uuid === fieldUuid);
     const operator: LogicOperator = source?.multiple || ['checkbox_group', 'product'].includes(source?.type ?? '') ? 'contains' : 'equals';
     return {
@@ -78,7 +78,7 @@ namespace WooptionsFic.Builder {
     };
   }
 
-  function normalizeState(field: WooptionsFic.FieldDefinition, fields: WooptionsFic.FieldDefinition[]): LogicEditorState {
+  function normalizeState(field: WooOptionsPro.FieldDefinition, fields: WooOptionsPro.FieldDefinition[]): LogicEditorState {
     const visibility = ((field.conditions as unknown as Record<string, StoredExpression> | undefined) ?? {}).visible;
     let effect: LogicEffect = 'show';
     let expression = visibility;
@@ -125,12 +125,12 @@ namespace WooptionsFic.Builder {
   }
 
   export function LogicEditor(props: {
-    field: WooptionsFic.FieldDefinition;
-    allFields: WooptionsFic.FieldDefinition[];
-    onChange: (field: WooptionsFic.FieldDefinition) => void;
+    field: WooOptionsPro.FieldDefinition;
+    allFields: WooOptionsPro.FieldDefinition[];
+    onChange: (field: WooOptionsPro.FieldDefinition) => void;
   }): any {
     const sourceFields = useMemo(
-      () => WooptionsFic.Utils.allFields(props.allFields).filter((field) => field.uuid !== props.field.uuid && !contentOnlyTypes.includes(field.type)),
+      () => WooOptionsPro.Utils.allFields(props.allFields).filter((field) => field.uuid !== props.field.uuid && !contentOnlyTypes.includes(field.type)),
       [props.allFields, props.field.uuid],
     );
     const state = useMemo(() => normalizeState(props.field, sourceFields), [props.field.conditions, sourceFields]);
@@ -141,7 +141,7 @@ namespace WooptionsFic.Builder {
 
       if (!next.enabled) {
         delete fieldConditions.visible;
-        props.onChange({ ...props.field, conditions: fieldConditions as unknown as WooptionsFic.FieldDefinition['conditions'] });
+        props.onChange({ ...props.field, conditions: fieldConditions as unknown as WooOptionsPro.FieldDefinition['conditions'] });
         return;
       }
 
@@ -169,7 +169,7 @@ namespace WooptionsFic.Builder {
         fieldConditions.visible = visibility;
       }
 
-      props.onChange({ ...props.field, conditions: fieldConditions as unknown as WooptionsFic.FieldDefinition['conditions'] });
+      props.onChange({ ...props.field, conditions: fieldConditions as unknown as WooOptionsPro.FieldDefinition['conditions'] });
     };
 
     const updateGroup = (groupIndex: number, patch: Partial<LogicGroupState>) => {
@@ -204,28 +204,28 @@ namespace WooptionsFic.Builder {
     };
 
     return <div className="wof-inspector-section wof-logic-builder">
-      <div className="wof-inspector-section__intro"><div><h3>{__('Conditional logic', 'wooptionsfic')}</h3><p>{__('Show or hide this field using multiple grouped conditions. Rules are rechecked securely on the storefront.', 'wooptionsfic')}</p></div></div>
+      <div className="wof-inspector-section__intro"><div><h3>{__('Conditional logic', 'wooptions-pro')}</h3><p>{__('Show or hide this field using multiple grouped conditions. Rules are rechecked securely on the storefront.', 'wooptions-pro')}</p></div></div>
       <ToggleControl
         __nextHasNoMarginBottom
-        label={__('Enable conditional logic', 'wooptionsfic')}
+        label={__('Enable conditional logic', 'wooptions-pro')}
         checked={state.enabled}
         disabled={!sourceFields.length}
         onChange={(enabled: boolean) => enabled
           ? save({ enabled: true, groups: [{ logic: 'and', conditions: [defaultCondition(sourceFields[0]?.uuid ?? '', sourceFields)] }] })
           : save({ enabled: false })}
       />
-      {!sourceFields.length ? <div className="wof-logic-empty">{__('Add another customer-input field before creating a condition.', 'wooptionsfic')}</div> : null}
+      {!sourceFields.length ? <div className="wof-logic-empty">{__('Add another customer-input field before creating a condition.', 'wooptions-pro')}</div> : null}
       {state.enabled && sourceFields.length ? <>
         <div className="wof-logic-behavior">
-          <SelectControl label={__('Action', 'wooptionsfic')} value={state.effect} options={[{ label: __('Show this field', 'wooptionsfic'), value: 'show' }, { label: __('Hide this field', 'wooptionsfic'), value: 'hide' }]} onChange={(effect: LogicEffect) => save({ effect })} />
-          {state.groups.length > 1 ? <SelectControl label={__('Match rule groups', 'wooptionsfic')} value={state.rootLogic} options={[{ label: __('All groups must match', 'wooptionsfic'), value: 'and' }, { label: __('Any group may match', 'wooptionsfic'), value: 'or' }]} onChange={(rootLogic: LogicJoin) => save({ rootLogic })} /> : null}
+          <SelectControl label={__('Action', 'wooptions-pro')} value={state.effect} options={[{ label: __('Show this field', 'wooptions-pro'), value: 'show' }, { label: __('Hide this field', 'wooptions-pro'), value: 'hide' }]} onChange={(effect: LogicEffect) => save({ effect })} />
+          {state.groups.length > 1 ? <SelectControl label={__('Match rule groups', 'wooptions-pro')} value={state.rootLogic} options={[{ label: __('All groups must match', 'wooptions-pro'), value: 'and' }, { label: __('Any group may match', 'wooptions-pro'), value: 'or' }]} onChange={(rootLogic: LogicJoin) => save({ rootLogic })} /> : null}
         </div>
         <div className="wof-logic-groups">
           {state.groups.map((group, groupIndex) => <article className="wof-logic-group" key={`group-${groupIndex}`}>
             <header>
-              <div><span>{groupIndex + 1}</span><div><strong>{sprintf(__('Rule group %d', 'wooptionsfic'), groupIndex + 1)}</strong><small>{__('Conditions inside this group', 'wooptionsfic')}</small></div></div>
-              <SelectControl label={__('Group matching', 'wooptionsfic')} hideLabelFromVision value={group.logic} options={[{ label: __('Match all (AND)', 'wooptionsfic'), value: 'and' }, { label: __('Match any (OR)', 'wooptionsfic'), value: 'or' }]} onChange={(logic: LogicJoin) => updateGroup(groupIndex, { logic })} />
-              {state.groups.length > 1 ? <button type="button" className="wof-logic-delete" onClick={() => removeGroup(groupIndex)} aria-label={__('Delete rule group', 'wooptionsfic')}><WooptionsFic.Components.Dashicon name="trash" /></button> : null}
+              <div><span>{groupIndex + 1}</span><div><strong>{sprintf(__('Rule group %d', 'wooptions-pro'), groupIndex + 1)}</strong><small>{__('Conditions inside this group', 'wooptions-pro')}</small></div></div>
+              <SelectControl label={__('Group matching', 'wooptions-pro')} hideLabelFromVision value={group.logic} options={[{ label: __('Match all (AND)', 'wooptions-pro'), value: 'and' }, { label: __('Match any (OR)', 'wooptions-pro'), value: 'or' }]} onChange={(logic: LogicJoin) => updateGroup(groupIndex, { logic })} />
+              {state.groups.length > 1 ? <button type="button" className="wof-logic-delete" onClick={() => removeGroup(groupIndex)} aria-label={__('Delete rule group', 'wooptions-pro')}><WooOptionsPro.Components.Dashicon name="trash" /></button> : null}
             </header>
             <div className="wof-logic-conditions">
               {group.conditions.map((condition, conditionIndex) => {
@@ -234,18 +234,18 @@ namespace WooptionsFic.Builder {
                 const needsValue = !['empty', 'not_empty'].includes(condition.operator);
                 return <div className="wof-logic-condition" key={`condition-${groupIndex}-${conditionIndex}`}>
                   <span className="wof-logic-condition__number">{conditionIndex + 1}</span>
-                  <SelectControl label={__('Source field', 'wooptionsfic')} hideLabelFromVision value={condition.field} options={sourceFields.map((field) => ({ label: field.label || field.type, value: field.uuid }))} onChange={(fieldUuid: string) => updateCondition(groupIndex, conditionIndex, defaultCondition(fieldUuid, sourceFields))} />
-                  <SelectControl label={__('Operator', 'wooptionsfic')} hideLabelFromVision value={condition.operator} options={operatorOptions} onChange={(operator: LogicOperator) => updateCondition(groupIndex, conditionIndex, { operator })} />
-                  {needsValue ? hasChoices ? <SelectControl label={__('Value', 'wooptionsfic')} hideLabelFromVision value={condition.value} options={[{ label: __('Choose a value…', 'wooptionsfic'), value: '' }, ...(source?.choices ?? []).map((choice) => ({ label: choice.label, value: choice.uuid }))]} onChange={(value: string) => updateCondition(groupIndex, conditionIndex, { value })} /> : ['checkbox', 'toggle'].includes(source?.type ?? '') ? <SelectControl label={__('Value', 'wooptionsfic')} hideLabelFromVision value={condition.value} options={[{ label: __('Checked / Yes', 'wooptionsfic'), value: '1' }, { label: __('Unchecked / No', 'wooptionsfic'), value: '' }]} onChange={(value: string) => updateCondition(groupIndex, conditionIndex, { value })} /> : <TextControl label={__('Comparison value', 'wooptionsfic')} hideLabelFromVision value={condition.value} placeholder={__('Enter a value', 'wooptionsfic')} onChange={(value: string) => updateCondition(groupIndex, conditionIndex, { value })} /> : null}
-                  <button type="button" className="wof-logic-condition__remove" disabled={state.groups.length === 1 && group.conditions.length === 1} onClick={() => removeCondition(groupIndex, conditionIndex)} aria-label={__('Remove condition', 'wooptionsfic')}><WooptionsFic.Components.Dashicon name="no-alt" /></button>
+                  <SelectControl label={__('Source field', 'wooptions-pro')} hideLabelFromVision value={condition.field} options={sourceFields.map((field) => ({ label: field.label || field.type, value: field.uuid }))} onChange={(fieldUuid: string) => updateCondition(groupIndex, conditionIndex, defaultCondition(fieldUuid, sourceFields))} />
+                  <SelectControl label={__('Operator', 'wooptions-pro')} hideLabelFromVision value={condition.operator} options={operatorOptions} onChange={(operator: LogicOperator) => updateCondition(groupIndex, conditionIndex, { operator })} />
+                  {needsValue ? hasChoices ? <SelectControl label={__('Value', 'wooptions-pro')} hideLabelFromVision value={condition.value} options={[{ label: __('Choose a value…', 'wooptions-pro'), value: '' }, ...(source?.choices ?? []).map((choice) => ({ label: choice.label, value: choice.uuid }))]} onChange={(value: string) => updateCondition(groupIndex, conditionIndex, { value })} /> : ['checkbox', 'toggle'].includes(source?.type ?? '') ? <SelectControl label={__('Value', 'wooptions-pro')} hideLabelFromVision value={condition.value} options={[{ label: __('Checked / Yes', 'wooptions-pro'), value: '1' }, { label: __('Unchecked / No', 'wooptions-pro'), value: '' }]} onChange={(value: string) => updateCondition(groupIndex, conditionIndex, { value })} /> : <TextControl label={__('Comparison value', 'wooptions-pro')} hideLabelFromVision value={condition.value} placeholder={__('Enter a value', 'wooptions-pro')} onChange={(value: string) => updateCondition(groupIndex, conditionIndex, { value })} /> : null}
+                  <button type="button" className="wof-logic-condition__remove" disabled={state.groups.length === 1 && group.conditions.length === 1} onClick={() => removeCondition(groupIndex, conditionIndex)} aria-label={__('Remove condition', 'wooptions-pro')}><WooOptionsPro.Components.Dashicon name="no-alt" /></button>
                 </div>;
               })}
             </div>
-            <button type="button" className="wof-logic-add-condition" onClick={() => addCondition(groupIndex)}><WooptionsFic.Components.Dashicon name="plus-alt2" />{__('Add condition', 'wooptionsfic')}</button>
+            <button type="button" className="wof-logic-add-condition" onClick={() => addCondition(groupIndex)}><WooOptionsPro.Components.Dashicon name="plus-alt2" />{__('Add condition', 'wooptions-pro')}</button>
           </article>)}
         </div>
-        <button type="button" className="wof-logic-add-group" onClick={() => save({ groups: [...cloneGroups(state.groups), { logic: 'and', conditions: [defaultCondition(sourceFields[0]?.uuid ?? '', sourceFields)] }] })}><WooptionsFic.Components.Dashicon name="plus-alt2" />{__('Add rule group', 'wooptionsfic')}</button>
-        <p className="wof-muted-note">{__('Use groups to combine AND and OR rules. Choice-based comparisons store stable choice IDs, so renaming labels will not break the logic.', 'wooptionsfic')}</p>
+        <button type="button" className="wof-logic-add-group" onClick={() => save({ groups: [...cloneGroups(state.groups), { logic: 'and', conditions: [defaultCondition(sourceFields[0]?.uuid ?? '', sourceFields)] }] })}><WooOptionsPro.Components.Dashicon name="plus-alt2" />{__('Add rule group', 'wooptions-pro')}</button>
+        <p className="wof-muted-note">{__('Use groups to combine AND and OR rules. Choice-based comparisons store stable choice IDs, so renaming labels will not break the logic.', 'wooptions-pro')}</p>
       </> : null}
     </div>;
   }

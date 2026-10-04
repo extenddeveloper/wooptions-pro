@@ -2,20 +2,20 @@
 /**
  * Private local file storage.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Infrastructure\Storage;
+namespace WooOptionsPro\Infrastructure\Storage;
 
 use RuntimeException;
 
 final class LocalPrivateStorage {
 	public function base_path(): string {
-		$path = defined('WOOPTIONSFIC_PRIVATE_DIR')
-			? (string) WOOPTIONSFIC_PRIVATE_DIR
-			: WP_CONTENT_DIR . '/wooptionsfic-private';
+		$path = defined('WOOPTIONS_PRO_PRIVATE_DIR')
+			? (string) WOOPTIONS_PRO_PRIVATE_DIR
+			: WP_CONTENT_DIR . '/wooptions-pro-private';
 
 		return untrailingslashit($path);
 	}
@@ -23,7 +23,7 @@ final class LocalPrivateStorage {
 	public function ensure_vault(): void {
 		$path = $this->base_path();
 		if (! is_dir($path) && ! wp_mkdir_p($path)) {
-			throw new RuntimeException('wooptionsfic_storage_create_failed');
+			throw new RuntimeException('wooptions-pro_storage_create_failed');
 		}
 
 		$protections = [
@@ -43,7 +43,7 @@ final class LocalPrivateStorage {
 
 	public function path_for_key(string $key): string {
 		if (1 !== preg_match('/\A[a-f0-9]{64}\z/', $key)) {
-			throw new RuntimeException('wooptionsfic_invalid_storage_key');
+			throw new RuntimeException('wooptions-pro_invalid_storage_key');
 		}
 		return $this->base_path() . '/' . $key . '.dat';
 	}
@@ -52,7 +52,7 @@ final class LocalPrivateStorage {
 		$this->ensure_vault();
 		$destination = $this->path_for_key($key);
 		if (! is_uploaded_file($temporary_path) || ! move_uploaded_file($temporary_path, $destination)) {
-			throw new RuntimeException('wooptionsfic_upload_move_failed');
+			throw new RuntimeException('wooptions-pro_upload_move_failed');
 		}
 		@chmod($destination, 0640);
 	}
@@ -63,7 +63,7 @@ final class LocalPrivateStorage {
 	public function open(string $key) {
 		$handle = fopen($this->path_for_key($key), 'rb'); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		if (false === $handle) {
-			throw new RuntimeException('wooptionsfic_storage_read_failed');
+			throw new RuntimeException('wooptions-pro_storage_read_failed');
 		}
 		return $handle;
 	}

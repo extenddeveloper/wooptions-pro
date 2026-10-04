@@ -2,15 +2,15 @@
 /**
  * Formula AST evaluator with operation/depth limits.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Pricing\Formula;
+namespace WooOptionsPro\Domain\Pricing\Formula;
 
 use RuntimeException;
-use WooptionsFic\Domain\Pricing\Decimal;
+use WooOptionsPro\Domain\Pricing\Decimal;
 
 final class Evaluator {
 	private int $operations = 0;
@@ -138,7 +138,7 @@ final class Evaluator {
 			'unary'    => $this->unary((string) $node['operator'], (array) $node['operand'], $variables, $depth),
 			'binary'   => $this->binary($node, $variables, $depth),
 			'call'     => $this->call($node, $variables, $depth),
-			default    => throw new RuntimeException('wooptionsfic_formula_invalid_ast'),
+			default    => throw new RuntimeException('wooptions-pro_formula_invalid_ast'),
 		};
 	}
 
@@ -182,7 +182,7 @@ final class Evaluator {
 				return $this->normalize_value($val);
 			}
 		}
-		throw new RuntimeException('wooptionsfic_formula_unknown_variable_' . $name);
+		throw new RuntimeException('wooptions-pro_formula_unknown_variable_' . $name);
 	}
 
 	/**
@@ -195,7 +195,7 @@ final class Evaluator {
 			'!' , 'NOT' => ! $this->as_boolean($value),
 			'-'         => $this->as_decimal($value)->negate(),
 			'+'         => $this->as_decimal($value),
-			default     => throw new RuntimeException('wooptionsfic_formula_unknown_unary'),
+			default     => throw new RuntimeException('wooptions-pro_formula_unknown_unary'),
 		};
 	}
 
@@ -242,7 +242,7 @@ final class Evaluator {
 			'/'     => $a->divide($b),
 			'%'     => $a->modulo($b),
 			'^'     => $a->power($b->to_int()),
-			default => throw new RuntimeException('wooptionsfic_formula_unknown_operator'),
+			default => throw new RuntimeException('wooptions-pro_formula_unknown_operator'),
 		};
 	}
 
@@ -287,7 +287,7 @@ final class Evaluator {
 			$this->assert_argument_count($name, $arguments, 1, 1);
 			$field_id = $this->evaluate_node((array) $arguments[0], $variables, $depth + 1);
 			if (! is_string($field_id)) {
-				throw new RuntimeException('wooptionsfic_formula_field_id_required');
+				throw new RuntimeException('wooptions-pro_formula_field_id_required');
 			}
 			$fields = is_array($variables['fields'] ?? null) ? $variables['fields'] : [];
 
@@ -362,7 +362,7 @@ final class Evaluator {
 			'CEIL'  => $this->single_decimal($name, $values)->ceil(),
 			'FLOOR' => $this->single_decimal($name, $values)->floor(),
 			'POW'   => $this->power_call($values),
-			default => throw new RuntimeException('wooptionsfic_formula_unknown_function_' . $name),
+			default => throw new RuntimeException('wooptions-pro_formula_unknown_function_' . $name),
 		};
 	}
 
@@ -374,7 +374,7 @@ final class Evaluator {
 		$this->assert_argument_count($name, $arguments, 'COUNT' === $name ? 1 : 2, 2);
 		$rows = $this->evaluate_node((array) $arguments[0], $variables, $depth + 1);
 		if (! is_array($rows)) {
-			throw new RuntimeException('wooptionsfic_formula_rows_required');
+			throw new RuntimeException('wooptions-pro_formula_rows_required');
 		}
 
 		if ('COUNT' === $name && 1 === count($arguments)) {
@@ -383,7 +383,7 @@ final class Evaluator {
 
 		$field = $this->evaluate_node((array) $arguments[1], $variables, $depth + 1);
 		if (! is_string($field)) {
-			throw new RuntimeException('wooptionsfic_formula_field_id_required');
+			throw new RuntimeException('wooptions-pro_formula_field_id_required');
 		}
 
 		$total = Decimal::zero();
@@ -410,7 +410,7 @@ final class Evaluator {
 	 */
 	private function minimum(array $values): Decimal {
 		if ([] === $values) {
-			throw new RuntimeException('wooptionsfic_formula_min_requires_values');
+			throw new RuntimeException('wooptions-pro_formula_min_requires_values');
 		}
 		$minimum = $this->as_decimal(array_shift($values));
 		foreach ($values as $value) {
@@ -427,7 +427,7 @@ final class Evaluator {
 	 */
 	private function maximum(array $values): Decimal {
 		if ([] === $values) {
-			throw new RuntimeException('wooptionsfic_formula_max_requires_values');
+			throw new RuntimeException('wooptions-pro_formula_max_requires_values');
 		}
 		$maximum = $this->as_decimal(array_shift($values));
 		foreach ($values as $value) {
@@ -444,7 +444,7 @@ final class Evaluator {
 	 */
 	private function round_call(array $values): Decimal {
 		if (count($values) < 1 || count($values) > 2) {
-			throw new RuntimeException('wooptionsfic_formula_round_arguments');
+			throw new RuntimeException('wooptions-pro_formula_round_arguments');
 		}
 		$places = isset($values[1]) ? $this->as_decimal($values[1])->to_int() : 0;
 		return $this->as_decimal($values[0])->round($places);
@@ -455,7 +455,7 @@ final class Evaluator {
 	 */
 	private function power_call(array $values): Decimal {
 		if (2 !== count($values)) {
-			throw new RuntimeException('wooptionsfic_formula_pow_arguments');
+			throw new RuntimeException('wooptions-pro_formula_pow_arguments');
 		}
 		return $this->as_decimal($values[0])->power($this->as_decimal($values[1])->to_int());
 	}
@@ -465,7 +465,7 @@ final class Evaluator {
 	 */
 	private function single_decimal(string $name, array $values): Decimal {
 		if (1 !== count($values)) {
-			throw new RuntimeException('wooptionsfic_formula_' . strtolower($name) . '_arguments');
+			throw new RuntimeException('wooptions-pro_formula_' . strtolower($name) . '_arguments');
 		}
 		return $this->as_decimal($values[0]);
 	}
@@ -534,10 +534,10 @@ final class Evaluator {
 	private function tick(int $depth): void {
 		++$this->operations;
 		if ($this->operations > $this->operation_limit) {
-			throw new RuntimeException('wooptionsfic_formula_operation_limit');
+			throw new RuntimeException('wooptions-pro_formula_operation_limit');
 		}
 		if ($depth > 40) {
-			throw new RuntimeException('wooptionsfic_formula_evaluation_depth');
+			throw new RuntimeException('wooptions-pro_formula_evaluation_depth');
 		}
 	}
 
@@ -547,7 +547,7 @@ final class Evaluator {
 	private function assert_argument_count(string $name, array $arguments, int $minimum, int $maximum): void {
 		$count = count($arguments);
 		if ($count < $minimum || $count > $maximum) {
-			throw new RuntimeException('wooptionsfic_formula_' . strtolower($name) . '_arguments');
+			throw new RuntimeException('wooptions-pro_formula_' . strtolower($name) . '_arguments');
 		}
 	}
 }

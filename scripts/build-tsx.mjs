@@ -38,4 +38,4 @@ const adminVersion = digest(['build/admin.js', 'build/admin.css']);
 const storefrontVersion = digest(['build/storefront.js', 'build/storefront.css']);
 writeFileSync(resolve(root, 'build/admin.asset.php'), `<?php return array('dependencies' => array('react', 'react-dom', 'wp-api-fetch', 'wp-components', 'wp-data', 'wp-element', 'wp-i18n', 'editor', 'quicktags', 'wp-tinymce'), 'version' => '${adminVersion}');\n`);
 writeFileSync(resolve(root, 'build/storefront.asset.php'), `<?php return array('dependencies' => array(), 'version' => '${storefrontVersion}');\n`);
-console.log(`Built WooptionsFic TSX assets (${adminVersion}).`);
+console.log(`Built WooOptionsPro TSX assets (${adminVersion}).`);

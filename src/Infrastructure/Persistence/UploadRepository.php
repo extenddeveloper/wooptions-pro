@@ -2,12 +2,12 @@
 /**
  * Upload intent/reference persistence.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Infrastructure\Persistence;
+namespace WooOptionsPro\Infrastructure\Persistence;
 
 use RuntimeException;
 
@@ -37,7 +37,7 @@ final class UploadRepository {
 			['%s', '%d', '%s', '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s']
 		);
 		if (false === $ok) {
-			throw new RuntimeException('wooptionsfic_upload_intent_insert_failed');
+			throw new RuntimeException('wooptions-pro_upload_intent_insert_failed');
 		}
 	}
 
@@ -80,7 +80,7 @@ final class UploadRepository {
 		$data['updated_at_gmt'] = current_time('mysql', true);
 		$formats[]              = '%s';
 		if (false === $wpdb->update(Schema::table('uploads'), $data, ['uuid' => $uuid], $formats, ['%s'])) {
-			throw new RuntimeException('wooptionsfic_upload_update_failed');
+			throw new RuntimeException('wooptions-pro_upload_update_failed');
 		}
 	}
 

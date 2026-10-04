@@ -2,28 +2,28 @@
 /**
  * Session-bound customer REST API.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Presentation\Rest;
+namespace WooOptionsPro\Presentation\Rest;
 
-use WooptionsFic\Application\AnalyticsService;
-use WooptionsFic\Application\NotFoundException;
-use WooptionsFic\Application\QuoteService;
-use WooptionsFic\Application\SavedConfigurationService;
-use WooptionsFic\Application\UploadService;
-use WooptionsFic\Application\ValidationException;
-use WooptionsFic\Bootstrap\Settings;
-use WooptionsFic\Infrastructure\WooCommerce\ProductContext;
-use WooptionsFic\Infrastructure\WordPress\RateLimiter;
-use WooptionsFic\Infrastructure\WordPress\SessionGuard;
+use WooOptionsPro\Application\AnalyticsService;
+use WooOptionsPro\Application\NotFoundException;
+use WooOptionsPro\Application\QuoteService;
+use WooOptionsPro\Application\SavedConfigurationService;
+use WooOptionsPro\Application\UploadService;
+use WooOptionsPro\Application\ValidationException;
+use WooOptionsPro\Bootstrap\Settings;
+use WooOptionsPro\Infrastructure\WooCommerce\ProductContext;
+use WooOptionsPro\Infrastructure\WordPress\RateLimiter;
+use WooOptionsPro\Infrastructure\WordPress\SessionGuard;
 
 final class PublicController {
 	use Responder;
 
-	private const NAMESPACE = 'wooptionsfic/v1';
+	private const NAMESPACE = 'wooptions-pro/v1';
 
 	public function __construct(
 		private readonly QuoteService $quotes,
@@ -144,7 +144,7 @@ final class PublicController {
 			$context = $this->context($product_id, $variation_id, 1);
 			$config  = $this->quotes->configuration($context);
 			if (! $config) {
-				throw new NotFoundException('wooptionsfic_configuration_not_found');
+				throw new NotFoundException('wooptions-pro_configuration_not_found');
 			}
 			return $this->configuration_payload($config, $context);
 		});
@@ -167,7 +167,7 @@ final class PublicController {
 			}
 			$config  = $this->quotes->configuration($context);
 			if (! $config) {
-				throw new NotFoundException('wooptionsfic_configuration_not_found');
+				throw new NotFoundException('wooptions-pro_configuration_not_found');
 			}
 			$provided_token = (string) ($body['token'] ?? '');
 			$token_is_valid = $this->sessions->verify($provided_token, $product_id, (string) $config['revisionUuid']);
@@ -203,13 +203,13 @@ final class PublicController {
 			$context = $this->context($product_id, $variation_id, 1);
 			$config  = $this->quotes->configuration($context);
 			if (! $config) {
-				throw new NotFoundException('wooptionsfic_configuration_not_found');
+				throw new NotFoundException('wooptions-pro_configuration_not_found');
 			}
 			$this->assert_token((string) ($body['token'] ?? ''), $product_id, (string) $config['revisionUuid']);
 			if ((string) ($body['setUuid'] ?? '') !== (string) ($config['setUuid'] ?? '')
 				|| (string) ($body['revisionUuid'] ?? '') !== (string) ($config['revisionUuid'] ?? '')
 			) {
-				throw new ValidationException('wooptionsfic_analytics_context_invalid', [['code' => 'analytics_context_invalid']]);
+				throw new ValidationException('wooptions-pro_analytics_context_invalid', [['code' => 'analytics_context_invalid']]);
 			}
 			$this->assert_rate('interaction', 20);
 			$this->analytics->record(
@@ -235,12 +235,12 @@ final class PublicController {
 			$context      = $this->context($product_id, $variation_id, 1);
 			$config       = $this->quotes->configuration($context);
 			if (! $config) {
-				throw new NotFoundException('wooptionsfic_configuration_not_found');
+				throw new NotFoundException('wooptions-pro_configuration_not_found');
 			}
 			$this->assert_token((string) ($body['token'] ?? ''), $product_id, (string) $config['revisionUuid']);
 			$field = $this->find_field((array) $config['fields'], (string) ($body['fieldUuid'] ?? ''));
 			if (! $field || 'file' !== ($field['type'] ?? '')) {
-				throw new ValidationException('wooptionsfic_invalid_upload_field', [['code' => 'invalid_upload_field']]);
+				throw new ValidationException('wooptions-pro_invalid_upload_field', [['code' => 'invalid_upload_field']]);
 			}
 			$this->assert_rate('upload_intent', 20);
 			return $this->uploads->create_intent(
@@ -264,17 +264,17 @@ final class PublicController {
 			$context = $this->context((int) $record['productId'], (int) ($record['variationId'] ?? 0), 1);
 			$config  = $this->quotes->configuration($context);
 			if (! $config || (string) $config['revisionUuid'] !== (string) $record['revisionUuid']) {
-				throw new ValidationException('wooptionsfic_upload_revision_changed', [['code' => 'upload_revision_changed']]);
+				throw new ValidationException('wooptions-pro_upload_revision_changed', [['code' => 'upload_revision_changed']]);
 			}
 			$token = (string) ($request->get_param('token') ?? '');
 			$this->assert_token($token, (int) $record['productId'], (string) $record['revisionUuid']);
 			$field = $this->find_field((array) $config['fields'], (string) $record['fieldUuid']);
 			if (! $field) {
-				throw new ValidationException('wooptionsfic_invalid_upload_field', [['code' => 'invalid_upload_field']]);
+				throw new ValidationException('wooptions-pro_invalid_upload_field', [['code' => 'invalid_upload_field']]);
 			}
 			$file = $_FILES['file'] ?? null; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			if (! is_array($file)) {
-				throw new ValidationException('wooptionsfic_upload_transport_error', [['code' => 'upload_missing']]);
+				throw new ValidationException('wooptions-pro_upload_transport_error', [['code' => 'upload_missing']]);
 			}
 			$this->assert_rate('upload_complete', 20);
 			return $this->uploads->complete($uuid, $file, get_current_user_id(), $session, $field);
@@ -305,15 +305,15 @@ final class PublicController {
 			$context      = $this->context($product_id, $variation_id, 1);
 			$config       = $this->quotes->configuration($context);
 			if (! $config) {
-				throw new NotFoundException('wooptionsfic_configuration_not_found');
+				throw new NotFoundException('wooptions-pro_configuration_not_found');
 			}
 			if (empty($config['settings']['saveEnabled']) && empty($config['settings']['shareEnabled'])) {
-				throw new ValidationException('wooptionsfic_saved_config_disabled', [['code' => 'saved_config_disabled']]);
+				throw new ValidationException('wooptions-pro_saved_config_disabled', [['code' => 'saved_config_disabled']]);
 			}
 			$this->assert_token((string) ($body['token'] ?? ''), $product_id, (string) $config['revisionUuid']);
 			$quote = $this->quotes->quote((array) ($body['selection'] ?? []), $context);
 			if (empty($quote['valid'])) {
-				throw new ValidationException('wooptionsfic_saved_config_invalid', (array) ($quote['errors'] ?? []));
+				throw new ValidationException('wooptions-pro_saved_config_invalid', (array) ($quote['errors'] ?? []));
 			}
 			return $this->saved->save(
 				get_current_user_id(),
@@ -343,7 +343,7 @@ final class PublicController {
 					$this->context((int) $record['productId'], (int) $record['variationId'], 1)
 				);
 				if (! $config || empty($config['settings']['shareEnabled'])) {
-					throw new ValidationException('wooptionsfic_share_disabled', [['code' => 'share_disabled']]);
+					throw new ValidationException('wooptions-pro_share_disabled', [['code' => 'share_disabled']]);
 				}
 				return $this->saved->share($uuid, $user_id, $session);
 			}
@@ -412,13 +412,13 @@ final class PublicController {
 
 	private function assert_product(int $product_id): void {
 		if (! $this->products->visible_and_purchasable($product_id)) {
-			throw new NotFoundException('wooptionsfic_product_not_found');
+			throw new NotFoundException('wooptions-pro_product_not_found');
 		}
 	}
 
 	private function assert_token(string $token, int $product_id, string $revision_uuid): void {
 		if (! $this->sessions->verify($token, $product_id, $revision_uuid)) {
-			throw new ValidationException('wooptionsfic_public_token_invalid', [['code' => 'public_token_invalid']]);
+			throw new ValidationException('wooptions-pro_public_token_invalid', [['code' => 'public_token_invalid']]);
 		}
 	}
 
@@ -426,13 +426,13 @@ final class PublicController {
 		$session  = $this->sessions->session_hash();
 		$identity = $this->rate_limiter->request_identity($session);
 		if (! $this->rate_limiter->allow($scope, $identity, $limit)) {
-			throw new ValidationException('wooptionsfic_rate_limited', [['code' => 'rate_limited']]);
+			throw new ValidationException('wooptions-pro_rate_limited', [['code' => 'rate_limited']]);
 		}
 	}
 
 	private function guard_payload(\WP_REST_Request $request): void {
 		if (strlen($request->get_body()) > 262144) {
-			throw new ValidationException('wooptionsfic_payload_too_large', [['code' => 'payload_too_large']]);
+			throw new ValidationException('wooptions-pro_payload_too_large', [['code' => 'payload_too_large']]);
 		}
 	}
 

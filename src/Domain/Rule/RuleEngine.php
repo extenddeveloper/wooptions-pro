@@ -2,16 +2,16 @@
 /**
  * Typed nested condition engine and trace.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Rule;
+namespace WooOptionsPro\Domain\Rule;
 
 use DateTimeImmutable;
 use RuntimeException;
-use WooptionsFic\Domain\Pricing\Decimal;
+use WooOptionsPro\Domain\Pricing\Decimal;
 
 final class RuleEngine {
 	private int $nodes = 0;
@@ -134,7 +134,7 @@ final class RuleEngine {
 	private function evaluate_node(array $node, array $values, array $context, ?array $row, ?array &$trace = null): bool {
 		++$this->nodes;
 		if ($this->nodes > $this->node_limit) {
-			throw new RuntimeException('wooptionsfic_rule_node_limit');
+			throw new RuntimeException('wooptions-pro_rule_node_limit');
 		}
 
 		$logic = strtolower((string) ($node['logic'] ?? ''));

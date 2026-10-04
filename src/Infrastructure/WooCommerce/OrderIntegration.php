@@ -2,16 +2,16 @@
 /**
  * Immutable WooCommerce order-item snapshots.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Infrastructure\WooCommerce;
+namespace WooOptionsPro\Infrastructure\WooCommerce;
 
-use WooptionsFic\Application\AnalyticsService;
-use WooptionsFic\Application\UploadService;
-use WooptionsFic\Infrastructure\WordPress\SessionGuard;
+use WooOptionsPro\Application\AnalyticsService;
+use WooOptionsPro\Application\UploadService;
+use WooOptionsPro\Infrastructure\WordPress\SessionGuard;
 
 final class OrderIntegration {
 	public function __construct(
@@ -38,21 +38,21 @@ final class OrderIntegration {
 		\WC_Order $order
 	): void {
 		unset($cart_item_key, $order);
-		if (is_array($values['wooptionsfic'] ?? null)) {
-			$data     = $values['wooptionsfic'];
+		if (is_array($values['wooptions-pro'] ?? null)) {
+			$data     = $values['wooptions-pro'];
 			$snapshot = (array) ($data['snapshot'] ?? []);
 			$price    = (array) ($data['price'] ?? []);
-			$item->add_meta_data('_wooptionsfic_snapshot', wp_json_encode($snapshot, JSON_UNESCAPED_SLASHES), true);
-			$item->add_meta_data('_wooptionsfic_price', wp_json_encode($price, JSON_UNESCAPED_SLASHES), true);
-			$item->add_meta_data('_wooptionsfic_upload_refs', wp_json_encode(array_values((array) ($data['uploadRefs'] ?? []))), true);
-			$item->add_meta_data('_wooptionsfic_schema_version', 1, true);
+			$item->add_meta_data('_wooptions-pro_snapshot', wp_json_encode($snapshot, JSON_UNESCAPED_SLASHES), true);
+			$item->add_meta_data('_wooptions-pro_price', wp_json_encode($price, JSON_UNESCAPED_SLASHES), true);
+			$item->add_meta_data('_wooptions-pro_upload_refs', wp_json_encode(array_values((array) ($data['uploadRefs'] ?? []))), true);
+			$item->add_meta_data('_wooptions-pro_schema_version', 1, true);
 			$has_summary = false;
 			foreach ((array) ($snapshot['summary'] ?? []) as $summary) {
 				if (! is_array($summary) || ! empty($summary['sensitive'])) {
 					continue;
 				}
 				$field_type = (string) ($summary['type'] ?? '');
-				if ('product' === $field_type && apply_filters('wooptionsfic_add_linked_products_to_cart', true, $data, '')) {
+				if ('product' === $field_type && apply_filters('wooptions-pro_add_linked_products_to_cart', true, $data, '')) {
 					continue;
 				}
 				$label = trim((string) ($summary['label'] ?? ''));
@@ -85,20 +85,20 @@ final class OrderIntegration {
 					if ('' === $source || isset($saved_sources[$source])) {
 						continue;
 					}
-					if (isset($product_field_uuids[$source]) && apply_filters('wooptionsfic_add_linked_products_to_cart', true, $data, '')) {
+					if (isset($product_field_uuids[$source]) && apply_filters('wooptions-pro_add_linked_products_to_cart', true, $data, '')) {
 						continue;
 					}
 					$saved_sources[$source] = true;
 					$value_with_price = CartIntegration::format_value_with_price('', $source, $data);
 					if ('' !== $value_with_price) {
-						$label = trim((string) ($contrib['label'] ?? __('Option', 'wooptionsfic')));
+						$label = trim((string) ($contrib['label'] ?? __('Option', 'wooptions-pro')));
 						$item->add_meta_data($label, $value_with_price, false);
 					}
 				}
 			}
 		}
-		if (is_array($values['wooptionsfic_child'] ?? null)) {
-			$item->add_meta_data('_wooptionsfic_linked_child', wp_json_encode($values['wooptionsfic_child'], JSON_UNESCAPED_SLASHES), true);
+		if (is_array($values['wooptions-pro_child'] ?? null)) {
+			$item->add_meta_data('_wooptions-pro_linked_child', wp_json_encode($values['wooptions-pro_child'], JSON_UNESCAPED_SLASHES), true);
 		}
 	}
 
@@ -107,12 +107,12 @@ final class OrderIntegration {
 			if (! $item instanceof \WC_Order_Item_Product) {
 				continue;
 			}
-			$raw_refs = (string) $item->get_meta('_wooptionsfic_upload_refs', true);
+			$raw_refs = (string) $item->get_meta('_wooptions-pro_upload_refs', true);
 			$refs     = json_decode($raw_refs, true);
 			if (is_array($refs)) {
 				$this->uploads->attach_to_order(array_values(array_map('strval', $refs)), (int) $order->get_id());
 			}
-			$raw_snapshot = (string) $item->get_meta('_wooptionsfic_snapshot', true);
+			$raw_snapshot = (string) $item->get_meta('_wooptions-pro_snapshot', true);
 			$snapshot     = json_decode($raw_snapshot, true);
 			if (! is_array($snapshot)) {
 				continue;
@@ -143,7 +143,7 @@ final class OrderIntegration {
 
 	public function render_admin_uploads(int $item_id, mixed $item, mixed $product): void {
 		unset($item_id, $product);
-		if (! current_user_can('manage_wooptionsfic_uploads') || ! $item instanceof \WC_Order_Item_Product) {
+		if (! current_user_can('manage_wooptions-pro_uploads') || ! $item instanceof \WC_Order_Item_Product) {
 			return;
 		}
 		$this->render_upload_links($item);
@@ -166,7 +166,7 @@ final class OrderIntegration {
 	}
 
 	private function render_upload_links(\WC_Order_Item_Product $item): void {
-		$references = json_decode((string) $item->get_meta('_wooptionsfic_upload_refs', true), true);
+		$references = json_decode((string) $item->get_meta('_wooptions-pro_upload_refs', true), true);
 		if (! is_array($references) || [] === $references) {
 			return;
 		}
@@ -185,22 +185,22 @@ final class OrderIntegration {
 			$url = wp_nonce_url(
 				add_query_arg(
 					[
-						'action' => 'wooptionsfic_download',
+						'action' => 'wooptions-pro_download',
 						'file'   => $reference,
 					],
 					admin_url('admin-post.php')
 				),
-				'wooptionsfic_download_' . $reference
+				'wooptions-pro_download_' . $reference
 			);
 			$filename = '' !== (string) $record['originalFilename']
 				? (string) $record['originalFilename']
-				: __('Customer upload', 'wooptionsfic');
+				: __('Customer upload', 'wooptions-pro');
 			$links[] = '<a href="' . esc_url($url) . '">' . esc_html($filename) . '</a>';
 		}
 
 		if ([] !== $links) {
-			echo '<div class="wooptionsfic-order-uploads"><strong>'
-				. esc_html__('Private uploads:', 'wooptionsfic')
+			echo '<div class="wooptions-pro-order-uploads"><strong>'
+				. esc_html__('Private uploads:', 'wooptions-pro')
 				. '</strong> ' . wp_kses_post(implode(', ', $links)) . '</div>';
 		}
 	}

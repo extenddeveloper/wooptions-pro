@@ -2,15 +2,15 @@
 /**
  * Selection normalization and validation.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Selection;
+namespace WooOptionsPro\Domain\Selection;
 
-use WooptionsFic\Domain\Definition\FieldTypeRegistry;
-use WooptionsFic\Domain\Rule\RuleEngine;
+use WooOptionsPro\Domain\Definition\FieldTypeRegistry;
+use WooOptionsPro\Domain\Rule\RuleEngine;
 
 final class SelectionService {
 	public function __construct(

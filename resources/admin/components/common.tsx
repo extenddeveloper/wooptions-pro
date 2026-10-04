@@ -1,4 +1,4 @@
-namespace WooptionsFic.Components {
+namespace WooOptionsPro.Components {
   const { Button, Modal, Spinner } = wp.components;
   const { __ } = wp.i18n;
   const { useEffect, useState } = wp.element;
@@ -29,9 +29,9 @@ namespace WooptionsFic.Components {
 
   export function Loading(props: { label?: string; overlay?: boolean }): any {
     return (
-      <div className={WooptionsFic.Utils.classNames('wof-loading', props.overlay && 'is-overlay')} role="status">
+      <div className={WooOptionsPro.Utils.classNames('wof-loading', props.overlay && 'is-overlay')} role="status">
         <span className="wof-loader" aria-hidden="true" />
-        <span>{props.label ?? __('Loading…', 'wooptionsfic')}</span>
+        <span>{props.label ?? __('Loading…', 'wooptions-pro')}</span>
       </div>
     );
   }
@@ -78,7 +78,7 @@ namespace WooptionsFic.Components {
       <Modal
         title={props.title}
         onRequestClose={() => !props.busy && props.onCancel()}
-        className={WooptionsFic.Utils.classNames(
+        className={WooOptionsPro.Utils.classNames(
           'wof-modal',
           'wof-confirm-modal',
           props.destructive && 'is-destructive'
@@ -90,7 +90,7 @@ namespace WooptionsFic.Components {
             type="button"
             className="wof-confirm-modal__close-custom"
             onClick={props.onCancel}
-            aria-label={__('Close', 'wooptionsfic')}
+            aria-label={__('Close', 'wooptions-pro')}
           >
             ✕
           </button>
@@ -119,11 +119,11 @@ namespace WooptionsFic.Components {
             disabled={props.busy}
             onClick={props.onCancel}
           >
-            {props.cancelLabel ?? __('Cancel', 'wooptionsfic')}
+            {props.cancelLabel ?? __('Cancel', 'wooptions-pro')}
           </button>
           <button
             type="button"
-            className={WooptionsFic.Utils.classNames(
+            className={WooOptionsPro.Utils.classNames(
               'wof-btn-modal-confirm',
               props.destructive && 'is-destructive'
             )}
@@ -133,7 +133,7 @@ namespace WooptionsFic.Components {
             {props.busy ? (
               <span className="wof-btn-busy-spinner">
                 <Spinner />
-                <span>{__('Deleting…', 'wooptionsfic')}</span>
+                <span>{__('Deleting…', 'wooptions-pro')}</span>
               </span>
             ) : (
               props.confirmLabel
@@ -146,16 +146,16 @@ namespace WooptionsFic.Components {
 
   export function InlineNotice(props: { type?: 'error' | 'success' | 'warning'; children?: any; onClose?: () => void }): any {
     return (
-      <div className={WooptionsFic.Utils.classNames('wof-inline-notice', props.type && `is-${props.type}`)} role={props.type === 'error' ? 'alert' : 'status'}>
+      <div className={WooOptionsPro.Utils.classNames('wof-inline-notice', props.type && `is-${props.type}`)} role={props.type === 'error' ? 'alert' : 'status'}>
         <span aria-hidden="true">{props.type === 'error' ? '!' : props.type === 'warning' ? '•' : '✓'}</span>
         <div>{props.children}</div>
-        {props.onClose ? <button type="button" onClick={props.onClose} aria-label={__('Dismiss', 'wooptionsfic')}>×</button> : null}
+        {props.onClose ? <button type="button" onClick={props.onClose} aria-label={__('Dismiss', 'wooptions-pro')}>×</button> : null}
       </div>
     );
   }
 
   export function ModalLoading(props: { label?: string }): any {
-    return <div className="wof-modal-loading"><Spinner /><span>{props.label ?? __('Loading…', 'wooptionsfic')}</span></div>;
+    return <div className="wof-modal-loading"><Spinner /><span>{props.label ?? __('Loading…', 'wooptions-pro')}</span></div>;
   }
 
   export function WpWysiwygEditor(props: { id: string; value: string; label?: string; onChange: (content: string) => void }): any {
@@ -292,8 +292,8 @@ namespace WooptionsFic.Components {
       if (!wpMedia) return;
 
       const frame = wpMedia({
-        title: __('Add Media', 'wooptionsfic'),
-        button: { text: __('Insert into field', 'wooptionsfic') },
+        title: __('Add Media', 'wooptions-pro'),
+        button: { text: __('Insert into field', 'wooptions-pro') },
         multiple: false,
         library: { type: 'image' },
       });
@@ -365,7 +365,7 @@ namespace WooptionsFic.Components {
                   onClick={handleOpenMedia}
                 >
                   <span className="wp-media-buttons-icon" />
-                  {__('Add Media', 'wooptionsfic')}
+                  {__('Add Media', 'wooptions-pro')}
                 </button>
               </div>
               <div className="wp-editor-tabs">
@@ -374,14 +374,14 @@ namespace WooptionsFic.Components {
                   className={`wp-switch-editor switch-tmce ${activeTab === 'visual' ? 'is-active' : ''}`}
                   onClick={() => handleSwitchTab('visual')}
                 >
-                  {__('Visual', 'wooptionsfic')}
+                  {__('Visual', 'wooptions-pro')}
                 </button>
                 <button
                   type="button"
                   className={`wp-switch-editor switch-html ${activeTab === 'text' ? 'is-active' : ''}`}
                   onClick={() => handleSwitchTab('text')}
                 >
-                  {__('Text', 'wooptionsfic')}
+                  {__('Text', 'wooptions-pro')}
                 </button>
               </div>
             </div>

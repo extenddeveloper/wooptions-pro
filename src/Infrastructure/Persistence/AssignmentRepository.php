@@ -2,16 +2,16 @@
 /**
  * Assignment persistence and candidate query.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Infrastructure\Persistence;
+namespace WooOptionsPro\Infrastructure\Persistence;
 
 use RuntimeException;
-use WooptionsFic\Domain\Support\CanonicalJson;
-use WooptionsFic\Domain\Support\Uuid;
+use WooOptionsPro\Domain\Support\CanonicalJson;
+use WooOptionsPro\Domain\Support\Uuid;
 
 final class AssignmentRepository {
 	/**
@@ -34,7 +34,7 @@ final class AssignmentRepository {
 		global $wpdb;
 		$table = Schema::table('assignments');
 		if (false === $wpdb->delete($table, ['option_set_id' => $set_id], ['%d'])) {
-			throw new RuntimeException('wooptionsfic_assignments_delete_failed');
+			throw new RuntimeException('wooptions-pro_assignments_delete_failed');
 		}
 
 		$now = current_time('mysql', true);
@@ -59,7 +59,7 @@ final class AssignmentRepository {
 				['%s', '%d', '%s', '%d', '%s', '%d', '%s', '%s', '%s']
 			);
 			if (false === $ok) {
-				throw new RuntimeException('wooptionsfic_assignment_insert_failed');
+				throw new RuntimeException('wooptions-pro_assignment_insert_failed');
 			}
 		}
 		$this->bump_generation();
@@ -120,11 +120,11 @@ final class AssignmentRepository {
 	}
 
 	public function generation(): int {
-		return (int) get_option('wooptionsfic_assignment_generation', 1);
+		return (int) get_option('wooptions-pro_assignment_generation', 1);
 	}
 
 	public function bump_generation(): void {
-		update_option('wooptionsfic_assignment_generation', $this->generation() + 1, false);
+		update_option('wooptions-pro_assignment_generation', $this->generation() + 1, false);
 	}
 
 	public static function string_target_id(string $value): int {

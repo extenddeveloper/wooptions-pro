@@ -2,12 +2,12 @@
 /**
  * UUID value helpers.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Support;
+namespace WooOptionsPro\Domain\Support;
 
 use InvalidArgumentException;
 
@@ -57,7 +57,7 @@ final class Uuid {
 
 	public static function assert(string $value): string {
 		if (! self::is_valid($value)) {
-			throw new InvalidArgumentException('wooptionsfic_invalid_uuid');
+			throw new InvalidArgumentException('wooptions-pro_invalid_uuid');
 		}
 		return strtolower($value);
 	}

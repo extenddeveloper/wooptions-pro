@@ -2,15 +2,15 @@
 /**
  * WooCommerce product/customer facts adapter.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Infrastructure\WooCommerce;
+namespace WooOptionsPro\Infrastructure\WooCommerce;
 
-use WooptionsFic\Application\NotFoundException;
-use WooptionsFic\Bootstrap\Settings;
+use WooOptionsPro\Application\NotFoundException;
+use WooOptionsPro\Bootstrap\Settings;
 
 final class ProductContext {
 	/**
@@ -26,12 +26,12 @@ final class ProductContext {
 		$lookup_id = $variation_id > 0 ? $variation_id : $product_id;
 		$product   = wc_get_product($lookup_id);
 			if (! $product) {
-				throw new NotFoundException('wooptionsfic_product_not_found');
+				throw new NotFoundException('wooptions-pro_product_not_found');
 			}
 			if ($variation_id > 0
 				&& (! $product instanceof \WC_Product_Variation || (int) $product->get_parent_id() !== $product_id)
 			) {
-				throw new NotFoundException('wooptionsfic_variation_not_found');
+				throw new NotFoundException('wooptions-pro_variation_not_found');
 			}
 		$parent_id = $variation_id > 0 ? $product_id : $product->get_id();
 		$user      = wp_get_current_user();
@@ -58,7 +58,7 @@ final class ProductContext {
 			'stockState'     => $product->get_stock_status(),
 			'country'        => $customer ? (string) $customer->get_billing_country() : '',
 			'locale'         => determine_locale(),
-			'allowRegex'     => current_user_can('manage_wooptionsfic'),
+			'allowRegex'     => current_user_can('manage_wooptions-pro'),
 				'allowNegativeTotal' => (bool) Settings::get('allow_negative_total', false),
 		];
 	}

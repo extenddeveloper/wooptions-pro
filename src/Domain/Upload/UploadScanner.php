@@ -2,12 +2,12 @@
 /**
  * Upload scanner port.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Upload;
+namespace WooOptionsPro\Domain\Upload;
 
 interface UploadScanner {
 	/**

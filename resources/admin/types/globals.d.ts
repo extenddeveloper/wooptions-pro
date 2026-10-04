@@ -27,7 +27,7 @@ declare const wp: {
 };
 
 declare interface Window {
-  WooptionsFicAdmin: WooptionsFic.AdminBootstrap;
+  WooOptionsProAdmin: WooOptionsPro.AdminBootstrap;
   jQuery?: any;
   wp?: any;
   tinymce?: any;

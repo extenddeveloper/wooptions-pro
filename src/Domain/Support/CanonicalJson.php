@@ -2,12 +2,12 @@
 /**
  * Canonical JSON for immutable revision hashes.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Support;
+namespace WooOptionsPro\Domain\Support;
 
 use JsonException;
 
@@ -45,7 +45,7 @@ final class CanonicalJson {
 	public static function decode_object(string $json): array {
 		$value = json_decode($json, true, 64, JSON_THROW_ON_ERROR);
 		if (! is_array($value)) {
-			throw new JsonException('wooptionsfic_json_object_required');
+			throw new JsonException('wooptions-pro_json_object_required');
 		}
 		return $value;
 	}

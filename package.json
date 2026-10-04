@@ -1,8 +1,8 @@
 {
-  "name": "wooptionsfic",
+  "name": "wooptions-pro",
   "version": "1.0.0",
   "private": true,
-  "description": "WooptionsFic React + TypeScript development source",
+  "description": "WooOptions Pro React + TypeScript development source",
   "type": "module",
   "engines": {
     "node": ">=18.0.0"

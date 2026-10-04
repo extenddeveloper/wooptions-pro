@@ -2,18 +2,18 @@
 /**
  * Server-authoritative configuration quote.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Application;
+namespace WooOptionsPro\Application;
 
 use RuntimeException;
-use WooptionsFic\Bootstrap\Settings;
-use WooptionsFic\Domain\Pricing\PriceEngine;
-use WooptionsFic\Domain\Selection\SelectionService;
-use WooptionsFic\Domain\Snapshot\SnapshotFactory;
+use WooOptionsPro\Bootstrap\Settings;
+use WooOptionsPro\Domain\Pricing\PriceEngine;
+use WooOptionsPro\Domain\Selection\SelectionService;
+use WooOptionsPro\Domain\Snapshot\SnapshotFactory;
 
 final class QuoteService {
 	public function __construct(
@@ -42,10 +42,10 @@ final class QuoteService {
 	public function quote(array $raw_selection, array $context): array {
 		$compiled = $this->configuration($context);
 		if (! $compiled) {
-			throw new NotFoundException('wooptionsfic_configuration_not_found');
+			throw new NotFoundException('wooptions-pro_configuration_not_found');
 		}
 		if (! empty($compiled['mergeErrors'])) {
-			throw new ValidationException('wooptionsfic_configuration_merge_failed', (array) $compiled['mergeErrors']);
+			throw new ValidationException('wooptions-pro_configuration_merge_failed', (array) $compiled['mergeErrors']);
 		}
 
 		$selection = $this->selections->normalize_and_validate($raw_selection, $compiled, $context);

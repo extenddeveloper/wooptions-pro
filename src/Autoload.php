@@ -2,15 +2,15 @@
 /**
  * Lightweight PSR-4 loader for production classes.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic;
+namespace WooOptionsPro;
 
 final class Autoload {
-	private const PREFIX = 'WooptionsFic\\';
+	private const PREFIX = 'WooOptionsPro\\';
 
 	public static function register(): void {
 		spl_autoload_register([self::class, 'load']);
@@ -26,7 +26,7 @@ final class Autoload {
 			return;
 		}
 
-		$path = WOOPTIONSFIC_PATH . 'src/' . str_replace('\\', '/', $relative) . '.php';
+		$path = WOOPTIONS_PRO_PATH . 'src/' . str_replace('\\', '/', $relative) . '.php';
 		if (is_readable($path)) {
 			require_once $path;
 		}

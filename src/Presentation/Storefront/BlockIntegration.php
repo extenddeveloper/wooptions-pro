@@ -2,19 +2,19 @@
 /**
  * Dynamic product-options block.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Presentation\Storefront;
+namespace WooOptionsPro\Presentation\Storefront;
 
 final class BlockIntegration {
 	public function __construct(private readonly Renderer $renderer) {
 	}
 
 	public function register(): void {
-		$path = WOOPTIONSFIC_PATH . 'blocks/product-options';
+		$path = WOOPTIONS_PRO_PATH . 'blocks/product-options';
 		if (function_exists('register_block_type') && is_readable($path . '/block.json')) {
 			register_block_type(
 				$path,

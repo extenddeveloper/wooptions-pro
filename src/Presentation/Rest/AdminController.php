@@ -2,30 +2,30 @@
 /**
  * Capability-protected administration REST API.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Presentation\Rest;
+namespace WooOptionsPro\Presentation\Rest;
 
-use WooptionsFic\Application\AnalyticsService;
-use WooptionsFic\Application\AssignmentService;
-use WooptionsFic\Application\DiagnosticsService;
-use WooptionsFic\Application\OptionSetService;
-use WooptionsFic\Application\TemplateService;
-use WooptionsFic\Bootstrap\Settings;
-use WooptionsFic\Domain\Definition\Compiler;
-use WooptionsFic\Domain\Pricing\Formula\Evaluator;
-use WooptionsFic\Domain\Pricing\Formula\Parser;
-use WooptionsFic\Domain\Rule\RuleEngine;
-use WooptionsFic\Domain\Style\ContrastValidator;
+use WooOptionsPro\Application\AnalyticsService;
+use WooOptionsPro\Application\AssignmentService;
+use WooOptionsPro\Application\DiagnosticsService;
+use WooOptionsPro\Application\OptionSetService;
+use WooOptionsPro\Application\TemplateService;
+use WooOptionsPro\Bootstrap\Settings;
+use WooOptionsPro\Domain\Definition\Compiler;
+use WooOptionsPro\Domain\Pricing\Formula\Evaluator;
+use WooOptionsPro\Domain\Pricing\Formula\Parser;
+use WooOptionsPro\Domain\Rule\RuleEngine;
+use WooOptionsPro\Domain\Style\ContrastValidator;
 
 final class AdminController
 {
 	use Responder;
 
-	private const NAMESPACE = 'wooptionsfic/v1';
+	private const NAMESPACE = 'wooptions-pro/v1';
 	private const UUID_PATTERN = '[0-9a-fA-F-]{36}';
 
 	public function __construct(
@@ -328,7 +328,7 @@ final class AdminController
 				(string) $set['uuid'],
 				$definition,
 				(string) ($body['expectedHash'] ?? $set['currentRevision']['contentHash']),
-				(string) ($body['versionNote'] ?? __('Renamed option set', 'wooptionsfic')),
+				(string) ($body['versionNote'] ?? __('Renamed option set', 'wooptions-pro')),
 				get_current_user_id()
 			);
 		});
@@ -362,7 +362,7 @@ final class AdminController
 				(string) $request['uuid'],
 				(array) ($body['definition'] ?? []),
 				(string) ($body['expectedHash'] ?? ''),
-				(string) ($body['versionNote'] ?? __('Autosaved draft', 'wooptionsfic')),
+				(string) ($body['versionNote'] ?? __('Autosaved draft', 'wooptions-pro')),
 				get_current_user_id()
 			);
 		}, 201);
@@ -380,7 +380,7 @@ final class AdminController
 			return $this->option_sets->publish(
 				(string) $request['uuid'],
 				(string) ($body['expectedHash'] ?? ''),
-				(string) ($body['versionNote'] ?? __('Published from the builder', 'wooptionsfic')),
+				(string) ($body['versionNote'] ?? __('Published from the builder', 'wooptions-pro')),
 				get_current_user_id()
 			);
 		});
@@ -442,7 +442,7 @@ final class AdminController
 							'id' => (int) $term->term_id,
 							'type' => $type,
 							'label' => (string) $term->name,
-							'meta' => $parent ? sprintf(__('Under %s', 'wooptionsfic'), $parent) : sprintf(_n('%d product', '%d products', (int) $term->count, 'wooptionsfic'), (int) $term->count),
+							'meta' => $parent ? sprintf(__('Under %s', 'wooptions-pro'), $parent) : sprintf(_n('%d product', '%d products', (int) $term->count, 'wooptions-pro'), (int) $term->count),
 							'image' => '',
 						];
 					}
@@ -503,10 +503,10 @@ final class AdminController
 				$product = function_exists('wc_get_product') ? wc_get_product((int) $id) : null;
 				$label = $product ? $product->get_name() : get_the_title((int) $id);
 				if (!$label) {
-					$label = sprintf(__('Item #%d', 'wooptionsfic'), (int) $id);
+					$label = sprintf(__('Item #%d', 'wooptions-pro'), (int) $id);
 				}
 				$sku = $product ? (string) $product->get_sku() : '';
-				$meta = $sku ? sprintf(__('SKU: %s', 'wooptionsfic'), $sku) : sprintf(__('ID: %d', 'wooptionsfic'), (int) $id);
+				$meta = $sku ? sprintf(__('SKU: %s', 'wooptions-pro'), $sku) : sprintf(__('ID: %d', 'wooptions-pro'), (int) $id);
 				if ('variation' === $type && $product && method_exists($product, 'get_parent_id')) {
 					$parent_id = (int) $product->get_parent_id();
 					if ($parent_id > 0) {
@@ -628,7 +628,7 @@ final class AdminController
 			$body = $this->body($request);
 			$expression = substr(trim((string) ($body['expression'] ?? '0')), 0, 2000);
 			$fields = (array) ($body['fields'] ?? []);
-			$resolved = \WooptionsFic\Domain\Pricing\Formula\Evaluator::resolve_tokens($expression, $fields);
+			$resolved = \WooOptionsPro\Domain\Pricing\Formula\Evaluator::resolve_tokens($expression, $fields);
 			$ast = $this->formula_parser->parse($resolved);
 
 			$variables = (array) ($body['variables'] ?? []);
@@ -687,7 +687,7 @@ final class AdminController
 					}
 				}
 
-				$variables['fields'] = \WooptionsFic\Domain\Pricing\PriceEngine::resolve_formula_variables(
+				$variables['fields'] = \WooOptionsPro\Domain\Pricing\PriceEngine::resolve_formula_variables(
 					$fields,
 					$sample_values,
 					$sample_context
@@ -727,7 +727,7 @@ final class AdminController
 							strtolower($c_lbl),
 							strtolower($c_slug),
 						]));
-						$c_num = \WooptionsFic\Domain\Pricing\PriceEngine::calculate_choice_price(
+						$c_num = \WooOptionsPro\Domain\Pricing\PriceEngine::calculate_choice_price(
 							$ch,
 							$f,
 							$sample_context['basePrice'],
@@ -885,27 +885,27 @@ final class AdminController
 
 	public function can_edit(): bool
 	{
-		return current_user_can('edit_wooptionsfic_sets');
+		return current_user_can('edit_wooptions-pro_sets');
 	}
 
 	public function can_publish(): bool
 	{
-		return current_user_can('publish_wooptionsfic_sets');
+		return current_user_can('publish_wooptions-pro_sets');
 	}
 
 	public function can_manage(): bool
 	{
-		return current_user_can('manage_wooptionsfic');
+		return current_user_can('manage_wooptions-pro');
 	}
 
 	public function can_settings(): bool
 	{
-		return current_user_can('manage_wooptionsfic_settings');
+		return current_user_can('manage_wooptions-pro_settings');
 	}
 
 	public function can_analytics(): bool
 	{
-		return current_user_can('view_wooptionsfic_analytics');
+		return current_user_can('view_wooptions-pro_analytics');
 	}
 
 	/**

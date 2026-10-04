@@ -2,18 +2,18 @@
 /**
  * Saved and shareable configuration use cases.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Application;
+namespace WooOptionsPro\Application;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use WooptionsFic\Bootstrap\Settings;
-use WooptionsFic\Domain\Support\Uuid;
-use WooptionsFic\Infrastructure\Persistence\SavedConfigurationRepository;
+use WooOptionsPro\Bootstrap\Settings;
+use WooOptionsPro\Domain\Support\Uuid;
+use WooOptionsPro\Infrastructure\Persistence\SavedConfigurationRepository;
 
 final class SavedConfigurationService {
 	public function __construct(private readonly SavedConfigurationRepository $repository) {
@@ -36,7 +36,7 @@ final class SavedConfigurationService {
 		array $preview = []
 	): array {
 		if ($owner_user_id <= 0 && '' === $session_hash) {
-			throw new ValidationException('wooptionsfic_saved_config_session_required', [['code' => 'session_required']]);
+			throw new ValidationException('wooptions-pro_saved_config_session_required', [['code' => 'session_required']]);
 		}
 		$uuid = Uuid::v4();
 		$this->repository->insert(
@@ -86,7 +86,7 @@ final class SavedConfigurationService {
 	 */
 	public function share(string $uuid, int $owner_user_id, string $session_hash): array {
 		if ($owner_user_id <= 0 && '' === $session_hash) {
-			throw new ValidationException('wooptionsfic_share_session_required', [['code' => 'session_required']]);
+			throw new ValidationException('wooptions-pro_share_session_required', [['code' => 'session_required']]);
 		}
 		$record = $this->owned($uuid, $owner_user_id, $session_hash);
 		$token  = $this->base64url(random_bytes(32));
@@ -113,11 +113,11 @@ final class SavedConfigurationService {
 	 */
 	public function load_shared(string $token): array {
 		if (strlen($token) < 32 || strlen($token) > 128) {
-			throw new NotFoundException('wooptionsfic_shared_config_not_found');
+			throw new NotFoundException('wooptions-pro_shared_config_not_found');
 		}
 		$record = $this->repository->find_by_share_hash(hash('sha256', $token));
 		if (! $record || ! hash_equals((string) $record['shareTokenHash'], hash('sha256', $token))) {
-			throw new NotFoundException('wooptionsfic_shared_config_not_found');
+			throw new NotFoundException('wooptions-pro_shared_config_not_found');
 		}
 		$this->repository->update((string) $record['uuid'], ['last_used_at_gmt' => current_time('mysql', true)]);
 		return $this->public_record($record, true);
@@ -129,12 +129,12 @@ final class SavedConfigurationService {
 	public function owned(string $uuid, int $owner_user_id, string $session_hash): array {
 		$record = $this->repository->find($uuid);
 		if (! $record) {
-			throw new NotFoundException('wooptionsfic_saved_config_not_found');
+			throw new NotFoundException('wooptions-pro_saved_config_not_found');
 		}
 		$owned = ($owner_user_id > 0 && $record['ownerUserId'] === $owner_user_id)
 			|| ($owner_user_id <= 0 && '' !== $session_hash && hash_equals((string) $record['sessionHash'], $session_hash));
 		if (! $owned) {
-			throw new NotFoundException('wooptionsfic_saved_config_not_found');
+			throw new NotFoundException('wooptions-pro_saved_config_not_found');
 		}
 		return $record;
 	}
@@ -165,7 +165,7 @@ final class SavedConfigurationService {
 	private function name(string $name): string {
 		$name = trim(wp_strip_all_tags($name));
 		$name = function_exists('mb_substr') ? (string) mb_substr($name, 0, 191) : substr($name, 0, 191);
-		return '' !== $name ? $name : __('My configuration', 'wooptionsfic');
+		return '' !== $name ? $name : __('My configuration', 'wooptions-pro');
 	}
 
 	/**

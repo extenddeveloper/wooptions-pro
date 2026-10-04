@@ -2,12 +2,12 @@
 /**
  * Static content field type.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Definition\Type;
+namespace WooOptionsPro\Domain\Definition\Type;
 
 final class ContentFieldType extends AbstractFieldType {
 	public function __construct(private readonly string $type_key) {

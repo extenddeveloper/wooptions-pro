@@ -2,16 +2,16 @@
 /**
  * Authorized streaming of private uploads.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Infrastructure\WordPress;
+namespace WooOptionsPro\Infrastructure\WordPress;
 
 use Throwable;
-use WooptionsFic\Application\UploadService;
-use WooptionsFic\Infrastructure\Storage\LocalPrivateStorage;
+use WooOptionsPro\Application\UploadService;
+use WooOptionsPro\Infrastructure\Storage\LocalPrivateStorage;
 
 final class DownloadController {
 	public function __construct(
@@ -22,14 +22,14 @@ final class DownloadController {
 	}
 
 	public function register(): void {
-		add_action('admin_post_wooptionsfic_download', [$this, 'stream']);
-		add_action('admin_post_nopriv_wooptionsfic_download', [$this, 'stream']);
+		add_action('admin_post_wooptions-pro_download', [$this, 'stream']);
+		add_action('admin_post_nopriv_wooptions-pro_download', [$this, 'stream']);
 	}
 
 	public function stream(): void {
 		$uuid  = isset($_GET['file']) ? sanitize_text_field(wp_unslash($_GET['file'])) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$nonce = isset($_GET['_wpnonce']) ? sanitize_text_field(wp_unslash($_GET['_wpnonce'])) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if (1 !== preg_match('/\A[0-9a-f-]{36}\z/i', $uuid) || ! wp_verify_nonce($nonce, 'wooptionsfic_download_' . $uuid)) {
+		if (1 !== preg_match('/\A[0-9a-f-]{36}\z/i', $uuid) || ! wp_verify_nonce($nonce, 'wooptions-pro_download_' . $uuid)) {
 			status_header(404);
 			exit;
 		}

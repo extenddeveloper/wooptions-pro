@@ -1,5 +1,5 @@
-=== WooptionsFic - Product Options for WooCommerce ===
-Contributors: wooptionsfic
+=== WooOptions Pro - Product Options for WooCommerce ===
+Contributors: wooptions-pro
 Tags: woocommerce, product options, conditional logic, formula pricing, product addons, custom fields, product configurator
 Requires at least: 6.9
 Requires PHP: 8.1
@@ -12,7 +12,7 @@ Build accessible, styled, server-validated WooCommerce product configurators and
 
 == Description ==
 
-WooptionsFic is a powerful, modern, accessible product options and configurator plugin for WooCommerce. It provides an intuitive WordPress-native React builder (Precision Workshop) with real-time preview, advanced conditional logic, dynamic formula pricing, customizable color palettes, and 13 ready-to-use templates.
+WooOptions Pro is a powerful, modern, accessible product options and configurator plugin for WooCommerce. It provides an intuitive WordPress-native React builder (Precision Workshop) with real-time preview, advanced conditional logic, dynamic formula pricing, customizable color palettes, and 13 ready-to-use templates.
 
 All pricing and conditional rules are revalidated securely on the server with PHP. Client-side price tampering is impossible. Published revisions are immutable, ensuring every cart and order snapshot preserves the exact options selected by the customer.
 
@@ -34,7 +34,7 @@ All pricing and conditional rules are revalidated securely on the server with PH
 1. In WordPress, navigate to Plugins > Add New > Upload Plugin.
 2. Select the plugin ZIP file and click Install Now, then Activate.
 3. Ensure WooCommerce 9.0 or newer is installed and active.
-4. Navigate to WooptionsFic > Templates to explore starter templates or create a custom Option Set.
+4. Navigate to WooOptions Pro > Templates to explore starter templates or create a custom Option Set.
 5. Add fields, configure conditional logic and pricing, and assign to your products or categories.
 6. Click Publish to make your product options live.
 
@@ -50,7 +50,7 @@ Yes. Customer uploads use unique opaque identifiers and are stored in a protecte
 
 = Can I customize the styling of the options? =
 
-Yes. WooptionsFic includes a built-in Style Studio allowing you to select from pre-designed color palettes or customize individual colors, typography, borders, and layouts to match your store theme.
+Yes. WooOptions Pro includes a built-in Style Studio allowing you to select from pre-designed color palettes or customize individual colors, typography, borders, and layouts to match your store theme.
 
 = What happens when I update a published option set? =
 
@@ -58,7 +58,7 @@ Published revisions are immutable. When you edit a published set, a working draf
 
 = Does uninstalling remove all my data? =
 
-Not by default. Data is preserved so you do not accidentally lose your configuration. If you wish to wipe plugin data upon uninstallation, enable "Delete data on uninstall" in settings or define `WOOPTIONSFIC_REMOVE_DATA` as true in `wp-config.php`.
+Not by default. Data is preserved so you do not accidentally lose your configuration. If you wish to wipe plugin data upon uninstallation, enable "Delete data on uninstall" in settings or define `WOOPTIONS_PRO_REMOVE_DATA` as true in `wp-config.php`.
 
 == Changelog ==
 

@@ -2,12 +2,12 @@
 /**
  * Structured application validation failure.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Application;
+namespace WooOptionsPro\Application;
 
 use RuntimeException;
 

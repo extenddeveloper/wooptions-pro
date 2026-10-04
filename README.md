@@ -1,14 +1,14 @@
-# WooptionsFic — Product Options for WooCommerce
+# WooOptions Pro — Product Options for WooCommerce
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/extenddeveloper/wooptionsfic)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/extenddeveloper/wooptions-pro)
 [![WordPress](https://img.shields.io/badge/WordPress-6.9%2B-21759b.svg)](https://wordpress.org/)
 [![WooCommerce](https://img.shields.io/badge/WooCommerce-9.0%2B-96588a.svg)](https://woocommerce.com/)
 [![PHP](https://img.shields.io/badge/PHP-8.1%2B-777bb4.svg)](https://php.net/)
 [![License: GPL v2+](https://img.shields.io/badge/License-GPL%20v2%2B-green.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
 
-**WooptionsFic** is a modern, accessible, and rock-solid product customizer and extra product options plugin for WooCommerce. It empowers store owners and agencies to create rich, visually stunning, multi-tiered product configurators without writing a single line of theme code.
+**WooOptions Pro** is a modern, accessible, and rock-solid product customizer and extra product options plugin for WooCommerce. It empowers store owners and agencies to create rich, visually stunning, multi-tiered product configurators without writing a single line of theme code.
 
-Built with a WordPress-native React admin experience (**Precision Workshop**) and a lightning-fast, accessible storefront runtime, WooptionsFic ensures every selection, rule, formula, upload, and price calculation is rigorously re-validated on the server by PHP.
+Built with a WordPress-native React admin experience (**Precision Workshop**) and a lightning-fast, accessible storefront runtime, WooOptions Pro ensures every selection, rule, formula, upload, and price calculation is rigorously re-validated on the server by PHP.
 
 ---
 
@@ -92,10 +92,10 @@ Quickly launch common product customizers with one click:
 
 ## 🚀 Quick Start Guide
 
-1. Download the latest release `.zip` of **WooptionsFic**.
+1. Download the latest release `.zip` of **WooOptions Pro**.
 2. In your WordPress admin, go to **Plugins > Add New > Upload Plugin**, choose the `.zip` file, and click **Install Now**.
 3. Activate the plugin.
-4. Navigate to **WooptionsFic > Templates** to import a pre-configured template, or click **Create an option set** to build one from scratch.
+4. Navigate to **WooOptions Pro > Templates** to import a pre-configured template, or click **Create an option set** to build one from scratch.
 5. In the builder:
    - Drag or click elements from the left palette onto the canvas.
    - Configure field labels, options, choices, and pricing in the right-hand inspector.
@@ -107,7 +107,7 @@ Quickly launch common product customizers with one click:
 
 ## 💻 Local Development
 
-WooptionsFic includes a modern TypeScript source workflow in `resources/` with dependency-free bundling scripts:
+WooOptions Pro includes a modern TypeScript source workflow in `resources/` with dependency-free bundling scripts:
 
 ```bash
 # Install dependencies
@@ -128,14 +128,14 @@ npm run check
 ## 🗄️ Data Retention & Uninstallation
 
 - **Deactivation**: Deactivating the plugin preserves all your option sets, revisions, and order snapshots.
-- **Uninstallation**: By default, deleting the plugin preserves database tables to prevent accidental data loss. To purge all plugin tables, options, and private uploads upon uninstallation, enable *"Delete data on uninstall"* in **WooptionsFic > Settings** or define the following constant in `wp-config.php`:
+- **Uninstallation**: By default, deleting the plugin preserves database tables to prevent accidental data loss. To purge all plugin tables, options, and private uploads upon uninstallation, enable *"Delete data on uninstall"* in **WooOptions Pro > Settings** or define the following constant in `wp-config.php`:
 
 ```php
-define('WOOPTIONSFIC_REMOVE_DATA', true);
+define('WOOPTIONS_PRO_REMOVE_DATA', true);
 ```
 
 ---
 
 ## 📄 License
 
-WooptionsFic is open-source software licensed under the [GNU General Public License v2.0 or later (GPL-2.0-or-later)](https://www.gnu.org/licenses/gpl-2.0.html).
+WooOptions Pro is open-source software licensed under the [GNU General Public License v2.0 or later (GPL-2.0-or-later)](https://www.gnu.org/licenses/gpl-2.0.html).

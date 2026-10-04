@@ -2,12 +2,12 @@
 /**
  * Bounded daily analytics aggregates.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Infrastructure\Persistence;
+namespace WooOptionsPro\Infrastructure\Persistence;
 
 final class AnalyticsRepository {
 	/**

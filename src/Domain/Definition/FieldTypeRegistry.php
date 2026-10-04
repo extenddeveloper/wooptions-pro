@@ -2,21 +2,21 @@
 /**
  * Extensible field type registry.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Definition;
+namespace WooOptionsPro\Domain\Definition;
 
 use InvalidArgumentException;
-use WooptionsFic\Domain\Definition\Type\BooleanFieldType;
-use WooptionsFic\Domain\Definition\Type\CalculatedFieldType;
-use WooptionsFic\Domain\Definition\Type\ChoiceFieldType;
-use WooptionsFic\Domain\Definition\Type\ContentFieldType;
-use WooptionsFic\Domain\Definition\Type\RepeaterFieldType;
-use WooptionsFic\Domain\Definition\Type\ScalarFieldType;
-use WooptionsFic\Domain\Definition\Type\UploadFieldType;
+use WooOptionsPro\Domain\Definition\Type\BooleanFieldType;
+use WooOptionsPro\Domain\Definition\Type\CalculatedFieldType;
+use WooOptionsPro\Domain\Definition\Type\ChoiceFieldType;
+use WooOptionsPro\Domain\Definition\Type\ContentFieldType;
+use WooOptionsPro\Domain\Definition\Type\RepeaterFieldType;
+use WooOptionsPro\Domain\Definition\Type\ScalarFieldType;
+use WooOptionsPro\Domain\Definition\Type\UploadFieldType;
 
 final class FieldTypeRegistry {
 	/** @var array<string, FieldType> */
@@ -29,7 +29,7 @@ final class FieldTypeRegistry {
 	public function register(FieldType $type): void {
 		$key = $type->key();
 		if ('' === $key || isset($this->types[$key])) {
-			throw new InvalidArgumentException('wooptionsfic_duplicate_field_type');
+			throw new InvalidArgumentException('wooptions-pro_duplicate_field_type');
 		}
 		$this->types[$key] = $type;
 	}

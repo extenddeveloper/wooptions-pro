@@ -2,15 +2,15 @@
 /**
  * Option-set and revision persistence.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Infrastructure\Persistence;
+namespace WooOptionsPro\Infrastructure\Persistence;
 
 use RuntimeException;
-use WooptionsFic\Domain\Support\CanonicalJson;
+use WooOptionsPro\Domain\Support\CanonicalJson;
 
 final class OptionSetRepository {
 	/**
@@ -99,7 +99,7 @@ final class OptionSetRepository {
 			['%s', '%s', '%s', '%s', '%d', '%d', '%d', '%s', '%s']
 		);
 		if (false === $ok) {
-			throw new RuntimeException('wooptionsfic_set_insert_failed');
+			throw new RuntimeException('wooptions-pro_set_insert_failed');
 		}
 		return (int) $wpdb->insert_id;
 	}
@@ -129,7 +129,7 @@ final class OptionSetRepository {
 		$data['updated_at_gmt'] = current_time('mysql', true);
 		$format[]               = '%s';
 		if (false === $wpdb->update(Schema::table('option_sets'), $data, ['id' => $id], $format, ['%d'])) {
-			throw new RuntimeException('wooptionsfic_set_update_failed');
+			throw new RuntimeException('wooptions-pro_set_update_failed');
 		}
 	}
 
@@ -160,7 +160,7 @@ final class OptionSetRepository {
 			['%s', '%d', '%d', '%d', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s']
 		);
 		if (false === $ok) {
-			throw new RuntimeException('wooptionsfic_revision_insert_failed');
+			throw new RuntimeException('wooptions-pro_revision_insert_failed');
 		}
 		return (int) $wpdb->insert_id;
 	}
@@ -243,7 +243,7 @@ final class OptionSetRepository {
 		$wpdb->delete(Schema::table('analytics_daily'), ['option_set_uuid' => $uuid], ['%s']);
 		$deleted = $wpdb->delete(Schema::table('option_sets'), ['id' => $id], ['%d']);
 		if (false === $deleted) {
-			throw new RuntimeException('wooptionsfic_set_delete_failed');
+			throw new RuntimeException('wooptions-pro_set_delete_failed');
 		}
 	}
 

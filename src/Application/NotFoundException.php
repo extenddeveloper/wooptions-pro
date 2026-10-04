@@ -2,12 +2,12 @@
 /**
  * Expected missing-resource error.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Application;
+namespace WooOptionsPro\Application;
 
 use RuntimeException;
 

@@ -1,4 +1,4 @@
-namespace WooptionsFic.Components {
+namespace WooOptionsPro.Components {
   const { __ } = wp.i18n;
   const { useState } = wp.element;
 
@@ -16,26 +16,26 @@ namespace WooptionsFic.Components {
     }
 
     const navItems = [
-      { id: 'dashboard', label: __('Dashboard', 'wooptionsfic') },
-      { id: 'option-sets', label: __('Option Sets', 'wooptionsfic') },
-      { id: 'templates', label: __('Templates', 'wooptionsfic') },
-      { id: 'analytics', label: __('Analytics', 'wooptionsfic') },
-      { id: 'settings', label: __('Settings', 'wooptionsfic') },
+      { id: 'dashboard', label: __('Dashboard', 'wooptions-pro') },
+      { id: 'option-sets', label: __('Option Sets', 'wooptions-pro') },
+      { id: 'templates', label: __('Templates', 'wooptions-pro') },
+      { id: 'analytics', label: __('Analytics', 'wooptions-pro') },
+      { id: 'settings', label: __('Settings', 'wooptions-pro') },
     ];
 
     return (
       <div className="wof-admin">
         <header className="wof-admin__masthead">
           {/* Left: Brand */}
-          <button type="button" className="wof-brand" onClick={() => props.navigate('dashboard')} title={__('Go to Dashboard', 'wooptionsfic')}>
+          <button type="button" className="wof-brand" onClick={() => props.navigate('dashboard')} title={__('Go to Dashboard', 'wooptions-pro')}>
             <span className="wof-brand-mark">
               <Dashicon name="screenoptions" />
             </span>
-            <span className="wof-brand-name">WooptionsFic</span>
+            <span className="wof-brand-name">WooOptions Pro</span>
           </button>
 
           {/* Middle: Navigation Links */}
-          <nav className="wof-masthead__nav" aria-label={__('Primary navigation', 'wooptionsfic')}>
+          <nav className="wof-masthead__nav" aria-label={__('Primary navigation', 'wooptions-pro')}>
             {navItems.map((item) => {
               const isActive = props.route === item.id;
               return (
@@ -54,14 +54,14 @@ namespace WooptionsFic.Components {
           {/* Right: Support & Mobile Hamburger */}
           <div className="wof-masthead__right">
             <div className="wof-masthead__support">
-              <span className="wof-masthead__support-text">{__('Having troubles?', 'wooptionsfic')}</span>{' '}
+              <span className="wof-masthead__support-text">{__('Having troubles?', 'wooptions-pro')}</span>{' '}
               <a
                 href="https://wholesalefic.com/support"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="wof-masthead__tutorial-link"
               >
-                {__('Tutorial', 'wooptionsfic')}
+                {__('Tutorial', 'wooptions-pro')}
               </a>
             </div>
 
@@ -69,7 +69,7 @@ namespace WooptionsFic.Components {
               type="button"
               className="wof-masthead__hamburger"
               onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label={__('Toggle mobile navigation', 'wooptionsfic')}
+              aria-label={__('Toggle mobile navigation', 'wooptions-pro')}
               aria-expanded={mobileOpen}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -89,19 +89,19 @@ namespace WooptionsFic.Components {
               onClick={() => setMobileOpen(false)}
               aria-hidden="true"
             />
-            <aside className="wof-mobile-nav-drawer" role="dialog" aria-label={__('Mobile navigation', 'wooptionsfic')}>
+            <aside className="wof-mobile-nav-drawer" role="dialog" aria-label={__('Mobile navigation', 'wooptions-pro')}>
               <div className="wof-mobile-nav__header">
                 <div className="wof-brand">
                   <span className="wof-brand-mark">
                     <Dashicon name="screenoptions" />
                   </span>
-                  <span className="wof-brand-name">WooptionsFic</span>
+                  <span className="wof-brand-name">WooOptions Pro</span>
                 </div>
                 <button
                   type="button"
                   className="wof-mobile-nav__close"
                   onClick={() => setMobileOpen(false)}
-                  aria-label={__('Close menu', 'wooptionsfic')}
+                  aria-label={__('Close menu', 'wooptions-pro')}
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18" />
@@ -132,14 +132,14 @@ namespace WooptionsFic.Components {
 
               <div className="wof-mobile-nav__footer">
                 <div className="wof-masthead__support">
-                  <span>{__('Having troubles?', 'wooptionsfic')}</span>{' '}
+                  <span>{__('Having troubles?', 'wooptions-pro')}</span>{' '}
                   <a
                     href="https://wholesalefic.com/support"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="wof-masthead__tutorial-link"
                   >
-                    {__('Tutorial', 'wooptionsfic')}
+                    {__('Tutorial', 'wooptions-pro')}
                   </a>
                 </div>
               </div>

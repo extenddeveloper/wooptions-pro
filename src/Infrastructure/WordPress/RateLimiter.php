@@ -2,12 +2,12 @@
 /**
  * Small bounded public endpoint rate limiter.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Infrastructure\WordPress;
+namespace WooOptionsPro\Infrastructure\WordPress;
 
 final class RateLimiter {
 	public function allow(string $scope, string $identity, int $limit, int $window = 60): bool {

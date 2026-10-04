@@ -1,7 +1,7 @@
-namespace WooptionsFic.BuilderStore {
-  export const STORE_KEY = 'wooptionsfic/builder';
+namespace WooOptionsPro.BuilderStore {
+  export const STORE_KEY = 'wooptions-pro/builder';
 
-  const initialState: WooptionsFic.BuilderState = {
+  const initialState: WooOptionsPro.BuilderState = {
     optionSet: null,
     document: null,
     selectedUuid: null,
@@ -15,29 +15,29 @@ namespace WooptionsFic.BuilderStore {
     warnings: [],
   };
 
-  function pushHistory(state: WooptionsFic.BuilderState): WooptionsFic.BuilderState {
+  function pushHistory(state: WooOptionsPro.BuilderState): WooOptionsPro.BuilderState {
     if (!state.document) return state;
-    const history = [...state.history, WooptionsFic.Utils.clone(state.document)].slice(-60);
+    const history = [...state.history, WooOptionsPro.Utils.clone(state.document)].slice(-60);
     return { ...state, history, future: [] };
   }
 
   const actions = {
-    loadSet(optionSet: WooptionsFic.OptionSetRecord) {
+    loadSet(optionSet: WooOptionsPro.OptionSetRecord) {
       return { type: 'LOAD_SET', optionSet };
     },
-    replaceDocument(document: WooptionsFic.OptionSetDefinition) {
+    replaceDocument(document: WooOptionsPro.OptionSetDefinition) {
       return { type: 'REPLACE_DOCUMENT', document };
     },
-    updateDocument(patch: Partial<WooptionsFic.OptionSetDefinition>) {
+    updateDocument(patch: Partial<WooOptionsPro.OptionSetDefinition>) {
       return { type: 'UPDATE_DOCUMENT', patch };
     },
-    addField(field: WooptionsFic.FieldDefinition, index?: number, parentUuid?: string) {
+    addField(field: WooOptionsPro.FieldDefinition, index?: number, parentUuid?: string) {
       return { type: 'ADD_FIELD', field, index, parentUuid };
     },
-    updateField(uuid: string, patch: Partial<WooptionsFic.FieldDefinition>) {
+    updateField(uuid: string, patch: Partial<WooOptionsPro.FieldDefinition>) {
       return { type: 'UPDATE_FIELD', uuid, patch };
     },
-    replaceField(uuid: string, field: WooptionsFic.FieldDefinition) {
+    replaceField(uuid: string, field: WooOptionsPro.FieldDefinition) {
       return { type: 'REPLACE_FIELD', uuid, field };
     },
     deleteField(uuid: string) {
@@ -55,19 +55,19 @@ namespace WooptionsFic.BuilderStore {
     selectField(uuid: string | null) {
       return { type: 'SELECT_FIELD', uuid };
     },
-    setInspectorTab(tab: WooptionsFic.InspectorTab) {
+    setInspectorTab(tab: WooOptionsPro.InspectorTab) {
       return { type: 'SET_INSPECTOR_TAB', tab };
     },
-    setDevice(device: WooptionsFic.PreviewDevice) {
+    setDevice(device: WooOptionsPro.PreviewDevice) {
       return { type: 'SET_DEVICE', device };
     },
-    setSaveStatus(status: WooptionsFic.SaveStatus) {
+    setSaveStatus(status: WooOptionsPro.SaveStatus) {
       return { type: 'SET_SAVE_STATUS', status };
     },
-    setValidation(errors: WooptionsFic.ValidationIssue[], warnings: WooptionsFic.ValidationIssue[]) {
+    setValidation(errors: WooOptionsPro.ValidationIssue[], warnings: WooOptionsPro.ValidationIssue[]) {
       return { type: 'SET_VALIDATION', errors, warnings };
     },
-    saved(optionSet: WooptionsFic.OptionSetRecord, document?: WooptionsFic.OptionSetDefinition) {
+    saved(optionSet: WooOptionsPro.OptionSetRecord, document?: WooOptionsPro.OptionSetDefinition) {
       return { type: 'SAVED', optionSet, document };
     },
     undo() {
@@ -78,22 +78,22 @@ namespace WooptionsFic.BuilderStore {
     },
   };
 
-  function reducer(state: WooptionsFic.BuilderState = initialState, action: any): WooptionsFic.BuilderState {
+  function reducer(state: WooOptionsPro.BuilderState = initialState, action: any): WooOptionsPro.BuilderState {
     switch (action.type) {
       case 'LOAD_SET': {
-        const optionSet = action.optionSet as WooptionsFic.OptionSetRecord;
+        const optionSet = action.optionSet as WooOptionsPro.OptionSetRecord;
         const document = optionSet.currentRevision?.definition ?? null;
         return {
           ...initialState,
           optionSet,
-          document: document ? WooptionsFic.Utils.clone(document) : null,
+          document: document ? WooOptionsPro.Utils.clone(document) : null,
           saveStatus: 'saved',
         };
       }
       case 'REPLACE_DOCUMENT': {
         return {
           ...pushHistory(state),
-          document: WooptionsFic.Utils.clone(action.document),
+          document: WooOptionsPro.Utils.clone(action.document),
           dirty: true,
           saveStatus: 'dirty',
         };
@@ -113,7 +113,7 @@ namespace WooptionsFic.BuilderStore {
         const next = pushHistory(state);
         let fields = [...state.document.fields];
         if (action.parentUuid) {
-          fields = WooptionsFic.Utils.updateFieldTree(fields, action.parentUuid, (parent) => {
+          fields = WooOptionsPro.Utils.updateFieldTree(fields, action.parentUuid, (parent) => {
             const children = [...(parent.children ?? [])];
             const index = typeof action.index === 'number' ? Math.max(0, Math.min(children.length, action.index)) : children.length;
             children.splice(index, 0, action.field);
@@ -135,19 +135,19 @@ namespace WooptionsFic.BuilderStore {
       case 'UPDATE_FIELD': {
         if (!state.document) return state;
         const next = pushHistory(state);
-        const fields = WooptionsFic.Utils.updateFieldTree(state.document.fields, action.uuid, (field) => ({ ...field, ...action.patch }));
+        const fields = WooOptionsPro.Utils.updateFieldTree(state.document.fields, action.uuid, (field) => ({ ...field, ...action.patch }));
         return { ...next, document: { ...state.document, fields }, dirty: true, saveStatus: 'dirty' };
       }
       case 'REPLACE_FIELD': {
         if (!state.document) return state;
         const next = pushHistory(state);
-        const fields = WooptionsFic.Utils.updateFieldTree(state.document.fields, action.uuid, () => action.field);
+        const fields = WooOptionsPro.Utils.updateFieldTree(state.document.fields, action.uuid, () => action.field);
         return { ...next, document: { ...state.document, fields }, dirty: true, saveStatus: 'dirty' };
       }
       case 'DELETE_FIELD': {
         if (!state.document) return state;
         const next = pushHistory(state);
-        const fields = WooptionsFic.Utils.removeFieldTree(state.document.fields, action.uuid);
+        const fields = WooOptionsPro.Utils.removeFieldTree(state.document.fields, action.uuid);
         const rules = state.document.rules.filter((rule) => !rule.actions.some((item) => item.target === action.uuid));
         return {
           ...next,
@@ -170,7 +170,7 @@ namespace WooptionsFic.BuilderStore {
       case 'MOVE_CHILD_FIELD': {
         if (!state.document || action.from === action.to) return state;
         const next = pushHistory(state);
-        const fields = WooptionsFic.Utils.updateFieldTree(state.document.fields, action.parentUuid, (parent) => {
+        const fields = WooOptionsPro.Utils.updateFieldTree(state.document.fields, action.parentUuid, (parent) => {
           const children = [...(parent.children ?? [])];
           const from = Math.max(0, Math.min(children.length - 1, action.from));
           const to = Math.max(0, Math.min(children.length - 1, action.to));
@@ -182,11 +182,11 @@ namespace WooptionsFic.BuilderStore {
       }
       case 'MOVE_FIELD_TO_PARENT': {
         if (!state.document) return state;
-        const fieldToMove = WooptionsFic.Utils.fieldByUuid(state.document, action.fieldUuid);
+        const fieldToMove = WooOptionsPro.Utils.fieldByUuid(state.document, action.fieldUuid);
         if (!fieldToMove || fieldToMove.uuid === action.parentUuid) return state;
         const next = pushHistory(state);
-        let fields = WooptionsFic.Utils.removeFieldTree(state.document.fields, action.fieldUuid);
-        fields = WooptionsFic.Utils.updateFieldTree(fields, action.parentUuid, (parent) => {
+        let fields = WooOptionsPro.Utils.removeFieldTree(state.document.fields, action.fieldUuid);
+        fields = WooOptionsPro.Utils.updateFieldTree(fields, action.parentUuid, (parent) => {
           const children = [...(parent.children ?? [])];
           const index = typeof action.index === 'number' ? Math.max(0, Math.min(children.length, action.index)) : children.length;
           children.splice(index, 0, fieldToMove);
@@ -205,7 +205,7 @@ namespace WooptionsFic.BuilderStore {
       case 'SET_VALIDATION':
         return { ...state, errors: action.errors, warnings: action.warnings };
       case 'SAVED': {
-        const optionSet = action.optionSet as WooptionsFic.OptionSetRecord;
+        const optionSet = action.optionSet as WooOptionsPro.OptionSetRecord;
         return {
           ...state,
           optionSet,
@@ -222,7 +222,7 @@ namespace WooptionsFic.BuilderStore {
           ...state,
           document: previous,
           history,
-          future: [WooptionsFic.Utils.clone(state.document), ...state.future].slice(0, 60),
+          future: [WooOptionsPro.Utils.clone(state.document), ...state.future].slice(0, 60),
           dirty: true,
           saveStatus: 'dirty',
         };
@@ -233,7 +233,7 @@ namespace WooptionsFic.BuilderStore {
         return {
           ...state,
           document: nextDocument,
-          history: [...state.history, WooptionsFic.Utils.clone(state.document)].slice(-60),
+          history: [...state.history, WooOptionsPro.Utils.clone(state.document)].slice(-60),
           future,
           dirty: true,
           saveStatus: 'dirty',
@@ -245,14 +245,14 @@ namespace WooptionsFic.BuilderStore {
   }
 
   const selectors = {
-    getState(state: WooptionsFic.BuilderState): WooptionsFic.BuilderState {
+    getState(state: WooOptionsPro.BuilderState): WooOptionsPro.BuilderState {
       return state;
     },
-    getDocument(state: WooptionsFic.BuilderState): WooptionsFic.OptionSetDefinition | null {
+    getDocument(state: WooOptionsPro.BuilderState): WooOptionsPro.OptionSetDefinition | null {
       return state.document;
     },
-    getSelectedField(state: WooptionsFic.BuilderState): WooptionsFic.FieldDefinition | null {
-      return WooptionsFic.Utils.fieldByUuid(state.document, state.selectedUuid);
+    getSelectedField(state: WooOptionsPro.BuilderState): WooOptionsPro.FieldDefinition | null {
+      return WooOptionsPro.Utils.fieldByUuid(state.document, state.selectedUuid);
     },
   };
 

@@ -1,7 +1,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: WooptionsFic — Product Options for WooCommerce\n"
+"Project-Id-Version: WooOptions Pro — Product Options for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-27 07:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.8.8; wp-7.1.2; php-8.3.11\n"
-"X-Domain: wooptionsfic"
+"X-Domain: wooptions-pro"
 
 #: src/Presentation/Rest/AdminController.php:445
 msgid "%d product"
@@ -53,7 +53,7 @@ msgstr ""
 
 #: blocks/product-options/block.json:1
 msgctxt "block title"
-msgid "WooptionsFic Product Options"
+msgid "WooOptions Pro Product Options"
 msgstr ""
 
 #: src/Application/DiagnosticsService.php:110
@@ -144,11 +144,11 @@ msgid "Not active"
 msgstr ""
 
 #: src/Infrastructure/WordPress/SiteHealth.php:50
-msgid "One or more required WooptionsFic services are unavailable."
+msgid "One or more required WooOptions Pro services are unavailable."
 msgstr ""
 
 #: src/Infrastructure/WordPress/SiteHealth.php:52
-msgid "Open WooptionsFic"
+msgid "Open WooOptions Pro"
 msgstr ""
 
 #: src/Presentation/Admin/AdminPage.php:170
@@ -256,7 +256,7 @@ msgstr ""
 msgid "Server-calculated price breakdown."
 msgstr ""
 
-#: wooptionsfic.php:77 src/Presentation/Admin/AdminPage.php:35
+#: wooptions-pro.php:77 src/Presentation/Admin/AdminPage.php:35
 msgid "Settings"
 msgstr ""
 
@@ -278,7 +278,7 @@ msgid "The request contains invalid configuration data."
 msgstr ""
 
 #: src/Presentation/Rest/Responder.php:29
-msgid "The requested WooptionsFic resource was not found."
+msgid "The requested WooOptions Pro resource was not found."
 msgstr ""
 
 #: src/Presentation/Rest/Responder.php:31
@@ -330,7 +330,7 @@ msgid ""
 msgstr ""
 
 #: src/Infrastructure/WooCommerce/StoreApiIntegration.php:73
-msgid "Whether this cart line has a WooptionsFic configuration."
+msgid "Whether this cart line has a WooOptions Pro configuration."
 msgstr ""
 
 #: src/Application/DiagnosticsService.php:96
@@ -350,32 +350,32 @@ msgstr ""
 #: src/Infrastructure/WordPress/SiteHealth.php:64
 #: src/Presentation/Admin/AdminPage.php:21
 #: src/Presentation/Admin/AdminPage.php:22
-msgid "WooptionsFic"
+msgid "WooOptions Pro"
 msgstr ""
 
 #: src/Presentation/Rest/Responder.php:35
-msgid "WooptionsFic could not complete the request."
+msgid "WooOptions Pro could not complete the request."
 msgstr ""
 
 #: src/Presentation/Rest/Responder.php:40
-msgid "WooptionsFic encountered an unexpected error."
+msgid "WooOptions Pro encountered an unexpected error."
 msgstr ""
 
 #. %s: plugin admin URL.
 #: src/Presentation/Admin/AdminPage.php:195
 #, php-format
 msgid ""
-"WooptionsFic is ready. <a href=\"%s\">Open the Precision Workshop</a> to "
+"WooOptions Pro is ready. <a href=\"%s\">Open the Precision Workshop</a> to "
 "import a template or build your first option set."
 msgstr ""
 
 #: src/Infrastructure/WordPress/SiteHealth.php:44
-msgid "WooptionsFic needs attention"
+msgid "WooOptions Pro needs attention"
 msgstr ""
 
 #: src/Bootstrap/Requirements.php:84
 msgid ""
-"WooptionsFic needs WooCommerce to render options and process configured "
+"WooOptions Pro needs WooCommerce to render options and process configured "
 "products. Install and activate WooCommerce to enable commerce features."
 msgstr ""
 
@@ -383,46 +383,46 @@ msgstr ""
 #: src/Bootstrap/Requirements.php:45
 #, php-format
 msgid ""
-"WooptionsFic requires PHP %1$s or newer and WordPress %2$s or newer. The "
+"WooOptions Pro requires PHP %1$s or newer and WordPress %2$s or newer. The "
 "plugin has not loaded."
 msgstr ""
 
 #. %s: minimum PHP version.
 #: src/Bootstrap/Requirements.php:99
 #, php-format
-msgid "WooptionsFic requires PHP %s or newer."
+msgid "WooOptions Pro requires PHP %s or newer."
 msgstr ""
 
 #. 1: required WooCommerce version, 2: detected version.
 #: src/Bootstrap/Requirements.php:80
 #, php-format
 msgid ""
-"WooptionsFic requires WooCommerce %1$s or newer. Version %2$s is active, so "
+"WooOptions Pro requires WooCommerce %1$s or newer. Version %2$s is active, so "
 "commerce features are paused."
 msgstr ""
 
 #. %s: minimum WordPress version.
 #: src/Bootstrap/Requirements.php:113
 #, php-format
-msgid "WooptionsFic requires WordPress %s or newer."
+msgid "WooOptions Pro requires WordPress %s or newer."
 msgstr ""
 
 #: src/Infrastructure/WordPress/SiteHealth.php:29
-msgid "WooptionsFic runtime"
+msgid "WooOptions Pro runtime"
 msgstr ""
 
 #. Name of the plugin
-msgid "WooptionsFic — Product Options for WooCommerce"
+msgid "WooOptions Pro — Product Options for WooCommerce"
 msgstr ""
 
 #: src/Presentation/Admin/AdminPage.php:182
 msgid ""
-"WooptionsFic’s administration builder requires JavaScript. Storefront basic "
+"WooOptions Pro’s administration builder requires JavaScript. Storefront basic "
 "fields still have a server-rendered fallback."
 msgstr ""
 
 #: src/Infrastructure/WordPress/SiteHealth.php:43
-msgid "WooptionsFic’s required services are ready"
+msgid "WooOptions Pro’s required services are ready"
 msgstr ""
 
 #: src/Application/DiagnosticsService.php:46
@@ -430,5 +430,5 @@ msgid "Writable and protected by server fallback files."
 msgstr ""
 
 #: src/Presentation/Admin/AdminPage.php:166
-msgid "You do not have permission to manage WooptionsFic."
+msgid "You do not have permission to manage WooOptions Pro."
 msgstr ""

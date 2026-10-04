@@ -1,11 +1,11 @@
 <?php
 /**
- * WooptionsFic uninstall routine.
+ * WooOptions Pro uninstall routine.
  *
  * Merchant data is retained by default. It is removed only when the merchant
- * enabled the uninstall setting or explicitly defined WOOPTIONSFIC_REMOVE_DATA.
+ * enabled the uninstall setting or explicitly defined WOOPTIONS_PRO_REMOVE_DATA.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
@@ -15,14 +15,14 @@ defined('WP_UNINSTALL_PLUGIN') || exit;
 /**
  * Remove plugin capabilities from the current site roles.
  */
-function wooptionsfic_uninstall_remove_capabilities(): void {
+function wooptions_pro_uninstall_remove_capabilities(): void {
 	$capabilities = [
-		'manage_wooptionsfic',
-		'edit_wooptionsfic_sets',
-		'publish_wooptionsfic_sets',
-		'manage_wooptionsfic_settings',
-		'view_wooptionsfic_analytics',
-		'manage_wooptionsfic_uploads',
+		'manage_wooptions-pro',
+		'edit_wooptions-pro_sets',
+		'publish_wooptions-pro_sets',
+		'manage_wooptions-pro_settings',
+		'view_wooptions-pro_analytics',
+		'manage_wooptions-pro_uploads',
 	];
 
 	foreach (['administrator', 'shop_manager'] as $role_name) {
@@ -41,10 +41,10 @@ function wooptionsfic_uninstall_remove_capabilities(): void {
  *
  * @param list<string> $storage_keys Storage keys.
  */
-function wooptionsfic_uninstall_delete_vault(array $storage_keys): void {
-	$base = defined('WOOPTIONSFIC_PRIVATE_DIR')
-		? untrailingslashit((string) WOOPTIONSFIC_PRIVATE_DIR)
-		: untrailingslashit(WP_CONTENT_DIR . '/wooptionsfic-private');
+function wooptions_pro_uninstall_delete_vault(array $storage_keys): void {
+	$base = defined('WOOPTIONS_PRO_PRIVATE_DIR')
+		? untrailingslashit((string) WOOPTIONS_PRO_PRIVATE_DIR)
+		: untrailingslashit(WP_CONTENT_DIR . '/wooptions-pro-private');
 
 	if ('' === $base || '/' === $base || WP_CONTENT_DIR === $base || ! is_dir($base)) {
 		return;
@@ -70,14 +70,14 @@ function wooptionsfic_uninstall_delete_vault(array $storage_keys): void {
 /**
  * Remove current-site data only after explicit opt-in.
  */
-function wooptionsfic_uninstall_site(): void {
+function wooptions_pro_uninstall_site(): void {
 	global $wpdb;
 
-	wp_clear_scheduled_hook('wooptionsfic_cleanup');
-	wooptionsfic_uninstall_remove_capabilities();
+	wp_clear_scheduled_hook('wooptions-pro_cleanup');
+	wooptions_pro_uninstall_remove_capabilities();
 
-	$settings = get_option('wooptionsfic_settings', []);
-	$remove_data = (defined('WOOPTIONSFIC_REMOVE_DATA') && true === WOOPTIONSFIC_REMOVE_DATA)
+	$settings = get_option('wooptions-pro_settings', []);
+	$remove_data = (defined('WOOPTIONS_PRO_REMOVE_DATA') && true === WOOPTIONS_PRO_REMOVE_DATA)
 		|| (is_array($settings) && ! empty($settings['delete_data_on_uninstall']));
 
 	if (! $remove_data) {
@@ -100,7 +100,7 @@ function wooptionsfic_uninstall_site(): void {
 			)
 		);
 	}
-	wooptionsfic_uninstall_delete_vault($storage_keys);
+	wooptions_pro_uninstall_delete_vault($storage_keys);
 
 	foreach (
 		[
@@ -118,18 +118,18 @@ function wooptionsfic_uninstall_site(): void {
 		$wpdb->query("DROP TABLE IF EXISTS `{$table}`"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange
 	}
 
-	delete_option('wooptionsfic_settings');
-	delete_option('wooptionsfic_db_version');
-	delete_transient('wooptionsfic_activated');
+	delete_option('wooptions-pro_settings');
+	delete_option('wooptions-pro_db_version');
+	delete_transient('wooptions-pro_activated');
 }
 
 if (is_multisite()) {
 	$site_ids = get_sites(['fields' => 'ids', 'number' => 0]);
 	foreach ($site_ids as $site_id) {
 		switch_to_blog((int) $site_id);
-		wooptionsfic_uninstall_site();
+		wooptions_pro_uninstall_site();
 		restore_current_blog();
 	}
 } else {
-	wooptionsfic_uninstall_site();
+	wooptions_pro_uninstall_site();
 }

@@ -2,16 +2,16 @@
 /**
  * Deterministic price engine.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Pricing;
+namespace WooOptionsPro\Domain\Pricing;
 
 use RuntimeException;
-use WooptionsFic\Domain\Pricing\Formula\Evaluator;
-use WooptionsFic\Domain\Rule\RuleEngine;
+use WooOptionsPro\Domain\Pricing\Formula\Evaluator;
+use WooOptionsPro\Domain\Rule\RuleEngine;
 
 final class PriceEngine
 {
@@ -92,7 +92,7 @@ final class PriceEngine
 						$money = Money::from_decimal($val_str, $currency, $scale);
 						if ('unit_price' === $pricing_mode) {
 							if (null !== $override) {
-								throw new RuntimeException('wooptionsfic_multiple_price_overrides');
+								throw new RuntimeException('wooptions-pro_multiple_price_overrides');
 							}
 							$override = $money;
 							$delta = $money->subtract($base);
@@ -141,7 +141,7 @@ final class PriceEngine
 			}
 			if (isset($result['override'])) {
 				if (null !== $override) {
-					throw new RuntimeException('wooptionsfic_multiple_price_overrides');
+					throw new RuntimeException('wooptions-pro_multiple_price_overrides');
 				}
 				$override = $result['override'];
 			}
@@ -301,7 +301,7 @@ final class PriceEngine
 						}
 					}
 					if ('' === $choice_label) {
-						$choice_label = __('Product', 'wooptionsfic');
+						$choice_label = __('Product', 'wooptions-pro');
 					}
 					$product_price = '';
 					$selected_var_id = (int) ($context['productVariations'][$choice_uuid] ?? 0);

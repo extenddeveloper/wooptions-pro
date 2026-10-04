@@ -2,16 +2,16 @@
 /**
  * Merchant-facing bounded diagnostics.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Application;
+namespace WooOptionsPro\Application;
 
-use WooptionsFic\Bootstrap\Requirements;
-use WooptionsFic\Infrastructure\Persistence\Schema;
-use WooptionsFic\Infrastructure\Storage\LocalPrivateStorage;
+use WooOptionsPro\Bootstrap\Requirements;
+use WooOptionsPro\Infrastructure\Persistence\Schema;
+use WooOptionsPro\Infrastructure\Storage\LocalPrivateStorage;
 
 final class DiagnosticsService {
 	public function __construct(private readonly LocalPrivateStorage $storage) {
@@ -29,48 +29,48 @@ final class DiagnosticsService {
 			$exists = $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $table));
 			$checks[] = [
 				'key'     => 'table_' . $suffix,
-				'label'   => sprintf(__('Database table: %s', 'wooptionsfic'), $suffix),
+				'label'   => sprintf(__('Database table: %s', 'wooptions-pro'), $suffix),
 				'status'  => $exists === $table ? 'good' : 'critical',
 				'message' => $exists === $table
-					? __('Ready', 'wooptionsfic')
-					: __('Missing; deactivate and reactivate the plugin to retry migrations.', 'wooptionsfic'),
+					? __('Ready', 'wooptions-pro')
+					: __('Missing; deactivate and reactivate the plugin to retry migrations.', 'wooptions-pro'),
 			];
 		}
 
 		$vault_ready = is_dir($this->storage->base_path()) && is_writable($this->storage->base_path());
 		$checks[] = [
 			'key'     => 'upload_vault',
-			'label'   => __('Private upload vault', 'wooptionsfic'),
+			'label'   => __('Private upload vault', 'wooptions-pro'),
 			'status'  => $vault_ready ? 'good' : 'warning',
 			'message' => $vault_ready
-				? __('Writable and protected by server fallback files.', 'wooptionsfic')
-				: __('The private upload vault is unavailable or not writable.', 'wooptionsfic'),
+				? __('Writable and protected by server fallback files.', 'wooptions-pro')
+				: __('The private upload vault is unavailable or not writable.', 'wooptions-pro'),
 		];
 
 		$checks[] = [
 			'key'     => 'cleanup',
-			'label'   => __('Scheduled cleanup', 'wooptionsfic'),
-			'status'  => wp_next_scheduled('wooptionsfic_cleanup') ? 'good' : 'warning',
-			'message' => wp_next_scheduled('wooptionsfic_cleanup')
-				? __('Daily cleanup is scheduled.', 'wooptionsfic')
-				: __('Cleanup is not currently scheduled.', 'wooptionsfic'),
+			'label'   => __('Scheduled cleanup', 'wooptions-pro'),
+			'status'  => wp_next_scheduled('wooptions-pro_cleanup') ? 'good' : 'warning',
+			'message' => wp_next_scheduled('wooptions-pro_cleanup')
+				? __('Daily cleanup is scheduled.', 'wooptions-pro')
+				: __('Cleanup is not currently scheduled.', 'wooptions-pro'),
 		];
 
-		$build_ready = is_readable(WOOPTIONSFIC_PATH . 'build/admin.js')
-			&& is_readable(WOOPTIONSFIC_PATH . 'build/storefront.js');
+		$build_ready = is_readable(WOOPTIONS_PRO_PATH . 'build/admin.js')
+			&& is_readable(WOOPTIONS_PRO_PATH . 'build/storefront.js');
 		$checks[] = [
 			'key'     => 'production_assets',
-			'label'   => __('Production assets', 'wooptionsfic'),
+			'label'   => __('Production assets', 'wooptions-pro'),
 			'status'  => $build_ready ? 'good' : 'critical',
 			'message' => $build_ready
-				? __('Compiled admin and storefront assets are present.', 'wooptionsfic')
-				: __('Compiled assets are missing from this installation.', 'wooptionsfic'),
+				? __('Compiled admin and storefront assets are present.', 'wooptions-pro')
+				: __('Compiled assets are missing from this installation.', 'wooptions-pro'),
 		];
 
 		return [
 			'generatedAtGmt' => gmdate('Y-m-d\TH:i:s\Z'),
 			'environment'    => [
-				'plugin'      => WOOPTIONSFIC_VERSION,
+				'plugin'      => WOOPTIONS_PRO_VERSION,
 				'database'    => (string) get_option(Schema::VERSION_OPTION, '0'),
 				'wordpress'   => (string) $wp_version,
 				'woocommerce' => defined('WC_VERSION') ? (string) WC_VERSION : null,
@@ -93,21 +93,21 @@ final class DiagnosticsService {
 		return [
 			[
 				'key'      => 'woocommerce-classic',
-				'name'     => __('WooCommerce classic product and checkout', 'wooptionsfic'),
+				'name'     => __('WooCommerce classic product and checkout', 'wooptions-pro'),
 				'status'   => Requirements::woocommerce_is_available() ? 'available' : 'unavailable',
-				'evidence' => __('Runtime hooks and server-authoritative cart/order snapshots are installed.', 'wooptionsfic'),
+				'evidence' => __('Runtime hooks and server-authoritative cart/order snapshots are installed.', 'wooptions-pro'),
 			],
 			[
 				'key'      => 'woocommerce-store-api',
-				'name'     => __('WooCommerce Store API cart items', 'wooptionsfic'),
+				'name'     => __('WooCommerce Store API cart items', 'wooptions-pro'),
 				'status'   => function_exists('woocommerce_store_api_register_endpoint_data') ? 'available' : 'fallback',
-				'evidence' => __('Extension data is registered when the supported Store API is present.', 'wooptionsfic'),
+				'evidence' => __('Extension data is registered when the supported Store API is present.', 'wooptions-pro'),
 			],
 			[
 				'key'      => 'upload-scanner',
-				'name'     => __('Upload scanner adapter', 'wooptionsfic'),
+				'name'     => __('Upload scanner adapter', 'wooptions-pro'),
 				'status'   => 'baseline',
-				'evidence' => __('Built-in policy scanner; external antivirus can replace it with the documented filter.', 'wooptionsfic'),
+				'evidence' => __('Built-in policy scanner; external antivirus can replace it with the documented filter.', 'wooptions-pro'),
 			],
 		];
 	}

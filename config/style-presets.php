@@ -2,12 +2,12 @@
 /**
  * Built-in storefront palettes.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 defined('ABSPATH') || exit;
 
-$t = static fn (string $text): string => did_action('init') ? __($text, 'wooptionsfic') : $text;
+$t = static fn (string $text): string => did_action('init') ? __($text, 'wooptions-pro') : $text;
 
 return [
 	'theme-native' => [

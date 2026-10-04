@@ -2,15 +2,15 @@
 /**
  * Plugin activation.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Bootstrap;
+namespace WooOptionsPro\Bootstrap;
 
-use WooptionsFic\Infrastructure\Persistence\Schema;
-use WooptionsFic\Infrastructure\Storage\LocalPrivateStorage;
+use WooOptionsPro\Infrastructure\Persistence\Schema;
+use WooOptionsPro\Infrastructure\Storage\LocalPrivateStorage;
 
 final class Activation {
 	public static function activate(bool $network_wide = false): void {
@@ -36,10 +36,10 @@ final class Activation {
 		$storage = new LocalPrivateStorage();
 		$storage->ensure_vault();
 
-		if (! wp_next_scheduled('wooptionsfic_cleanup')) {
-			wp_schedule_event(time() + HOUR_IN_SECONDS, 'daily', 'wooptionsfic_cleanup');
+		if (! wp_next_scheduled('wooptions-pro_cleanup')) {
+			wp_schedule_event(time() + HOUR_IN_SECONDS, 'daily', 'wooptions-pro_cleanup');
 		}
 
-		set_transient('wooptionsfic_activated', 1, 60);
+		set_transient('wooptions-pro_activated', 1, 60);
 	}
 }

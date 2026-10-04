@@ -1,4 +1,4 @@
-namespace WooptionsFic.Utils {
+namespace WooOptionsPro.Utils {
   export const i18n = wp.i18n;
 
   export function clone<T>(value: T): T {
@@ -23,7 +23,7 @@ namespace WooptionsFic.Utils {
     if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
       return (error as { message: string }).message;
     }
-    return i18n.__('Something went wrong. Please try again.', 'wooptionsfic');
+    return i18n.__('Something went wrong. Please try again.', 'wooptions-pro');
   }
 
   export function formatDate(value: string): string {
@@ -57,9 +57,9 @@ namespace WooptionsFic.Utils {
       .replace(/^-|-$/g, '');
   }
 
-  export function fieldByUuid(document: WooptionsFic.OptionSetDefinition | null, uuidValue: string | null): WooptionsFic.FieldDefinition | null {
+  export function fieldByUuid(document: WooOptionsPro.OptionSetDefinition | null, uuidValue: string | null): WooOptionsPro.FieldDefinition | null {
     if (!document || !uuidValue) return null;
-    const walk = (fields: WooptionsFic.FieldDefinition[]): WooptionsFic.FieldDefinition | null => {
+    const walk = (fields: WooOptionsPro.FieldDefinition[]): WooOptionsPro.FieldDefinition | null => {
       for (const field of fields) {
         if (field.uuid === uuidValue) return field;
         if (field.children?.length) {
@@ -73,10 +73,10 @@ namespace WooptionsFic.Utils {
   }
 
   export function updateFieldTree(
-    fields: WooptionsFic.FieldDefinition[],
+    fields: WooOptionsPro.FieldDefinition[],
     uuidValue: string,
-    updater: (field: WooptionsFic.FieldDefinition) => WooptionsFic.FieldDefinition,
-  ): WooptionsFic.FieldDefinition[] {
+    updater: (field: WooOptionsPro.FieldDefinition) => WooOptionsPro.FieldDefinition,
+  ): WooOptionsPro.FieldDefinition[] {
     return fields.map((field) => {
       if (field.uuid === uuidValue) return updater(field);
       if (field.children?.length) {
@@ -86,7 +86,7 @@ namespace WooptionsFic.Utils {
     });
   }
 
-  export function removeFieldTree(fields: WooptionsFic.FieldDefinition[], uuidValue: string): WooptionsFic.FieldDefinition[] {
+  export function removeFieldTree(fields: WooOptionsPro.FieldDefinition[], uuidValue: string): WooOptionsPro.FieldDefinition[] {
     return fields
       .filter((field) => field.uuid !== uuidValue)
       .map((field) => ({
@@ -95,9 +95,9 @@ namespace WooptionsFic.Utils {
       }));
   }
 
-  export function allFields(fields: WooptionsFic.FieldDefinition[]): WooptionsFic.FieldDefinition[] {
-    const result: WooptionsFic.FieldDefinition[] = [];
-    const walk = (items: WooptionsFic.FieldDefinition[]) => {
+  export function allFields(fields: WooOptionsPro.FieldDefinition[]): WooOptionsPro.FieldDefinition[] {
+    const result: WooOptionsPro.FieldDefinition[] = [];
+    const walk = (items: WooOptionsPro.FieldDefinition[]) => {
       items.forEach((field) => {
         result.push(field);
         if (field.children?.length) walk(field.children);
@@ -107,7 +107,7 @@ namespace WooptionsFic.Utils {
     return result;
   }
 
-  export function countChoices(fields: WooptionsFic.FieldDefinition[]): number {
+  export function countChoices(fields: WooOptionsPro.FieldDefinition[]): number {
     return allFields(fields).reduce((count, field) => count + (field.choices?.length ?? 0), 0);
   }
 

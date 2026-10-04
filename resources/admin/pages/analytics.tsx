@@ -1,4 +1,4 @@
-namespace WooptionsFic.Pages {
+namespace WooOptionsPro.Pages {
   const { __, sprintf } = wp.i18n;
   const { useCallback, useEffect, useMemo, useRef, useState } = wp.element;
 
@@ -139,9 +139,9 @@ namespace WooptionsFic.Pages {
     const loadData = useCallback((selectedRange: string) => {
       setLoading(true);
       setError('');
-      WooptionsFic.Api.analytics({ range: selectedRange })
+      WooOptionsPro.Api.analytics({ range: selectedRange })
         .then((response: any) => setData(response))
-        .catch((reason: any) => setError(WooptionsFic.Utils.errorMessage(reason)))
+        .catch((reason: any) => setError(WooOptionsPro.Utils.errorMessage(reason)))
         .finally(() => setLoading(false));
     }, []);
 
@@ -150,13 +150,13 @@ namespace WooptionsFic.Pages {
     }, [range, loadData]);
 
     const rangeOptions: Array<{ key: '7d' | '30d' | '12m'; label: string }> = [
-      { key: '7d', label: __('Last 7 Days', 'wooptionsfic') },
-      { key: '30d', label: __('Last 30 Days', 'wooptionsfic') },
-      { key: '12m', label: __('Last 12 Months', 'wooptionsfic') },
+      { key: '7d', label: __('Last 7 Days', 'wooptions-pro') },
+      { key: '30d', label: __('Last 30 Days', 'wooptions-pro') },
+      { key: '12m', label: __('Last 12 Months', 'wooptions-pro') },
     ];
 
-    const currencySymbol = data?.currencySymbol || (window as any).WooptionsFicAdmin?.currencySymbol || '$';
-    const currencyPosition = data?.currencyPosition || (window as any).WooptionsFicAdmin?.currencyPosition || 'right';
+    const currencySymbol = data?.currencySymbol || (window as any).WooOptionsProAdmin?.currencySymbol || '$';
+    const currencyPosition = data?.currencyPosition || (window as any).WooOptionsProAdmin?.currencyPosition || 'right';
 
     // Chart parameters
     const chartWidth = 960;
@@ -290,10 +290,10 @@ namespace WooptionsFic.Pages {
 
     // Color theme configuration based on active metric
     const metricThemes: Record<MetricType, { color: string; fillStop: string; label: string; unit: string }> = {
-      clicks: { color: '#5b4ff5', fillStop: 'rgba(91, 79, 245, 0.24)', label: __('Clicks', 'wooptionsfic'), unit: __('interactions', 'wooptionsfic') },
-      addToCart: { color: '#0284c7', fillStop: 'rgba(2, 132, 199, 0.22)', label: __('Add-to-Cart', 'wooptionsfic'), unit: __('items', 'wooptionsfic') },
-      orders: { color: '#10b981', fillStop: 'rgba(16, 185, 129, 0.22)', label: __('Orders', 'wooptionsfic'), unit: __('orders', 'wooptionsfic') },
-      sales: { color: '#8b5cf6', fillStop: 'rgba(139, 92, 246, 0.24)', label: __('Addon Revenue', 'wooptionsfic'), unit: currencySymbol },
+      clicks: { color: '#5b4ff5', fillStop: 'rgba(91, 79, 245, 0.24)', label: __('Clicks', 'wooptions-pro'), unit: __('interactions', 'wooptions-pro') },
+      addToCart: { color: '#0284c7', fillStop: 'rgba(2, 132, 199, 0.22)', label: __('Add-to-Cart', 'wooptions-pro'), unit: __('items', 'wooptions-pro') },
+      orders: { color: '#10b981', fillStop: 'rgba(16, 185, 129, 0.22)', label: __('Orders', 'wooptions-pro'), unit: __('orders', 'wooptions-pro') },
+      sales: { color: '#8b5cf6', fillStop: 'rgba(139, 92, 246, 0.24)', label: __('Addon Revenue', 'wooptions-pro'), unit: currencySymbol },
     };
 
     const currentTheme = metricThemes[activeMetric];
@@ -303,15 +303,15 @@ namespace WooptionsFic.Pages {
         {/* Modern Command Center Header */}
         <div className="wof-analytics-hero">
           <div className="wof-analytics-hero__info">
-            <h1 className="wof-analytics-hero__title">{__('Performance & Conversions', 'wooptionsfic')}</h1>
+            <h1 className="wof-analytics-hero__title">{__('Performance & Conversions', 'wooptions-pro')}</h1>
             <p className="wof-analytics-hero__desc">
-              {__('Track user choices, validation impact, and addon revenue contribution in real-time.', 'wooptionsfic')}
+              {__('Track user choices, validation impact, and addon revenue contribution in real-time.', 'wooptions-pro')}
             </p>
           </div>
 
           <div className="wof-analytics-hero__actions">
             {/* Segmented Range Controls */}
-            <div className="wof-segmented-range" role="group" aria-label={__('Reporting Period', 'wooptionsfic')}>
+            <div className="wof-segmented-range" role="group" aria-label={__('Reporting Period', 'wooptions-pro')}>
               {rangeOptions.map((opt) => (
                 <button
                   type="button"
@@ -328,18 +328,18 @@ namespace WooptionsFic.Pages {
               type="button"
               className="wof-refresh-btn"
               onClick={() => loadData(range)}
-              title={__('Refresh data', 'wooptionsfic')}
+              title={__('Refresh data', 'wooptions-pro')}
               disabled={loading}
             >
-              <WooptionsFic.Components.Dashicon name="update" />
+              <WooOptionsPro.Components.Dashicon name="update" />
             </button>
           </div>
         </div>
 
         {error ? (
-          <WooptionsFic.Components.InlineNotice type="error" onClose={() => setError('')}>
+          <WooOptionsPro.Components.InlineNotice type="error" onClose={() => setError('')}>
             {error}
-          </WooptionsFic.Components.InlineNotice>
+          </WooOptionsPro.Components.InlineNotice>
         ) : null}
 
         {/* 4 Bespoke Executive KPI Cards */}
@@ -359,11 +359,11 @@ namespace WooptionsFic.Pages {
                   <path d="M12 18V6" />
                 </svg>
               </span>
-              <span className="wof-bespoke-kpi-title">{__('Total Sales (Addons)', 'wooptionsfic')}</span>
+              <span className="wof-bespoke-kpi-title">{__('Total Sales (Addons)', 'wooptions-pro')}</span>
               {activeMetric === 'sales' ? (
                 <span className="wof-kpi-active-pill">
                   <span className="wof-kpi-active-dot" />
-                  {__('Active', 'wooptionsfic')}
+                  {__('Active', 'wooptions-pro')}
                 </span>
               ) : null}
             </div>
@@ -373,7 +373,7 @@ namespace WooptionsFic.Pages {
               </strong>
             </div>
             <div className="wof-bespoke-kpi-footer">
-              <span className="wof-kpi-hint">{__('Net addon contribution to orders', 'wooptionsfic')}</span>
+              <span className="wof-kpi-hint">{__('Net addon contribution to orders', 'wooptions-pro')}</span>
             </div>
           </div>
 
@@ -392,11 +392,11 @@ namespace WooptionsFic.Pages {
                   <path d="M16 10a4 4 0 0 1-8 0" />
                 </svg>
               </span>
-              <span className="wof-bespoke-kpi-title">{__('Total Orders (Addons)', 'wooptionsfic')}</span>
+              <span className="wof-bespoke-kpi-title">{__('Total Orders (Addons)', 'wooptions-pro')}</span>
               {activeMetric === 'orders' ? (
                 <span className="wof-kpi-active-pill">
                   <span className="wof-kpi-active-dot" />
-                  {__('Active', 'wooptionsfic')}
+                  {__('Active', 'wooptions-pro')}
                 </span>
               ) : null}
             </div>
@@ -406,7 +406,7 @@ namespace WooptionsFic.Pages {
               </strong>
             </div>
             <div className="wof-bespoke-kpi-footer">
-              <span className="wof-kpi-hint">{__('Completed checkouts with options', 'wooptionsfic')}</span>
+              <span className="wof-kpi-hint">{__('Completed checkouts with options', 'wooptions-pro')}</span>
             </div>
           </div>
 
@@ -423,11 +423,11 @@ namespace WooptionsFic.Pages {
                   <path d="M15 15l5 5m-5-5l-2.5 7.5L11 14 3.5 11.5 11 9l4 6z" />
                 </svg>
               </span>
-              <span className="wof-bespoke-kpi-title">{__('Clicks Count', 'wooptionsfic')}</span>
+              <span className="wof-bespoke-kpi-title">{__('Clicks Count', 'wooptions-pro')}</span>
               {activeMetric === 'clicks' ? (
                 <span className="wof-kpi-active-pill">
                   <span className="wof-kpi-active-dot" />
-                  {__('Active', 'wooptionsfic')}
+                  {__('Active', 'wooptions-pro')}
                 </span>
               ) : null}
             </div>
@@ -437,7 +437,7 @@ namespace WooptionsFic.Pages {
               </strong>
             </div>
             <div className="wof-bespoke-kpi-footer">
-              <span className="wof-kpi-hint">{__('Customer field clicks & inputs', 'wooptionsfic')}</span>
+              <span className="wof-kpi-hint">{__('Customer field clicks & inputs', 'wooptions-pro')}</span>
             </div>
           </div>
 
@@ -456,11 +456,11 @@ namespace WooptionsFic.Pages {
                   <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
                 </svg>
               </span>
-              <span className="wof-bespoke-kpi-title">{__('Add-to-Cart Count', 'wooptionsfic')}</span>
+              <span className="wof-bespoke-kpi-title">{__('Add-to-Cart Count', 'wooptions-pro')}</span>
               {activeMetric === 'addToCart' ? (
                 <span className="wof-kpi-active-pill">
                   <span className="wof-kpi-active-dot" />
-                  {__('Active', 'wooptionsfic')}
+                  {__('Active', 'wooptions-pro')}
                 </span>
               ) : null}
             </div>
@@ -470,7 +470,7 @@ namespace WooptionsFic.Pages {
               </strong>
             </div>
             <div className="wof-bespoke-kpi-footer">
-              <span className="wof-kpi-hint">{__('Customized configurations carted', 'wooptionsfic')}</span>
+              <span className="wof-kpi-hint">{__('Customized configurations carted', 'wooptions-pro')}</span>
             </div>
           </div>
         </div>
@@ -480,10 +480,10 @@ namespace WooptionsFic.Pages {
           <div className="wof-bespoke-chart-header">
             <div>
               <h2 className="wof-bespoke-chart-title">
-                {__('Telemetry Signal Timeline', 'wooptionsfic')}
+                {__('Telemetry Signal Timeline', 'wooptions-pro')}
               </h2>
               <p className="wof-bespoke-chart-subtitle">
-                {sprintf(__('Daily progression of %s across active storefront option sets.', 'wooptionsfic'), currentTheme.label)}
+                {sprintf(__('Daily progression of %s across active storefront option sets.', 'wooptions-pro'), currentTheme.label)}
               </p>
             </div>
 
@@ -508,7 +508,7 @@ namespace WooptionsFic.Pages {
             {loading ? (
               <div className="wof-bespoke-chart-loading">
                 <span className="wof-loader" />
-                <p>{__('Calculating telemetry metrics…', 'wooptionsfic')}</p>
+                <p>{__('Calculating telemetry metrics…', 'wooptions-pro')}</p>
               </div>
             ) : null}
 
@@ -648,22 +648,22 @@ namespace WooptionsFic.Pages {
                   <div className="wof-bespoke-tooltip__grid">
                     <div className="wof-tt-row">
                       <span className="wof-tt-dot wof-tt-dot--clicks" />
-                      <span>{__('Clicks', 'wooptionsfic')}:</span>
+                      <span>{__('Clicks', 'wooptions-pro')}:</span>
                       <b>{hoveredPoint.clicks}</b>
                     </div>
                     <div className="wof-tt-row">
                       <span className="wof-tt-dot wof-tt-dot--cart" />
-                      <span>{__('Add to Cart', 'wooptionsfic')}:</span>
+                      <span>{__('Add to Cart', 'wooptions-pro')}:</span>
                       <b>{hoveredPoint.addToCart}</b>
                     </div>
                     <div className="wof-tt-row">
                       <span className="wof-tt-dot wof-tt-dot--orders" />
-                      <span>{__('Orders', 'wooptionsfic')}:</span>
+                      <span>{__('Orders', 'wooptions-pro')}:</span>
                       <b>{hoveredPoint.orders}</b>
                     </div>
                     <div className="wof-tt-row">
                       <span className="wof-tt-dot wof-tt-dot--sales" />
-                      <span>{__('Revenue', 'wooptionsfic')}:</span>
+                      <span>{__('Revenue', 'wooptions-pro')}:</span>
                       <b>{formatMoney(hoveredPoint.sales, currencySymbol, currencyPosition)}</b>
                     </div>
                   </div>
@@ -677,9 +677,9 @@ namespace WooptionsFic.Pages {
         <section className="wof-panel wof-bespoke-table-card">
           <div className="wof-bespoke-table-header">
             <div>
-              <h2 className="wof-bespoke-table-title">{__('Option Sets Performance', 'wooptionsfic')}</h2>
+              <h2 className="wof-bespoke-table-title">{__('Option Sets Performance', 'wooptions-pro')}</h2>
               <p className="wof-bespoke-table-desc">
-                {__('Granular conversion rates and order contributions per option set.', 'wooptionsfic')}
+                {__('Granular conversion rates and order contributions per option set.', 'wooptions-pro')}
               </p>
             </div>
 
@@ -695,12 +695,12 @@ namespace WooptionsFic.Pages {
                   type="search"
                   value={tableSearch}
                   onChange={(e: any) => setTableSearch(e.target.value)}
-                  placeholder={__('Search option sets…', 'wooptionsfic')}
+                  placeholder={__('Search option sets…', 'wooptions-pro')}
                   className="wof-table-search-input"
                 />
               </div>
               <span className="wof-count-pill">
-                {totalTableItems} {totalTableItems === 1 ? __('Set', 'wooptionsfic') : __('Sets', 'wooptionsfic')}
+                {totalTableItems} {totalTableItems === 1 ? __('Set', 'wooptions-pro') : __('Sets', 'wooptions-pro')}
               </span>
             </div>
           </div>
@@ -709,12 +709,12 @@ namespace WooptionsFic.Pages {
             <table className="wof-analytics-table wof-analytics-table--bespoke">
               <thead>
                 <tr>
-                  <th className="wof-col-set">{__('OPTION SET', 'wooptionsfic')}</th>
-                  <th className="wof-col-applied">{__('SCOPE', 'wooptionsfic')}</th>
-                  <th className="wof-col-clickrate">{__('CLICK RATE', 'wooptionsfic')}</th>
-                  <th className="wof-col-cartrate">{__('CART CONVERSION', 'wooptionsfic')}</th>
-                  <th className="wof-col-sales">{__('ADDON REVENUE', 'wooptionsfic')}</th>
-                  <th className="wof-col-actions">{__('ACTION', 'wooptionsfic')}</th>
+                  <th className="wof-col-set">{__('OPTION SET', 'wooptions-pro')}</th>
+                  <th className="wof-col-applied">{__('SCOPE', 'wooptions-pro')}</th>
+                  <th className="wof-col-clickrate">{__('CLICK RATE', 'wooptions-pro')}</th>
+                  <th className="wof-col-cartrate">{__('CART CONVERSION', 'wooptions-pro')}</th>
+                  <th className="wof-col-sales">{__('ADDON REVENUE', 'wooptions-pro')}</th>
+                  <th className="wof-col-actions">{__('ACTION', 'wooptions-pro')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -725,14 +725,14 @@ namespace WooptionsFic.Pages {
                       <td className="wof-cell-set">
                         <div className="wof-set-identity">
                           <span className="wof-set-icon">
-                            <WooptionsFic.Components.Dashicon name="screenoptions" />
+                            <WooOptionsPro.Components.Dashicon name="screenoptions" />
                           </span>
                           <div className="wof-set-meta">
                             <button
                               type="button"
                               className="wof-set-name-link"
                               onClick={() => props?.navigate?.(`builder/${set.uuid}`)}
-                              title={__('Edit in Option Set Builder', 'wooptionsfic')}
+                              title={__('Edit in Option Set Builder', 'wooptions-pro')}
                             >
                               {set.name}
                             </button>
@@ -794,7 +794,7 @@ namespace WooptionsFic.Pages {
                             {formatMoney(set.sales, currencySymbol, currencyPosition)}
                           </strong>
                           <span className="wof-sales-orders">
-                            {set.orders} {set.orders === 1 ? __('order', 'wooptionsfic') : __('orders', 'wooptionsfic')}
+                            {set.orders} {set.orders === 1 ? __('order', 'wooptions-pro') : __('orders', 'wooptions-pro')}
                           </span>
                         </div>
                       </td>
@@ -806,7 +806,7 @@ namespace WooptionsFic.Pages {
                           className="wof-table-action-btn"
                           onClick={() => props?.navigate?.(`builder/${set.uuid}`)}
                         >
-                          <span>{__('Edit', 'wooptionsfic')}</span>
+                          <span>{__('Edit', 'wooptions-pro')}</span>
                           <span aria-hidden="true">&rarr;</span>
                         </button>
                       </td>
@@ -816,10 +816,10 @@ namespace WooptionsFic.Pages {
                   <tr>
                     <td colSpan={6} className="wof-table-empty-row">
                       {loading
-                        ? __('Calculating performance metrics…', 'wooptionsfic')
+                        ? __('Calculating performance metrics…', 'wooptions-pro')
                         : tableSearch
-                        ? __('No option sets match your search filter.', 'wooptionsfic')
-                        : __('No option set activity recorded for this period.', 'wooptionsfic')}
+                        ? __('No option sets match your search filter.', 'wooptions-pro')
+                        : __('No option set activity recorded for this period.', 'wooptions-pro')}
                     </td>
                   </tr>
                 )}
@@ -832,7 +832,7 @@ namespace WooptionsFic.Pages {
             <div className="wof-table-pagination">
               <div className="wof-table-pagination__info">
                 {sprintf(
-                  __('Showing %1$d–%2$d of %3$d option sets', 'wooptionsfic'),
+                  __('Showing %1$d–%2$d of %3$d option sets', 'wooptions-pro'),
                   startItem,
                   endItem,
                   totalTableItems
@@ -849,7 +849,7 @@ namespace WooptionsFic.Pages {
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <polyline points="15 18 9 12 15 6" />
                   </svg>
-                  <span>{__('Previous', 'wooptionsfic')}</span>
+                  <span>{__('Previous', 'wooptions-pro')}</span>
                 </button>
 
                 <div className="wof-page-number-list">
@@ -871,7 +871,7 @@ namespace WooptionsFic.Pages {
                   disabled={tablePage >= totalTablePages}
                   onClick={() => setTablePage(Math.min(totalTablePages, tablePage + 1))}
                 >
-                  <span>{__('Next', 'wooptionsfic')}</span>
+                  <span>{__('Next', 'wooptions-pro')}</span>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <polyline points="9 18 15 12 9 6" />
                   </svg>
@@ -881,7 +881,7 @@ namespace WooptionsFic.Pages {
           ) : totalTableItems > 0 ? (
             <div className="wof-table-pagination wof-table-pagination--compact">
               <span className="wof-table-pagination__info">
-                {sprintf(__('Displaying all %d option sets', 'wooptionsfic'), totalTableItems)}
+                {sprintf(__('Displaying all %d option sets', 'wooptions-pro'), totalTableItems)}
               </span>
             </div>
           ) : null}

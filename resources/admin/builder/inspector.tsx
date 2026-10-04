@@ -1,15 +1,15 @@
-namespace WooptionsFic.Builder {
+namespace WooOptionsPro.Builder {
   const { Button, ColorPicker, Modal, SelectControl, TextControl, TextareaControl, ToggleControl } = wp.components;
   const { __, sprintf } = wp.i18n;
   const { useEffect, useMemo, useRef, useState } = wp.element;
 
-  const tabs: Array<[WooptionsFic.InspectorTab, string]> = [
-    ['content', __('Content', 'wooptionsfic')],
-    ['choices', __('Choices', 'wooptionsfic')],
-    ['pricing', __('Pricing', 'wooptionsfic')],
-    ['logic', __('Logic', 'wooptionsfic')],
-    ['style', __('Style', 'wooptionsfic')],
-    ['advanced', __('Advanced', 'wooptionsfic')],
+  const tabs: Array<[WooOptionsPro.InspectorTab, string]> = [
+    ['content', __('Content', 'wooptions-pro')],
+    ['choices', __('Choices', 'wooptions-pro')],
+    ['pricing', __('Pricing', 'wooptions-pro')],
+    ['logic', __('Logic', 'wooptions-pro')],
+    ['style', __('Style', 'wooptions-pro')],
+    ['advanced', __('Advanced', 'wooptions-pro')],
   ];
 
   const COUNTRY_OPTIONS = [
@@ -71,17 +71,17 @@ namespace WooptionsFic.Builder {
   ];
 
   const WEEKDAY_OPTIONS = [
-    { label: __('Sunday', 'wooptionsfic'), value: 0 },
-    { label: __('Monday', 'wooptionsfic'), value: 1 },
-    { label: __('Tuesday', 'wooptionsfic'), value: 2 },
-    { label: __('Wednesday', 'wooptionsfic'), value: 3 },
-    { label: __('Thursday', 'wooptionsfic'), value: 4 },
-    { label: __('Friday', 'wooptionsfic'), value: 5 },
-    { label: __('Saturday', 'wooptionsfic'), value: 6 },
+    { label: __('Sunday', 'wooptions-pro'), value: 0 },
+    { label: __('Monday', 'wooptions-pro'), value: 1 },
+    { label: __('Tuesday', 'wooptions-pro'), value: 2 },
+    { label: __('Wednesday', 'wooptions-pro'), value: 3 },
+    { label: __('Thursday', 'wooptions-pro'), value: 4 },
+    { label: __('Friday', 'wooptions-pro'), value: 5 },
+    { label: __('Saturday', 'wooptions-pro'), value: 6 },
   ];
 
   const MONTHLY_DAY_OPTIONS = Array.from({ length: 31 }, (_, i) => ({
-    label: `${__('Day', 'wooptionsfic')} ${i + 1}`,
+    label: `${__('Day', 'wooptions-pro')} ${i + 1}`,
     value: i + 1,
   }));
 
@@ -171,11 +171,11 @@ namespace WooptionsFic.Builder {
     return (
       <div className="wof-datepicker-popover" ref={containerRef}>
         <div className="wof-cal-pop-header">
-          <button type="button" className="wof-cal-nav-btn" onClick={prevMonth} aria-label={__('Previous month', 'wooptionsfic')}>
+          <button type="button" className="wof-cal-nav-btn" onClick={prevMonth} aria-label={__('Previous month', 'wooptions-pro')}>
             ‹
           </button>
           <span className="wof-cal-pop-title">{monthNames[month]} {year}</span>
-          <button type="button" className="wof-cal-nav-btn" onClick={nextMonth} aria-label={__('Next month', 'wooptionsfic')}>
+          <button type="button" className="wof-cal-nav-btn" onClick={nextMonth} aria-label={__('Next month', 'wooptions-pro')}>
             ›
           </button>
         </div>
@@ -191,7 +191,7 @@ namespace WooptionsFic.Builder {
               <button
                 type="button"
                 key={idx}
-                className={WooptionsFic.Utils.classNames(
+                className={WooOptionsPro.Utils.classNames(
                   'wof-cal-pop-day',
                   !cell.isCurrentMonth && 'is-other-month',
                   isSelected && 'is-selected'
@@ -221,7 +221,7 @@ namespace WooptionsFic.Builder {
       <div className="wof-datepicker-field-wrap">
         <button
           type="button"
-          className={WooptionsFic.Utils.classNames('wof-datepicker-field-trigger', isOpen && 'is-open')}
+          className={WooOptionsPro.Utils.classNames('wof-datepicker-field-trigger', isOpen && 'is-open')}
           onClick={() => setIsOpen(!isOpen)}
         >
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -230,15 +230,15 @@ namespace WooptionsFic.Builder {
             <line x1="8" y1="2" x2="8" y2="6" />
             <line x1="3" y1="10" x2="21" y2="10" />
           </svg>
-          <span className={WooptionsFic.Utils.classNames('wof-datepicker-field-val', !props.value && 'is-placeholder')}>
-            {props.value || props.placeholder || __('Select date...', 'wooptionsfic')}
+          <span className={WooOptionsPro.Utils.classNames('wof-datepicker-field-val', !props.value && 'is-placeholder')}>
+            {props.value || props.placeholder || __('Select date...', 'wooptions-pro')}
           </span>
           {props.value ? (
             <span
               role="button"
               tabIndex={0}
               className="wof-datepicker-field-clear"
-              title={__('Clear date', 'wooptionsfic')}
+              title={__('Clear date', 'wooptions-pro')}
               onClick={(e: any) => {
                 e.stopPropagation();
                 props.onChange('');
@@ -318,16 +318,16 @@ namespace WooptionsFic.Builder {
       <div className="wof-multiselect-container" ref={containerRef}>
         <button
           type="button"
-          className={WooptionsFic.Utils.classNames('wof-multiselect-trigger', isOpen && 'is-open')}
+          className={WooOptionsPro.Utils.classNames('wof-multiselect-trigger', isOpen && 'is-open')}
           onClick={() => setIsOpen(!isOpen)}
           aria-haspopup="listbox"
           aria-expanded={isOpen}
         >
-          <span className={WooptionsFic.Utils.classNames('wof-multiselect-display', !displayText && 'is-placeholder')}>
+          <span className={WooOptionsPro.Utils.classNames('wof-multiselect-display', !displayText && 'is-placeholder')}>
             {displayText || props.placeholder}
           </span>
           <svg
-            className={WooptionsFic.Utils.classNames('wof-multiselect-chevron', isOpen && 'is-open')}
+            className={WooOptionsPro.Utils.classNames('wof-multiselect-chevron', isOpen && 'is-open')}
             width="16"
             height="16"
             viewBox="0 0 24 24"
@@ -345,17 +345,17 @@ namespace WooptionsFic.Builder {
           <div className="wof-multiselect-dropdown">
             <div className="wof-multiselect-header">
               <button type="button" className="wof-multiselect-link-btn" onClick={selectAll}>
-                {__('Select All', 'wooptionsfic')}
+                {__('Select All', 'wooptions-pro')}
               </button>
               <button type="button" className="wof-multiselect-link-btn" onClick={clearAll}>
-                {__('Clear', 'wooptionsfic')}
+                {__('Clear', 'wooptions-pro')}
               </button>
             </div>
             <div className="wof-multiselect-options" role="listbox">
               {props.options.map((opt) => {
                 const isChecked = props.selectedValues.includes(opt.value);
                 return (
-                  <label key={opt.value} className={WooptionsFic.Utils.classNames('wof-multiselect-item', isChecked && 'is-checked')}>
+                  <label key={opt.value} className={WooOptionsPro.Utils.classNames('wof-multiselect-item', isChecked && 'is-checked')}>
                     <input
                       type="checkbox"
                       checked={isChecked}
@@ -373,8 +373,8 @@ namespace WooptionsFic.Builder {
   }
 
   function DateFieldInspector(props: {
-    field: WooptionsFic.FieldDefinition;
-    update: (patch: Partial<WooptionsFic.FieldDefinition>) => void;
+    field: WooOptionsPro.FieldDefinition;
+    update: (patch: Partial<WooOptionsPro.FieldDefinition>) => void;
   }): any {
     const { field, update } = props;
     const [showAddDatePicker, setShowAddDatePicker] = useState(false);
@@ -383,12 +383,12 @@ namespace WooptionsFic.Builder {
       <div className="wof-datetime-settings-wrap">
         {/* TYPE selector */}
         <div className="wof-field-width-setting wof-datetime-type-setting">
-          <span className="wof-field-width-label">{__('Type', 'wooptionsfic')}</span>
-          <div className="wof-field-width-group" role="radiogroup" aria-label={__('Type', 'wooptionsfic')}>
+          <span className="wof-field-width-label">{__('Type', 'wooptions-pro')}</span>
+          <div className="wof-field-width-group" role="radiogroup" aria-label={__('Type', 'wooptions-pro')}>
             {([
-              { label: __('Date', 'wooptionsfic'), value: 'date' },
-              { label: __('Date & Time', 'wooptionsfic'), value: 'datetime' },
-              { label: __('Time', 'wooptionsfic'), value: 'time' },
+              { label: __('Date', 'wooptions-pro'), value: 'date' },
+              { label: __('Date & Time', 'wooptions-pro'), value: 'datetime' },
+              { label: __('Time', 'wooptions-pro'), value: 'time' },
             ] as const).map((t) => {
               const isSelected = (field.dateTimeType || (field.type === 'time' ? 'time' : 'date')) === t.value;
               return (
@@ -397,7 +397,7 @@ namespace WooptionsFic.Builder {
                   key={t.value}
                   role="radio"
                   aria-checked={isSelected}
-                  className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                  className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                   onClick={() => update({ dateTimeType: t.value })}
                 >
                   {t.label}
@@ -411,7 +411,7 @@ namespace WooptionsFic.Builder {
         {(field.dateTimeType || (field.type === 'time' ? 'time' : 'date')) !== 'time' ? (
           <div className="wof-datetime-box">
             <SelectControl
-              label={__('Date Format', 'wooptionsfic')}
+              label={__('Date Format', 'wooptions-pro')}
               value={field.dateFormat ?? 'DD/MM/YYYY'}
               options={DATE_FORMAT_OPTIONS}
               onChange={(dateFormat: string) => update({ dateFormat })}
@@ -419,13 +419,13 @@ namespace WooptionsFic.Builder {
 
             {/* Min Date (Stacked full width for comfortable spacing) */}
             <div style={{ marginBottom: '14px' }}>
-              <span className="wof-datetime-label">{__('Min Date', 'wooptionsfic')}</span>
+              <span className="wof-datetime-label">{__('Min Date', 'wooptions-pro')}</span>
               <div className="wof-field-width-setting" style={{ marginBottom: 0 }}>
-                <div className="wof-field-width-group" role="radiogroup" aria-label={__('Min Date', 'wooptionsfic')}>
+                <div className="wof-field-width-group" role="radiogroup" aria-label={__('Min Date', 'wooptions-pro')}>
                   {([
-                    { label: __('None', 'wooptionsfic'), value: 'none' },
-                    { label: __('Current Day', 'wooptionsfic'), value: 'current_day' },
-                    { label: __('Custom', 'wooptionsfic'), value: 'custom' },
+                    { label: __('None', 'wooptions-pro'), value: 'none' },
+                    { label: __('Current Day', 'wooptions-pro'), value: 'current_day' },
+                    { label: __('Custom', 'wooptions-pro'), value: 'custom' },
                   ] as const).map((m) => {
                     const isSelected = (field.minDateType || 'none') === m.value;
                     return (
@@ -434,7 +434,7 @@ namespace WooptionsFic.Builder {
                         key={m.value}
                         role="radio"
                         aria-checked={isSelected}
-                        className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                        className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                         onClick={() => update({ minDateType: m.value })}
                       >
                         {m.label}
@@ -447,7 +447,7 @@ namespace WooptionsFic.Builder {
                 <div style={{ marginTop: '8px' }}>
                   <DatePickerField
                     value={field.minDateCustom ?? ''}
-                    placeholder={__('Select min date...', 'wooptionsfic')}
+                    placeholder={__('Select min date...', 'wooptions-pro')}
                     onChange={(minDateCustom: string) => update({ minDateCustom })}
                   />
                 </div>
@@ -456,13 +456,13 @@ namespace WooptionsFic.Builder {
 
             {/* Max Date (Stacked full width for comfortable spacing) */}
             <div style={{ marginBottom: '14px' }}>
-              <span className="wof-datetime-label">{__('Max Date', 'wooptionsfic')}</span>
+              <span className="wof-datetime-label">{__('Max Date', 'wooptions-pro')}</span>
               <div className="wof-field-width-setting" style={{ marginBottom: 0 }}>
-                <div className="wof-field-width-group" role="radiogroup" aria-label={__('Max Date', 'wooptionsfic')}>
+                <div className="wof-field-width-group" role="radiogroup" aria-label={__('Max Date', 'wooptions-pro')}>
                   {([
-                    { label: __('None', 'wooptionsfic'), value: 'none' },
-                    { label: __('Current Day', 'wooptionsfic'), value: 'current_day' },
-                    { label: __('Custom', 'wooptionsfic'), value: 'custom' },
+                    { label: __('None', 'wooptions-pro'), value: 'none' },
+                    { label: __('Current Day', 'wooptions-pro'), value: 'current_day' },
+                    { label: __('Custom', 'wooptions-pro'), value: 'custom' },
                   ] as const).map((m) => {
                     const isSelected = (field.maxDateType || 'none') === m.value;
                     return (
@@ -471,7 +471,7 @@ namespace WooptionsFic.Builder {
                         key={m.value}
                         role="radio"
                         aria-checked={isSelected}
-                        className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                        className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                         onClick={() => update({ maxDateType: m.value })}
                       >
                         {m.label}
@@ -484,7 +484,7 @@ namespace WooptionsFic.Builder {
                 <div style={{ marginTop: '8px' }}>
                   <DatePickerField
                     value={field.maxDateCustom ?? ''}
-                    placeholder={__('Select max date...', 'wooptionsfic')}
+                    placeholder={__('Select max date...', 'wooptions-pro')}
                     onChange={(maxDateCustom: string) => update({ maxDateCustom })}
                   />
                 </div>
@@ -492,23 +492,23 @@ namespace WooptionsFic.Builder {
             </div>
 
             <ToggleControl
-              label={__('Disable Today', 'wooptionsfic')}
+              label={__('Disable Today', 'wooptions-pro')}
               checked={Boolean(field.disableToday)}
               onChange={(disableToday: boolean) => update({ disableToday })}
             />
 
             <TextControl
-              label={__('Disable Next N Days', 'wooptionsfic')}
+              label={__('Disable Next N Days', 'wooptions-pro')}
               type="number"
               min={0}
               value={String(field.disableNextNDays ?? 0)}
-              help={__('Disable N days after today (e.g. 3 disables tomorrow, day after tomorrow, and one more)', 'wooptionsfic')}
+              help={__('Disable N days after today (e.g. 3 disables tomorrow, day after tomorrow, and one more)', 'wooptions-pro')}
               onChange={(val: string) => update({ disableNextNDays: Math.max(0, parseInt(val, 10) || 0) })}
             />
 
             {/* Disable Specific Dates with Custom Datepicker Popover */}
             <div style={{ marginBottom: '14px' }}>
-              <span className="wof-datetime-label" style={{ marginBottom: '8px' }}>{__('Disable Specific Dates', 'wooptionsfic')}</span>
+              <span className="wof-datetime-label" style={{ marginBottom: '8px' }}>{__('Disable Specific Dates', 'wooptions-pro')}</span>
               <div style={{ position: 'relative', display: 'inline-block' }}>
                 <button
                   type="button"
@@ -516,7 +516,7 @@ namespace WooptionsFic.Builder {
                   onClick={() => setShowAddDatePicker(!showAddDatePicker)}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                  {__('Add Date', 'wooptionsfic')}
+                  {__('Add Date', 'wooptions-pro')}
                 </button>
                 {showAddDatePicker ? (
                   <DatePickerPopup
@@ -542,7 +542,7 @@ namespace WooptionsFic.Builder {
                       <button
                         type="button"
                         className="wof-disabled-date-delete-btn"
-                        title={__('Remove date', 'wooptionsfic')}
+                        title={__('Remove date', 'wooptions-pro')}
                         onClick={() => {
                           const next = [...(field.disabledDates ?? [])];
                           next.splice(idx, 1);
@@ -559,9 +559,9 @@ namespace WooptionsFic.Builder {
 
             {/* Disable Weekdays Multiselect */}
             <div style={{ marginBottom: '14px' }}>
-              <span className="wof-datetime-label">{__('Disable Weekdays', 'wooptionsfic')}</span>
+              <span className="wof-datetime-label">{__('Disable Weekdays', 'wooptions-pro')}</span>
               <MultiSelectDropdown
-                placeholder={__('Select weekdays to disable...', 'wooptionsfic')}
+                placeholder={__('Select weekdays to disable...', 'wooptions-pro')}
                 options={WEEKDAY_OPTIONS}
                 selectedValues={Array.isArray(field.disabledWeekdays) ? field.disabledWeekdays : []}
                 onChange={(selected) => update({ disabledWeekdays: selected.map(Number) })}
@@ -570,9 +570,9 @@ namespace WooptionsFic.Builder {
 
             {/* Disable Monthly Days Multiselect */}
             <div style={{ marginBottom: '4px' }}>
-              <span className="wof-datetime-label">{__('Disable Monthly Days', 'wooptionsfic')}</span>
+              <span className="wof-datetime-label">{__('Disable Monthly Days', 'wooptions-pro')}</span>
               <MultiSelectDropdown
-                placeholder={__('Select monthly days to disable...', 'wooptionsfic')}
+                placeholder={__('Select monthly days to disable...', 'wooptions-pro')}
                 options={MONTHLY_DAY_OPTIONS}
                 selectedValues={
                   String(field.disabledMonthlyDays || '')
@@ -595,7 +595,7 @@ namespace WooptionsFic.Builder {
             {/* Time Range Min & Max (Side by side) */}
             <div className="wof-time-range-row">
               <div className="wof-time-range-col">
-                <span className="wof-datetime-label">{__('Time Range (Min)', 'wooptionsfic')}</span>
+                <span className="wof-datetime-label">{__('Time Range (Min)', 'wooptions-pro')}</span>
                 {renderTimeInput(
                   field.minTime || '12:00 AM',
                   field.timeFormat || '12',
@@ -604,7 +604,7 @@ namespace WooptionsFic.Builder {
               </div>
 
               <div className="wof-time-range-col">
-                <span className="wof-datetime-label">{__('Time Range (Max)', 'wooptionsfic')}</span>
+                <span className="wof-datetime-label">{__('Time Range (Max)', 'wooptions-pro')}</span>
                 {renderTimeInput(
                   field.maxTime || '12:00 PM',
                   field.timeFormat || '12',
@@ -615,12 +615,12 @@ namespace WooptionsFic.Builder {
 
             {/* Time Format */}
             <div>
-              <span className="wof-datetime-label">{__('Time Format', 'wooptionsfic')}</span>
+              <span className="wof-datetime-label">{__('Time Format', 'wooptions-pro')}</span>
               <div className="wof-field-width-setting" style={{ marginBottom: 0 }}>
-                <div className="wof-field-width-group" role="radiogroup" aria-label={__('Time Format', 'wooptionsfic')}>
+                <div className="wof-field-width-group" role="radiogroup" aria-label={__('Time Format', 'wooptions-pro')}>
                   {([
-                    { label: __('12 Hours', 'wooptionsfic'), value: '12' },
-                    { label: __('24 Hours', 'wooptionsfic'), value: '24' },
+                    { label: __('12 Hours', 'wooptions-pro'), value: '12' },
+                    { label: __('24 Hours', 'wooptions-pro'), value: '24' },
                   ] as const).map((fmt) => {
                     const isSelected = (field.timeFormat || '12') === fmt.value;
                     return (
@@ -629,7 +629,7 @@ namespace WooptionsFic.Builder {
                         key={fmt.value}
                         role="radio"
                         aria-checked={isSelected}
-                        className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                        className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                         onClick={() => update({ timeFormat: fmt.value })}
                       >
                         {fmt.label}
@@ -646,8 +646,8 @@ namespace WooptionsFic.Builder {
   }
 
   function DateRangeFieldInspector(props: {
-    field: WooptionsFic.FieldDefinition;
-    update: (patch: Partial<WooptionsFic.FieldDefinition>) => void;
+    field: WooOptionsPro.FieldDefinition;
+    update: (patch: Partial<WooOptionsPro.FieldDefinition>) => void;
   }): any {
     const { field, update } = props;
     const [showAddDatePicker, setShowAddDatePicker] = useState(false);
@@ -656,7 +656,7 @@ namespace WooptionsFic.Builder {
       <div className="wof-datetime-settings-wrap">
         <div className="wof-datetime-box">
           <SelectControl
-            label={__('Date Format', 'wooptionsfic')}
+            label={__('Date Format', 'wooptions-pro')}
             value={field.dateFormat ?? 'DD/MM/YYYY'}
             options={DATE_FORMAT_OPTIONS}
             onChange={(dateFormat: string) => update({ dateFormat })}
@@ -664,13 +664,13 @@ namespace WooptionsFic.Builder {
 
           {/* Min Date */}
           <div style={{ marginBottom: '14px' }}>
-            <span className="wof-datetime-label">{__('Min Date', 'wooptionsfic')}</span>
+            <span className="wof-datetime-label">{__('Min Date', 'wooptions-pro')}</span>
             <div className="wof-field-width-setting" style={{ marginBottom: 0 }}>
-              <div className="wof-field-width-group" role="radiogroup" aria-label={__('Min Date', 'wooptionsfic')}>
+              <div className="wof-field-width-group" role="radiogroup" aria-label={__('Min Date', 'wooptions-pro')}>
                 {([
-                  { label: __('None', 'wooptionsfic'), value: 'none' },
-                  { label: __('Current Day', 'wooptionsfic'), value: 'current_day' },
-                  { label: __('Custom', 'wooptionsfic'), value: 'custom' },
+                  { label: __('None', 'wooptions-pro'), value: 'none' },
+                  { label: __('Current Day', 'wooptions-pro'), value: 'current_day' },
+                  { label: __('Custom', 'wooptions-pro'), value: 'custom' },
                 ] as const).map((m) => {
                   const isSelected = (field.minDateType || 'none') === m.value;
                   return (
@@ -679,7 +679,7 @@ namespace WooptionsFic.Builder {
                       key={m.value}
                       role="radio"
                       aria-checked={isSelected}
-                      className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                      className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                       onClick={() => update({ minDateType: m.value })}
                     >
                       {m.label}
@@ -692,7 +692,7 @@ namespace WooptionsFic.Builder {
               <div style={{ marginTop: '8px' }}>
                 <DatePickerField
                   value={field.minDateCustom ?? ''}
-                  placeholder={__('Select min date...', 'wooptionsfic')}
+                  placeholder={__('Select min date...', 'wooptions-pro')}
                   onChange={(minDateCustom: string) => update({ minDateCustom })}
                 />
               </div>
@@ -701,13 +701,13 @@ namespace WooptionsFic.Builder {
 
           {/* Max Date */}
           <div style={{ marginBottom: '14px' }}>
-            <span className="wof-datetime-label">{__('Max Date', 'wooptionsfic')}</span>
+            <span className="wof-datetime-label">{__('Max Date', 'wooptions-pro')}</span>
             <div className="wof-field-width-setting" style={{ marginBottom: 0 }}>
-              <div className="wof-field-width-group" role="radiogroup" aria-label={__('Max Date', 'wooptionsfic')}>
+              <div className="wof-field-width-group" role="radiogroup" aria-label={__('Max Date', 'wooptions-pro')}>
                 {([
-                  { label: __('None', 'wooptionsfic'), value: 'none' },
-                  { label: __('Current Day', 'wooptionsfic'), value: 'current_day' },
-                  { label: __('Custom', 'wooptionsfic'), value: 'custom' },
+                  { label: __('None', 'wooptions-pro'), value: 'none' },
+                  { label: __('Current Day', 'wooptions-pro'), value: 'current_day' },
+                  { label: __('Custom', 'wooptions-pro'), value: 'custom' },
                 ] as const).map((m) => {
                   const isSelected = (field.maxDateType || 'none') === m.value;
                   return (
@@ -716,7 +716,7 @@ namespace WooptionsFic.Builder {
                       key={m.value}
                       role="radio"
                       aria-checked={isSelected}
-                      className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                      className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                       onClick={() => update({ maxDateType: m.value })}
                     >
                       {m.label}
@@ -729,7 +729,7 @@ namespace WooptionsFic.Builder {
               <div style={{ marginTop: '8px' }}>
                 <DatePickerField
                   value={field.maxDateCustom ?? ''}
-                  placeholder={__('Select max date...', 'wooptionsfic')}
+                  placeholder={__('Select max date...', 'wooptions-pro')}
                   onChange={(maxDateCustom: string) => update({ maxDateCustom })}
                 />
               </div>
@@ -737,23 +737,23 @@ namespace WooptionsFic.Builder {
           </div>
 
           <ToggleControl
-            label={__('Disable Today', 'wooptionsfic')}
+            label={__('Disable Today', 'wooptions-pro')}
             checked={Boolean(field.disableToday)}
             onChange={(disableToday: boolean) => update({ disableToday })}
           />
 
           <TextControl
-            label={__('Disable Next N Days', 'wooptionsfic')}
+            label={__('Disable Next N Days', 'wooptions-pro')}
             type="number"
             min={0}
             value={String(field.disableNextNDays ?? 0)}
-            help={__('Disable N days after today (e.g. 3 disables tomorrow, day after tomorrow, and one more)', 'wooptionsfic')}
+            help={__('Disable N days after today (e.g. 3 disables tomorrow, day after tomorrow, and one more)', 'wooptions-pro')}
             onChange={(val: string) => update({ disableNextNDays: Math.max(0, parseInt(val, 10) || 0) })}
           />
 
           {/* Disable Specific Dates with Custom Datepicker Popover */}
           <div style={{ marginBottom: '14px' }}>
-            <span className="wof-datetime-label" style={{ marginBottom: '8px' }}>{__('Disable Specific Dates', 'wooptionsfic')}</span>
+            <span className="wof-datetime-label" style={{ marginBottom: '8px' }}>{__('Disable Specific Dates', 'wooptions-pro')}</span>
             <div style={{ position: 'relative', display: 'inline-block' }}>
               <button
                 type="button"
@@ -761,7 +761,7 @@ namespace WooptionsFic.Builder {
                 onClick={() => setShowAddDatePicker(!showAddDatePicker)}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                {__('Add Date', 'wooptionsfic')}
+                {__('Add Date', 'wooptions-pro')}
               </button>
               {showAddDatePicker ? (
                 <DatePickerPopup
@@ -787,7 +787,7 @@ namespace WooptionsFic.Builder {
                     <button
                       type="button"
                       className="wof-disabled-date-delete-btn"
-                      title={__('Remove date', 'wooptionsfic')}
+                      title={__('Remove date', 'wooptions-pro')}
                       onClick={() => {
                         const next = [...(field.disabledDates ?? [])];
                         next.splice(idx, 1);
@@ -804,9 +804,9 @@ namespace WooptionsFic.Builder {
 
           {/* Disable Weekdays Multiselect */}
           <div style={{ marginBottom: '14px' }}>
-            <span className="wof-datetime-label">{__('Disable Weekdays', 'wooptionsfic')}</span>
+            <span className="wof-datetime-label">{__('Disable Weekdays', 'wooptions-pro')}</span>
             <MultiSelectDropdown
-              placeholder={__('Select weekdays to disable...', 'wooptionsfic')}
+              placeholder={__('Select weekdays to disable...', 'wooptions-pro')}
               options={WEEKDAY_OPTIONS}
               selectedValues={Array.isArray(field.disabledWeekdays) ? field.disabledWeekdays : []}
               onChange={(selected) => update({ disabledWeekdays: selected.map(Number) })}
@@ -815,9 +815,9 @@ namespace WooptionsFic.Builder {
 
           {/* Disable Monthly Days Multiselect */}
           <div style={{ marginBottom: '14px' }}>
-            <span className="wof-datetime-label">{__('Disable Monthly Days', 'wooptionsfic')}</span>
+            <span className="wof-datetime-label">{__('Disable Monthly Days', 'wooptions-pro')}</span>
             <MultiSelectDropdown
-              placeholder={__('Select monthly days to disable...', 'wooptionsfic')}
+              placeholder={__('Select monthly days to disable...', 'wooptions-pro')}
               options={MONTHLY_DAY_OPTIONS}
               selectedValues={
                 String(field.disabledMonthlyDays || '')
@@ -835,27 +835,27 @@ namespace WooptionsFic.Builder {
           {/* Min Days & Max Days Duration */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '14px' }}>
             <TextControl
-              label={__('Min Days', 'wooptionsfic')}
+              label={__('Min Days', 'wooptions-pro')}
               type="number"
               min={0}
               value={String(field.minDays ?? 0)}
-              help={__('Min duration (0 for none)', 'wooptionsfic')}
+              help={__('Min duration (0 for none)', 'wooptions-pro')}
               onChange={(val: string) => update({ minDays: Math.max(0, parseInt(val, 10) || 0) })}
             />
             <TextControl
-              label={__('Max Days', 'wooptionsfic')}
+              label={__('Max Days', 'wooptions-pro')}
               type="number"
               min={0}
               value={String(field.maxDays ?? 0)}
-              help={__('Max duration (0 for none)', 'wooptionsfic')}
+              help={__('Max duration (0 for none)', 'wooptions-pro')}
               onChange={(val: string) => update({ maxDays: Math.max(0, parseInt(val, 10) || 0) })}
             />
           </div>
 
           {/* Allow Same Day Selection */}
           <ToggleControl
-            label={__('Allow Same Day Selection', 'wooptionsfic')}
-            help={__('Allow start and end date to be on the same day', 'wooptionsfic')}
+            label={__('Allow Same Day Selection', 'wooptions-pro')}
+            help={__('Allow start and end date to be on the same day', 'wooptions-pro')}
             checked={field.allowSameDay !== false}
             onChange={(allowSameDay: boolean) => update({ allowSameDay })}
           />
@@ -1003,7 +1003,7 @@ namespace WooptionsFic.Builder {
             type="text"
             maxLength={2}
             value={localHours}
-            aria-label={__('Hours', 'wooptionsfic')}
+            aria-label={__('Hours', 'wooptions-pro')}
             onFocus={(e: any) => e.target.select()}
             onChange={handleHoursChange}
             onBlur={handleHoursBlur}
@@ -1015,7 +1015,7 @@ namespace WooptionsFic.Builder {
             type="text"
             maxLength={2}
             value={localMinutes}
-            aria-label={__('Minutes', 'wooptionsfic')}
+            aria-label={__('Minutes', 'wooptions-pro')}
             onFocus={(e: any) => e.target.select()}
             onChange={handleMinutesChange}
             onBlur={handleMinutesBlur}
@@ -1026,7 +1026,7 @@ namespace WooptionsFic.Builder {
           <div className="wof-meridiem-group">
             <button
               type="button"
-              className={WooptionsFic.Utils.classNames('wof-meridiem-btn', localMeridiem === 'AM' && 'is-active')}
+              className={WooOptionsPro.Utils.classNames('wof-meridiem-btn', localMeridiem === 'AM' && 'is-active')}
               onClick={() => {
                 setLocalMeridiem('AM');
                 commit((localHours || '12').padStart(2, '0'), (localMinutes || '00').padStart(2, '0'), 'AM');
@@ -1036,7 +1036,7 @@ namespace WooptionsFic.Builder {
             </button>
             <button
               type="button"
-              className={WooptionsFic.Utils.classNames('wof-meridiem-btn', localMeridiem === 'PM' && 'is-active')}
+              className={WooOptionsPro.Utils.classNames('wof-meridiem-btn', localMeridiem === 'PM' && 'is-active')}
               onClick={() => {
                 setLocalMeridiem('PM');
                 commit((localHours || '12').padStart(2, '0'), (localMinutes || '00').padStart(2, '0'), 'PM');
@@ -1066,16 +1066,16 @@ namespace WooptionsFic.Builder {
   }): any {
     const [open, setOpen] = useState(false);
     const color = normalizeHexColor(props.color);
-    return <div className={WooptionsFic.Utils.classNames('wof-choice-color-control', open && 'is-open')}>
-      <span className="wof-choice-color-control__label">{props.label ?? __('Swatch color', 'wooptionsfic')}</span>
+    return <div className={WooOptionsPro.Utils.classNames('wof-choice-color-control', open && 'is-open')}>
+      <span className="wof-choice-color-control__label">{props.label ?? __('Swatch color', 'wooptions-pro')}</span>
       <div className="wof-choice-color-control__row">
         <button type="button" className="wof-choice-color-control__trigger" onClick={() => setOpen((value: boolean) => !value)} aria-expanded={open}>
           <span style={{ background: color }} aria-hidden="true" />
           <code>{color}</code>
-          <WooptionsFic.Components.Dashicon name="arrow-down-alt2" />
+          <WooOptionsPro.Components.Dashicon name="arrow-down-alt2" />
         </button>
         <TextControl
-          label={__('Hex color', 'wooptionsfic')}
+          label={__('Hex color', 'wooptions-pro')}
           hideLabelFromVision
           value={color}
           onChange={(next: string) => {
@@ -1094,9 +1094,9 @@ namespace WooptionsFic.Builder {
   }
 
   function ChoiceMediaControl(props: {
-    choice: WooptionsFic.ChoiceDefinition;
+    choice: WooOptionsPro.ChoiceDefinition;
     required: boolean;
-    onChange: (patch: Partial<WooptionsFic.ChoiceDefinition>) => void;
+    onChange: (patch: Partial<WooOptionsPro.ChoiceDefinition>) => void;
   }): any {
     const [previewUrl, setPreviewUrl] = useState(props.choice.imageUrl ?? '');
 
@@ -1121,8 +1121,8 @@ namespace WooptionsFic.Builder {
     const openPicker = () => {
       if (!wp.media) return;
       const frame = wp.media({
-        title: __('Choose a choice image', 'wooptionsfic'),
-        button: { text: __('Use this image', 'wooptionsfic') },
+        title: __('Choose a choice image', 'wooptions-pro'),
+        button: { text: __('Use this image', 'wooptions-pro') },
         library: { type: 'image' },
         multiple: false,
       });
@@ -1144,10 +1144,10 @@ namespace WooptionsFic.Builder {
           {previewUrl ? <img src={previewUrl} alt="" /> : <span className="dashicons dashicons-format-image" aria-hidden="true" />}
         </button>
         <div>
-          <strong>{props.required ? __('Swatch image', 'wooptionsfic') : __('Choice image (optional)', 'wooptionsfic')}</strong>
-          <small>{props.choice.imageId ? `Media #${props.choice.imageId}` : __('No image selected', 'wooptionsfic')}</small>
+          <strong>{props.required ? __('Swatch image', 'wooptions-pro') : __('Choice image (optional)', 'wooptions-pro')}</strong>
+          <small>{props.choice.imageId ? `Media #${props.choice.imageId}` : __('No image selected', 'wooptions-pro')}</small>
           <div className="wof-media-control__actions">
-            <Button variant="secondary" onClick={openPicker}>{hasImage ? __('Replace', 'wooptionsfic') : __('Choose image', 'wooptionsfic')}</Button>
+            <Button variant="secondary" onClick={openPicker}>{hasImage ? __('Replace', 'wooptions-pro') : __('Choose image', 'wooptions-pro')}</Button>
             {hasImage ? (
               <Button
                 variant="tertiary"
@@ -1157,7 +1157,7 @@ namespace WooptionsFic.Builder {
                   props.onChange({ imageId: 0, imageUrl: '' });
                 }}
               >
-                {__('Remove', 'wooptionsfic')}
+                {__('Remove', 'wooptions-pro')}
               </Button>
             ) : null}
           </div>
@@ -1166,7 +1166,7 @@ namespace WooptionsFic.Builder {
     );
   }
 
-  const CHOICE_INDEX_MIME = 'application/x-wooptionsfic-choice-index';
+  const CHOICE_INDEX_MIME = 'application/x-wooptions-pro-choice-index';
 
   function truncateWords(str: string, maxWords = 5): string {
     if (!str) return '';
@@ -1177,13 +1177,13 @@ namespace WooptionsFic.Builder {
   }
 
   function ChoiceItemCard(props: {
-    choice: WooptionsFic.ChoiceDefinition;
+    choice: WooOptionsPro.ChoiceDefinition;
     index: number;
     count: number;
     fieldType: string;
     isOpen: boolean;
     onToggle: () => void;
-    onUpdate: (patch: Partial<WooptionsFic.ChoiceDefinition>) => void;
+    onUpdate: (patch: Partial<WooOptionsPro.ChoiceDefinition>) => void;
     onRemove: () => void;
     onMove: (from: number, to: number) => void;
   }): any {
@@ -1248,7 +1248,7 @@ namespace WooptionsFic.Builder {
     return (
       <article
         ref={cardRef}
-        className={WooptionsFic.Utils.classNames(
+        className={WooOptionsPro.Utils.classNames(
           'wof-choice-card',
           !props.isOpen && 'is-collapsed',
           isDragging && 'is-dragging',
@@ -1266,12 +1266,12 @@ namespace WooptionsFic.Builder {
             className="wof-choice-drag-handle"
             onDragStart={dragStart}
             onDragEnd={dragEnd}
-            aria-label={__('Drag choice to reorder', 'wooptionsfic')}
-            title={__('Drag to reorder', 'wooptionsfic')}
+            aria-label={__('Drag choice to reorder', 'wooptions-pro')}
+            title={__('Drag to reorder', 'wooptions-pro')}
           >
-            <WooptionsFic.Components.GripIcon />
+            <WooOptionsPro.Components.GripIcon />
             <span className="wof-choice-header-label-badge" title={props.choice.label}>
-              {props.choice.label || `${__('Choice', 'wooptionsfic')} ${props.index + 1}`}
+              {props.choice.label || `${__('Choice', 'wooptions-pro')} ${props.index + 1}`}
             </span>
           </button>
           <div className="wof-choice-header-actions">
@@ -1280,19 +1280,19 @@ namespace WooptionsFic.Builder {
               className="wof-choice-accordion-toggle"
               onClick={props.onToggle}
               aria-expanded={props.isOpen}
-              aria-label={props.isOpen ? __('Collapse choice', 'wooptionsfic') : __('Expand choice', 'wooptionsfic')}
-              title={props.isOpen ? __('Collapse choice', 'wooptionsfic') : __('Expand choice', 'wooptionsfic')}
+              aria-label={props.isOpen ? __('Collapse choice', 'wooptions-pro') : __('Expand choice', 'wooptions-pro')}
+              title={props.isOpen ? __('Collapse choice', 'wooptions-pro') : __('Expand choice', 'wooptions-pro')}
             >
-              <WooptionsFic.Components.Dashicon name={props.isOpen ? 'arrow-up-alt2' : 'arrow-down-alt2'} />
+              <WooOptionsPro.Components.Dashicon name={props.isOpen ? 'arrow-up-alt2' : 'arrow-down-alt2'} />
             </button>
             <button
               type="button"
               className="wof-choice-delete-btn"
               onClick={props.onRemove}
-              aria-label={__('Delete choice', 'wooptionsfic')}
-              title={__('Delete choice', 'wooptionsfic')}
+              aria-label={__('Delete choice', 'wooptions-pro')}
+              title={__('Delete choice', 'wooptions-pro')}
             >
-              <WooptionsFic.Components.Dashicon name="trash" />
+              <WooOptionsPro.Components.Dashicon name="trash" />
             </button>
           </div>
         </header>
@@ -1300,13 +1300,13 @@ namespace WooptionsFic.Builder {
         {props.isOpen ? (
           <div className="wof-choice-card__body">
             <TextControl
-              label={__('Label', 'wooptionsfic')}
+              label={__('Label', 'wooptions-pro')}
               value={props.choice.label}
               onChange={(label: string) => props.onUpdate({ label })}
             />
 
             <TextControl
-              label={__('Description', 'wooptionsfic')}
+              label={__('Description', 'wooptions-pro')}
               value={props.choice.description}
               onChange={(description: string) => props.onUpdate({ description })}
             />
@@ -1328,20 +1328,20 @@ namespace WooptionsFic.Builder {
 
             <div className="wof-choice-pricing-row">
               <SelectControl
-                label={__('Price type', 'wooptionsfic')}
+                label={__('Price type', 'wooptions-pro')}
                 value={props.choice.pricing.strategy}
                 options={[
-                  { label: __('No adjustment', 'wooptionsfic'), value: 'none' },
-                  { label: __('Fixed amount', 'wooptionsfic'), value: 'fixed' },
-                  { label: __('Percentage', 'wooptionsfic'), value: 'percentage' },
+                  { label: __('No adjustment', 'wooptions-pro'), value: 'none' },
+                  { label: __('Fixed amount', 'wooptions-pro'), value: 'fixed' },
+                  { label: __('Percentage', 'wooptions-pro'), value: 'percentage' },
                 ]}
-                onChange={(strategy: WooptionsFic.PricingDefinition['strategy']) =>
+                onChange={(strategy: WooOptionsPro.PricingDefinition['strategy']) =>
                   props.onUpdate({ pricing: { ...props.choice.pricing, strategy } })
                 }
               />
               {props.choice.pricing.strategy === 'percentage' ? (
                 <TextControl
-                  label={__('Percent', 'wooptionsfic')}
+                  label={__('Percent', 'wooptions-pro')}
                   type="number"
                   value={props.choice.pricing.percent}
                   onChange={(percent: string) =>
@@ -1350,7 +1350,7 @@ namespace WooptionsFic.Builder {
                 />
               ) : props.choice.pricing.strategy !== 'none' ? (
                 <TextControl
-                  label={__('Amount', 'wooptionsfic')}
+                  label={__('Amount', 'wooptions-pro')}
                   type="number"
                   value={props.choice.pricing.amount}
                   onChange={(amount: string) =>
@@ -1362,12 +1362,12 @@ namespace WooptionsFic.Builder {
 
             <div className="wof-choice-toggles-row">
               <ToggleControl
-                label={__('Default choice', 'wooptionsfic')}
+                label={__('Default choice', 'wooptions-pro')}
                 checked={props.choice.default}
                 onChange={(val: boolean) => props.onUpdate({ default: val })}
               />
               <ToggleControl
-                label={__('Disable choice', 'wooptionsfic')}
+                label={__('Disable choice', 'wooptions-pro')}
                 checked={props.choice.disabled}
                 onChange={(val: boolean) => props.onUpdate({ disabled: val })}
               />
@@ -1381,13 +1381,13 @@ namespace WooptionsFic.Builder {
   // ─── Product Choice Editor ────────────────────────────────────────────────
 
   function ProductChoiceCard(props: {
-    choice: WooptionsFic.ChoiceDefinition;
+    choice: WooOptionsPro.ChoiceDefinition;
     index: number;
     count: number;
     mergeVariations: boolean;
     isOpen: boolean;
     onToggle: () => void;
-    onUpdate: (patch: Partial<WooptionsFic.ChoiceDefinition>) => void;
+    onUpdate: (patch: Partial<WooOptionsPro.ChoiceDefinition>) => void;
     onRemove: () => void;
     onMove: (from: number, to: number) => void;
   }): any {
@@ -1415,20 +1415,20 @@ namespace WooptionsFic.Builder {
     // variation badge in header
     let varBadge: string;
     if (!isVariable) {
-      varBadge = __('N/A', 'wooptionsfic');
+      varBadge = __('N/A', 'wooptions-pro');
     } else if (props.mergeVariations) {
-      varBadge = __('All Variations', 'wooptionsfic');
+      varBadge = __('All Variations', 'wooptions-pro');
     } else if (selectedVarIds.length === 0) {
-      varBadge = __('N/A', 'wooptionsfic');
+      varBadge = __('N/A', 'wooptions-pro');
     } else {
-      varBadge = `${selectedVarIds.length} ${__('Variations', 'wooptionsfic')}`;
+      varBadge = `${selectedVarIds.length} ${__('Variations', 'wooptions-pro')}`;
     }
 
     // Auto-load variations if variable product info was saved without variations array
     useEffect(() => {
       const pid = props.choice.productId || props.choice.linkedProductId;
       if (isVariable && allVariations.length === 0 && pid) {
-        WooptionsFic.Api.searchProductsForChoices('', [pid]).then((res: any) => {
+        WooOptionsPro.Api.searchProductsForChoices('', [pid]).then((res: any) => {
           const found = (res.items || []).find((it: any) => it.id === pid);
           if (found && found.variations && found.variations.length > 0) {
             props.onUpdate({
@@ -1454,7 +1454,7 @@ namespace WooptionsFic.Builder {
       setIsChangingSearch(true);
       changeSearchTimeout.current = setTimeout(async () => {
         try {
-          const result = await WooptionsFic.Api.searchProductsForChoices(changeQuery);
+          const result = await WooOptionsPro.Api.searchProductsForChoices(changeQuery);
           setChangeSuggestions(result.items ?? []);
         } catch {
           setChangeSuggestions([]);
@@ -1560,7 +1560,7 @@ namespace WooptionsFic.Builder {
     return (
       <article
         ref={cardRef}
-        className={WooptionsFic.Utils.classNames(
+        className={WooOptionsPro.Utils.classNames(
           'wof-choice-card',
           !props.isOpen && 'is-collapsed',
           isDragging && 'is-dragging',
@@ -1578,21 +1578,21 @@ namespace WooptionsFic.Builder {
             className="wof-choice-drag-handle"
             onDragStart={dragStart}
             onDragEnd={dragEnd}
-            aria-label={__('Drag choice to reorder', 'wooptionsfic')}
-            title={__('Drag to reorder', 'wooptionsfic')}
+            aria-label={__('Drag choice to reorder', 'wooptions-pro')}
+            title={__('Drag to reorder', 'wooptions-pro')}
           >
-            <WooptionsFic.Components.GripIcon />
+            <WooOptionsPro.Components.GripIcon />
             <span className="wof-choice-header-thumb">
               {(info?.image || props.choice.imageUrl) ? (
                 <img src={info?.image || props.choice.imageUrl} alt="" />
               ) : (
-                <WooptionsFic.Components.Dashicon name="format-image" />
+                <WooOptionsPro.Components.Dashicon name="format-image" />
               )}
             </span>
             <span className="wof-choice-header-label-badge" title={props.choice.label}>
-              {truncateWords(props.choice.label || `${__('Choice', 'wooptionsfic')} ${props.index + 1}`, 5)}
+              {truncateWords(props.choice.label || `${__('Choice', 'wooptions-pro')} ${props.index + 1}`, 5)}
             </span>
-            <span className={WooptionsFic.Utils.classNames('wof-choice-header-var-badge', !isVariable && 'is-na')}>
+            <span className={WooOptionsPro.Utils.classNames('wof-choice-header-var-badge', !isVariable && 'is-na')}>
               {varBadge}
             </span>
           </button>
@@ -1602,19 +1602,19 @@ namespace WooptionsFic.Builder {
               className="wof-choice-accordion-toggle"
               onClick={props.onToggle}
               aria-expanded={props.isOpen}
-              aria-label={props.isOpen ? __('Collapse choice', 'wooptionsfic') : __('Expand choice', 'wooptionsfic')}
-              title={props.isOpen ? __('Collapse choice', 'wooptionsfic') : __('Expand choice', 'wooptionsfic')}
+              aria-label={props.isOpen ? __('Collapse choice', 'wooptions-pro') : __('Expand choice', 'wooptions-pro')}
+              title={props.isOpen ? __('Collapse choice', 'wooptions-pro') : __('Expand choice', 'wooptions-pro')}
             >
-              <WooptionsFic.Components.Dashicon name={props.isOpen ? 'arrow-up-alt2' : 'arrow-down-alt2'} />
+              <WooOptionsPro.Components.Dashicon name={props.isOpen ? 'arrow-up-alt2' : 'arrow-down-alt2'} />
             </button>
             <button
               type="button"
               className="wof-choice-delete-btn"
               onClick={props.onRemove}
-              aria-label={__('Delete choice', 'wooptionsfic')}
-              title={__('Delete choice', 'wooptionsfic')}
+              aria-label={__('Delete choice', 'wooptions-pro')}
+              title={__('Delete choice', 'wooptions-pro')}
             >
-              <WooptionsFic.Components.Dashicon name="trash" />
+              <WooOptionsPro.Components.Dashicon name="trash" />
             </button>
           </div>
         </header>
@@ -1627,16 +1627,16 @@ namespace WooptionsFic.Builder {
                 {(info?.image || props.choice.imageUrl) ? (
                   <img src={info?.image || props.choice.imageUrl} alt="" />
                 ) : (
-                  <WooptionsFic.Components.Dashicon name="format-image" />
+                  <WooOptionsPro.Components.Dashicon name="format-image" />
                 )}
               </div>
               <div className="wof-product-choice-selected-card__meta">
                 <div className="wof-product-choice-selected-card__title" title={props.choice.label}>
-                  {truncateWords(props.choice.label || __('(No product selected)', 'wooptionsfic'), 5)}
+                  {truncateWords(props.choice.label || __('(No product selected)', 'wooptions-pro'), 5)}
                 </div>
                 <div className="wof-product-choice-selected-card__sub">
                   {productPrice ? <span className="wof-product-choice-selected-card__price">{productPrice}</span> : null}
-                  {isVariable ? <span className="wof-choice-header-var-badge">{__('Variable', 'wooptionsfic')}</span> : null}
+                  {isVariable ? <span className="wof-choice-header-var-badge">{__('Variable', 'wooptions-pro')}</span> : null}
                   {productId ? <span className="wof-product-choice-selected-card__id">#{productId}</span> : null}
                 </div>
               </div>
@@ -1645,7 +1645,7 @@ namespace WooptionsFic.Builder {
                 className="wof-product-choice-change-btn"
                 onClick={() => setShowChangeSearch((prev) => !prev)}
               >
-                {showChangeSearch ? __('Cancel', 'wooptionsfic') : __('Change', 'wooptionsfic')}
+                {showChangeSearch ? __('Cancel', 'wooptions-pro') : __('Change', 'wooptions-pro')}
               </button>
             </div>
 
@@ -1653,11 +1653,11 @@ namespace WooptionsFic.Builder {
             {showChangeSearch ? (
               <div className="wof-product-change-search-wrap">
                 <div className="wof-product-search-input-row">
-                  <WooptionsFic.Components.Dashicon name="search" />
+                  <WooOptionsPro.Components.Dashicon name="search" />
                   <input
                     type="text"
                     className="wof-product-search-input"
-                    placeholder={__('Search product to replace…', 'wooptionsfic')}
+                    placeholder={__('Search product to replace…', 'wooptions-pro')}
                     value={changeQuery}
                     onChange={(e: any) => setChangeQuery(e.target.value)}
                     autoFocus
@@ -1679,11 +1679,11 @@ namespace WooptionsFic.Builder {
                         {s.image ? (
                           <img src={s.image} alt="" className="wof-product-search-option__thumb" />
                         ) : (
-                          <WooptionsFic.Components.Dashicon name="format-image" />
+                          <WooOptionsPro.Components.Dashicon name="format-image" />
                         )}
                         <span className="wof-product-search-option__label">{s.label}</span>
                         <span className="wof-product-search-option__meta">{s.meta}</span>
-                        {s.isVariable ? <span className="wof-product-search-option__badge">{__('Variable', 'wooptionsfic')}</span> : null}
+                        {s.isVariable ? <span className="wof-product-search-option__badge">{__('Variable', 'wooptions-pro')}</span> : null}
                       </button>
                     ))}
                   </div>
@@ -1695,15 +1695,15 @@ namespace WooptionsFic.Builder {
             {isVariable ? (
               props.mergeVariations ? (
                 <div className="wof-product-variations-merged-notice">
-                  <WooptionsFic.Components.Dashicon name="info" />
-                  <span>{__('All variations are merged into this product choice because "Merge Variation Products" is enabled.', 'wooptionsfic')}</span>
+                  <WooOptionsPro.Components.Dashicon name="info" />
+                  <span>{__('All variations are merged into this product choice because "Merge Variation Products" is enabled.', 'wooptions-pro')}</span>
                 </div>
               ) : (
                 <div className="wof-product-variations-section">
                   <div className="wof-product-variations-header">
-                    <strong>{__('Variations', 'wooptionsfic')}</strong>
+                    <strong>{__('Variations', 'wooptions-pro')}</strong>
                     <span className="wof-product-variations-count">
-                      {selectedVarIds.length} / {allVariations.length} {__('selected', 'wooptionsfic')}
+                      {selectedVarIds.length} / {allVariations.length} {__('selected', 'wooptions-pro')}
                     </span>
                     <div className="wof-product-variations-actions">
                       <button
@@ -1711,14 +1711,14 @@ namespace WooptionsFic.Builder {
                         className="wof-btn-link"
                         onClick={() => props.onUpdate({ selectedVariationIds: allVariations.map((v: any) => v.id) })}
                       >
-                        {__('Select all', 'wooptionsfic')}
+                        {__('Select all', 'wooptions-pro')}
                       </button>
                       <button
                         type="button"
                         className="wof-btn-link"
                         onClick={() => props.onUpdate({ selectedVariationIds: [] })}
                       >
-                        {__('Clear', 'wooptionsfic')}
+                        {__('Clear', 'wooptions-pro')}
                       </button>
                     </div>
                   </div>
@@ -1727,7 +1727,7 @@ namespace WooptionsFic.Builder {
                     <input
                       type="text"
                       className="wof-var-filter-input"
-                      placeholder={__('Filter variations…', 'wooptionsfic')}
+                      placeholder={__('Filter variations…', 'wooptions-pro')}
                       value={varFilter}
                       onChange={(e: any) => setVarFilter(e.target.value)}
                     />
@@ -1737,8 +1737,8 @@ namespace WooptionsFic.Builder {
                     {filteredVariations.length === 0 ? (
                       <p className="wof-muted-note" style={{ margin: 0, padding: '8px' }}>
                         {allVariations.length === 0
-                          ? __('No variations loaded for this product.', 'wooptionsfic')
-                          : __('No matching variations.', 'wooptionsfic')}
+                          ? __('No variations loaded for this product.', 'wooptions-pro')
+                          : __('No matching variations.', 'wooptions-pro')}
                       </p>
                     ) : (
                       filteredVariations.map((v: any) => {
@@ -1766,12 +1766,12 @@ namespace WooptionsFic.Builder {
             {/* Default & Disable choice */}
             <div className="wof-choice-toggles-row">
               <ToggleControl
-                label={__('Default choice', 'wooptionsfic')}
+                label={__('Default choice', 'wooptions-pro')}
                 checked={props.choice.default}
                 onChange={(val: boolean) => props.onUpdate({ default: val })}
               />
               <ToggleControl
-                label={__('Disable choice', 'wooptionsfic')}
+                label={__('Disable choice', 'wooptions-pro')}
                 checked={props.choice.disabled}
                 onChange={(val: boolean) => props.onUpdate({ disabled: val })}
               />
@@ -1783,8 +1783,8 @@ namespace WooptionsFic.Builder {
   }
 
   function ProductChoiceEditor(props: {
-    field: WooptionsFic.FieldDefinition;
-    onChange: (field: WooptionsFic.FieldDefinition) => void;
+    field: WooOptionsPro.FieldDefinition;
+    onChange: (field: WooOptionsPro.FieldDefinition) => void;
   }): any {
     const choices = props.field.choices ?? [];
     const [collapsedMap, setCollapsedMap] = useState<Record<string, boolean>>({});
@@ -1828,7 +1828,7 @@ namespace WooptionsFic.Builder {
       setIsSearching(true);
       debounceRef.current = setTimeout(async () => {
         try {
-          const result = await WooptionsFic.Api.searchProductsForChoices(searchQuery);
+          const result = await WooOptionsPro.Api.searchProductsForChoices(searchQuery);
           setSuggestions(result.items ?? []);
         } catch { }
         setIsSearching(false);
@@ -1837,8 +1837,8 @@ namespace WooptionsFic.Builder {
     }, [searchQuery, searchFocused]);
 
     const addProduct = (product: any) => {
-      const uuid = WooptionsFic.Utils.uuid();
-      const newChoice: WooptionsFic.ChoiceDefinition = {
+      const uuid = WooOptionsPro.Utils.uuid();
+      const newChoice: WooOptionsPro.ChoiceDefinition = {
         uuid,
         label: product.label || '',
         description: '',
@@ -1873,7 +1873,7 @@ namespace WooptionsFic.Builder {
     };
 
     const removeChoice = (uuid: string) => props.onChange({ ...props.field, choices: choices.filter((c) => c.uuid !== uuid) });
-    const updateChoice = (uuid: string, patch: Partial<WooptionsFic.ChoiceDefinition>) =>
+    const updateChoice = (uuid: string, patch: Partial<WooOptionsPro.ChoiceDefinition>) =>
       props.onChange({ ...props.field, choices: choices.map((c) => c.uuid === uuid ? { ...c, ...patch } : c) });
     const moveChoice = (from: number, to: number) => {
       if (from === to || from < 0 || to < 0 || from >= choices.length || to >= choices.length) return;
@@ -1890,13 +1890,13 @@ namespace WooptionsFic.Builder {
         {/* Image Style */}
         <div style={{ marginBottom: '16px' }}>
           <label className="components-base-control__label" style={{ display: 'block', marginBottom: '8px' }}>
-            {__('Image Style', 'wooptionsfic')}
+            {__('Image Style', 'wooptions-pro')}
           </label>
           <div className="wof-image-style-cards">
             {([
-              { value: 'default', label: __('Default', 'wooptionsfic') },
-              { value: 'overlay', label: __('Image overlay', 'wooptionsfic') },
-              { value: 'only_image', label: __('Only Image', 'wooptionsfic') },
+              { value: 'default', label: __('Default', 'wooptions-pro') },
+              { value: 'overlay', label: __('Image overlay', 'wooptions-pro') },
+              { value: 'only_image', label: __('Only Image', 'wooptions-pro') },
             ] as const).map((st) => {
               const currentStyle = props.field.imageStyle || 'default';
               const isSelected = currentStyle === st.value;
@@ -1904,7 +1904,7 @@ namespace WooptionsFic.Builder {
                 <button
                   key={st.value}
                   type="button"
-                  className={WooptionsFic.Utils.classNames('wof-image-style-card', isSelected && 'is-active')}
+                  className={WooOptionsPro.Utils.classNames('wof-image-style-card', isSelected && 'is-active')}
                   onClick={() => props.onChange({ ...props.field, imageStyle: st.value })}
                   title={st.label}
                 >
@@ -1936,13 +1936,13 @@ namespace WooptionsFic.Builder {
         {/* Toolbar: Count & Collapse/Expand all */}
         {choices.length > 1 ? (
           <div className="wof-choice-list-toolbar">
-            <span className="wof-choice-list-count">{choices.length} {__('Products', 'wooptionsfic')}</span>
+            <span className="wof-choice-list-count">{choices.length} {__('Products', 'wooptions-pro')}</span>
             <button
               type="button"
               className="wof-choice-collapse-all-btn"
               onClick={toggleAll}
             >
-              {isAllCollapsed ? __('Expand all', 'wooptionsfic') : __('Collapse all', 'wooptionsfic')}
+              {isAllCollapsed ? __('Expand all', 'wooptions-pro') : __('Collapse all', 'wooptions-pro')}
             </button>
           </div>
         ) : null}
@@ -1968,12 +1968,12 @@ namespace WooptionsFic.Builder {
         {/* Search / Add Product */}
         <div className="wof-product-search-wrap" ref={searchWrap} style={{ marginTop: '10px', marginBottom: '16px' }}>
           <div className="wof-product-search-input-row">
-            <WooptionsFic.Components.Dashicon name="plus-alt2" />
+            <WooOptionsPro.Components.Dashicon name="plus-alt2" />
             <input
               ref={searchRef}
               type="text"
               className="wof-product-search-input"
-              placeholder={__('Add Product…', 'wooptionsfic')}
+              placeholder={__('Add Product…', 'wooptions-pro')}
               value={searchQuery}
               onChange={(e: any) => setSearchQuery(e.target.value)}
               onFocus={() => setSearchFocused(true)}
@@ -1990,10 +1990,10 @@ namespace WooptionsFic.Builder {
                   className="wof-product-search-option"
                   onMouseDown={(e: any) => { e.preventDefault(); addProduct(s); }}
                 >
-                  {s.image ? <img src={s.image} alt="" className="wof-product-search-option__thumb" /> : <WooptionsFic.Components.Dashicon name="format-image" />}
+                  {s.image ? <img src={s.image} alt="" className="wof-product-search-option__thumb" /> : <WooOptionsPro.Components.Dashicon name="format-image" />}
                   <span className="wof-product-search-option__label">{s.label}</span>
                   <span className="wof-product-search-option__meta">{s.meta}</span>
-                  {s.isVariable ? <span className="wof-product-search-option__badge">{__('Variable', 'wooptionsfic')}</span> : null}
+                  {s.isVariable ? <span className="wof-product-search-option__badge">{__('Variable', 'wooptions-pro')}</span> : null}
                 </button>
               ))}
             </div>
@@ -2002,27 +2002,27 @@ namespace WooptionsFic.Builder {
 
         {/* Merge Variation Products */}
         <ToggleControl
-          label={__('Merge Variation Products into one product', 'wooptionsfic')}
+          label={__('Merge Variation Products into one product', 'wooptions-pro')}
           checked={mergeVariations}
           onChange={(val: boolean) => props.onChange({ ...props.field, mergeVariationProducts: val })}
         />
 
         {/* Allow Multiple Choices */}
         <ToggleControl
-          label={__('Allow Multiple Choices', 'wooptionsfic')}
+          label={__('Allow Multiple Choices', 'wooptions-pro')}
           checked={Boolean(props.field.multiple)}
           onChange={(val: boolean) => props.onChange({ ...props.field, multiple: val })}
         />
         {props.field.multiple ? (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '8px' }}>
             <TextControl
-              label={__('Min choices', 'wooptionsfic')}
+              label={__('Min choices', 'wooptions-pro')}
               type="number"
               value={String(props.field.minChoices ?? 0)}
               onChange={(v: string) => props.onChange({ ...props.field, minChoices: Math.max(0, parseInt(v, 10) || 0) })}
             />
             <TextControl
-              label={__('Max choices', 'wooptionsfic')}
+              label={__('Max choices', 'wooptions-pro')}
               type="number"
               value={String(props.field.maxChoices ?? 0)}
               onChange={(v: string) => props.onChange({ ...props.field, maxChoices: Math.max(0, parseInt(v, 10) || 0) })}
@@ -2032,21 +2032,21 @@ namespace WooptionsFic.Builder {
 
         {/* Enable Quantity */}
         <ToggleControl
-          label={__('Enable Quantity', 'wooptionsfic')}
+          label={__('Enable Quantity', 'wooptions-pro')}
           checked={Boolean(props.field.enableQuantity)}
           onChange={(val: boolean) => props.onChange({ ...props.field, enableQuantity: val })}
         />
         {props.field.enableQuantity ? (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '8px' }}>
             <TextControl
-              label={__('Min quantity', 'wooptionsfic')}
+              label={__('Min quantity', 'wooptions-pro')}
               type="number"
               min={1}
               value={String(props.field.minQuantity ?? 1)}
               onChange={(v: string) => props.onChange({ ...props.field, minQuantity: Math.max(1, parseInt(v, 10) || 1) })}
             />
             <TextControl
-              label={__('Max quantity', 'wooptionsfic')}
+              label={__('Max quantity', 'wooptions-pro')}
               type="number"
               min={1}
               value={String(props.field.maxQuantity ?? 100)}
@@ -2062,12 +2062,12 @@ namespace WooptionsFic.Builder {
   // ─── Font Choice Editor ───────────────────────────────────────────────────
 
   function FontChoiceCard(props: {
-    choice: WooptionsFic.ChoiceDefinition;
+    choice: WooOptionsPro.ChoiceDefinition;
     index: number;
     count: number;
     isOpen: boolean;
     onToggle: () => void;
-    onUpdate: (patch: Partial<WooptionsFic.ChoiceDefinition>) => void;
+    onUpdate: (patch: Partial<WooOptionsPro.ChoiceDefinition>) => void;
     onRemove: () => void;
     onMove: (from: number, to: number) => void;
     onOpenCatalog: () => void;
@@ -2136,7 +2136,7 @@ namespace WooptionsFic.Builder {
     return (
       <article
         ref={cardRef}
-        className={WooptionsFic.Utils.classNames(
+        className={WooOptionsPro.Utils.classNames(
           'wof-choice-card wof-font-choice-card',
           !props.isOpen && 'is-collapsed',
           isDragging && 'is-dragging',
@@ -2154,19 +2154,19 @@ namespace WooptionsFic.Builder {
             className="wof-choice-drag-handle"
             onDragStart={dragStart}
             onDragEnd={dragEnd}
-            aria-label={__('Drag to reorder', 'wooptionsfic')}
-            title={__('Drag to reorder', 'wooptionsfic')}
+            aria-label={__('Drag to reorder', 'wooptions-pro')}
+            title={__('Drag to reorder', 'wooptions-pro')}
           >
-            <WooptionsFic.Components.GripIcon />
+            <WooOptionsPro.Components.GripIcon />
             <div className="wof-font-card-header-info">
               <span className="wof-font-card-name" style={{ fontFamily: fontFamily || 'inherit' }}>
-                {primaryFontName || props.choice.label || __('Untitled Font', 'wooptionsfic')}
+                {primaryFontName || props.choice.label || __('Untitled Font', 'wooptions-pro')}
               </span>
               {props.choice.fontCategory ? (
                 <span className="wof-font-category-tag">{props.choice.fontCategory}</span>
               ) : null}
               {props.choice.default ? (
-                <span className="wof-badge-default-font">{__('Default', 'wooptionsfic')}</span>
+                <span className="wof-badge-default-font">{__('Default', 'wooptions-pro')}</span>
               ) : null}
             </div>
           </button>
@@ -2176,18 +2176,18 @@ namespace WooptionsFic.Builder {
               className="wof-choice-accordion-toggle"
               onClick={props.onToggle}
               aria-expanded={props.isOpen}
-              title={props.isOpen ? __('Collapse', 'wooptionsfic') : __('Expand', 'wooptionsfic')}
+              title={props.isOpen ? __('Collapse', 'wooptions-pro') : __('Expand', 'wooptions-pro')}
             >
-              <WooptionsFic.Components.Dashicon name={props.isOpen ? 'arrow-up-alt2' : 'arrow-down-alt2'} />
+              <WooOptionsPro.Components.Dashicon name={props.isOpen ? 'arrow-up-alt2' : 'arrow-down-alt2'} />
             </button>
             <button
               type="button"
               className="wof-choice-delete-btn"
               onClick={props.onRemove}
-              aria-label={__('Remove font', 'wooptionsfic')}
-              title={__('Remove font', 'wooptionsfic')}
+              aria-label={__('Remove font', 'wooptions-pro')}
+              title={__('Remove font', 'wooptions-pro')}
             >
-              <WooptionsFic.Components.Dashicon name="trash" />
+              <WooOptionsPro.Components.Dashicon name="trash" />
             </button>
           </div>
         </header>
@@ -2208,7 +2208,7 @@ namespace WooptionsFic.Builder {
             {/* Interactive Font Picker Selector (Replaces manual CSS font-family typing) */}
             <div className="wof-font-selector-field" style={{ marginBottom: '14px' }}>
               <label className="components-base-control__label" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#475569' }}>
-                {__('Font Family', 'wooptionsfic')}
+                {__('Font Family', 'wooptions-pro')}
               </label>
               <div
                 className="wof-font-selector-trigger"
@@ -2227,7 +2227,7 @@ namespace WooptionsFic.Builder {
                   cursor: 'pointer',
                   transition: 'all 0.15s ease',
                 }}
-                title={__('Click to select or change font from catalog', 'wooptionsfic')}
+                title={__('Click to select or change font from catalog', 'wooptions-pro')}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <span style={{ fontFamily: fontFamily || 'inherit', fontSize: '15px', fontWeight: 600, color: '#0f172a' }}>
@@ -2238,34 +2238,34 @@ namespace WooptionsFic.Builder {
                   </span>
                 </div>
                 <span style={{ fontSize: '12px', color: 'var(--wof-admin-primary, #5b4ff5)', fontWeight: 600 }}>
-                  {__('Change…', 'wooptionsfic')}
+                  {__('Change…', 'wooptions-pro')}
                 </span>
               </div>
             </div>
 
             <TextControl
-              label={__('Customer Display Label', 'wooptionsfic')}
+              label={__('Customer Display Label', 'wooptions-pro')}
               value={props.choice.label}
-              help={__('Label displayed to customers in the dropdown (e.g. "Dancing Script" or "Modern Sans").', 'wooptionsfic')}
+              help={__('Label displayed to customers in the dropdown (e.g. "Dancing Script" or "Modern Sans").', 'wooptions-pro')}
               onChange={(label: string) => props.onUpdate({ label })}
             />
 
             <div className="wof-choice-pricing-row">
               <SelectControl
-                label={__('Price adjustment', 'wooptionsfic')}
+                label={__('Price adjustment', 'wooptions-pro')}
                 value={props.choice.pricing.strategy}
                 options={[
-                  { label: __('No extra charge', 'wooptionsfic'), value: 'none' },
-                  { label: __('Fixed fee', 'wooptionsfic'), value: 'fixed' },
-                  { label: __('Percentage', 'wooptionsfic'), value: 'percentage' },
+                  { label: __('No extra charge', 'wooptions-pro'), value: 'none' },
+                  { label: __('Fixed fee', 'wooptions-pro'), value: 'fixed' },
+                  { label: __('Percentage', 'wooptions-pro'), value: 'percentage' },
                 ]}
-                onChange={(strategy: WooptionsFic.PricingDefinition['strategy']) =>
+                onChange={(strategy: WooOptionsPro.PricingDefinition['strategy']) =>
                   props.onUpdate({ pricing: { ...props.choice.pricing, strategy } })
                 }
               />
               {props.choice.pricing.strategy === 'percentage' ? (
                 <TextControl
-                  label={__('Percent', 'wooptionsfic')}
+                  label={__('Percent', 'wooptions-pro')}
                   type="number"
                   value={props.choice.pricing.percent}
                   onChange={(percent: string) =>
@@ -2274,7 +2274,7 @@ namespace WooptionsFic.Builder {
                 />
               ) : props.choice.pricing.strategy !== 'none' ? (
                 <TextControl
-                  label={__('Amount', 'wooptionsfic')}
+                  label={__('Amount', 'wooptions-pro')}
                   type="number"
                   value={props.choice.pricing.amount}
                   onChange={(amount: string) =>
@@ -2286,12 +2286,12 @@ namespace WooptionsFic.Builder {
 
             <div className="wof-choice-toggles-row">
               <ToggleControl
-                label={__('Default font', 'wooptionsfic')}
+                label={__('Default font', 'wooptions-pro')}
                 checked={props.choice.default}
                 onChange={(val: boolean) => props.onUpdate({ default: val })}
               />
               <ToggleControl
-                label={__('Disable font', 'wooptionsfic')}
+                label={__('Disable font', 'wooptions-pro')}
                 checked={props.choice.disabled}
                 onChange={(val: boolean) => props.onUpdate({ disabled: val })}
               />
@@ -2303,8 +2303,8 @@ namespace WooptionsFic.Builder {
   }
 
   function FontChoiceEditor(props: {
-    field: WooptionsFic.FieldDefinition;
-    onChange: (field: WooptionsFic.FieldDefinition) => void;
+    field: WooOptionsPro.FieldDefinition;
+    onChange: (field: WooOptionsPro.FieldDefinition) => void;
   }): any {
     const choices = props.field.choices ?? [];
     const [collapsedMap, setCollapsedMap] = useState<Record<string, boolean>>({});
@@ -2313,7 +2313,7 @@ namespace WooptionsFic.Builder {
     const [categoryFilter, setCategoryFilter] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
 
-    const catalog: WooptionsFic.FontCatalogItem[] = (window as any).WooptionsFicAdmin?.fontCatalog ?? [];
+    const catalog: WooOptionsPro.FontCatalogItem[] = (window as any).WooOptionsProAdmin?.fontCatalog ?? [];
 
     const toggleChoice = (uuid: string) => {
       setCollapsedMap((prev) => ({ ...prev, [uuid]: !prev[uuid] }));
@@ -2330,7 +2330,7 @@ namespace WooptionsFic.Builder {
       setCollapsedMap(nextMap);
     };
 
-    const updateChoice = (uuid: string, patch: Partial<WooptionsFic.ChoiceDefinition>) => {
+    const updateChoice = (uuid: string, patch: Partial<WooOptionsPro.ChoiceDefinition>) => {
       let nextChoices = choices.map((c) => {
         if (c.uuid === uuid) {
           return { ...c, ...patch };
@@ -2358,12 +2358,12 @@ namespace WooptionsFic.Builder {
       props.onChange({ ...props.field, choices: reordered });
     };
 
-    const addCatalogFont = (item: WooptionsFic.FontCatalogItem) => {
+    const addCatalogFont = (item: WooOptionsPro.FontCatalogItem) => {
       if (choices.some((c) => c.label.toLowerCase() === item.name.toLowerCase())) {
         return;
       }
-      const newChoice: WooptionsFic.ChoiceDefinition = {
-        uuid: WooptionsFic.Utils.uuid(),
+      const newChoice: WooOptionsPro.ChoiceDefinition = {
+        uuid: WooOptionsPro.Utils.uuid(),
         label: item.name,
         description: '',
         adminLabel: '',
@@ -2372,7 +2372,7 @@ namespace WooptionsFic.Builder {
         imageUrl: '',
         disabled: false,
         default: choices.length === 0,
-        pricing: WooptionsFic.FieldFactory.emptyPricing(),
+        pricing: WooOptionsPro.FieldFactory.emptyPricing(),
         quantityEnabled: false,
         linkedProductId: 0,
         linkedVariationId: 0,
@@ -2389,12 +2389,12 @@ namespace WooptionsFic.Builder {
       setCollapsedMap((prev) => ({ ...prev, [newChoice.uuid]: true }));
     };
 
-    const selectFontFromModal = (item: WooptionsFic.FontCatalogItem) => {
+    const selectFontFromModal = (item: WooOptionsPro.FontCatalogItem) => {
       if (replacingChoiceUuid) {
         const choice = choices.find((c) => c.uuid === replacingChoiceUuid);
         if (choice) {
           const oldPrimary = (choice.fontFamily || choice.label).split(',')[0].replace(/['"]/g, '').trim();
-          const patch: Partial<WooptionsFic.ChoiceDefinition> = {
+          const patch: Partial<WooOptionsPro.ChoiceDefinition> = {
             fontFamily: item.family,
             fontCategory: item.category,
             fontSource: item.source,
@@ -2405,7 +2405,7 @@ namespace WooptionsFic.Builder {
           updateChoice(replacingChoiceUuid, patch);
           setReplacingChoiceUuid(null);
           setShowCatalogModal(false);
-          WooptionsFic.Toast.success(__('Font updated to ', 'wooptionsfic') + item.name);
+          WooOptionsPro.Toast.success(__('Font updated to ', 'wooptions-pro') + item.name);
           return;
         }
       }
@@ -2483,14 +2483,14 @@ namespace WooptionsFic.Builder {
       <div className="wof-choice-editor-list wof-font-choice-editor">
         <div style={{ marginBottom: '14px' }}>
           <p style={{ margin: '0 0 8px 0', fontSize: '13px', color: '#64748b', lineHeight: 1.4 }}>
-            {__('Select which specific fonts are available for customers in this Font Choice field. Only the fonts you add below will be loaded.', 'wooptionsfic')}
+            {__('Select which specific fonts are available for customers in this Font Choice field. Only the fonts you add below will be loaded.', 'wooptions-pro')}
           </p>
         </div>
 
         {/* Toolbar */}
         <div className="wof-choice-list-toolbar" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
           <span className="wof-choice-list-count" style={{ fontWeight: 600, fontSize: '13px', color: '#334155' }}>
-            {choices.length} {__('Available Fonts', 'wooptionsfic')}
+            {choices.length} {__('Available Fonts', 'wooptions-pro')}
           </span>
           {choices.length > 1 ? (
             <button
@@ -2498,7 +2498,7 @@ namespace WooptionsFic.Builder {
               className="wof-choice-collapse-all-btn"
               onClick={toggleAll}
             >
-              {isAllCollapsed ? __('Expand all', 'wooptionsfic') : __('Collapse all', 'wooptionsfic')}
+              {isAllCollapsed ? __('Expand all', 'wooptions-pro') : __('Collapse all', 'wooptions-pro')}
             </button>
           ) : null}
         </div>
@@ -2507,10 +2507,10 @@ namespace WooptionsFic.Builder {
         {choices.length === 0 ? (
           <div style={{ padding: '24px', textAlign: 'center', background: '#f8fafc', borderRadius: '8px', border: '1px dashed #cbd5e1', marginBottom: '14px' }}>
             <p style={{ margin: '0 0 10px 0', color: '#64748b', fontSize: '13px' }}>
-              {__('No fonts added yet. Click "+ Add Fonts" to choose fonts from the Google Fonts catalog.', 'wooptionsfic')}
+              {__('No fonts added yet. Click "+ Add Fonts" to choose fonts from the Google Fonts catalog.', 'wooptions-pro')}
             </p>
             <Button variant="primary" onClick={() => setShowCatalogModal(true)}>
-              {__('+ Add Fonts from Catalog', 'wooptionsfic')}
+              {__('+ Add Fonts from Catalog', 'wooptions-pro')}
             </Button>
           </div>
         ) : (
@@ -2545,18 +2545,18 @@ namespace WooptionsFic.Builder {
             }}
             style={{ width: '100%', minHeight: '38px', justifyContent: 'center' }}
           >
-            <WooptionsFic.Components.Dashicon name="plus-alt2" />
-            {__('Select Fonts from Catalog…', 'wooptionsfic')}
+            <WooOptionsPro.Components.Dashicon name="plus-alt2" />
+            {__('Select Fonts from Catalog…', 'wooptions-pro')}
           </Button>
           <p style={{ margin: '8px 0 0 0', fontSize: '12px', color: '#64748b', textAlign: 'center', lineHeight: 1.4 }}>
-            {__('Need custom brand fonts? Upload .woff2, .woff, .ttf, or .otf files in WooptionsFic → Settings → Custom Fonts.', 'wooptionsfic')}
+            {__('Need custom brand fonts? Upload .woff2, .woff, .ttf, or .otf files in WooOptions Pro → Settings → Custom Fonts.', 'wooptions-pro')}
           </p>
         </div>
 
         {/* Modal: Font Catalog Picker (uses wp.components.Modal to fix stacking context / bleed-through) */}
         {showCatalogModal ? (
           <Modal
-            title={replacingChoiceUuid ? __('Select Replacement Font', 'wooptionsfic') : __('Select Fonts to Make Available', 'wooptionsfic')}
+            title={replacingChoiceUuid ? __('Select Replacement Font', 'wooptions-pro') : __('Select Fonts to Make Available', 'wooptions-pro')}
             onRequestClose={() => {
               setShowCatalogModal(false);
               setReplacingChoiceUuid(null);
@@ -2567,15 +2567,15 @@ namespace WooptionsFic.Builder {
               <div className="wof-font-catalog-modal-header-section">
                 <p className="wof-font-catalog-modal-subtitle" style={{ margin: '0 0 12px 0', fontSize: '13px', color: '#64748b' }}>
                   {replacingChoiceUuid
-                    ? __('Select a font from the catalog to replace this choice. Google, System, and Custom fonts are supported.', 'wooptionsfic')
-                    : __('Click any font to make it available for customers. Only enabled fonts will be downloaded by customers.', 'wooptionsfic')}
+                    ? __('Select a font from the catalog to replace this choice. Google, System, and Custom fonts are supported.', 'wooptions-pro')
+                    : __('Click any font to make it available for customers. Only enabled fonts will be downloaded by customers.', 'wooptions-pro')}
                 </p>
 
                 <div className="wof-font-catalog-toolbar">
                   <input
                     type="text"
                     className="wof-font-search-input"
-                    placeholder={__('Search fonts (e.g. Dancing Script, Roboto)…', 'wooptionsfic')}
+                    placeholder={__('Search fonts (e.g. Dancing Script, Roboto)…', 'wooptions-pro')}
                     value={searchQuery}
                     onChange={(e: any) => setSearchQuery(e.target.value)}
                     autoFocus
@@ -2585,10 +2585,10 @@ namespace WooptionsFic.Builder {
                       <button
                         key={cat}
                         type="button"
-                        className={WooptionsFic.Utils.classNames('wof-font-category-chip', categoryFilter === cat && 'is-active')}
+                        className={WooOptionsPro.Utils.classNames('wof-font-category-chip', categoryFilter === cat && 'is-active')}
                         onClick={() => setCategoryFilter(cat)}
                       >
-                        {cat === 'all' ? __('All Categories', 'wooptionsfic') : cat}
+                        {cat === 'all' ? __('All Categories', 'wooptions-pro') : cat}
                         {cat === 'Custom' ? ` (${catalog.filter((f) => f.category === 'Custom').length})` : ''}
                       </button>
                     ))}
@@ -2599,10 +2599,10 @@ namespace WooptionsFic.Builder {
               <div className="wof-font-catalog-grid">
                 {filteredCatalog.length === 0 ? (
                   <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px 20px', color: '#64748b' }}>
-                    <p style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 600 }}>{__('No fonts found matching your search.', 'wooptionsfic')}</p>
+                    <p style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 600 }}>{__('No fonts found matching your search.', 'wooptions-pro')}</p>
                     {categoryFilter === 'Custom' ? (
                       <p style={{ margin: 0, fontSize: '12px', color: '#94a3b8' }}>
-                        {__('You can upload custom .woff2, .woff, .ttf, or .otf font files in WooptionsFic → Settings → Custom Fonts.', 'wooptionsfic')}
+                        {__('You can upload custom .woff2, .woff, .ttf, or .otf font files in WooOptions Pro → Settings → Custom Fonts.', 'wooptions-pro')}
                       </p>
                     ) : null}
                   </div>
@@ -2612,7 +2612,7 @@ namespace WooptionsFic.Builder {
                     return (
                       <div
                         key={item.id}
-                        className={WooptionsFic.Utils.classNames('wof-font-catalog-card', isAdded && !replacingChoiceUuid && 'is-added')}
+                        className={WooOptionsPro.Utils.classNames('wof-font-catalog-card', isAdded && !replacingChoiceUuid && 'is-added')}
                         onClick={() => selectFontFromModal(item)}
                       >
                         <div className="wof-font-catalog-card-header">
@@ -2625,10 +2625,10 @@ namespace WooptionsFic.Builder {
                         <div className="wof-font-catalog-card-footer">
                           <span style={{ fontSize: '11px', color: '#94a3b8' }}>
                             {item.source === 'system'
-                              ? __('System Font', 'wooptionsfic')
+                              ? __('System Font', 'wooptions-pro')
                               : item.source === 'custom'
-                                ? __('Custom Uploaded Font', 'wooptionsfic')
-                                : __('Google WebFont', 'wooptionsfic')}
+                                ? __('Custom Uploaded Font', 'wooptions-pro')
+                                : __('Google WebFont', 'wooptions-pro')}
                           </span>
                           <button
                             type="button"
@@ -2636,10 +2636,10 @@ namespace WooptionsFic.Builder {
                             disabled={isAdded && !replacingChoiceUuid}
                           >
                             {replacingChoiceUuid
-                              ? __('Select Font →', 'wooptionsfic')
+                              ? __('Select Font →', 'wooptions-pro')
                               : isAdded
-                                ? __('Added ✓', 'wooptionsfic')
-                                : __('+ Select', 'wooptionsfic')}
+                                ? __('Added ✓', 'wooptions-pro')
+                                : __('+ Select', 'wooptions-pro')}
                           </button>
                         </div>
                       </div>
@@ -2650,10 +2650,10 @@ namespace WooptionsFic.Builder {
 
               <footer className="wof-font-catalog-modal-footer">
                 <span style={{ fontSize: '13px', color: '#64748b' }}>
-                  {choices.length} {__('font(s) selected for this field', 'wooptionsfic')}
+                  {choices.length} {__('font(s) selected for this field', 'wooptions-pro')}
                 </span>
                 <Button variant="primary" onClick={() => { setShowCatalogModal(false); setReplacingChoiceUuid(null); }}>
-                  {__('Done Selecting', 'wooptionsfic')}
+                  {__('Done Selecting', 'wooptions-pro')}
                 </Button>
               </footer>
             </div>
@@ -2664,7 +2664,7 @@ namespace WooptionsFic.Builder {
   }
 
 
-  function ChoiceEditor(props: { field: WooptionsFic.FieldDefinition; onChange: (field: WooptionsFic.FieldDefinition) => void }): any {
+  function ChoiceEditor(props: { field: WooOptionsPro.FieldDefinition; onChange: (field: WooOptionsPro.FieldDefinition) => void }): any {
     // Product fields use their own dedicated editor.
     if (props.field.type === 'product') {
       return <ProductChoiceEditor field={props.field} onChange={props.onChange} />;
@@ -2692,7 +2692,7 @@ namespace WooptionsFic.Builder {
       setCollapsedMap(nextMap);
     };
 
-    const updateChoice = (uuid: string, patch: Partial<WooptionsFic.ChoiceDefinition>) => props.onChange({
+    const updateChoice = (uuid: string, patch: Partial<WooOptionsPro.ChoiceDefinition>) => props.onChange({
       ...props.field,
       choices: choices.map((choice) => choice.uuid === uuid ? { ...choice, ...patch } : choice),
     });
@@ -2701,7 +2701,7 @@ namespace WooptionsFic.Builder {
       choices: choices.filter((choice) => choice.uuid !== uuid),
     });
     const addChoice = () => {
-      const newChoice = WooptionsFic.FieldFactory.choice(`Choice ${choices.length + 1}`, choices.length);
+      const newChoice = WooOptionsPro.FieldFactory.choice(`Choice ${choices.length + 1}`, choices.length);
       props.onChange({
         ...props.field,
         choices: [...choices, newChoice],
@@ -2716,15 +2716,15 @@ namespace WooptionsFic.Builder {
       props.onChange({ ...props.field, choices: reordered });
     };
 
-    if (!props.field.choices) return <p className="wof-muted-note">{__('This element has no choices.', 'wooptionsfic')}</p>;
+    if (!props.field.choices) return <p className="wof-muted-note">{__('This element has no choices.', 'wooptions-pro')}</p>;
 
     return (
       <div className="wof-choice-editor-list">
         {/* Display Direction option for Button Choices (segmented) */}
         {props.field.type === 'segmented' ? (
           <div className="wof-field-width-setting">
-            <span className="wof-field-width-label">{__('Display Direction', 'wooptionsfic')}</span>
-            <div className="wof-field-width-group" role="radiogroup" aria-label={__('Display Direction', 'wooptionsfic')}>
+            <span className="wof-field-width-label">{__('Display Direction', 'wooptions-pro')}</span>
+            <div className="wof-field-width-group" role="radiogroup" aria-label={__('Display Direction', 'wooptions-pro')}>
               {(['vertical', 'horizontal'] as const).map((dir) => {
                 const isSelected = (props.field.displayDirection || 'horizontal') === dir;
                 return (
@@ -2733,10 +2733,10 @@ namespace WooptionsFic.Builder {
                     key={dir}
                     role="radio"
                     aria-checked={isSelected}
-                    className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                    className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                     onClick={() => props.onChange({ ...props.field, displayDirection: dir })}
                   >
-                    {dir === 'horizontal' ? __('Horizontal', 'wooptionsfic') : __('Vertical', 'wooptionsfic')}
+                    {dir === 'horizontal' ? __('Horizontal', 'wooptions-pro') : __('Vertical', 'wooptions-pro')}
                   </button>
                 );
               })}
@@ -2748,13 +2748,13 @@ namespace WooptionsFic.Builder {
         {['image_swatch', 'color_swatch'].includes(props.field.type) ? (
           <div style={{ marginBottom: '16px' }}>
             <label className="components-base-control__label" style={{ display: 'block', marginBottom: '8px' }}>
-              {__('Image Style', 'wooptionsfic')}
+              {__('Image Style', 'wooptions-pro')}
             </label>
             <div className="wof-image-style-cards">
               {([
-                { value: 'default', label: __('Default', 'wooptionsfic'), svgTop: true, svgBottom: true },
-                { value: 'overlay', label: __('Image overlay', 'wooptionsfic'), svgTop: false, svgBottom: false },
-                { value: 'only_image', label: __('Only Image', 'wooptionsfic'), svgTop: false, svgBottom: false },
+                { value: 'default', label: __('Default', 'wooptions-pro'), svgTop: true, svgBottom: true },
+                { value: 'overlay', label: __('Image overlay', 'wooptions-pro'), svgTop: false, svgBottom: false },
+                { value: 'only_image', label: __('Only Image', 'wooptions-pro'), svgTop: false, svgBottom: false },
               ] as const).map((st) => {
                 const currentStyle = props.field.imageStyle || 'default';
                 const isSelected = currentStyle === st.value;
@@ -2762,7 +2762,7 @@ namespace WooptionsFic.Builder {
                   <button
                     key={st.value}
                     type="button"
-                    className={WooptionsFic.Utils.classNames('wof-image-style-card', isSelected && 'is-active')}
+                    className={WooOptionsPro.Utils.classNames('wof-image-style-card', isSelected && 'is-active')}
                     onClick={() => props.onChange({ ...props.field, imageStyle: st.value })}
                     title={st.label}
                   >
@@ -2796,11 +2796,11 @@ namespace WooptionsFic.Builder {
         {['radio', 'checkbox_group'].includes(props.field.type) ? (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '18px' }}>
             <div className="wof-field-width-setting" style={{ marginBottom: 0 }}>
-              <span className="wof-field-width-label">{__('Columns', 'wooptionsfic')}</span>
-              <div className="wof-field-width-group" role="radiogroup" aria-label={__('Columns', 'wooptionsfic')}>
+              <span className="wof-field-width-label">{__('Columns', 'wooptions-pro')}</span>
+              <div className="wof-field-width-group" role="radiogroup" aria-label={__('Columns', 'wooptions-pro')}>
                 {([
-                  { label: __('One', 'wooptionsfic'), value: 'one' },
-                  { label: __('Two', 'wooptionsfic'), value: 'two' },
+                  { label: __('One', 'wooptions-pro'), value: 'one' },
+                  { label: __('Two', 'wooptions-pro'), value: 'two' },
                 ] as const).map((col) => {
                   const isSelected = (props.field.columns || 'one') === col.value;
                   return (
@@ -2809,7 +2809,7 @@ namespace WooptionsFic.Builder {
                       key={col.value}
                       role="radio"
                       aria-checked={isSelected}
-                      className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                      className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                       onClick={() => props.onChange({ ...props.field, columns: col.value })}
                     >
                       {col.label}
@@ -2820,11 +2820,11 @@ namespace WooptionsFic.Builder {
             </div>
 
             <div className="wof-field-width-setting" style={{ marginBottom: 0 }}>
-              <span className="wof-field-width-label">{__('Image Style', 'wooptionsfic')}</span>
-              <div className="wof-field-width-group" role="radiogroup" aria-label={__('Image Style', 'wooptionsfic')}>
+              <span className="wof-field-width-label">{__('Image Style', 'wooptions-pro')}</span>
+              <div className="wof-field-width-group" role="radiogroup" aria-label={__('Image Style', 'wooptions-pro')}>
                 {([
-                  { label: __('Normal', 'wooptionsfic'), value: 'normal' },
-                  { label: __('Circle', 'wooptionsfic'), value: 'circle' },
+                  { label: __('Normal', 'wooptions-pro'), value: 'normal' },
+                  { label: __('Circle', 'wooptions-pro'), value: 'circle' },
                 ] as const).map((st) => {
                   const isSelected = (props.field.imageStyle || 'normal') === st.value;
                   return (
@@ -2833,7 +2833,7 @@ namespace WooptionsFic.Builder {
                       key={st.value}
                       role="radio"
                       aria-checked={isSelected}
-                      className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                      className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                       onClick={() => props.onChange({ ...props.field, imageStyle: st.value })}
                     >
                       {st.label}
@@ -2846,11 +2846,11 @@ namespace WooptionsFic.Builder {
         ) : props.field.type === 'select' ? (
           <div style={{ marginBottom: '18px' }}>
             <div className="wof-field-width-setting" style={{ marginBottom: 0 }}>
-              <span className="wof-field-width-label">{__('Image Style', 'wooptionsfic')}</span>
-              <div className="wof-field-width-group" role="radiogroup" aria-label={__('Image Style', 'wooptionsfic')}>
+              <span className="wof-field-width-label">{__('Image Style', 'wooptions-pro')}</span>
+              <div className="wof-field-width-group" role="radiogroup" aria-label={__('Image Style', 'wooptions-pro')}>
                 {([
-                  { label: __('Normal', 'wooptionsfic'), value: 'normal' },
-                  { label: __('Circle', 'wooptionsfic'), value: 'circle' },
+                  { label: __('Normal', 'wooptions-pro'), value: 'normal' },
+                  { label: __('Circle', 'wooptions-pro'), value: 'circle' },
                 ] as const).map((st) => {
                   const isSelected = (props.field.imageStyle || 'normal') === st.value;
                   return (
@@ -2859,7 +2859,7 @@ namespace WooptionsFic.Builder {
                       key={st.value}
                       role="radio"
                       aria-checked={isSelected}
-                      className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                      className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                       onClick={() => props.onChange({ ...props.field, imageStyle: st.value })}
                     >
                       {st.label}
@@ -2873,8 +2873,8 @@ namespace WooptionsFic.Builder {
 
         {props.field.type === 'image_swatch' ? <div className="wof-image-swatch-behavior">
           <ToggleControl
-            label={__('Update product image on selection', 'wooptionsfic')}
-            help={__('Replace the main WooCommerce product image with the selected swatch image.', 'wooptionsfic')}
+            label={__('Update product image on selection', 'wooptions-pro')}
+            help={__('Replace the main WooCommerce product image with the selected swatch image.', 'wooptions-pro')}
             checked={Boolean(props.field.updateProductImage)}
             onChange={(updateProductImage: boolean) => props.onChange({ ...props.field, updateProductImage })}
           />
@@ -2882,13 +2882,13 @@ namespace WooptionsFic.Builder {
 
         {choices.length > 1 ? (
           <div className="wof-choice-list-toolbar">
-            <span className="wof-choice-list-count">{choices.length} {__('Choices', 'wooptionsfic')}</span>
+            <span className="wof-choice-list-count">{choices.length} {__('Choices', 'wooptions-pro')}</span>
             <button
               type="button"
               className="wof-choice-collapse-all-btn"
               onClick={toggleAll}
             >
-              {isAllCollapsed ? __('Expand all', 'wooptionsfic') : __('Collapse all', 'wooptionsfic')}
+              {isAllCollapsed ? __('Expand all', 'wooptions-pro') : __('Collapse all', 'wooptions-pro')}
             </button>
           </div>
         ) : null}
@@ -2907,18 +2907,18 @@ namespace WooptionsFic.Builder {
             onMove={moveChoice}
           />
         ))}
-        <Button variant="secondary" onClick={addChoice}><WooptionsFic.Components.Dashicon name="plus-alt2" />{__('Add choice', 'wooptionsfic')}</Button>
+        <Button variant="secondary" onClick={addChoice}><WooOptionsPro.Components.Dashicon name="plus-alt2" />{__('Add choice', 'wooptions-pro')}</Button>
       </div>
     );
   }
 
   function FormulaPanel(props: {
-    field: WooptionsFic.FieldDefinition;
-    allFields: WooptionsFic.FieldDefinition[];
-    onChange: (field: WooptionsFic.FieldDefinition) => void;
+    field: WooOptionsPro.FieldDefinition;
+    allFields: WooOptionsPro.FieldDefinition[];
+    onChange: (field: WooOptionsPro.FieldDefinition) => void;
   }): any {
     const { field, allFields, onChange } = props;
-    const update = (patch: Partial<WooptionsFic.FieldDefinition>) => onChange({ ...field, ...patch });
+    const update = (patch: Partial<WooOptionsPro.FieldDefinition>) => onChange({ ...field, ...patch });
     const exprRef = useRef<HTMLTextAreaElement | null>(null);
 
     const [testResult, setTestResult] = useState<{ value?: string; error?: string } | null>(null);
@@ -3028,7 +3028,7 @@ namespace WooptionsFic.Builder {
       setTesting(true);
       setTestResult(null);
       try {
-        const result = await WooptionsFic.Api.request<{ result: string }>('/test-formula', {
+        const result = await WooOptionsPro.Api.request<{ result: string }>('/test-formula', {
           method: 'POST',
           data: {
             expression: field.expression ?? '0',
@@ -3051,7 +3051,7 @@ namespace WooptionsFic.Builder {
         setTestResult({ value: result.result });
       } catch (err: any) {
         const msg = err?.message ?? String(err);
-        setTestResult({ error: msg.replace(/^wooptionsfic_formula_?/, '').replace(/_/g, ' ') });
+        setTestResult({ error: msg.replace(/^wooptions-pro_formula_?/, '').replace(/_/g, ' ') });
       } finally {
         setTesting(false);
       }
@@ -3081,11 +3081,11 @@ namespace WooptionsFic.Builder {
     const toSlug = (s: string) => (s || '').trim().replace(/\s+/g, '_');
 
     // Build readable token: [FieldLabel.property]
-    const fieldToken = (f: WooptionsFic.FieldDefinition, prop: string) =>
+    const fieldToken = (f: WooOptionsPro.FieldDefinition, prop: string) =>
       `[${toSlug(f.label || f.type)}.${prop}]`;
 
     // Build readable option token: [FieldLabel.options.ChoiceLabel.prop]
-    const optionToken = (f: WooptionsFic.FieldDefinition, choiceLabel: string, prop: string) =>
+    const optionToken = (f: WooOptionsPro.FieldDefinition, choiceLabel: string, prop: string) =>
       `[${toSlug(f.label || f.type)}.options.${toSlug(choiceLabel)}.${prop}]`;
 
     // Dynamic values per field type — token is the readable shortcode key (prop only, field prefix applied at render)
@@ -3249,7 +3249,7 @@ namespace WooptionsFic.Builder {
       ],
     };
 
-    const getDynamicValues = (f: WooptionsFic.FieldDefinition): DynValue[] => {
+    const getDynamicValues = (f: WooOptionsPro.FieldDefinition): DynValue[] => {
       const t = f.type;
       let values =
         DYNAMIC_VALUES[t] ??
@@ -3280,7 +3280,7 @@ namespace WooptionsFic.Builder {
       ];
     };
 
-    const getFieldChoices = (f: WooptionsFic.FieldDefinition): any[] =>
+    const getFieldChoices = (f: WooOptionsPro.FieldDefinition): any[] =>
       (f as any).choices ?? (f as any).options ?? [];
 
     return (
@@ -3288,32 +3288,32 @@ namespace WooptionsFic.Builder {
         {/* ── Field Settings: Label, Help text, Position & Width ───── */}
         <div className="wof-formula-section">
           <TextControl
-            label={__('Label', 'wooptionsfic')}
+            label={__('Label', 'wooptions-pro')}
             value={field.label}
             onChange={(label: string) => update({ label })}
           />
           <TextareaControl
-            label={__('Help text', 'wooptionsfic')}
+            label={__('Help text', 'wooptions-pro')}
             value={field.help ?? field.description ?? ''}
             onChange={(help: string) => update({ help, description: help })}
-            placeholder={__('Add helpful explanation for customers…', 'wooptionsfic')}
+            placeholder={__('Add helpful explanation for customers…', 'wooptions-pro')}
           />
           <div className="wof-help-position-control">
             <label className="wof-segmented-label">
-              {__('HELP TEXT POSITION', 'wooptionsfic')}
+              {__('HELP TEXT POSITION', 'wooptions-pro')}
             </label>
             <div className="wof-segmented-group">
               {[
-                { label: __('Below Title', 'wooptionsfic'), value: 'below_title' },
-                { label: __('Tooltip', 'wooptionsfic'), value: 'tooltip' },
-                { label: __('Below Field', 'wooptionsfic'), value: 'below_field' },
+                { label: __('Below Title', 'wooptions-pro'), value: 'below_title' },
+                { label: __('Tooltip', 'wooptions-pro'), value: 'tooltip' },
+                { label: __('Below Field', 'wooptions-pro'), value: 'below_field' },
               ].map((opt) => {
                 const isSelected = (field.helpTextPosition ?? 'below_title') === opt.value;
                 return (
                   <button
                     key={opt.value}
                     type="button"
-                    className={WooptionsFic.Utils.classNames('wof-segmented-btn', isSelected && 'is-selected')}
+                    className={WooOptionsPro.Utils.classNames('wof-segmented-btn', isSelected && 'is-selected')}
                     onClick={() => update({ helpTextPosition: opt.value as 'below_title' | 'tooltip' | 'below_field' })}
                   >
                     {opt.label}
@@ -3323,8 +3323,8 @@ namespace WooptionsFic.Builder {
             </div>
           </div>
           <div className="wof-field-width-setting">
-            <span className="wof-field-width-label">{__('Width', 'wooptionsfic')}</span>
-            <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptionsfic')}>
+            <span className="wof-field-width-label">{__('Width', 'wooptions-pro')}</span>
+            <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptions-pro')}>
               {(['33%', '50%', '66%', '100%'] as const).map((w) => {
                 const isSelected = (field.width || '100%') === w;
                 return (
@@ -3333,7 +3333,7 @@ namespace WooptionsFic.Builder {
                     key={w}
                     role="radio"
                     aria-checked={isSelected}
-                    className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                    className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                     onClick={() => update({ width: w })}
                   >
                     {w}
@@ -3348,18 +3348,18 @@ namespace WooptionsFic.Builder {
         <div className="wof-formula-section">
           {/* Title row with Run Test button */}
           <div className="wof-formula-expr-header">
-            <strong className="wof-formula-section__title">{__('Formula Expression', 'wooptionsfic')}</strong>
+            <strong className="wof-formula-section__title">{__('Formula Expression', 'wooptions-pro')}</strong>
             <button
               type="button"
               className="wof-formula-run-test-btn"
               onClick={testExpression}
               disabled={testing}
             >
-              {testing ? __('Testing…', 'wooptionsfic') : __('▶ Run Test', 'wooptionsfic')}
+              {testing ? __('Testing…', 'wooptions-pro') : __('▶ Run Test', 'wooptions-pro')}
             </button>
           </div>
           <p className="wof-formula-hint">
-            {__('Use arithmetic operators (+, -, *, /), [Field Name], IF(), and built-in functions.', 'wooptionsfic')}
+            {__('Use arithmetic operators (+, -, *, /), [Field Name], IF(), and built-in functions.', 'wooptions-pro')}
           </p>
           <textarea
             ref={exprRef}
@@ -3370,28 +3370,28 @@ namespace WooptionsFic.Builder {
             spellCheck={false}
             autoComplete="off"
             onChange={(e: any) => update({ expression: e.target.value })}
-            aria-label={__('Formula expression', 'wooptionsfic')}
+            aria-label={__('Formula expression', 'wooptions-pro')}
           />
           {/* Test result inline */}
           {testResult ? (
             testResult.error ? (
               <span className="wof-formula-test-result is-error">{testResult.error}</span>
             ) : (
-              <span className="wof-formula-test-result is-success">{__('Result:', 'wooptionsfic')} {testResult.value}</span>
+              <span className="wof-formula-test-result is-success">{__('Result:', 'wooptions-pro')} {testResult.value}</span>
             )
           ) : null}
 
           {/* Dynamic Values — field token helper */}
           <div className="wof-formula-tokens">
-            <span className="wof-formula-tokens__label">{__('Insert field:', 'wooptionsfic')}</span>
+            <span className="wof-formula-tokens__label">{__('Insert field:', 'wooptions-pro')}</span>
             <div className="wof-formula-tokens__list">
               <button
                 type="button"
                 className="wof-formula-token-btn"
-                title={__('Base product price [product_price]', 'wooptionsfic')}
+                title={__('Base product price [product_price]', 'wooptions-pro')}
                 onClick={() => insertAtCursor('[product_price]')}
               >
-                <span className="wof-formula-token-text">{__('Product Price', 'wooptionsfic')}</span>
+                <span className="wof-formula-token-text">{__('Product Price', 'wooptions-pro')}</span>
               </button>
               {siblingFields.map((f) => {
                 const tokenName = f.label || f.type;
@@ -3409,7 +3409,7 @@ namespace WooptionsFic.Builder {
                     <button
                       type="button"
                       className={`wof-formula-token-btn${isOpen ? ' is-open' : ''}`}
-                      title={sprintf(__('Dynamic values for %s', 'wooptionsfic'), tokenName)}
+                      title={sprintf(__('Dynamic values for %s', 'wooptions-pro'), tokenName)}
                       onClick={(e: any) => {
                         if (hasDynOptions) {
                           if (isOpen) {
@@ -3447,7 +3447,7 @@ namespace WooptionsFic.Builder {
                               <span className="wof-dv-item-arrow">›</span>
                               <div className="wof-dv-sub-panel">
                                 {choices.length === 0 ? (
-                                  <span className="wof-dv-empty-msg">{__('No options configured', 'wooptionsfic')}</span>
+                                  <span className="wof-dv-empty-msg">{__('No options configured', 'wooptions-pro')}</span>
                                 ) : (
                                   choices.map((c: any, ci: number) => {
                                     const choiceLabel = (c.label || c.title || c.productTitle || c.adminLabel || c.value || `Option ${ci + 1}`).trim();
@@ -3465,7 +3465,7 @@ namespace WooptionsFic.Builder {
                                             setOpenDropdown(null);
                                             setDropdownPos(null);
                                           }}
-                                          title={__('Click to insert option price, or hover for more properties', 'wooptionsfic')}
+                                          title={__('Click to insert option price, or hover for more properties', 'wooptions-pro')}
                                         >{choiceLabel}</span>
                                         <span className="wof-dv-item-arrow">›</span>
                                         <div className="wof-dv-sub-panel">
@@ -3559,7 +3559,7 @@ namespace WooptionsFic.Builder {
               onClick={() => setRefOpen((o) => !o)}
               aria-expanded={refOpen}
             >
-              <span>{__('Function Reference', 'wooptionsfic')}</span>
+              <span>{__('Function Reference', 'wooptions-pro')}</span>
               <span className="wof-formula-ref-toggle__icon">{refOpen ? '▲' : '▼'}</span>
             </button>
             {refOpen ? (
@@ -3570,7 +3570,7 @@ namespace WooptionsFic.Builder {
                     type="button"
                     className="wof-formula-ref-item"
                     onClick={() => insertAtCursor(fn.stub)}
-                    title={__('Click to insert', 'wooptionsfic')}
+                    title={__('Click to insert', 'wooptions-pro')}
                   >
                     <code>{fn.name}</code>
                   </button>
@@ -3582,15 +3582,15 @@ namespace WooptionsFic.Builder {
 
         {/* ── Display Settings ─────────────────────── */}
         <div className="wof-formula-section">
-          <strong className="wof-formula-section__title">{__('Display Settings', 'wooptionsfic')}</strong>
+          <strong className="wof-formula-section__title">{__('Display Settings', 'wooptions-pro')}</strong>
 
           <div className="wof-field-width-setting" style={{ marginBottom: '12px' }}>
-            <span className="wof-field-width-label">{__('Output Mode', 'wooptionsfic')}</span>
-            <div className="wof-field-width-group" role="radiogroup" aria-label={__('Output mode', 'wooptionsfic')}>
+            <span className="wof-field-width-label">{__('Output Mode', 'wooptions-pro')}</span>
+            <div className="wof-field-width-group" role="radiogroup" aria-label={__('Output mode', 'wooptions-pro')}>
               {([
-                { label: __('Currency', 'wooptionsfic'), value: 'currency' },
-                { label: __('Number', 'wooptionsfic'), value: 'number' },
-                { label: __('Text', 'wooptionsfic'), value: 'text' },
+                { label: __('Currency', 'wooptions-pro'), value: 'currency' },
+                { label: __('Number', 'wooptions-pro'), value: 'number' },
+                { label: __('Text', 'wooptions-pro'), value: 'text' },
               ] as const).map((opt) => {
                 const isSelected = (field.displayMode ?? 'currency') === opt.value;
                 return (
@@ -3599,7 +3599,7 @@ namespace WooptionsFic.Builder {
                     type="button"
                     role="radio"
                     aria-checked={isSelected}
-                    className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                    className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                     onClick={() => update({ displayMode: opt.value })}
                   >
                     {opt.label}
@@ -3611,7 +3611,7 @@ namespace WooptionsFic.Builder {
 
           {(field.displayMode ?? 'number') !== 'text' ? (
             <TextControl
-              label={__('Decimal Places', 'wooptionsfic')}
+              label={__('Decimal Places', 'wooptions-pro')}
               type="number"
               min={0}
               max={6}
@@ -3622,23 +3622,23 @@ namespace WooptionsFic.Builder {
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '4px' }}>
             <TextControl
-              label={__('Prefix', 'wooptionsfic')}
+              label={__('Prefix', 'wooptions-pro')}
               value={field.prefix ?? ''}
-              placeholder={__('e.g. $', 'wooptionsfic')}
+              placeholder={__('e.g. $', 'wooptions-pro')}
               onChange={(prefix: string) => update({ prefix })}
             />
             <TextControl
-              label={__('Suffix', 'wooptionsfic')}
+              label={__('Suffix', 'wooptions-pro')}
               value={field.suffix ?? ''}
-              placeholder={__('e.g.  days', 'wooptionsfic')}
+              placeholder={__('e.g.  days', 'wooptions-pro')}
               onChange={(suffix: string) => update({ suffix })}
             />
           </div>
 
           <div style={{ marginTop: '8px' }}>
             <ToggleControl
-              label={__('Hide when zero', 'wooptionsfic')}
-              help={__('Do not display the field when the formula evaluates to 0.', 'wooptionsfic')}
+              label={__('Hide when zero', 'wooptions-pro')}
+              help={__('Do not display the field when the formula evaluates to 0.', 'wooptions-pro')}
               checked={Boolean(field.hideWhenZero)}
               onChange={(hideWhenZero: boolean) => update({ hideWhenZero })}
             />
@@ -3650,10 +3650,10 @@ namespace WooptionsFic.Builder {
     );
   }
 
-  function PricingPanel(props: { field: WooptionsFic.FieldDefinition; onChange: (field: WooptionsFic.FieldDefinition) => void }): any {
-    const pricing = props.field.pricing ?? WooptionsFic.FieldFactory.emptyPricing();
-    const update = (patch: Partial<WooptionsFic.PricingDefinition>) => props.onChange({ ...props.field, pricing: { ...pricing, ...patch } });
-    return <div><SelectControl label={__('Pricing strategy', 'wooptionsfic')} value={pricing.strategy} options={[{ label: __('No price change', 'wooptionsfic'), value: 'none' }, { label: __('Fixed amount', 'wooptionsfic'), value: 'fixed' }, { label: __('Percentage', 'wooptionsfic'), value: 'percentage' }, { label: __('Per character', 'wooptionsfic'), value: 'per_character' }, { label: __('Per unit', 'wooptionsfic'), value: 'per_unit' }, { label: __('Setup fee', 'wooptionsfic'), value: 'setup' }, { label: __('Formula', 'wooptionsfic'), value: 'formula' }]} onChange={(strategy: WooptionsFic.PricingDefinition['strategy']) => update({ strategy })} /><SelectControl label={__('Price mode', 'wooptionsfic')} value={pricing.mode} options={[{ label: __('Add to product price', 'wooptionsfic'), value: 'adjustment' }, { label: __('Replace unit price', 'wooptionsfic'), value: 'unit_price' }]} onChange={(mode: WooptionsFic.PricingDefinition['mode']) => update({ mode })} />{pricing.strategy === 'percentage' ? <TextControl label={__('Percentage', 'wooptionsfic')} type="number" value={pricing.percent} onChange={(percent: string) => update({ percent })} /> : pricing.strategy === 'formula' ? <TextareaControl label={__('Formula expression', 'wooptionsfic')} value={pricing.expression ?? '0'} onChange={(expression: string) => update({ expression })} help={__('Use server-supported FIELD("uuid") and arithmetic expressions.', 'wooptionsfic')} /> : pricing.strategy !== 'none' ? <TextControl label={__('Amount', 'wooptionsfic')} type="number" value={pricing.amount} onChange={(amount: string) => update({ amount })} /> : null}</div>;
+  function PricingPanel(props: { field: WooOptionsPro.FieldDefinition; onChange: (field: WooOptionsPro.FieldDefinition) => void }): any {
+    const pricing = props.field.pricing ?? WooOptionsPro.FieldFactory.emptyPricing();
+    const update = (patch: Partial<WooOptionsPro.PricingDefinition>) => props.onChange({ ...props.field, pricing: { ...pricing, ...patch } });
+    return <div><SelectControl label={__('Pricing strategy', 'wooptions-pro')} value={pricing.strategy} options={[{ label: __('No price change', 'wooptions-pro'), value: 'none' }, { label: __('Fixed amount', 'wooptions-pro'), value: 'fixed' }, { label: __('Percentage', 'wooptions-pro'), value: 'percentage' }, { label: __('Per character', 'wooptions-pro'), value: 'per_character' }, { label: __('Per unit', 'wooptions-pro'), value: 'per_unit' }, { label: __('Setup fee', 'wooptions-pro'), value: 'setup' }, { label: __('Formula', 'wooptions-pro'), value: 'formula' }]} onChange={(strategy: WooOptionsPro.PricingDefinition['strategy']) => update({ strategy })} /><SelectControl label={__('Price mode', 'wooptions-pro')} value={pricing.mode} options={[{ label: __('Add to product price', 'wooptions-pro'), value: 'adjustment' }, { label: __('Replace unit price', 'wooptions-pro'), value: 'unit_price' }]} onChange={(mode: WooOptionsPro.PricingDefinition['mode']) => update({ mode })} />{pricing.strategy === 'percentage' ? <TextControl label={__('Percentage', 'wooptions-pro')} type="number" value={pricing.percent} onChange={(percent: string) => update({ percent })} /> : pricing.strategy === 'formula' ? <TextareaControl label={__('Formula expression', 'wooptions-pro')} value={pricing.expression ?? '0'} onChange={(expression: string) => update({ expression })} help={__('Use server-supported FIELD("uuid") and arithmetic expressions.', 'wooptions-pro')} /> : pricing.strategy !== 'none' ? <TextControl label={__('Amount', 'wooptions-pro')} type="number" value={pricing.amount} onChange={(amount: string) => update({ amount })} /> : null}</div>;
   }
 
   function SpacerHeightControl(props: {
@@ -3673,7 +3673,7 @@ namespace WooptionsFic.Builder {
     return (
       <div className="wof-spacer-height-control">
         <label className="wof-spacer-height-label" htmlFor="wof-spacer-height-slider">
-          {props.label ?? __('HEIGHT (PX)', 'wooptionsfic')}
+          {props.label ?? __('HEIGHT (PX)', 'wooptions-pro')}
         </label>
         <div className="wof-spacer-height-row">
           <input
@@ -3687,7 +3687,7 @@ namespace WooptionsFic.Builder {
             }}
             className="wof-spacer-slider"
             onChange={(e: any) => props.onChange(Number(e.target.value))}
-            aria-label={props.label ?? __('Height in pixels', 'wooptionsfic')}
+            aria-label={props.label ?? __('Height in pixels', 'wooptions-pro')}
           />
           <input
             type="number"
@@ -3698,7 +3698,7 @@ namespace WooptionsFic.Builder {
               const val = e.target.value === '' ? min : Math.max(min, parseInt(e.target.value, 10) || min);
               props.onChange(val);
             }}
-            aria-label={props.label ?? __('Height in pixels input', 'wooptionsfic')}
+            aria-label={props.label ?? __('Height in pixels input', 'wooptions-pro')}
           />
         </div>
       </div>
@@ -3706,8 +3706,8 @@ namespace WooptionsFic.Builder {
   }
 
   function SectionRepeaterInspector(props: {
-    field: WooptionsFic.FieldDefinition;
-    update: (patch: Partial<WooptionsFic.FieldDefinition>) => void;
+    field: WooOptionsPro.FieldDefinition;
+    update: (patch: Partial<WooOptionsPro.FieldDefinition>) => void;
   }): any {
     const { field, update } = props;
     const isAccordion = field.sectionStyle === 'accordion';
@@ -3715,26 +3715,26 @@ namespace WooptionsFic.Builder {
     return (
       <div className="wof-section-repeater-settings">
         <TextControl
-          label={__('Section Title', 'wooptionsfic')}
+          label={__('Section Title', 'wooptions-pro')}
           value={field.label ?? ''}
           placeholder="Section Container"
           onChange={(label: string) => update({ label })}
         />
 
         <ToggleControl
-          label={__('Hide Section Title', 'wooptionsfic')}
+          label={__('Hide Section Title', 'wooptions-pro')}
           checked={Boolean(field.hideSectionTitle)}
           onChange={(hideSectionTitle: boolean) => update({ hideSectionTitle })}
         />
 
         {/* Style */}
         <div className="wof-field-width-setting" style={{ marginBottom: '16px' }}>
-          <span className="wof-field-width-label">{__('Style', 'wooptionsfic')}</span>
-          <div className="wof-field-width-group" role="radiogroup" aria-label={__('Style', 'wooptionsfic')}>
+          <span className="wof-field-width-label">{__('Style', 'wooptions-pro')}</span>
+          <div className="wof-field-width-group" role="radiogroup" aria-label={__('Style', 'wooptions-pro')}>
             {[
-              { label: __('Section', 'wooptionsfic'), value: 'section' },
-              { label: __('Accordion', 'wooptionsfic'), value: 'accordion' },
-              { label: __('Blank', 'wooptionsfic'), value: 'blank' },
+              { label: __('Section', 'wooptions-pro'), value: 'section' },
+              { label: __('Accordion', 'wooptions-pro'), value: 'accordion' },
+              { label: __('Blank', 'wooptions-pro'), value: 'blank' },
             ].map((st) => {
               const isSelected = (field.sectionStyle || 'section') === st.value;
               return (
@@ -3743,7 +3743,7 @@ namespace WooptionsFic.Builder {
                   key={st.value}
                   role="radio"
                   aria-checked={isSelected}
-                  className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                  className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                   onClick={() => update({ sectionStyle: st.value as 'section' | 'accordion' | 'blank' })}
                 >
                   {st.label}
@@ -3756,11 +3756,11 @@ namespace WooptionsFic.Builder {
         {/* Initial State (under Style, only when Accordion is selected) */}
         {isAccordion ? (
           <div className="wof-field-width-setting" style={{ marginBottom: '16px' }}>
-            <span className="wof-field-width-label">{__('Initial State', 'wooptionsfic')}</span>
-            <div className="wof-field-width-group" role="radiogroup" aria-label={__('Initial State', 'wooptionsfic')}>
+            <span className="wof-field-width-label">{__('Initial State', 'wooptions-pro')}</span>
+            <div className="wof-field-width-group" role="radiogroup" aria-label={__('Initial State', 'wooptions-pro')}>
               {[
-                { label: __('Open', 'wooptionsfic'), value: 'open' },
-                { label: __('Close', 'wooptionsfic'), value: 'close' },
+                { label: __('Open', 'wooptions-pro'), value: 'open' },
+                { label: __('Close', 'wooptions-pro'), value: 'close' },
               ].map((st) => {
                 const isSelected = (field.initialState || 'open') === st.value;
                 return (
@@ -3769,7 +3769,7 @@ namespace WooptionsFic.Builder {
                     key={st.value}
                     role="radio"
                     aria-checked={isSelected}
-                    className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                    className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                     onClick={() => update({ initialState: st.value as 'open' | 'close' })}
                   >
                     {st.label}
@@ -3782,8 +3782,8 @@ namespace WooptionsFic.Builder {
 
         {/* Width */}
         <div className="wof-field-width-setting" style={{ marginBottom: '16px' }}>
-          <span className="wof-field-width-label">{__('Width', 'wooptionsfic')}</span>
-          <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptionsfic')}>
+          <span className="wof-field-width-label">{__('Width', 'wooptions-pro')}</span>
+          <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptions-pro')}>
             {(['33%', '50%', '66%', '100%'] as const).map((w) => {
               const isSelected = (field.width || '100%') === w;
               return (
@@ -3792,7 +3792,7 @@ namespace WooptionsFic.Builder {
                   key={w}
                   role="radio"
                   aria-checked={isSelected}
-                  className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                  className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                   onClick={() => update({ width: w })}
                 >
                   {w}
@@ -3805,8 +3805,8 @@ namespace WooptionsFic.Builder {
         {/* Enable Repeatable Section Toggle (No Pro badge) */}
         <div className="wof-repeater-toggle-wrap" style={{ marginBottom: '16px' }}>
           <ToggleControl
-            label={__('Enable Repeatable Section', 'wooptionsfic')}
-            help={__('Let customers add the same fields multiple times on the product page.', 'wooptionsfic')}
+            label={__('Enable Repeatable Section', 'wooptions-pro')}
+            help={__('Let customers add the same fields multiple times on the product page.', 'wooptions-pro')}
             checked={Boolean(field.repeatable)}
             onChange={(repeatable: boolean) => update({ repeatable })}
           />
@@ -3816,11 +3816,11 @@ namespace WooptionsFic.Builder {
           <div className="wof-repeater-config" style={{ borderTop: '1px solid #e2e8f0', paddingTop: '16px', marginBottom: '16px' }}>
             {/* Repeat Method */}
             <div className="wof-field-width-setting" style={{ marginBottom: '16px' }}>
-              <span className="wof-field-width-label">{__('Repeat Method', 'wooptionsfic')}</span>
-              <div className="wof-field-width-group" role="radiogroup" aria-label={__('Repeat Method', 'wooptionsfic')}>
+              <span className="wof-field-width-label">{__('Repeat Method', 'wooptions-pro')}</span>
+              <div className="wof-field-width-group" role="radiogroup" aria-label={__('Repeat Method', 'wooptions-pro')}>
                 {[
-                  { label: __('Add Button', 'wooptionsfic'), value: 'button' },
-                  { label: __('Quantity Selector', 'wooptionsfic'), value: 'quantity' },
+                  { label: __('Add Button', 'wooptions-pro'), value: 'button' },
+                  { label: __('Quantity Selector', 'wooptions-pro'), value: 'quantity' },
                 ].map((m) => {
                   const isSelected = (field.repeatMethod || 'button') === m.value;
                   return (
@@ -3829,7 +3829,7 @@ namespace WooptionsFic.Builder {
                       key={m.value}
                       role="radio"
                       aria-checked={isSelected}
-                      className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                      className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                       onClick={() => update({ repeatMethod: m.value as 'button' | 'quantity' })}
                     >
                       {m.label}
@@ -3842,10 +3842,10 @@ namespace WooptionsFic.Builder {
             {/* Repeat Label */}
             <div style={{ marginBottom: '16px' }}>
               <TextControl
-                label={__('Repeat Label', 'wooptionsfic')}
+                label={__('Repeat Label', 'wooptions-pro')}
                 value={field.repeatLabel ?? 'Item {n}'}
                 placeholder="Item {n}"
-                help={__('Use {n} for auto-numbering, like Person {n} → Person 1, Person 2.', 'wooptionsfic')}
+                help={__('Use {n} for auto-numbering, like Person {n} → Person 1, Person 2.', 'wooptions-pro')}
                 onChange={(repeatLabel: string) => update({ repeatLabel })}
               />
             </div>
@@ -3862,9 +3862,9 @@ namespace WooptionsFic.Builder {
               }}
             >
               <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr', gap: '8px', marginBottom: '6px' }}>
-                <span style={{ fontSize: '12px', fontWeight: 600, color: '#475569' }}>{__('Price Type', 'wooptionsfic')}</span>
-                <span style={{ fontSize: '12px', fontWeight: 600, color: '#475569' }}>{__('Regular', 'wooptionsfic')}</span>
-                <span style={{ fontSize: '12px', fontWeight: 600, color: '#475569' }}>{__('Sales', 'wooptionsfic')}</span>
+                <span style={{ fontSize: '12px', fontWeight: 600, color: '#475569' }}>{__('Price Type', 'wooptions-pro')}</span>
+                <span style={{ fontSize: '12px', fontWeight: 600, color: '#475569' }}>{__('Regular', 'wooptions-pro')}</span>
+                <span style={{ fontSize: '12px', fontWeight: 600, color: '#475569' }}>{__('Sales', 'wooptions-pro')}</span>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr', gap: '8px' }}>
                 <select
@@ -3891,9 +3891,9 @@ namespace WooptionsFic.Builder {
                     });
                   }}
                 >
-                  <option value="none">{__('No cost', 'wooptionsfic')}</option>
-                  <option value="fixed">{__('Fixed Price', 'wooptionsfic')}</option>
-                  <option value="percentage">{__('Percentage', 'wooptionsfic')}</option>
+                  <option value="none">{__('No cost', 'wooptions-pro')}</option>
+                  <option value="fixed">{__('Fixed Price', 'wooptions-pro')}</option>
+                  <option value="percentage">{__('Percentage', 'wooptions-pro')}</option>
                 </select>
                 <input
                   type="number"
@@ -3949,18 +3949,18 @@ namespace WooptionsFic.Builder {
             {field.repeatMethod !== 'quantity' ? (
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
                 <TextControl
-                  label={__('Button Label', 'wooptionsfic')}
+                  label={__('Button Label', 'wooptions-pro')}
                   value={field.buttonLabel ?? 'Add Another'}
                   placeholder="Add Another"
                   onChange={(buttonLabel: string) => update({ buttonLabel })}
                 />
                 <TextControl
-                  label={__('Maximum Repeats', 'wooptionsfic')}
+                  label={__('Maximum Repeats', 'wooptions-pro')}
                   type="number"
                   min={0}
                   value={field.maxRepeats != null ? String(field.maxRepeats) : '0'}
                   placeholder="0"
-                  help={__('Enter 0 to allow unlimited repeats.', 'wooptionsfic')}
+                  help={__('Enter 0 to allow unlimited repeats.', 'wooptions-pro')}
                   onChange={(val: string) => update({ maxRepeats: val === '' ? 0 : Math.max(0, parseInt(val, 10) || 0) })}
                 />
               </div>
@@ -3969,25 +3969,25 @@ namespace WooptionsFic.Builder {
         ) : null}
 
         <TextareaControl
-          label={__('Help text', 'wooptionsfic')}
+          label={__('Help text', 'wooptions-pro')}
           value={field.help ?? ''}
           onChange={(help: string) => update({ help })}
         />
 
         <div className="wof-help-position-control">
-          <label className="wof-segmented-label">{__('HELP TEXT POSITION', 'wooptionsfic')}</label>
+          <label className="wof-segmented-label">{__('HELP TEXT POSITION', 'wooptions-pro')}</label>
           <div className="wof-segmented-group">
             {[
-              { label: __('Below Title', 'wooptionsfic'), value: 'below_title' },
-              { label: __('Tooltip', 'wooptionsfic'), value: 'tooltip' },
-              { label: __('Below Field', 'wooptionsfic'), value: 'below_field' },
+              { label: __('Below Title', 'wooptions-pro'), value: 'below_title' },
+              { label: __('Tooltip', 'wooptions-pro'), value: 'tooltip' },
+              { label: __('Below Field', 'wooptions-pro'), value: 'below_field' },
             ].map((opt) => {
               const isSelected = (field.helpTextPosition ?? 'below_title') === opt.value;
               return (
                 <button
                   key={opt.value}
                   type="button"
-                  className={WooptionsFic.Utils.classNames('wof-segmented-btn', isSelected && 'is-selected')}
+                  className={WooOptionsPro.Utils.classNames('wof-segmented-btn', isSelected && 'is-selected')}
                   onClick={() => update({ helpTextPosition: opt.value as 'below_title' | 'tooltip' | 'below_field' })}
                 >
                   {opt.label}
@@ -3998,7 +3998,7 @@ namespace WooptionsFic.Builder {
         </div>
 
         <ToggleControl
-          label={__('Required', 'wooptionsfic')}
+          label={__('Required', 'wooptions-pro')}
           checked={Boolean(field.required)}
           onChange={(required: boolean) => update({ required })}
         />
@@ -4007,12 +4007,12 @@ namespace WooptionsFic.Builder {
   }
 
   export function Inspector(props: {
-    field: WooptionsFic.FieldDefinition | null;
-    document: WooptionsFic.OptionSetDefinition;
-    tab: WooptionsFic.InspectorTab;
-    onTabChange: (tab: WooptionsFic.InspectorTab) => void;
-    onFieldChange: (field: WooptionsFic.FieldDefinition) => void;
-    onDocumentChange: (patch: Partial<WooptionsFic.OptionSetDefinition>) => void;
+    field: WooOptionsPro.FieldDefinition | null;
+    document: WooOptionsPro.OptionSetDefinition;
+    tab: WooOptionsPro.InspectorTab;
+    onTabChange: (tab: WooOptionsPro.InspectorTab) => void;
+    onFieldChange: (field: WooOptionsPro.FieldDefinition) => void;
+    onDocumentChange: (patch: Partial<WooOptionsPro.OptionSetDefinition>) => void;
     onDuplicate: () => void;
     onDelete: () => void;
   }): any {
@@ -4045,9 +4045,9 @@ namespace WooptionsFic.Builder {
       };
     }, [props.field]);
 
-    if (!props.field) return <aside className="wof-builder-inspector"><div className="wof-builder-pane__heading"><div><h2>{__('Option set styling', 'wooptionsfic')}</h2></div></div><div className="wof-inspector-body"><section className="wof-inspector-section"><StyleStudio document={props.document} onChange={props.onDocumentChange} /></section></div></aside>;
+    if (!props.field) return <aside className="wof-builder-inspector"><div className="wof-builder-pane__heading"><div><h2>{__('Option set styling', 'wooptions-pro')}</h2></div></div><div className="wof-inspector-body"><section className="wof-inspector-section"><StyleStudio document={props.document} onChange={props.onDocumentChange} /></section></div></aside>;
     const field = props.field;
-    const update = (patch: Partial<WooptionsFic.FieldDefinition>) => props.onFieldChange({ ...field, ...patch });
+    const update = (patch: Partial<WooOptionsPro.FieldDefinition>) => props.onFieldChange({ ...field, ...patch });
     const contentFieldTypes = ['content', 'modal', 'spacer', 'separator', 'heading', 'paragraph', 'help', 'formula', 'repeater'];
     const visibleTabs = tabs.filter(([tab]) => {
       if (tab === 'choices' && !Boolean(field.choices)) return false;
@@ -4059,20 +4059,20 @@ namespace WooptionsFic.Builder {
     return <aside className="wof-builder-inspector">
       <div className="wof-builder-pane__heading">
         <div>
-          <h2>{field.type === 'spacer' ? __('Spacer', 'wooptionsfic') : field.type === 'separator' ? __('Separator', 'wooptionsfic') : field.label}</h2>
+          <h2>{field.type === 'spacer' ? __('Spacer', 'wooptions-pro') : field.type === 'separator' ? __('Separator', 'wooptions-pro') : field.label}</h2>
         </div>
         <div className="wof-inspector-heading-actions">
-          <button type="button" onClick={props.onDuplicate} aria-label={__('Duplicate field', 'wooptionsfic')} title={__('Duplicate', 'wooptionsfic')}>
+          <button type="button" onClick={props.onDuplicate} aria-label={__('Duplicate field', 'wooptions-pro')} title={__('Duplicate', 'wooptions-pro')}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
           </button>
-          <button type="button" className="is-destructive" onClick={props.onDelete} aria-label={__('Delete field', 'wooptionsfic')} title={__('Delete', 'wooptionsfic')}>
+          <button type="button" className="is-destructive" onClick={props.onDelete} aria-label={__('Delete field', 'wooptions-pro')} title={__('Delete', 'wooptions-pro')}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /><line x1="10" y1="11" x2="10" y2="17" /><line x1="14" y1="11" x2="14" y2="17" /></svg>
           </button>
         </div>
       </div>
       <div className="wof-inspector-tabs-shell">
-        {canLeft ? <button type="button" className="wof-inspector-tabs-arrow is-left" aria-label={__('Scroll tabs left', 'wooptionsfic')} onClick={() => scrollerRef.current?.scrollBy({ left: -140, behavior: 'smooth' })}><WooptionsFic.Components.Dashicon name="arrow-left-alt2" /></button> : null}
-        <div className="wof-inspector-tabs" ref={scrollerRef} role="tablist" aria-label={__('Field Inspector Tabs', 'wooptionsfic')}>
+        {canLeft ? <button type="button" className="wof-inspector-tabs-arrow is-left" aria-label={__('Scroll tabs left', 'wooptions-pro')} onClick={() => scrollerRef.current?.scrollBy({ left: -140, behavior: 'smooth' })}><WooOptionsPro.Components.Dashicon name="arrow-left-alt2" /></button> : null}
+        <div className="wof-inspector-tabs" ref={scrollerRef} role="tablist" aria-label={__('Field Inspector Tabs', 'wooptions-pro')}>
           {visibleTabs.map(([tab, label]) => (
             <button
               type="button"
@@ -4089,7 +4089,7 @@ namespace WooptionsFic.Builder {
             </button>
           ))}
         </div>
-        {canRight ? <button type="button" className="wof-inspector-tabs-arrow is-right" aria-label={__('Scroll tabs right', 'wooptionsfic')} onClick={() => scrollerRef.current?.scrollBy({ left: 140, behavior: 'smooth' })}><WooptionsFic.Components.Dashicon name="arrow-right-alt2" /></button> : null}
+        {canRight ? <button type="button" className="wof-inspector-tabs-arrow is-right" aria-label={__('Scroll tabs right', 'wooptions-pro')} onClick={() => scrollerRef.current?.scrollBy({ left: 140, behavior: 'smooth' })}><WooOptionsPro.Components.Dashicon name="arrow-right-alt2" /></button> : null}
       </div>
       <div className="wof-inspector-body">
         <section className="wof-inspector-section">
@@ -4105,14 +4105,14 @@ namespace WooptionsFic.Builder {
                 />
 
                 <ChoiceColorControl
-                  label={__('Spacer color', 'wooptionsfic')}
+                  label={__('Spacer color', 'wooptions-pro')}
                   color={String(field.color ?? (field.style as any)?.color ?? '#E2E8F0')}
                   onChange={(color: string) => update({ color, style: { ...(field.style ?? {}), color } })}
                 />
 
                 <div className="wof-field-width-setting">
-                  <span className="wof-field-width-label">{__('Width', 'wooptionsfic')}</span>
-                  <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptionsfic')}>
+                  <span className="wof-field-width-label">{__('Width', 'wooptions-pro')}</span>
+                  <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptions-pro')}>
                     {(['33%', '50%', '66%', '100%'] as const).map((w) => {
                       const isSelected = (field.width || '100%') === w;
                       return (
@@ -4121,7 +4121,7 @@ namespace WooptionsFic.Builder {
                           key={w}
                           role="radio"
                           aria-checked={isSelected}
-                          className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                          className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                           onClick={() => update({ width: w })}
                         >
                           {w}
@@ -4140,8 +4140,8 @@ namespace WooptionsFic.Builder {
                 />
 
                 <div className="wof-field-width-setting">
-                  <span className="wof-field-width-label">{__('Width', 'wooptionsfic')}</span>
-                  <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptionsfic')}>
+                  <span className="wof-field-width-label">{__('Width', 'wooptions-pro')}</span>
+                  <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptions-pro')}>
                     {(['33%', '50%', '66%', '100%'] as const).map((w) => {
                       const isSelected = (field.width || '100%') === w;
                       return (
@@ -4150,7 +4150,7 @@ namespace WooptionsFic.Builder {
                           key={w}
                           role="radio"
                           aria-checked={isSelected}
-                          className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                          className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                           onClick={() => update({ width: w })}
                         >
                           {w}
@@ -4163,19 +4163,19 @@ namespace WooptionsFic.Builder {
             ) : field.type === 'content' ? (
               <div className="wof-content-field-settings">
                 <TextControl
-                  label={__('Label (Internal reference)', 'wooptionsfic')}
+                  label={__('Label (Internal reference)', 'wooptions-pro')}
                   value={field.label}
                   onChange={(label: string) => update({ label })}
                 />
-                <WooptionsFic.Components.WpWysiwygEditor
+                <WooOptionsPro.Components.WpWysiwygEditor
                   id={field.uuid}
-                  label={__('Content', 'wooptionsfic')}
+                  label={__('Content', 'wooptions-pro')}
                   value={field.content ?? ''}
                   onChange={(content: string) => update({ content })}
                 />
                 <div className="wof-field-width-setting">
-                  <span className="wof-field-width-label">{__('Width', 'wooptionsfic')}</span>
-                  <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptionsfic')}>
+                  <span className="wof-field-width-label">{__('Width', 'wooptions-pro')}</span>
+                  <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptions-pro')}>
                     {(['33%', '50%', '66%', '100%'] as const).map((w) => {
                       const isSelected = (field.width || '100%') === w;
                       return (
@@ -4184,7 +4184,7 @@ namespace WooptionsFic.Builder {
                           key={w}
                           role="radio"
                           aria-checked={isSelected}
-                          className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                          className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                           onClick={() => update({ width: w })}
                         >
                           {w}
@@ -4197,42 +4197,42 @@ namespace WooptionsFic.Builder {
             ) : field.type === 'modal' ? (
               <div className="wof-modal-field-settings">
                 <TextControl
-                  label={__('Label (Internal reference)', 'wooptionsfic')}
+                  label={__('Label (Internal reference)', 'wooptions-pro')}
                   value={field.label}
                   onChange={(label: string) => update({ label })}
                 />
                 <TextControl
-                  label={__('Button Text', 'wooptionsfic')}
+                  label={__('Button Text', 'wooptions-pro')}
                   value={field.buttonText ?? 'View details'}
-                  placeholder={__('e.g. Size Guide, View details', 'wooptionsfic')}
+                  placeholder={__('e.g. Size Guide, View details', 'wooptions-pro')}
                   onChange={(buttonText: string) => update({ buttonText })}
                 />
                 <SelectControl
-                  label={__('Button Style', 'wooptionsfic')}
+                  label={__('Button Style', 'wooptions-pro')}
                   value={field.buttonStyle ?? 'outline'}
                   options={[
-                    { label: __('Outline', 'wooptionsfic'), value: 'outline' },
-                    { label: __('Primary', 'wooptionsfic'), value: 'primary' },
-                    { label: __('Secondary', 'wooptionsfic'), value: 'secondary' },
-                    { label: __('Link / Text only', 'wooptionsfic'), value: 'link' },
+                    { label: __('Outline', 'wooptions-pro'), value: 'outline' },
+                    { label: __('Primary', 'wooptions-pro'), value: 'primary' },
+                    { label: __('Secondary', 'wooptions-pro'), value: 'secondary' },
+                    { label: __('Link / Text only', 'wooptions-pro'), value: 'link' },
                   ]}
                   onChange={(buttonStyle: 'outline' | 'primary' | 'secondary' | 'link') => update({ buttonStyle })}
                 />
                 <TextControl
-                  label={__('Modal Header Title', 'wooptionsfic')}
+                  label={__('Modal Header Title', 'wooptions-pro')}
                   value={field.modalTitle ?? 'Information'}
-                  placeholder={__('e.g. Size Guide & Dimensions', 'wooptionsfic')}
+                  placeholder={__('e.g. Size Guide & Dimensions', 'wooptions-pro')}
                   onChange={(modalTitle: string) => update({ modalTitle })}
                 />
-                <WooptionsFic.Components.WpWysiwygEditor
+                <WooOptionsPro.Components.WpWysiwygEditor
                   id={field.uuid}
-                  label={__('Modal Content', 'wooptionsfic')}
+                  label={__('Modal Content', 'wooptions-pro')}
                   value={field.content ?? ''}
                   onChange={(content: string) => update({ content })}
                 />
                 <div className="wof-field-width-setting">
-                  <span className="wof-field-width-label">{__('Width', 'wooptionsfic')}</span>
-                  <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptionsfic')}>
+                  <span className="wof-field-width-label">{__('Width', 'wooptions-pro')}</span>
+                  <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptions-pro')}>
                     {(['33%', '50%', '66%', '100%'] as const).map((w) => {
                       const isSelected = (field.width || '100%') === w;
                       return (
@@ -4241,7 +4241,7 @@ namespace WooptionsFic.Builder {
                           key={w}
                           role="radio"
                           aria-checked={isSelected}
-                          className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                          className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                           onClick={() => update({ width: w })}
                         >
                           {w}
@@ -4260,31 +4260,31 @@ namespace WooptionsFic.Builder {
             ) : field.type === 'heading' ? (
               <div className="wof-heading-field-settings">
                 <TextControl
-                  label={__('Heading Text', 'wooptionsfic')}
+                  label={__('Heading Text', 'wooptions-pro')}
                   value={field.label}
                   onChange={(label: string) => update({ label })}
                 />
                 <TextareaControl
-                  label={__('Help text', 'wooptionsfic')}
+                  label={__('Help text', 'wooptions-pro')}
                   value={field.help ?? ''}
                   onChange={(help: string) => update({ help })}
                 />
                 <div className="wof-help-position-control">
                   <label className="wof-segmented-label">
-                    {__('HELP TEXT POSITION', 'wooptionsfic')}
+                    {__('HELP TEXT POSITION', 'wooptions-pro')}
                   </label>
                   <div className="wof-segmented-group">
                     {[
-                      { label: __('Below Title', 'wooptionsfic'), value: 'below_title' },
-                      { label: __('Tooltip', 'wooptionsfic'), value: 'tooltip' },
-                      { label: __('Below Field', 'wooptionsfic'), value: 'below_field' },
+                      { label: __('Below Title', 'wooptions-pro'), value: 'below_title' },
+                      { label: __('Tooltip', 'wooptions-pro'), value: 'tooltip' },
+                      { label: __('Below Field', 'wooptions-pro'), value: 'below_field' },
                     ].map(opt => {
                       const isSelected = (field.helpTextPosition ?? 'below_title') === opt.value;
                       return (
                         <button
                           key={opt.value}
                           type="button"
-                          className={WooptionsFic.Utils.classNames('wof-segmented-btn', isSelected && 'is-selected')}
+                          className={WooOptionsPro.Utils.classNames('wof-segmented-btn', isSelected && 'is-selected')}
                           onClick={() => update({ helpTextPosition: opt.value as 'below_title' | 'tooltip' | 'below_field' })}
                         >
                           {opt.label}
@@ -4294,8 +4294,8 @@ namespace WooptionsFic.Builder {
                   </div>
                 </div>
                 <div className="wof-field-width-setting">
-                  <span className="wof-field-width-label">{__('Width', 'wooptionsfic')}</span>
-                  <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptionsfic')}>
+                  <span className="wof-field-width-label">{__('Width', 'wooptions-pro')}</span>
+                  <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptions-pro')}>
                     {(['33%', '50%', '66%', '100%'] as const).map((w) => {
                       const isSelected = (field.width || '100%') === w;
                       return (
@@ -4304,7 +4304,7 @@ namespace WooptionsFic.Builder {
                           key={w}
                           role="radio"
                           aria-checked={isSelected}
-                          className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                          className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                           onClick={() => update({ width: w })}
                         >
                           {w}
@@ -4317,19 +4317,19 @@ namespace WooptionsFic.Builder {
             ) : field.type === 'paragraph' ? (
               <div className="wof-paragraph-field-settings">
                 <TextControl
-                  label={__('Label (Internal reference)', 'wooptionsfic')}
+                  label={__('Label (Internal reference)', 'wooptions-pro')}
                   value={field.label}
                   onChange={(label: string) => update({ label })}
                 />
                 <TextareaControl
-                  label={__('Content', 'wooptionsfic')}
+                  label={__('Content', 'wooptions-pro')}
                   rows={4}
                   value={field.description || field.content || ''}
                   onChange={(content: string) => update({ description: content, content })}
                 />
                 <div className="wof-field-width-setting">
-                  <span className="wof-field-width-label">{__('Width', 'wooptionsfic')}</span>
-                  <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptionsfic')}>
+                  <span className="wof-field-width-label">{__('Width', 'wooptions-pro')}</span>
+                  <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptions-pro')}>
                     {(['33%', '50%', '66%', '100%'] as const).map((w) => {
                       const isSelected = (field.width || '100%') === w;
                       return (
@@ -4338,7 +4338,7 @@ namespace WooptionsFic.Builder {
                           key={w}
                           role="radio"
                           aria-checked={isSelected}
-                          className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                          className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                           onClick={() => update({ width: w })}
                         >
                           {w}
@@ -4351,19 +4351,19 @@ namespace WooptionsFic.Builder {
             ) : field.type === 'help' ? (
               <div className="wof-help-field-settings">
                 <TextControl
-                  label={__('Label (Internal reference)', 'wooptionsfic')}
+                  label={__('Label (Internal reference)', 'wooptions-pro')}
                   value={field.label}
                   onChange={(label: string) => update({ label })}
                 />
                 <TextareaControl
-                  label={__('Help Content', 'wooptionsfic')}
+                  label={__('Help Content', 'wooptions-pro')}
                   rows={4}
                   value={field.description || field.content || field.help || ''}
                   onChange={(content: string) => update({ description: content, content })}
                 />
                 <div className="wof-field-width-setting">
-                  <span className="wof-field-width-label">{__('Width', 'wooptionsfic')}</span>
-                  <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptionsfic')}>
+                  <span className="wof-field-width-label">{__('Width', 'wooptions-pro')}</span>
+                  <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptions-pro')}>
                     {(['33%', '50%', '66%', '100%'] as const).map((w) => {
                       const isSelected = (field.width || '100%') === w;
                       return (
@@ -4372,7 +4372,7 @@ namespace WooptionsFic.Builder {
                           key={w}
                           role="radio"
                           aria-checked={isSelected}
-                          className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                          className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                           onClick={() => update({ width: w })}
                         >
                           {w}
@@ -4384,21 +4384,21 @@ namespace WooptionsFic.Builder {
               </div>
             ) : (
               <>
-                <TextControl label={__('Label', 'wooptionsfic')} value={field.label} onChange={(label: string) => update({ label })} />
+                <TextControl label={__('Label', 'wooptions-pro')} value={field.label} onChange={(label: string) => update({ label })} />
 
                 {/* Applied Fields (Target Text Fields for Font Picker) */}
                 {field.type === 'font' ? (
                   <div className="wof-applied-fields-box" style={{ marginBottom: '16px', padding: '14px', background: 'var(--wof-admin-surface-subtle, #f8fafc)', borderRadius: '8px', border: '1px solid var(--wof-admin-border, #e2e8f0)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
                       <strong style={{ fontSize: '13px', color: '#1e293b' }}>
-                        {__('Applied Text Fields', 'wooptionsfic')}
+                        {__('Applied Text Fields', 'wooptions-pro')}
                       </strong>
                       <span style={{ fontSize: '11px', background: 'color-mix(in srgb, var(--wof-admin-primary, #5b4ff5) 12%, transparent)', color: 'var(--wof-admin-primary, #5b4ff5)', padding: '2px 8px', borderRadius: '12px', fontWeight: 600 }}>
-                        {Array.isArray(field.appliedFields) ? field.appliedFields.length : 0} {__('linked', 'wooptionsfic')}
+                        {Array.isArray(field.appliedFields) ? field.appliedFields.length : 0} {__('linked', 'wooptions-pro')}
                       </span>
                     </div>
                     <p style={{ fontSize: '12px', color: '#64748b', margin: '0 0 10px 0', lineHeight: 1.4 }}>
-                      {__('Select which Text or Textarea field(s) will change their font in real-time as the customer chooses a font.', 'wooptionsfic')}
+                      {__('Select which Text or Textarea field(s) will change their font in real-time as the customer chooses a font.', 'wooptions-pro')}
                     </p>
 
                     {(() => {
@@ -4408,9 +4408,9 @@ namespace WooptionsFic.Builder {
                       if (textFields.length === 0) {
                         return (
                           <div style={{ padding: '10px', background: '#fff', borderRadius: '6px', border: '1px dashed #cbd5e1', fontSize: '12px', color: '#64748b', textAlign: 'center' }}>
-                            <p style={{ margin: 0 }}>{__('No Text or Textarea fields found in this option set.', 'wooptionsfic')}</p>
+                            <p style={{ margin: 0 }}>{__('No Text or Textarea fields found in this option set.', 'wooptions-pro')}</p>
                             <small style={{ display: 'block', marginTop: '4px', color: '#94a3b8' }}>
-                              {__('Add a Text or Textarea field to enable real-time font styling.', 'wooptionsfic')}
+                              {__('Add a Text or Textarea field to enable real-time font styling.', 'wooptions-pro')}
                             </small>
                           </div>
                         );
@@ -4449,10 +4449,10 @@ namespace WooptionsFic.Builder {
                                   }}
                                 />
                                 <span style={{ fontWeight: 500, fontSize: '13px', flex: 1, color: '#1e293b' }}>
-                                  {tf.label || __('Untitled text field', 'wooptionsfic')}
+                                  {tf.label || __('Untitled text field', 'wooptions-pro')}
                                 </span>
                                 <span style={{ fontSize: '10px', textTransform: 'uppercase', padding: '1px 6px', background: '#f1f5f9', borderRadius: '4px', color: '#64748b', fontWeight: 600 }}>
-                                  {tf.type === 'textarea' ? __('Textarea', 'wooptionsfic') : __('Text', 'wooptionsfic')}
+                                  {tf.type === 'textarea' ? __('Textarea', 'wooptions-pro') : __('Text', 'wooptions-pro')}
                                 </span>
                               </label>
                             );
@@ -4465,8 +4465,8 @@ namespace WooptionsFic.Builder {
 
                 {/* Block Width options for every block */}
                 <div className="wof-field-width-setting">
-                  <span className="wof-field-width-label">{__('Width', 'wooptionsfic')}</span>
-                  <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptionsfic')}>
+                  <span className="wof-field-width-label">{__('Width', 'wooptions-pro')}</span>
+                  <div className="wof-field-width-group" role="radiogroup" aria-label={__('Width', 'wooptions-pro')}>
                     {(['33%', '50%', '66%', '100%'] as const).map((w) => {
                       const isSelected = (field.width || '100%') === w;
                       return (
@@ -4475,7 +4475,7 @@ namespace WooptionsFic.Builder {
                           key={w}
                           role="radio"
                           aria-checked={isSelected}
-                          className={WooptionsFic.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
+                          className={WooOptionsPro.Utils.classNames('wof-width-btn', isSelected && 'is-active')}
                           onClick={() => update({ width: w })}
                         >
                           {w}
@@ -4488,10 +4488,10 @@ namespace WooptionsFic.Builder {
                 {/* Choice Item Dimensions & Style */}
                 {Boolean(field.choices) && !['radio', 'checkbox_group', 'select', 'font'].includes(field.type) ? (
                   <div className="wof-choice-dimensions-box" style={{ padding: '12px', background: 'var(--wof-admin-surface-subtle, #f8fafc)', borderRadius: '8px', border: '1px solid var(--wof-admin-border, #e2e8f0)', marginBottom: '16px' }}>
-                    <strong style={{ display: 'block', fontSize: '13px', marginBottom: '8px' }}>{__('Choice Item Dimensions & Style', 'wooptionsfic')}</strong>
+                    <strong style={{ display: 'block', fontSize: '13px', marginBottom: '8px' }}>{__('Choice Item Dimensions & Style', 'wooptions-pro')}</strong>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
                       <TextControl
-                        label={__('Width (px)', 'wooptionsfic')}
+                        label={__('Width (px)', 'wooptions-pro')}
                         type="number"
                         min={0}
                         value={String(field.choiceWidth ?? '')}
@@ -4499,7 +4499,7 @@ namespace WooptionsFic.Builder {
                         onChange={(choiceWidth: string) => update({ choiceWidth })}
                       />
                       <TextControl
-                        label={__('Height (px)', 'wooptionsfic')}
+                        label={__('Height (px)', 'wooptions-pro')}
                         type="number"
                         min={0}
                         value={String(field.choiceHeight ?? '')}
@@ -4507,7 +4507,7 @@ namespace WooptionsFic.Builder {
                         onChange={(choiceHeight: string) => update({ choiceHeight })}
                       />
                       <TextControl
-                        label={__('Radius (px)', 'wooptionsfic')}
+                        label={__('Radius (px)', 'wooptions-pro')}
                         type="number"
                         min={0}
                         value={String(field.choiceBorderRadius ?? '')}
@@ -4518,14 +4518,14 @@ namespace WooptionsFic.Builder {
                   </div>
                 ) : null}
 
-                {'placeholder' in field && field.type !== 'range' ? <TextControl label={__('Placeholder', 'wooptionsfic')} value={field.placeholder ?? ''} onChange={(placeholder: string) => update({ placeholder })} /> : null}
+                {'placeholder' in field && field.type !== 'range' ? <TextControl label={__('Placeholder', 'wooptions-pro')} value={field.placeholder ?? ''} onChange={(placeholder: string) => update({ placeholder })} /> : null}
 
                 {/* Text and Textarea Settings */}
                 {['text', 'textarea'].includes(field.type) ? (
                   <div className="wof-text-settings" style={{ marginBottom: '16px', padding: '12px', background: 'var(--wof-admin-surface-subtle, #f8fafc)', borderRadius: '8px', border: '1px solid var(--wof-admin-border, #e2e8f0)' }}>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '12px' }}>
                       <TextControl
-                        label={__('Minimum Character', 'wooptionsfic')}
+                        label={__('Minimum Character', 'wooptions-pro')}
                         type="number"
                         min={0}
                         value={field.minLength ? String(field.minLength) : ''}
@@ -4533,7 +4533,7 @@ namespace WooptionsFic.Builder {
                         onChange={(val: string) => update({ minLength: val === '' ? 0 : Math.max(0, parseInt(val, 10) || 0) })}
                       />
                       <TextControl
-                        label={__('Maximum Character', 'wooptionsfic')}
+                        label={__('Maximum Character', 'wooptions-pro')}
                         type="number"
                         min={0}
                         value={field.maxLength ? String(field.maxLength) : ''}
@@ -4543,13 +4543,13 @@ namespace WooptionsFic.Builder {
                     </div>
 
                     <SelectControl
-                      label={__('Text Transform', 'wooptionsfic')}
+                      label={__('Text Transform', 'wooptions-pro')}
                       value={field.textTransform ?? 'none'}
                       options={[
-                        { label: __('None', 'wooptionsfic'), value: 'none' },
-                        { label: __('Uppercase', 'wooptionsfic'), value: 'uppercase' },
-                        { label: __('Lowercase', 'wooptionsfic'), value: 'lowercase' },
-                        { label: __('Capitalize', 'wooptionsfic'), value: 'capitalize' },
+                        { label: __('None', 'wooptions-pro'), value: 'none' },
+                        { label: __('Uppercase', 'wooptions-pro'), value: 'uppercase' },
+                        { label: __('Lowercase', 'wooptions-pro'), value: 'lowercase' },
+                        { label: __('Capitalize', 'wooptions-pro'), value: 'capitalize' },
                       ]}
                       onChange={(textTransform: 'none' | 'uppercase' | 'lowercase' | 'capitalize') => update({ textTransform })}
                     />
@@ -4557,7 +4557,7 @@ namespace WooptionsFic.Builder {
                     {field.type === 'textarea' ? (
                       <div style={{ marginTop: '12px' }}>
                         <TextControl
-                          label={__('Row', 'wooptionsfic')}
+                          label={__('Row', 'wooptions-pro')}
                           type="number"
                           min={1}
                           max={50}
@@ -4574,7 +4574,7 @@ namespace WooptionsFic.Builder {
                 {field.type === 'number' ? (
                   <div className="wof-number-settings" style={{ marginBottom: '16px', padding: '12px', background: 'var(--wof-admin-surface-subtle, #f8fafc)', borderRadius: '8px', border: '1px solid var(--wof-admin-border, #e2e8f0)' }}>
                     <ToggleControl
-                      label={__('Enable Min/Max Restriction', 'wooptionsfic')}
+                      label={__('Enable Min/Max Restriction', 'wooptions-pro')}
                       checked={field.enableMinMax !== false}
                       onChange={(enableMinMax: boolean) => update({
                         enableMinMax,
@@ -4585,14 +4585,14 @@ namespace WooptionsFic.Builder {
                     {field.enableMinMax !== false ? (
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '12px' }}>
                         <TextControl
-                          label={__('MINIMUM VALUE', 'wooptionsfic')}
+                          label={__('MINIMUM VALUE', 'wooptions-pro')}
                           type="number"
                           value={field.min != null ? String(field.min) : '1'}
                           placeholder="1"
                           onChange={(min: string) => update({ min })}
                         />
                         <TextControl
-                          label={__('MAXIMUM VALUE', 'wooptionsfic')}
+                          label={__('MAXIMUM VALUE', 'wooptions-pro')}
                           type="number"
                           value={field.max != null ? String(field.max) : '100'}
                           placeholder="100"
@@ -4602,14 +4602,14 @@ namespace WooptionsFic.Builder {
                     ) : null}
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '10px' }}>
                       <TextControl
-                        label={__('STEPS', 'wooptionsfic')}
+                        label={__('STEPS', 'wooptions-pro')}
                         type="number"
                         value={field.step != null ? String(field.step) : '1'}
                         placeholder="1"
                         onChange={(step: string) => update({ step })}
                       />
                       <TextControl
-                        label={__('DEFAULT VALUE', 'wooptionsfic')}
+                        label={__('DEFAULT VALUE', 'wooptions-pro')}
                         type="number"
                         value={field.default != null && field.default !== '' ? String(field.default) : ''}
                         placeholder=""
@@ -4623,14 +4623,14 @@ namespace WooptionsFic.Builder {
                 {field.type === 'range' ? (
                   <div className="wof-range-settings" style={{ marginBottom: '16px' }}>
                     <ToggleControl
-                      label={__('Enable PostFix', 'wooptionsfic')}
+                      label={__('Enable PostFix', 'wooptions-pro')}
                       checked={Boolean(field.enablePostfix)}
                       onChange={(enablePostfix: boolean) => update({ enablePostfix })}
                     />
                     {field.enablePostfix ? (
                       <div style={{ marginTop: '10px' }}>
                         <TextControl
-                          label={__('POSTFIX TEXT', 'wooptionsfic')}
+                          label={__('POSTFIX TEXT', 'wooptions-pro')}
                           value={field.postfix != null ? String(field.postfix) : 'PostFix'}
                           placeholder="PostFix"
                           onChange={(postfix: string) => update({ postfix })}
@@ -4639,14 +4639,14 @@ namespace WooptionsFic.Builder {
                     ) : null}
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '12px' }}>
                       <TextControl
-                        label={__('MINIMUM VALUE', 'wooptionsfic')}
+                        label={__('MINIMUM VALUE', 'wooptions-pro')}
                         type="number"
                         value={field.min != null ? String(field.min) : '1'}
                         placeholder="1"
                         onChange={(min: string) => update({ min })}
                       />
                       <TextControl
-                        label={__('MAXIMUM VALUE', 'wooptionsfic')}
+                        label={__('MAXIMUM VALUE', 'wooptions-pro')}
                         type="number"
                         value={field.max != null ? String(field.max) : '100'}
                         placeholder="100"
@@ -4655,14 +4655,14 @@ namespace WooptionsFic.Builder {
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '10px' }}>
                       <TextControl
-                        label={__('STEPS', 'wooptionsfic')}
+                        label={__('STEPS', 'wooptions-pro')}
                         type="number"
                         value={field.step != null ? String(field.step) : '1'}
                         placeholder="1"
                         onChange={(step: string) => update({ step })}
                       />
                       <TextControl
-                        label={__('DEFAULT VALUE', 'wooptionsfic')}
+                        label={__('DEFAULT VALUE', 'wooptions-pro')}
                         type="number"
                         value={field.default != null && field.default !== '' ? String(field.default) : '10'}
                         placeholder="10"
@@ -4676,18 +4676,18 @@ namespace WooptionsFic.Builder {
                 {field.type === 'tel' ? (
                   <div className="wof-phone-settings" style={{ marginBottom: '16px', padding: '12px', background: 'var(--wof-admin-surface-subtle, #f8fafc)', borderRadius: '8px', border: '1px solid var(--wof-admin-border, #e2e8f0)' }}>
                     <SelectControl
-                      label={__('Flag Style', 'wooptionsfic')}
+                      label={__('Flag Style', 'wooptions-pro')}
                       value={field.flagStyle ?? 'number_only'}
                       options={[
-                        { label: __('Number Only', 'wooptionsfic'), value: 'number_only' },
-                        { label: __('Number Only & Flag', 'wooptionsfic'), value: 'number_flag' },
-                        { label: __('Number Only & Flag and Dial Code', 'wooptionsfic'), value: 'number_flag_dialcode' },
+                        { label: __('Number Only', 'wooptions-pro'), value: 'number_only' },
+                        { label: __('Number Only & Flag', 'wooptions-pro'), value: 'number_flag' },
+                        { label: __('Number Only & Flag and Dial Code', 'wooptions-pro'), value: 'number_flag_dialcode' },
                       ]}
                       onChange={(flagStyle: 'number_only' | 'number_flag' | 'number_flag_dialcode') => update({ flagStyle })}
                     />
                     {(field.flagStyle === 'number_flag' || field.flagStyle === 'number_flag_dialcode') ? (
                       <SelectControl
-                        label={__('Default Country', 'wooptionsfic')}
+                        label={__('Default Country', 'wooptions-pro')}
                         value={field.defaultCountry ?? 'US'}
                         options={COUNTRY_OPTIONS}
                         onChange={(defaultCountry: string) => update({ defaultCountry })}
@@ -4710,27 +4710,27 @@ namespace WooptionsFic.Builder {
                 {['color_swatch', 'image_swatch', 'segmented'].includes(field.type) ? (
                   <div className="wof-multiple-choice-settings" style={{ marginBottom: '16px' }}>
                     <ToggleControl
-                      label={__('Allow Multiple Choices', 'wooptionsfic')}
-                      help={__('Allow customers to select more than one option.', 'wooptionsfic')}
+                      label={__('Allow Multiple Choices', 'wooptions-pro')}
+                      help={__('Allow customers to select more than one option.', 'wooptions-pro')}
                       checked={Boolean(field.multiple)}
                       onChange={(multiple: boolean) => update({ multiple })}
                     />
                     {field.multiple ? (
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '8px' }}>
                         <TextControl
-                          label={__('Min Restriction', 'wooptionsfic')}
+                          label={__('Min Restriction', 'wooptions-pro')}
                           type="number"
                           min={0}
                           value={String(field.minChoices ?? '')}
-                          placeholder={__('Min', 'wooptionsfic')}
+                          placeholder={__('Min', 'wooptions-pro')}
                           onChange={(val: string) => update({ minChoices: val === '' ? 0 : Math.max(0, Number(val)) })}
                         />
                         <TextControl
-                          label={__('Max Restriction', 'wooptionsfic')}
+                          label={__('Max Restriction', 'wooptions-pro')}
                           type="number"
                           min={0}
                           value={String(field.maxChoices ?? '')}
-                          placeholder={__('Max', 'wooptionsfic')}
+                          placeholder={__('Max', 'wooptions-pro')}
                           onChange={(val: string) => update({ maxChoices: val === '' ? 0 : Math.max(0, Number(val)) })}
                         />
                       </div>
@@ -4741,22 +4741,22 @@ namespace WooptionsFic.Builder {
                 {/* Min/Max restriction for checkboxes */}
                 {field.type === 'checkbox_group' ? (
                   <div className="wof-checkbox-restrictions-box" style={{ padding: '12px', background: 'var(--wof-admin-surface-subtle, #f8fafc)', borderRadius: '8px', border: '1px solid var(--wof-admin-border, #e2e8f0)', marginBottom: '16px' }}>
-                    <strong style={{ display: 'block', fontSize: '13px', fontWeight: 600, color: '#0f172a', marginBottom: '8px' }}>{__('Choice Selection Restrictions', 'wooptionsfic')}</strong>
+                    <strong style={{ display: 'block', fontSize: '13px', fontWeight: 600, color: '#0f172a', marginBottom: '8px' }}>{__('Choice Selection Restrictions', 'wooptions-pro')}</strong>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                       <TextControl
-                        label={__('Min Restriction', 'wooptionsfic')}
+                        label={__('Min Restriction', 'wooptions-pro')}
                         type="number"
                         min={0}
                         value={String(field.minChoices ?? '')}
-                        placeholder={__('Min', 'wooptionsfic')}
+                        placeholder={__('Min', 'wooptions-pro')}
                         onChange={(val: string) => update({ minChoices: val === '' ? 0 : Math.max(0, Number(val)) })}
                       />
                       <TextControl
-                        label={__('Max Restriction', 'wooptionsfic')}
+                        label={__('Max Restriction', 'wooptions-pro')}
                         type="number"
                         min={0}
                         value={String(field.maxChoices ?? '')}
-                        placeholder={__('Max', 'wooptionsfic')}
+                        placeholder={__('Max', 'wooptions-pro')}
                         onChange={(val: string) => update({ maxChoices: val === '' ? 0 : Math.max(0, Number(val)) })}
                       />
                     </div>
@@ -4767,15 +4767,15 @@ namespace WooptionsFic.Builder {
                 {Boolean(field.choices) && !['segmented', 'radio', 'checkbox_group', 'font', 'select', 'product'].includes(field.type) ? (
                   <div className="wof-quantity-setting" style={{ marginBottom: '16px', padding: '12px', background: 'var(--wof-admin-surface-subtle, #f8fafc)', borderRadius: '8px', border: '1px solid var(--wof-admin-border, #e2e8f0)' }}>
                     <ToggleControl
-                      label={__('Enable Quantity', 'wooptionsfic')}
-                      help={__('Allow customers to specify quantity for each choice option.', 'wooptionsfic')}
+                      label={__('Enable Quantity', 'wooptions-pro')}
+                      help={__('Allow customers to specify quantity for each choice option.', 'wooptions-pro')}
                       checked={Boolean(field.enableQuantity)}
                       onChange={(enableQuantity: boolean) => update({ enableQuantity })}
                     />
                     {field.enableQuantity ? (
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '8px' }}>
                         <TextControl
-                          label={__('Minimum Quantity', 'wooptionsfic')}
+                          label={__('Minimum Quantity', 'wooptions-pro')}
                           type="number"
                           min={1}
                           value={String(field.minQuantity ?? 1)}
@@ -4783,7 +4783,7 @@ namespace WooptionsFic.Builder {
                           onChange={(val: string) => update({ minQuantity: val === '' ? 1 : Math.max(1, Number(val)) })}
                         />
                         <TextControl
-                          label={__('Maximum Quantity', 'wooptionsfic')}
+                          label={__('Maximum Quantity', 'wooptions-pro')}
                           type="number"
                           min={1}
                           value={String(field.maxQuantity ?? 100)}
@@ -4796,35 +4796,35 @@ namespace WooptionsFic.Builder {
                 ) : null}
 
                 {field.type === 'color_picker' ? (
-                  <ChoiceColorControl label={__('Default color', 'wooptionsfic')} color={String(field.default ?? '#5B4FF5')} onChange={(color: string) => update({ default: color })} />
+                  <ChoiceColorControl label={__('Default color', 'wooptions-pro')} color={String(field.default ?? '#5B4FF5')} onChange={(color: string) => update({ default: color })} />
                 ) : null}
 
                 {['checkbox', 'toggle'].includes(field.type) ? (
                   <ToggleControl
-                    label={__('Checked by default', 'wooptionsfic')}
+                    label={__('Checked by default', 'wooptions-pro')}
                     checked={Boolean(field.default)}
                     onChange={(defaultVal: boolean) => update({ default: defaultVal })}
                   />
                 ) : null}
 
-                <TextareaControl label={__('Help text', 'wooptionsfic')} value={field.help} onChange={(help: string) => update({ help })} />
+                <TextareaControl label={__('Help text', 'wooptions-pro')} value={field.help} onChange={(help: string) => update({ help })} />
 
                 <div className="wof-help-position-control">
                   <label className="wof-segmented-label">
-                    {__('HELP TEXT POSITION', 'wooptionsfic')}
+                    {__('HELP TEXT POSITION', 'wooptions-pro')}
                   </label>
                   <div className="wof-segmented-group">
                     {[
-                      { label: __('Below Title', 'wooptionsfic'), value: 'below_title' },
-                      { label: __('Tooltip', 'wooptionsfic'), value: 'tooltip' },
-                      { label: __('Below Field', 'wooptionsfic'), value: 'below_field' },
+                      { label: __('Below Title', 'wooptions-pro'), value: 'below_title' },
+                      { label: __('Tooltip', 'wooptions-pro'), value: 'tooltip' },
+                      { label: __('Below Field', 'wooptions-pro'), value: 'below_field' },
                     ].map(opt => {
                       const isSelected = (field.helpTextPosition ?? 'below_title') === opt.value;
                       return (
                         <button
                           key={opt.value}
                           type="button"
-                          className={WooptionsFic.Utils.classNames('wof-segmented-btn', isSelected && 'is-selected')}
+                          className={WooOptionsPro.Utils.classNames('wof-segmented-btn', isSelected && 'is-selected')}
                           onClick={() => update({ helpTextPosition: opt.value as 'below_title' | 'tooltip' | 'below_field' })}
                         >
                           {opt.label}
@@ -4834,7 +4834,7 @@ namespace WooptionsFic.Builder {
                   </div>
                 </div>
 
-                <ToggleControl label={__('Required', 'wooptionsfic')} checked={field.required} onChange={(required: boolean) => update({ required })} />
+                <ToggleControl label={__('Required', 'wooptions-pro')} checked={field.required} onChange={(required: boolean) => update({ required })} />
               </>
             )
           ) : activeTab === 'choices' ? (
@@ -4847,22 +4847,22 @@ namespace WooptionsFic.Builder {
             <StyleStudio document={props.document} onChange={props.onDocumentChange} />
           ) : (
             <>
-              <ToggleControl label={__('Disable this field', 'wooptionsfic')} checked={field.disabled} onChange={(disabled: boolean) => update({ disabled })} />
+              <ToggleControl label={__('Disable this field', 'wooptions-pro')} checked={field.disabled} onChange={(disabled: boolean) => update({ disabled })} />
               {field.type === 'file' ? (
                 <>
-                  <TextControl label={__('Allowed extensions', 'wooptionsfic')} value={(field.allowedExtensions ?? []).join(', ')} onChange={(value: string) => update({ allowedExtensions: value.split(',').map((item) => item.trim().replace(/^\./, '')).filter(Boolean) })} />
-                  <TextControl label={__('Maximum files', 'wooptionsfic')} type="number" value={String(field.maxFiles ?? 1)} onChange={(value: string) => update({ maxFiles: Math.max(1, Number(value)) })} />
-                  <TextControl label={__('Maximum file size (MB)', 'wooptionsfic')} type="number" value={String(field.maxFileMb ?? 5)} onChange={(value: string) => update({ maxFileMb: Math.max(1, Number(value)) })} />
+                  <TextControl label={__('Allowed extensions', 'wooptions-pro')} value={(field.allowedExtensions ?? []).join(', ')} onChange={(value: string) => update({ allowedExtensions: value.split(',').map((item) => item.trim().replace(/^\./, '')).filter(Boolean) })} />
+                  <TextControl label={__('Maximum files', 'wooptions-pro')} type="number" value={String(field.maxFiles ?? 1)} onChange={(value: string) => update({ maxFiles: Math.max(1, Number(value)) })} />
+                  <TextControl label={__('Maximum file size (MB)', 'wooptions-pro')} type="number" value={String(field.maxFileMb ?? 5)} onChange={(value: string) => update({ maxFileMb: Math.max(1, Number(value)) })} />
                 </>
               ) : null}
               {field.type === 'customer_defined_price' ? (
                 <>
-                  <TextControl label={__('Minimum', 'wooptionsfic')} value={field.min ?? ''} onChange={(value: string) => update({ min: value || null })} />
-                  <TextControl label={__('Maximum', 'wooptionsfic')} value={field.max ?? ''} onChange={(value: string) => update({ max: value || null })} />
-                  <TextControl label={__('Step', 'wooptionsfic')} value={field.step ?? ''} onChange={(value: string) => update({ step: value || null })} />
+                  <TextControl label={__('Minimum', 'wooptions-pro')} value={field.min ?? ''} onChange={(value: string) => update({ min: value || null })} />
+                  <TextControl label={__('Maximum', 'wooptions-pro')} value={field.max ?? ''} onChange={(value: string) => update({ max: value || null })} />
+                  <TextControl label={__('Step', 'wooptions-pro')} value={field.step ?? ''} onChange={(value: string) => update({ step: value || null })} />
                 </>
               ) : null}
-              <TextControl label={__('Field UUID', 'wooptionsfic')} value={field.uuid} disabled />
+              <TextControl label={__('Field UUID', 'wooptions-pro')} value={field.uuid} disabled />
             </>
           )}
         </section>

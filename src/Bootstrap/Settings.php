@@ -2,15 +2,15 @@
 /**
  * Bounded plugin settings.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Bootstrap;
+namespace WooOptionsPro\Bootstrap;
 
 final class Settings {
-	public const OPTION = 'wooptionsfic_settings';
+	public const OPTION = 'wooptions-pro_settings';
 
 	/**
 	 * @return array<string, mixed>
@@ -149,7 +149,7 @@ final class Settings {
 		);
 		$current['upload_allowed_extensions'] = $extensions ?: ['jpg', 'jpeg', 'png', 'pdf'];
 
-		$palettes = array_keys((array) require WOOPTIONSFIC_PATH . 'config/style-presets.php');
+		$palettes = array_keys((array) require WOOPTIONS_PRO_PATH . 'config/style-presets.php');
 		$palette  = sanitize_key((string) ($input['default_palette'] ?? $current['default_palette']));
 		$current['default_palette'] = in_array($palette, $palettes, true) ? $palette : 'iris-studio';
 

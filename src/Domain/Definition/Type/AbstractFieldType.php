@@ -2,15 +2,15 @@
 /**
  * Shared field definition normalization.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Definition\Type;
+namespace WooOptionsPro\Domain\Definition\Type;
 
-use WooptionsFic\Domain\Definition\FieldType;
-use WooptionsFic\Domain\Support\Uuid;
+use WooOptionsPro\Domain\Definition\FieldType;
+use WooOptionsPro\Domain\Support\Uuid;
 
 abstract class AbstractFieldType implements FieldType {
 	/**

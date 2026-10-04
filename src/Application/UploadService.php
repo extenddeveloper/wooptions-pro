@@ -2,21 +2,21 @@
 /**
  * Private upload intents, completion, ownership, and cleanup.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Application;
+namespace WooOptionsPro\Application;
 
 use DateTimeImmutable;
 use DateTimeZone;
 use RuntimeException;
-use WooptionsFic\Bootstrap\Settings;
-use WooptionsFic\Domain\Support\Uuid;
-use WooptionsFic\Domain\Upload\UploadScanner;
-use WooptionsFic\Infrastructure\Persistence\UploadRepository;
-use WooptionsFic\Infrastructure\Storage\LocalPrivateStorage;
+use WooOptionsPro\Bootstrap\Settings;
+use WooOptionsPro\Domain\Support\Uuid;
+use WooOptionsPro\Domain\Upload\UploadScanner;
+use WooOptionsPro\Infrastructure\Persistence\UploadRepository;
+use WooOptionsPro\Infrastructure\Storage\LocalPrivateStorage;
 
 final class UploadService {
 	private const MIME_BY_EXTENSION = [
@@ -51,10 +51,10 @@ final class UploadService {
 		string $row_uuid = ''
 	): array {
 		if ('file' !== ($field['type'] ?? '') || ! Uuid::is_valid((string) ($field['uuid'] ?? ''))) {
-			throw new ValidationException('wooptionsfic_invalid_upload_field', [['code' => 'invalid_upload_field']]);
+			throw new ValidationException('wooptions-pro_invalid_upload_field', [['code' => 'invalid_upload_field']]);
 		}
 		if ('' === $session_hash) {
-			throw new ValidationException('wooptionsfic_upload_session_required', [['code' => 'session_required']]);
+			throw new ValidationException('wooptions-pro_upload_session_required', [['code' => 'session_required']]);
 		}
 
 		$uuid       = Uuid::v4();
@@ -108,16 +108,16 @@ final class UploadService {
 	): array {
 		$record = $this->owned_record($uuid, $owner_user_id, $session_hash);
 		if ('intent' !== $record['state']) {
-			throw new ConflictException('wooptionsfic_upload_not_pending', ['state' => $record['state']]);
+			throw new ConflictException('wooptions-pro_upload_not_pending', ['state' => $record['state']]);
 		}
 		if (strtotime((string) $record['expiresAtGmt'] . ' UTC') < time()) {
 			$this->repository->update($uuid, ['state' => 'expired']);
-			throw new ValidationException('wooptionsfic_upload_intent_expired', [['code' => 'upload_intent_expired']]);
+			throw new ValidationException('wooptions-pro_upload_intent_expired', [['code' => 'upload_intent_expired']]);
 		}
 
 		$error = (int) ($file['error'] ?? UPLOAD_ERR_NO_FILE);
 		if (UPLOAD_ERR_OK !== $error || empty($file['tmp_name']) || empty($file['name'])) {
-			throw new ValidationException('wooptionsfic_upload_transport_error', [['code' => 'upload_error', 'value' => $error]]);
+			throw new ValidationException('wooptions-pro_upload_transport_error', [['code' => 'upload_error', 'value' => $error]]);
 		}
 
 		$size      = (int) ($file['size'] ?? 0);
@@ -135,16 +135,16 @@ final class UploadService {
 		);
 
 		if ($size < 1 || $size > $maximum) {
-			throw new ValidationException('wooptionsfic_upload_size', [['code' => 'upload_size', 'maximumBytes' => $maximum]]);
+			throw new ValidationException('wooptions-pro_upload_size', [['code' => 'upload_size', 'maximumBytes' => $maximum]]);
 		}
 		if (! isset(self::MIME_BY_EXTENSION[$extension]) || ! in_array($extension, $allowed, true)) {
-			throw new ValidationException('wooptionsfic_upload_extension', [['code' => 'upload_extension', 'extension' => $extension]]);
+			throw new ValidationException('wooptions-pro_upload_extension', [['code' => 'upload_extension', 'extension' => $extension]]);
 		}
 
 		$finfo = new \finfo(FILEINFO_MIME_TYPE);
 		$mime  = (string) $finfo->file((string) $file['tmp_name']);
 		if (! in_array($mime, self::MIME_BY_EXTENSION[$extension], true)) {
-			throw new ValidationException('wooptionsfic_upload_mime', [['code' => 'upload_mime', 'mime' => $mime]]);
+			throw new ValidationException('wooptions-pro_upload_mime', [['code' => 'upload_mime', 'mime' => $mime]]);
 		}
 
 		if (str_starts_with($mime, 'image/')) {
@@ -154,22 +154,22 @@ final class UploadService {
 				|| $dimensions[1] > 12000
 				|| ($dimensions[0] * $dimensions[1]) > 40_000_000
 			) {
-				throw new ValidationException('wooptionsfic_upload_dimensions', [['code' => 'upload_dimensions']]);
+				throw new ValidationException('wooptions-pro_upload_dimensions', [['code' => 'upload_dimensions']]);
 			}
 		}
 
 		$this->repository->update($uuid, ['state' => 'quarantine']);
 		$scan = $this->scanner->scan((string) $file['tmp_name'], $mime, $extension);
-		$scan = apply_filters('wooptionsfic_upload_scan_result', $scan, $file['tmp_name'], $mime, $extension, $record);
+		$scan = apply_filters('wooptions-pro_upload_scan_result', $scan, $file['tmp_name'], $mime, $extension, $record);
 		if (! is_array($scan) || empty($scan['accepted'])) {
 			$this->repository->update($uuid, ['state' => 'rejected', 'scanner_result' => (string) ($scan['code'] ?? 'scanner_rejected')]);
-			throw new ValidationException('wooptionsfic_upload_rejected', [['code' => 'upload_rejected']]);
+			throw new ValidationException('wooptions-pro_upload_rejected', [['code' => 'upload_rejected']]);
 		}
 
 		$storage_key = bin2hex(random_bytes(32));
 		$file_hash   = hash_file('sha256', (string) $file['tmp_name']);
 		if (false === $file_hash) {
-			throw new RuntimeException('wooptionsfic_upload_hash_failed');
+			throw new RuntimeException('wooptions-pro_upload_hash_failed');
 		}
 		$this->storage->move_uploaded_file((string) $file['tmp_name'], $storage_key);
 		$this->repository->update(
@@ -214,7 +214,7 @@ final class UploadService {
 			|| $record['revisionUuid'] !== $revision_uuid
 			|| (string) $record['rowUuid'] !== $row_uuid
 		) {
-			throw new ValidationException('wooptionsfic_upload_reference_invalid', [['code' => 'upload_reference_invalid', 'fieldUuid' => $field_uuid]]);
+			throw new ValidationException('wooptions-pro_upload_reference_invalid', [['code' => 'upload_reference_invalid', 'fieldUuid' => $field_uuid]]);
 		}
 		return $record;
 	}
@@ -291,13 +291,13 @@ final class UploadService {
 	public function record_for_download(string $uuid, int $user_id, string $session_hash): array {
 		$record = $this->repository->find($uuid);
 		if (! $record || 'deleted' === $record['state']) {
-			throw new NotFoundException('wooptionsfic_upload_not_found');
+			throw new NotFoundException('wooptions-pro_upload_not_found');
 		}
-		$administrator = current_user_can('manage_wooptionsfic_uploads');
+		$administrator = current_user_can('manage_wooptions-pro_uploads');
 		$owner         = ($user_id > 0 && $record['ownerUserId'] === $user_id)
 			|| ('' !== $session_hash && hash_equals((string) $record['sessionHash'], $session_hash));
 		if (! $administrator && ! $owner) {
-			throw new NotFoundException('wooptionsfic_upload_not_found');
+			throw new NotFoundException('wooptions-pro_upload_not_found');
 		}
 		return $record;
 	}
@@ -314,12 +314,12 @@ final class UploadService {
 	private function owned_record(string $uuid, int $owner_user_id, string $session_hash): array {
 		$record = $this->repository->find($uuid);
 		if (! $record) {
-			throw new NotFoundException('wooptionsfic_upload_not_found');
+			throw new NotFoundException('wooptions-pro_upload_not_found');
 		}
 		$owned = ($owner_user_id > 0 && $record['ownerUserId'] === $owner_user_id)
 			|| ('' !== $session_hash && hash_equals((string) $record['sessionHash'], $session_hash));
 		if (! $owned) {
-			throw new NotFoundException('wooptionsfic_upload_not_found');
+			throw new NotFoundException('wooptions-pro_upload_not_found');
 		}
 		return $record;
 	}

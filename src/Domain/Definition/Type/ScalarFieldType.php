@@ -2,12 +2,12 @@
 /**
  * Scalar field type.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Definition\Type;
+namespace WooOptionsPro\Domain\Definition\Type;
 
 use DateTimeImmutable;
 

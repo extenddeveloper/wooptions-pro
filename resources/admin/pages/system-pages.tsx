@@ -1,4 +1,4 @@
-namespace WooptionsFic.Pages {
+namespace WooOptionsPro.Pages {
   const { Button, SelectControl, TextControl, ToggleControl } = wp.components;
   const { __ } = wp.i18n;
   const { useEffect, useState } = wp.element;
@@ -54,12 +54,12 @@ namespace WooptionsFic.Pages {
 
     const openMediaUploader = () => {
       if (!wp.media) {
-        WooptionsFic.Toast.error(__('WordPress Media Library is unavailable.', 'wooptionsfic'));
+        WooOptionsPro.Toast.error(__('WordPress Media Library is unavailable.', 'wooptions-pro'));
         return;
       }
       const frame = wp.media({
-        title: __('Select or Upload Font File (.woff2, .woff, .ttf, .otf)', 'wooptionsfic'),
-        button: { text: __('Use this font file', 'wooptionsfic') },
+        title: __('Select or Upload Font File (.woff2, .woff, .ttf, .otf)', 'wooptions-pro'),
+        button: { text: __('Use this font file', 'wooptions-pro') },
         multiple: true,
       });
 
@@ -83,7 +83,7 @@ namespace WooptionsFic.Pages {
               detectedName = base.charAt(0).toUpperCase() + base.slice(1);
             }
           } else {
-            WooptionsFic.Toast.error(__('Please select a valid font file: .woff2, .woff, .ttf, or .otf.', 'wooptionsfic'));
+            WooOptionsPro.Toast.error(__('Please select a valid font file: .woff2, .woff, .ttf, or .otf.', 'wooptions-pro'));
           }
         });
 
@@ -99,11 +99,11 @@ namespace WooptionsFic.Pages {
     const addFont = () => {
       const trimmedName = name.trim();
       if (!trimmedName) {
-        WooptionsFic.Toast.error(__('Please enter a font name.', 'wooptionsfic'));
+        WooOptionsPro.Toast.error(__('Please enter a font name.', 'wooptions-pro'));
         return;
       }
       if (Object.keys(files).length === 0) {
-        WooptionsFic.Toast.error(__('Please upload at least one font file (.woff2, .woff, .ttf, .otf).', 'wooptionsfic'));
+        WooOptionsPro.Toast.error(__('Please upload at least one font file (.woff2, .woff, .ttf, .otf).', 'wooptions-pro'));
         return;
       }
 
@@ -121,20 +121,20 @@ namespace WooptionsFic.Pages {
 
       const nextFonts = [...props.fonts, newFont];
       props.onChange(nextFonts);
-      WooptionsFic.injectCustomFontsCss(nextFonts);
+      WooOptionsPro.injectCustomFontsCss(nextFonts);
       setName('');
       setWeight('400');
       setStyle('normal');
       setFiles({});
-      WooptionsFic.Toast.success(__('Custom font added! Remember to click "Save settings" at top right to finalize.', 'wooptionsfic'));
+      WooOptionsPro.Toast.success(__('Custom font added! Remember to click "Save settings" at top right to finalize.', 'wooptions-pro'));
     };
 
     const removeFont = (index: number) => {
-      if (window.confirm(__('Are you sure you want to remove this custom font?', 'wooptionsfic'))) {
+      if (window.confirm(__('Are you sure you want to remove this custom font?', 'wooptions-pro'))) {
         const next = props.fonts.filter((_, i) => i !== index);
         props.onChange(next);
-        WooptionsFic.injectCustomFontsCss(next);
-        WooptionsFic.Toast.success(__('Custom font removed. Click "Save settings" to finalize.', 'wooptionsfic'));
+        WooOptionsPro.injectCustomFontsCss(next);
+        WooOptionsPro.Toast.success(__('Custom font removed. Click "Save settings" to finalize.', 'wooptions-pro'));
       }
     };
 
@@ -142,10 +142,10 @@ namespace WooptionsFic.Pages {
       <section aria-labelledby="wof-custom-fonts-heading">
         <div className="wof-settings-panel__header">
           <h2 id="wof-custom-fonts-heading" className="wof-settings-panel__title">
-            {__('Custom Web Fonts', 'wooptionsfic')}
+            {__('Custom Web Fonts', 'wooptions-pro')}
           </h2>
           <p className="wof-settings-panel__desc">
-            {__('Upload brand and custom font files (.woff2, .woff, .ttf, .otf). Uploaded fonts are automatically available in all Font Choice fields across your products.', 'wooptionsfic')}
+            {__('Upload brand and custom font files (.woff2, .woff, .ttf, .otf). Uploaded fonts are automatically available in all Font Choice fields across your products.', 'wooptions-pro')}
           </p>
         </div>
 
@@ -153,20 +153,20 @@ namespace WooptionsFic.Pages {
         <div style={{ marginBottom: '32px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
             <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: '#1e293b' }}>
-              {__('Installed Custom Fonts', 'wooptionsfic')} ({props.fonts.length})
+              {__('Installed Custom Fonts', 'wooptions-pro')} ({props.fonts.length})
             </h3>
           </div>
 
           {props.fonts.length === 0 ? (
             <div style={{ padding: '36px', textAlign: 'center', background: '#f8fafc', borderRadius: '12px', border: '1px dashed #cbd5e1' }}>
               <div style={{ fontSize: '32px', marginBottom: '10px', color: '#94a3b8' }}>
-                <WooptionsFic.Components.Dashicon name="editor-textcolor" />
+                <WooOptionsPro.Components.Dashicon name="editor-textcolor" />
               </div>
               <strong style={{ display: 'block', fontSize: '14px', color: '#334155', marginBottom: '4px' }}>
-                {__('No custom fonts uploaded yet', 'wooptionsfic')}
+                {__('No custom fonts uploaded yet', 'wooptions-pro')}
               </strong>
               <p style={{ margin: 0, fontSize: '13px', color: '#64748b' }}>
-                {__('Use the form below to upload your .woff2, .woff, .ttf, or .otf font files.', 'wooptionsfic')}
+                {__('Use the form below to upload your .woff2, .woff, .ttf, or .otf font files.', 'wooptions-pro')}
               </p>
             </div>
           ) : (
@@ -217,7 +217,7 @@ namespace WooptionsFic.Pages {
                         onClick={() => removeFont(index)}
                         style={{ marginLeft: '12px' }}
                       >
-                        {__('Delete', 'wooptionsfic')}
+                        {__('Delete', 'wooptions-pro')}
                       </Button>
                     </div>
                   </div>
@@ -247,22 +247,22 @@ namespace WooptionsFic.Pages {
         {/* Add New Custom Font Form */}
         <div style={{ background: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <h3 style={{ margin: '0 0 6px 0', fontSize: '16px', fontWeight: 600, color: '#0f172a' }}>
-            {__('Upload New Custom Font', 'wooptionsfic')}
+            {__('Upload New Custom Font', 'wooptions-pro')}
           </h3>
           <p style={{ margin: '0 0 20px 0', fontSize: '13px', color: '#64748b' }}>
-            {__('Upload font files in .woff2 (recommended), .woff, .ttf, or .otf formats.', 'wooptionsfic')}
+            {__('Upload font files in .woff2 (recommended), .woff, .ttf, or .otf formats.', 'wooptions-pro')}
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '18px' }}>
             <TextControl
-              label={__('Font Name', 'wooptionsfic')}
-              placeholder={__('e.g. Brandon Grotesque', 'wooptionsfic')}
+              label={__('Font Name', 'wooptions-pro')}
+              placeholder={__('e.g. Brandon Grotesque', 'wooptions-pro')}
               value={name}
               onChange={setName}
             />
 
             <SelectControl
-              label={__('Font Weight', 'wooptionsfic')}
+              label={__('Font Weight', 'wooptions-pro')}
               value={weight}
               options={[
                 { label: '100 - Thin', value: '100' },
@@ -279,7 +279,7 @@ namespace WooptionsFic.Pages {
             />
 
             <SelectControl
-              label={__('Font Style', 'wooptionsfic')}
+              label={__('Font Style', 'wooptions-pro')}
               value={style}
               options={[
                 { label: 'Normal', value: 'normal' },
@@ -292,7 +292,7 @@ namespace WooptionsFic.Pages {
           {/* Font Files Section */}
           <div style={{ marginBottom: '20px' }}>
             <label style={{ display: 'block', fontWeight: 600, fontSize: '13px', color: '#1e293b', marginBottom: '8px' }}>
-              {__('Font Files (.woff2, .woff, .ttf, .otf)', 'wooptionsfic')}
+              {__('Font Files (.woff2, .woff, .ttf, .otf)', 'wooptions-pro')}
             </label>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: '12px' }}>
@@ -301,11 +301,11 @@ namespace WooptionsFic.Pages {
                 onClick={openMediaUploader}
                 style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
               >
-                <WooptionsFic.Components.Dashicon name="upload" />
-                {__('Select / Upload Font Files…', 'wooptionsfic')}
+                <WooOptionsPro.Components.Dashicon name="upload" />
+                {__('Select / Upload Font Files…', 'wooptions-pro')}
               </Button>
               <span style={{ fontSize: '12px', color: '#64748b' }}>
-                {__('You can select multiple formats or upload .woff2 for highest web efficiency.', 'wooptionsfic')}
+                {__('You can select multiple formats or upload .woff2 for highest web efficiency.', 'wooptions-pro')}
               </span>
             </div>
 
@@ -339,7 +339,7 @@ namespace WooptionsFic.Pages {
                         setFiles(copy);
                       }}
                       style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '14px', padding: '2px 6px' }}
-                      title={__('Remove this file', 'wooptionsfic')}
+                      title={__('Remove this file', 'wooptions-pro')}
                     >
                       &times;
                     </button>
@@ -354,7 +354,7 @@ namespace WooptionsFic.Pages {
             onClick={addFont}
             disabled={!name.trim() || Object.keys(files).length === 0}
           >
-            {__('+ Add Custom Font to List', 'wooptionsfic')}
+            {__('+ Add Custom Font to List', 'wooptions-pro')}
           </Button>
         </div>
       </section>
@@ -367,13 +367,13 @@ namespace WooptionsFic.Pages {
     const [saving, setSaving] = useState(false);
 
     useEffect(() => {
-      WooptionsFic.Api.getSettings().then(setSettings);
+      WooOptionsPro.Api.getSettings().then(setSettings);
     }, []);
 
     if (!settings) {
       return (
         <div className="wof-page">
-          <WooptionsFic.Components.Loading />
+          <WooOptionsPro.Components.Loading />
         </div>
       );
     }
@@ -383,16 +383,16 @@ namespace WooptionsFic.Pages {
     const save = async () => {
       setSaving(true);
       try {
-        const saved = await WooptionsFic.Api.saveSettings(settings);
+        const saved = await WooOptionsPro.Api.saveSettings(settings);
         setSettings(saved);
         if (Array.isArray(saved.custom_fonts)) {
-          WooptionsFic.injectCustomFontsCss(saved.custom_fonts);
-          const otherFonts = (window.WooptionsFicAdmin.fontCatalog || []).filter((f: any) => f.source !== 'custom');
-          window.WooptionsFicAdmin.fontCatalog = [...saved.custom_fonts, ...otherFonts];
+          WooOptionsPro.injectCustomFontsCss(saved.custom_fonts);
+          const otherFonts = (window.WooOptionsProAdmin.fontCatalog || []).filter((f: any) => f.source !== 'custom');
+          window.WooOptionsProAdmin.fontCatalog = [...saved.custom_fonts, ...otherFonts];
         }
-        WooptionsFic.Toast.success(__('Settings saved successfully.', 'wooptionsfic'));
+        WooOptionsPro.Toast.success(__('Settings saved successfully.', 'wooptions-pro'));
       } catch (err: any) {
-        WooptionsFic.Toast.error(WooptionsFic.Utils.errorMessage(err));
+        WooOptionsPro.Toast.error(WooOptionsPro.Utils.errorMessage(err));
       } finally {
         setSaving(false);
       }
@@ -401,36 +401,36 @@ namespace WooptionsFic.Pages {
     const tabs = [
       {
         id: 'cleanup' as const,
-        label: __('Upload Cleanup', 'wooptionsfic'),
-        subtitle: __('Storage & file purging', 'wooptionsfic'),
+        label: __('Upload Cleanup', 'wooptions-pro'),
+        subtitle: __('Storage & file purging', 'wooptions-pro'),
         icon: 'upload',
       },
       {
         id: 'custom_fonts' as const,
-        label: __('Custom Fonts', 'wooptionsfic'),
-        subtitle: __('Upload & manage webfonts', 'wooptionsfic'),
+        label: __('Custom Fonts', 'wooptions-pro'),
+        subtitle: __('Upload & manage webfonts', 'wooptions-pro'),
         icon: 'editor-textcolor',
       },
       {
         id: 'other' as const,
-        label: __('Other Settings', 'wooptionsfic'),
-        subtitle: __('Labels & cart visibility', 'wooptionsfic'),
+        label: __('Other Settings', 'wooptions-pro'),
+        subtitle: __('Labels & cart visibility', 'wooptions-pro'),
         icon: 'admin-appearance',
       },
       {
         id: 'general' as const,
-        label: __('General & Limits', 'wooptionsfic'),
-        subtitle: __('API limits & features', 'wooptionsfic'),
+        label: __('General & Limits', 'wooptions-pro'),
+        subtitle: __('API limits & features', 'wooptions-pro'),
         icon: 'admin-settings',
       },
     ];
 
     return (
       <div className="wof-page">
-        <WooptionsFic.Components.PageHeader
-          eyebrow={__('Operational defaults', 'wooptionsfic')}
-          title={__('Settings', 'wooptionsfic')}
-          description={__('Control limits, file retention, summary labels, and storefront visibility without editing code.', 'wooptionsfic')}
+        <WooOptionsPro.Components.PageHeader
+          eyebrow={__('Operational defaults', 'wooptions-pro')}
+          title={__('Settings', 'wooptions-pro')}
+          description={__('Control limits, file retention, summary labels, and storefront visibility without editing code.', 'wooptions-pro')}
           actions={
             <Button
               variant="primary"
@@ -438,23 +438,23 @@ namespace WooptionsFic.Pages {
               disabled={saving}
               onClick={save}
             >
-              {saving ? __('Saving…', 'wooptionsfic') : __('Save settings', 'wooptionsfic')}
+              {saving ? __('Saving…', 'wooptions-pro') : __('Save settings', 'wooptions-pro')}
             </Button>
           }
         />
 
         <div className="wof-settings-layout">
           {/* Sidebar Navigation */}
-          <nav className="wof-settings-nav" aria-label={__('Settings navigation', 'wooptionsfic')}>
+          <nav className="wof-settings-nav" aria-label={__('Settings navigation', 'wooptions-pro')}>
             {tabs.map((tab) => (
               <button
                 type="button"
                 key={tab.id}
-                className={WooptionsFic.Utils.classNames('wof-settings-nav-item', activeTab === tab.id && 'is-active')}
+                className={WooOptionsPro.Utils.classNames('wof-settings-nav-item', activeTab === tab.id && 'is-active')}
                 onClick={() => setActiveTab(tab.id)}
               >
                 <span className="wof-settings-nav-item__icon">
-                  <WooptionsFic.Components.Dashicon name={tab.icon} />
+                  <WooOptionsPro.Components.Dashicon name={tab.icon} />
                 </span>
                 <span className="wof-settings-nav-item__text">
                   <span className="wof-settings-nav-item__title">{tab.label}</span>
@@ -470,10 +470,10 @@ namespace WooptionsFic.Pages {
               <section aria-labelledby="wof-cleanup-heading">
                 <div className="wof-settings-panel__header">
                   <h2 id="wof-cleanup-heading" className="wof-settings-panel__title">
-                    {__('Cleanup Upload Field Files', 'wooptionsfic')}
+                    {__('Cleanup Upload Field Files', 'wooptions-pro')}
                   </h2>
                   <p className="wof-settings-panel__desc">
-                    {__('Clean up all files uploaded through this field to free storage and remove unused data.', 'wooptionsfic')}
+                    {__('Clean up all files uploaded through this field to free storage and remove unused data.', 'wooptions-pro')}
                   </p>
                 </div>
 
@@ -481,23 +481,23 @@ namespace WooptionsFic.Pages {
                   <div className="wof-setting-row">
                     <div className="wof-setting-row__info">
                       <strong className="wof-setting-row__title">
-                        {__('Files uploaded but not in order', 'wooptionsfic')}
+                        {__('Files uploaded but not in order', 'wooptions-pro')}
                       </strong>
                       <p className="wof-setting-row__desc">
-                        {__('Removes unplaced temporary uploads after a specified number of days (0 to disable).', 'wooptionsfic')}
+                        {__('Removes unplaced temporary uploads after a specified number of days (0 to disable).', 'wooptions-pro')}
                       </p>
                     </div>
                     <div className="wof-setting-row__control">
                       <div className="wof-setting-input-wrap">
                         <TextControl
                           hideLabelFromVision
-                          label={__('Days to retain unplaced uploads', 'wooptionsfic')}
+                          label={__('Days to retain unplaced uploads', 'wooptions-pro')}
                           type="number"
                           min="0"
                           value={String(settings.cleanup_unplaced_upload_days ?? 0)}
                           onChange={(val: string) => set('cleanup_unplaced_upload_days', Math.max(0, parseInt(val, 10) || 0))}
                         />
-                        <span className="wof-setting-input-unit">{__('days', 'wooptionsfic')}</span>
+                        <span className="wof-setting-input-unit">{__('days', 'wooptions-pro')}</span>
                       </div>
                     </div>
                   </div>
@@ -505,23 +505,23 @@ namespace WooptionsFic.Pages {
                   <div className="wof-setting-row">
                     <div className="wof-setting-row__info">
                       <strong className="wof-setting-row__title">
-                        {__('Files uploaded and placed in order', 'wooptionsfic')}
+                        {__('Files uploaded and placed in order', 'wooptions-pro')}
                       </strong>
                       <p className="wof-setting-row__desc">
-                        {__('Removes uploads attached to placed orders after a specified number of days (0 to disable).', 'wooptionsfic')}
+                        {__('Removes uploads attached to placed orders after a specified number of days (0 to disable).', 'wooptions-pro')}
                       </p>
                     </div>
                     <div className="wof-setting-row__control">
                       <div className="wof-setting-input-wrap">
                         <TextControl
                           hideLabelFromVision
-                          label={__('Days to retain placed uploads', 'wooptionsfic')}
+                          label={__('Days to retain placed uploads', 'wooptions-pro')}
                           type="number"
                           min="0"
                           value={String(settings.cleanup_placed_upload_days ?? 0)}
                           onChange={(val: string) => set('cleanup_placed_upload_days', Math.max(0, parseInt(val, 10) || 0))}
                         />
-                        <span className="wof-setting-input-unit">{__('days', 'wooptionsfic')}</span>
+                        <span className="wof-setting-input-unit">{__('days', 'wooptions-pro')}</span>
                       </div>
                     </div>
                   </div>
@@ -529,23 +529,23 @@ namespace WooptionsFic.Pages {
                   <div className="wof-setting-row">
                     <div className="wof-setting-row__info">
                       <strong className="wof-setting-row__title">
-                        {__('Files uploaded in completed orders', 'wooptionsfic')}
+                        {__('Files uploaded in completed orders', 'wooptions-pro')}
                       </strong>
                       <p className="wof-setting-row__desc">
-                        {__('Removes uploads once their corresponding order is marked Completed (0 to disable).', 'wooptionsfic')}
+                        {__('Removes uploads once their corresponding order is marked Completed (0 to disable).', 'wooptions-pro')}
                       </p>
                     </div>
                     <div className="wof-setting-row__control">
                       <div className="wof-setting-input-wrap">
                         <TextControl
                           hideLabelFromVision
-                          label={__('Days to retain completed uploads', 'wooptionsfic')}
+                          label={__('Days to retain completed uploads', 'wooptions-pro')}
                           type="number"
                           min="0"
                           value={String(settings.cleanup_completed_upload_days ?? 0)}
                           onChange={(val: string) => set('cleanup_completed_upload_days', Math.max(0, parseInt(val, 10) || 0))}
                         />
-                        <span className="wof-setting-input-unit">{__('days', 'wooptionsfic')}</span>
+                        <span className="wof-setting-input-unit">{__('days', 'wooptions-pro')}</span>
                       </div>
                     </div>
                   </div>
@@ -564,10 +564,10 @@ namespace WooptionsFic.Pages {
               <section aria-labelledby="wof-other-heading">
                 <div className="wof-settings-panel__header">
                   <h2 id="wof-other-heading" className="wof-settings-panel__title">
-                    {__('Other Settings', 'wooptionsfic')}
+                    {__('Other Settings', 'wooptions-pro')}
                   </h2>
                   <p className="wof-settings-panel__desc">
-                    {__('Configure summary labels, storefront display text, and cart/checkout visibility.', 'wooptionsfic')}
+                    {__('Configure summary labels, storefront display text, and cart/checkout visibility.', 'wooptions-pro')}
                   </p>
                 </div>
 
@@ -576,25 +576,25 @@ namespace WooptionsFic.Pages {
                   <div className="wof-setting-row">
                     <div className="wof-setting-row__info">
                       <strong className="wof-setting-row__title">
-                        {__('Addons Total Price Label', 'wooptionsfic')}
+                        {__('Addons Total Price Label', 'wooptions-pro')}
                       </strong>
                       <p className="wof-setting-row__desc">
-                        {__('Customize the total price label shown in the storefront configurator summary.', 'wooptionsfic')}
+                        {__('Customize the total price label shown in the storefront configurator summary.', 'wooptions-pro')}
                       </p>
                     </div>
                     <div className="wof-setting-row__control">
                       <ToggleControl
-                        label={__('Enable Addons Price Total Text In Product Page', 'wooptionsfic')}
+                        label={__('Enable Addons Price Total Text In Product Page', 'wooptions-pro')}
                         checked={Boolean(settings.enable_addons_total_text)}
                         onChange={(checked: boolean) => set('enable_addons_total_text', checked)}
                       />
                       {settings.enable_addons_total_text ? (
                         <div className="wof-setting-row__subfield">
                           <TextControl
-                            label={__('TOTAL PRICE TEXT', 'wooptionsfic')}
+                            label={__('TOTAL PRICE TEXT', 'wooptions-pro')}
                             value={settings.addons_total_text ?? 'Total Price'}
                             placeholder="Total Price"
-                            help={__('Change your Total Price / Configured price text here.', 'wooptionsfic')}
+                            help={__('Change your Total Price / Configured price text here.', 'wooptions-pro')}
                             onChange={(val: string) => set('addons_total_text', val)}
                           />
                         </div>
@@ -606,25 +606,25 @@ namespace WooptionsFic.Pages {
                   <div className="wof-setting-row">
                     <div className="wof-setting-row__info">
                       <strong className="wof-setting-row__title">
-                        {__('Summary Status Prompt', 'wooptionsfic')}
+                        {__('Summary Status Prompt', 'wooptions-pro')}
                       </strong>
                       <p className="wof-setting-row__desc">
-                        {__('Customize the ready state prompt shown in the summary before selection changes.', 'wooptionsfic')}
+                        {__('Customize the ready state prompt shown in the summary before selection changes.', 'wooptions-pro')}
                       </p>
                     </div>
                     <div className="wof-setting-row__control">
                       <ToggleControl
-                        label={__('Enable Summary Status Text In Product Page', 'wooptionsfic')}
+                        label={__('Enable Summary Status Text In Product Page', 'wooptions-pro')}
                         checked={Boolean(settings.enable_summary_status_text)}
                         onChange={(checked: boolean) => set('enable_summary_status_text', checked)}
                       />
                       {settings.enable_summary_status_text ? (
                         <div className="wof-setting-row__subfield">
                           <TextControl
-                            label={__('SUMMARY STATUS TEXT', 'wooptionsfic')}
+                            label={__('SUMMARY STATUS TEXT', 'wooptions-pro')}
                             value={settings.summary_status_text ?? 'Ready for your choices'}
                             placeholder="Ready for your choices"
-                            help={__('Change your summary status prompt text here.', 'wooptionsfic')}
+                            help={__('Change your summary status prompt text here.', 'wooptions-pro')}
                             onChange={(val: string) => set('summary_status_text', val)}
                           />
                         </div>
@@ -636,25 +636,25 @@ namespace WooptionsFic.Pages {
                   <div className="wof-setting-row">
                     <div className="wof-setting-row__info">
                       <strong className="wof-setting-row__title">
-                        {__('Summary Notice Message', 'wooptionsfic')}
+                        {__('Summary Notice Message', 'wooptions-pro')}
                       </strong>
                       <p className="wof-setting-row__desc">
-                        {__('Customize the server-confirmed disclaimer text beneath the summary price.', 'wooptionsfic')}
+                        {__('Customize the server-confirmed disclaimer text beneath the summary price.', 'wooptions-pro')}
                       </p>
                     </div>
                     <div className="wof-setting-row__control">
                       <ToggleControl
-                        label={__('Enable Summary Notice Text In Product Page', 'wooptionsfic')}
+                        label={__('Enable Summary Notice Text In Product Page', 'wooptions-pro')}
                         checked={Boolean(settings.enable_summary_notice_text)}
                         onChange={(checked: boolean) => set('enable_summary_notice_text', checked)}
                       />
                       {settings.enable_summary_notice_text ? (
                         <div className="wof-setting-row__subfield">
                           <TextControl
-                            label={__('SUMMARY NOTICE TEXT', 'wooptionsfic')}
+                            label={__('SUMMARY NOTICE TEXT', 'wooptions-pro')}
                             value={settings.summary_notice_text ?? 'Server-confirmed total, before shipping.'}
                             placeholder="Server-confirmed total, before shipping."
-                            help={__('Change your summary disclaimer text here.', 'wooptionsfic')}
+                            help={__('Change your summary disclaimer text here.', 'wooptions-pro')}
                             onChange={(val: string) => set('summary_notice_text', val)}
                           />
                         </div>
@@ -666,15 +666,15 @@ namespace WooptionsFic.Pages {
                   <div className="wof-setting-row">
                     <div className="wof-setting-row__info">
                       <strong className="wof-setting-row__title">
-                        {__('Cart Page Display', 'wooptionsfic')}
+                        {__('Cart Page Display', 'wooptions-pro')}
                       </strong>
                       <p className="wof-setting-row__desc">
-                        {__('Control whether addon option details are shown under cart line items.', 'wooptionsfic')}
+                        {__('Control whether addon option details are shown under cart line items.', 'wooptions-pro')}
                       </p>
                     </div>
                     <div className="wof-setting-row__control">
                       <ToggleControl
-                        label={__('Hide addon fields in Cart Page', 'wooptionsfic')}
+                        label={__('Hide addon fields in Cart Page', 'wooptions-pro')}
                         checked={Boolean(settings.hide_addon_in_cart)}
                         onChange={(checked: boolean) => set('hide_addon_in_cart', checked)}
                       />
@@ -685,15 +685,15 @@ namespace WooptionsFic.Pages {
                   <div className="wof-setting-row">
                     <div className="wof-setting-row__info">
                       <strong className="wof-setting-row__title">
-                        {__('Checkout Page Display', 'wooptionsfic')}
+                        {__('Checkout Page Display', 'wooptions-pro')}
                       </strong>
                       <p className="wof-setting-row__desc">
-                        {__('Control whether addon option details are shown on checkout and order review tables.', 'wooptionsfic')}
+                        {__('Control whether addon option details are shown on checkout and order review tables.', 'wooptions-pro')}
                       </p>
                     </div>
                     <div className="wof-setting-row__control">
                       <ToggleControl
-                        label={__('Hide addon fields in Checkout Page', 'wooptionsfic')}
+                        label={__('Hide addon fields in Checkout Page', 'wooptions-pro')}
                         checked={Boolean(settings.hide_addon_in_checkout)}
                         onChange={(checked: boolean) => set('hide_addon_in_checkout', checked)}
                       />
@@ -707,10 +707,10 @@ namespace WooptionsFic.Pages {
               <section aria-labelledby="wof-general-heading">
                 <div className="wof-settings-panel__header">
                   <h2 id="wof-general-heading" className="wof-settings-panel__title">
-                    {__('Operational Defaults & Limits', 'wooptionsfic')}
+                    {__('Operational Defaults & Limits', 'wooptions-pro')}
                   </h2>
                   <p className="wof-settings-panel__desc">
-                    {__('Configure security limits and optional capabilities across your catalog.', 'wooptionsfic')}
+                    {__('Configure security limits and optional capabilities across your catalog.', 'wooptions-pro')}
                   </p>
                 </div>
 
@@ -718,22 +718,22 @@ namespace WooptionsFic.Pages {
                   <div className="wof-setting-row">
                     <div className="wof-setting-row__info">
                       <strong className="wof-setting-row__title">
-                        {__('Quote requests per minute', 'wooptionsfic')}
+                        {__('Quote requests per minute', 'wooptions-pro')}
                       </strong>
                       <p className="wof-setting-row__desc">
-                        {__('Maximum pricing quote calculations allowed per visitor per minute.', 'wooptionsfic')}
+                        {__('Maximum pricing quote calculations allowed per visitor per minute.', 'wooptions-pro')}
                       </p>
                     </div>
                     <div className="wof-setting-row__control">
                       <div className="wof-setting-input-wrap">
                         <TextControl
                           hideLabelFromVision
-                          label={__('Quote requests per minute', 'wooptionsfic')}
+                          label={__('Quote requests per minute', 'wooptions-pro')}
                           type="number"
                           value={String(settings.quote_rate_limit_per_minute ?? 60)}
                           onChange={(value: string) => set('quote_rate_limit_per_minute', Number(value))}
                         />
-                        <span className="wof-setting-input-unit">{__('requests / min', 'wooptionsfic')}</span>
+                        <span className="wof-setting-input-unit">{__('requests / min', 'wooptions-pro')}</span>
                       </div>
                     </div>
                   </div>
@@ -741,22 +741,22 @@ namespace WooptionsFic.Pages {
                   <div className="wof-setting-row">
                     <div className="wof-setting-row__info">
                       <strong className="wof-setting-row__title">
-                        {__('Upload size limit', 'wooptionsfic')}
+                        {__('Upload size limit', 'wooptions-pro')}
                       </strong>
                       <p className="wof-setting-row__desc">
-                        {__('Maximum allowed file size in megabytes for customer upload fields.', 'wooptionsfic')}
+                        {__('Maximum allowed file size in megabytes for customer upload fields.', 'wooptions-pro')}
                       </p>
                     </div>
                     <div className="wof-setting-row__control">
                       <div className="wof-setting-input-wrap">
                         <TextControl
                           hideLabelFromVision
-                          label={__('Upload size limit (MB)', 'wooptionsfic')}
+                          label={__('Upload size limit (MB)', 'wooptions-pro')}
                           type="number"
                           value={String(settings.upload_max_mb ?? 10)}
                           onChange={(value: string) => set('upload_max_mb', Number(value))}
                         />
-                        <span className="wof-setting-input-unit">{__('MB', 'wooptionsfic')}</span>
+                        <span className="wof-setting-input-unit">{__('MB', 'wooptions-pro')}</span>
                       </div>
                     </div>
                   </div>
@@ -764,10 +764,10 @@ namespace WooptionsFic.Pages {
                   <div className="wof-setting-row">
                     <div className="wof-setting-row__info">
                       <strong className="wof-setting-row__title">
-                        {__('Features & Telemetry', 'wooptionsfic')}
+                        {__('Features & Telemetry', 'wooptions-pro')}
                       </strong>
                       <p className="wof-setting-row__desc">
-                        {__('Enable or disable global behavior toggles and analytics.', 'wooptionsfic')}
+                        {__('Enable or disable global behavior toggles and analytics.', 'wooptions-pro')}
                       </p>
                     </div>
                     <div className="wof-setting-row__control">

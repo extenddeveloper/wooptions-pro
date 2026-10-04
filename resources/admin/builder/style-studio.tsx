@@ -1,4 +1,4 @@
-namespace WooptionsFic.Builder {
+namespace WooOptionsPro.Builder {
   const { ColorPicker, SelectControl, ToggleControl } = wp.components;
   const { __ } = wp.i18n;
   const { useState, useEffect, useRef } = wp.element;
@@ -10,12 +10,12 @@ namespace WooptionsFic.Builder {
   }
 
   const COLOR_FIELDS: ColorFieldConfig[] = [
-    { key: 'text', label: __('Text Color', 'wooptionsfic'), defaultColor: '#1A1A1A' },
-    { key: 'primary', label: __('Primary', 'wooptionsfic'), defaultColor: '#1A1A1A' },
-    { key: 'border', label: __('Field Border', 'wooptionsfic'), defaultColor: '#8A8A8A' },
-    { key: 'surface', label: __('Field Fill', 'wooptionsfic'), defaultColor: '#FFFFFF' },
-    { key: 'onPrimary', label: __('Over Primary Color', 'wooptionsfic'), defaultColor: '#FFFFFF' },
-    { key: 'danger', label: __('Required / Error Color', 'wooptionsfic'), defaultColor: '#DF1C41' },
+    { key: 'text', label: __('Text Color', 'wooptions-pro'), defaultColor: '#1A1A1A' },
+    { key: 'primary', label: __('Primary', 'wooptions-pro'), defaultColor: '#1A1A1A' },
+    { key: 'border', label: __('Field Border', 'wooptions-pro'), defaultColor: '#8A8A8A' },
+    { key: 'surface', label: __('Field Fill', 'wooptions-pro'), defaultColor: '#FFFFFF' },
+    { key: 'onPrimary', label: __('Over Primary Color', 'wooptions-pro'), defaultColor: '#FFFFFF' },
+    { key: 'danger', label: __('Required / Error Color', 'wooptions-pro'), defaultColor: '#DF1C41' },
   ];
 
   function ColorFieldItem(props: {
@@ -110,7 +110,7 @@ namespace WooptionsFic.Builder {
             type="button"
             className="wof-color-swatch-box"
             onClick={() => setPickerOpen(!pickerOpen)}
-            title={__('Pick color', 'wooptionsfic')}
+            title={__('Pick color', 'wooptions-pro')}
             aria-expanded={pickerOpen}
           >
             <span
@@ -138,7 +138,7 @@ namespace WooptionsFic.Builder {
                   type="button"
                   className="wof-color-popover__close"
                   onClick={() => setPickerOpen(false)}
-                  aria-label={__('Close color picker', 'wooptionsfic')}
+                  aria-label={__('Close color picker', 'wooptions-pro')}
                 >
                   ×
                 </button>
@@ -158,17 +158,17 @@ namespace WooptionsFic.Builder {
     );
   }
 
-  export function StyleStudio(props: { document: WooptionsFic.OptionSetDefinition; onChange: (patch: Partial<WooptionsFic.OptionSetDefinition>) => void }): any {
+  export function StyleStudio(props: { document: WooOptionsPro.OptionSetDefinition; onChange: (patch: Partial<WooOptionsPro.OptionSetDefinition>) => void }): any {
     const document = props.document;
     const [isCustomizeOpen, setIsCustomizeOpen] = useState(true);
 
-    const updateStyle = (patch: Partial<WooptionsFic.OptionSetDefinition['style']>) => props.onChange({ style: { ...document.style, ...patch } });
-    const updateTypography = (patch: Partial<WooptionsFic.TypographyDefinition>) => updateStyle({ typography: { ...document.style.typography, ...patch } });
-    const updateSettings = (patch: Partial<WooptionsFic.OptionSetDefinition['settings']>) => props.onChange({ settings: { ...document.settings, ...patch } });
+    const updateStyle = (patch: Partial<WooOptionsPro.OptionSetDefinition['style']>) => props.onChange({ style: { ...document.style, ...patch } });
+    const updateTypography = (patch: Partial<WooOptionsPro.TypographyDefinition>) => updateStyle({ typography: { ...document.style.typography, ...patch } });
+    const updateSettings = (patch: Partial<WooOptionsPro.OptionSetDefinition['settings']>) => props.onChange({ settings: { ...document.settings, ...patch } });
     const fonts = ['inherit', 'system-ui', 'Inter', 'Manrope', 'Poppins', 'Outfit', 'Plus Jakarta Sans', 'Roboto'];
 
     const handleSelectPalette = (key: string) => {
-      const preset = window.WooptionsFicAdmin.palettes[key];
+      const preset = window.WooOptionsProAdmin.palettes[key];
       const newOverrides = preset?.tokens ? { ...preset.tokens } : {};
       updateStyle({
         palette: key,
@@ -177,7 +177,7 @@ namespace WooptionsFic.Builder {
     };
 
     const handleColorChange = (tokenKey: string, hex: string) => {
-      const presetTokens = window.WooptionsFicAdmin.palettes[document.style.palette]?.tokens ?? {};
+      const presetTokens = window.WooOptionsProAdmin.palettes[document.style.palette]?.tokens ?? {};
       const currentOverrides = document.style.overrides ?? {};
       const updated = {
         ...presetTokens,
@@ -194,7 +194,7 @@ namespace WooptionsFic.Builder {
       if (document.style?.overrides && document.style.overrides[tokenKey]) {
         color = document.style.overrides[tokenKey];
       } else {
-        const preset = window.WooptionsFicAdmin.palettes?.[document.style?.palette];
+        const preset = window.WooOptionsProAdmin.palettes?.[document.style?.palette];
         if (preset?.tokens && preset.tokens[tokenKey]) {
           color = preset.tokens[tokenKey];
         }
@@ -206,9 +206,9 @@ namespace WooptionsFic.Builder {
     };
 
     return <div className="wof-style-studio">
-      <h3>{__('Color palette', 'wooptionsfic')}</h3>
+      <h3>{__('Color palette', 'wooptions-pro')}</h3>
       <div className="wof-palette-picker">
-        {Object.entries(window.WooptionsFicAdmin.palettes).map(([key, palette]) => (
+        {Object.entries(window.WooOptionsProAdmin.palettes).map(([key, palette]) => (
           <button
             type="button"
             key={key}
@@ -240,7 +240,7 @@ namespace WooptionsFic.Builder {
           onClick={() => setIsCustomizeOpen(!isCustomizeOpen)}
           aria-expanded={isCustomizeOpen}
         >
-          <h4>{__('Customize Colors', 'wooptionsfic')}</h4>
+          <h4>{__('Customize Colors', 'wooptions-pro')}</h4>
           <span className={`wof-customize-colors-chevron ${isCustomizeOpen ? 'is-open' : ''}`}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="18 15 12 9 6 15" />
@@ -266,16 +266,16 @@ namespace WooptionsFic.Builder {
       </div>
 
       <div className="wof-style-divider" />
-      <h3>{__('Typography', 'wooptionsfic')}</h3>
-      <SelectControl label={__('Font family', 'wooptionsfic')} value={document.style.typography.family ?? 'inherit'} options={fonts.map((font) => ({ label: font === 'inherit' ? __('Inherit from theme', 'wooptionsfic') : font === 'system-ui' ? __('System UI', 'wooptionsfic') : font, value: font }))} onChange={(family: string) => updateTypography({ family })} />
-      <SelectControl label={__('Label weight', 'wooptionsfic')} value={String(document.style.typography.labelWeight ?? 650)} options={[400, 500, 600, 650, 700, 800].map((value) => ({ label: String(value), value: String(value) }))} onChange={(value: string) => updateTypography({ labelWeight: Number(value) })} />
-      <SelectControl label={__('Body weight', 'wooptionsfic')} value={String(document.style.typography.bodyWeight ?? 450)} options={[300, 400, 450, 500, 600, 700].map((value) => ({ label: String(value), value: String(value) }))} onChange={(value: string) => updateTypography({ bodyWeight: Number(value) })} />
+      <h3>{__('Typography', 'wooptions-pro')}</h3>
+      <SelectControl label={__('Font family', 'wooptions-pro')} value={document.style.typography.family ?? 'inherit'} options={fonts.map((font) => ({ label: font === 'inherit' ? __('Inherit from theme', 'wooptions-pro') : font === 'system-ui' ? __('System UI', 'wooptions-pro') : font, value: font }))} onChange={(family: string) => updateTypography({ family })} />
+      <SelectControl label={__('Label weight', 'wooptions-pro')} value={String(document.style.typography.labelWeight ?? 650)} options={[400, 500, 600, 650, 700, 800].map((value) => ({ label: String(value), value: String(value) }))} onChange={(value: string) => updateTypography({ labelWeight: Number(value) })} />
+      <SelectControl label={__('Body weight', 'wooptions-pro')} value={String(document.style.typography.bodyWeight ?? 450)} options={[300, 400, 450, 500, 600, 700].map((value) => ({ label: String(value), value: String(value) }))} onChange={(value: string) => updateTypography({ bodyWeight: Number(value) })} />
       <div className="wof-style-divider" />
-      <h3>{__('Layout & summary', 'wooptionsfic')}</h3>
-      <ToggleControl label={__('Show itemized price breakdown', 'wooptionsfic')} checked={document.settings.showPriceBreakdown} onChange={(value: boolean) => updateSettings({ showPriceBreakdown: value })} />
-      <ToggleControl label={__('Keep configuration summary visible', 'wooptionsfic')} checked={document.settings.stickySummary} onChange={(value: boolean) => updateSettings({ stickySummary: value })} />
-      <ToggleControl label={__('Allow saved configurations', 'wooptionsfic')} checked={document.settings.saveEnabled} onChange={(value: boolean) => updateSettings({ saveEnabled: value })} />
-      <ToggleControl label={__('Allow shareable links', 'wooptionsfic')} checked={document.settings.shareEnabled} onChange={(value: boolean) => updateSettings({ shareEnabled: value })} />
+      <h3>{__('Layout & summary', 'wooptions-pro')}</h3>
+      <ToggleControl label={__('Show itemized price breakdown', 'wooptions-pro')} checked={document.settings.showPriceBreakdown} onChange={(value: boolean) => updateSettings({ showPriceBreakdown: value })} />
+      <ToggleControl label={__('Keep configuration summary visible', 'wooptions-pro')} checked={document.settings.stickySummary} onChange={(value: boolean) => updateSettings({ stickySummary: value })} />
+      <ToggleControl label={__('Allow saved configurations', 'wooptions-pro')} checked={document.settings.saveEnabled} onChange={(value: boolean) => updateSettings({ saveEnabled: value })} />
+      <ToggleControl label={__('Allow shareable links', 'wooptions-pro')} checked={document.settings.shareEnabled} onChange={(value: boolean) => updateSettings({ shareEnabled: value })} />
     </div>;
   }
 }

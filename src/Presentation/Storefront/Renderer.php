@@ -2,21 +2,21 @@
 /**
  * Accessible server-rendered configurator baseline.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Presentation\Storefront;
+namespace WooOptionsPro\Presentation\Storefront;
 
-use WooptionsFic\Application\AnalyticsService;
-use WooptionsFic\Application\QuoteService;
-use WooptionsFic\Bootstrap\Settings;
-use WooptionsFic\Domain\Definition\Type\ScalarFieldType;
-use WooptionsFic\Domain\Font\CustomFontService;
-use WooptionsFic\Domain\Support\Uuid;
-use WooptionsFic\Infrastructure\WooCommerce\ProductContext;
-use WooptionsFic\Infrastructure\WordPress\SessionGuard;
+use WooOptionsPro\Application\AnalyticsService;
+use WooOptionsPro\Application\QuoteService;
+use WooOptionsPro\Bootstrap\Settings;
+use WooOptionsPro\Domain\Definition\Type\ScalarFieldType;
+use WooOptionsPro\Domain\Font\CustomFontService;
+use WooOptionsPro\Domain\Support\Uuid;
+use WooOptionsPro\Infrastructure\WooCommerce\ProductContext;
+use WooOptionsPro\Infrastructure\WordPress\SessionGuard;
 
 final class Renderer {
 	/** @var array<int,bool> */
@@ -66,8 +66,8 @@ final class Renderer {
 		}
 		$this->rendered_products[$product_id] = true;
 
-		wp_enqueue_script('wooptionsfic-storefront');
-		wp_enqueue_style('wooptionsfic-storefront');
+		wp_enqueue_script('wooptions-pro-storefront');
+		wp_enqueue_style('wooptions-pro-storefront');
 		$this->enqueue_typography_font((array) ($config['style']['typography'] ?? []));
 		$this->enqueue_font_field_fonts((array) ($config['fields'] ?? []));
 
@@ -77,13 +77,13 @@ final class Renderer {
 
 		$total_text  = ! empty(Settings::get('enable_addons_total_text'))
 			? (string) Settings::get('addons_total_text', 'Total Price')
-			: __('Configured price', 'wooptionsfic');
+			: __('Configured price', 'wooptions-pro');
 		$status_text = ! empty(Settings::get('enable_summary_status_text'))
 			? (string) Settings::get('summary_status_text', 'Ready for your choices')
-			: __('Ready for your choices', 'wooptionsfic');
+			: __('Ready for your choices', 'wooptions-pro');
 		$notice_text = ! empty(Settings::get('enable_summary_notice_text'))
 			? (string) Settings::get('summary_notice_text', 'Server-confirmed total, before shipping.')
-			: __('Server-confirmed total, before shipping.', 'wooptionsfic');
+			: __('Server-confirmed total, before shipping.', 'wooptions-pro');
 
 		$payload= [
 			'configuration' => $config,
@@ -107,8 +107,8 @@ final class Renderer {
 		$share_enabled            = ! empty($config['settings']['shareEnabled']);
 		$customer_actions_enabled = $save_enabled || $share_enabled;
 		$action_title             = ($save_enabled && $share_enabled)
-			? __('Save or share this configuration', 'wooptionsfic')
-			: ($share_enabled ? __('Share this configuration', 'wooptionsfic') : __('Save this configuration', 'wooptionsfic'));
+			? __('Save or share this configuration', 'wooptions-pro')
+			: ($share_enabled ? __('Share this configuration', 'wooptions-pro') : __('Save this configuration', 'wooptions-pro'));
 
 		echo '<section class="wof-configurator wof-layout--' . esc_attr($layout) . '" data-wof-root data-layout="' . esc_attr($layout) . '" data-product-id="' . esc_attr((string) $product_id) . '"';
 		echo ' data-revision="' . esc_attr((string) $config['revisionUuid']) . '"';
@@ -132,9 +132,9 @@ final class Renderer {
 		}
 		echo '</div>';
 		echo '<div class="wof-errors" data-wof-errors role="alert" tabindex="-1" hidden></div>';
-		echo '<input type="hidden" name="wooptionsfic_token" value="' . esc_attr($token) . '">';
-		echo '<input type="hidden" name="wooptionsfic_revision" value="' . esc_attr((string) $config['revisionUuid']) . '">';
-		echo '<input type="hidden" name="wooptionsfic_selection_json" value="" data-wof-selection-json>';
+		echo '<input type="hidden" name="wooptions-pro_token" value="' . esc_attr($token) . '">';
+		echo '<input type="hidden" name="wooptions-pro_revision" value="' . esc_attr((string) $config['revisionUuid']) . '">';
+		echo '<input type="hidden" name="wooptions-pro_selection_json" value="" data-wof-selection-json>';
 		echo '<script type="application/json" data-wof-config>';
 		echo wp_json_encode($payload, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES);
 		echo '</script>';
@@ -154,24 +154,24 @@ final class Renderer {
 		$summary_class            = $sticky ? 'wof-summary is-sticky' : 'wof-summary';
 		$customer_actions_enabled = $save_enabled || $share_enabled;
 		$action_pill_text         = ($save_enabled && $share_enabled)
-			? __('Save / Share', 'wooptionsfic')
-			: ($share_enabled ? __('Share link', 'wooptionsfic') : __('Save', 'wooptionsfic'));
+			? __('Save / Share', 'wooptions-pro')
+			: ($share_enabled ? __('Share link', 'wooptions-pro') : __('Save', 'wooptions-pro'));
 		$action_pill_title        = ($save_enabled && $share_enabled)
-			? __('Save or share configuration', 'wooptionsfic')
-			: ($share_enabled ? __('Share configuration link', 'wooptionsfic') : __('Save configuration', 'wooptionsfic'));
+			? __('Save or share configuration', 'wooptions-pro')
+			: ($share_enabled ? __('Share configuration link', 'wooptions-pro') : __('Save configuration', 'wooptions-pro'));
 		$modal_title              = ($save_enabled && $share_enabled)
-			? __('Save or share configuration', 'wooptionsfic')
-			: ($share_enabled ? __('Share configuration', 'wooptionsfic') : __('Save configuration', 'wooptionsfic'));
+			? __('Save or share configuration', 'wooptions-pro')
+			: ($share_enabled ? __('Share configuration', 'wooptions-pro') : __('Save configuration', 'wooptions-pro'));
 
 		$total_text  = ! empty(Settings::get('enable_addons_total_text'))
 			? (string) Settings::get('addons_total_text', 'Total Price')
-			: __('Total Price', 'wooptionsfic');
+			: __('Total Price', 'wooptions-pro');
 		$status_text = ! empty(Settings::get('enable_summary_status_text'))
 			? (string) Settings::get('summary_status_text', 'Price confirmed')
-			: __('Price confirmed', 'wooptionsfic');
+			: __('Price confirmed', 'wooptions-pro');
 		$notice_text = ! empty(Settings::get('enable_summary_notice_text'))
 			? (string) Settings::get('summary_notice_text', 'Server-confirmed total, before shipping.')
-			: __('Server-confirmed total, before shipping.', 'wooptionsfic');
+			: __('Server-confirmed total, before shipping.', 'wooptions-pro');
 
 		echo '<aside class="' . esc_attr($summary_class) . '" data-wof-summary aria-live="polite">';
 		echo '<div class="wof-summary__main">';
@@ -194,9 +194,9 @@ final class Renderer {
 		echo '</div>';
 
 		echo '<div class="wof-summary__actions">';
-		echo '<button type="button" class="wof-action-pill" data-wof-breakdown-trigger aria-haspopup="dialog" aria-expanded="false"' . ($show_price_breakdown ? '' : ' hidden') . ' title="' . esc_attr__('View price breakdown', 'wooptionsfic') . '">';
+		echo '<button type="button" class="wof-action-pill" data-wof-breakdown-trigger aria-haspopup="dialog" aria-expanded="false"' . ($show_price_breakdown ? '' : ' hidden') . ' title="' . esc_attr__('View price breakdown', 'wooptions-pro') . '">';
 		echo '<svg viewBox="0 0 20 20" width="13" height="13" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h7a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>';
-		echo '<span>' . esc_html__('Breakdown', 'wooptionsfic') . '</span>';
+		echo '<span>' . esc_html__('Breakdown', 'wooptions-pro') . '</span>';
 		echo '<span class="wof-breakdown-badge" data-wof-breakdown-count hidden>0</span>';
 		echo '</button>';
 
@@ -211,28 +211,28 @@ final class Renderer {
 		echo '<div class="wof-summary__rows" data-wof-summary-rows hidden></div>';
 
 		// Breakdown Modal Dialog
-		echo '<div class="wof-breakdown-modal" data-wof-breakdown-modal role="dialog" aria-modal="true" aria-label="' . esc_attr__('Price breakdown', 'wooptionsfic') . '" hidden>';
+		echo '<div class="wof-breakdown-modal" data-wof-breakdown-modal role="dialog" aria-modal="true" aria-label="' . esc_attr__('Price breakdown', 'wooptions-pro') . '" hidden>';
 		echo '<div class="wof-breakdown-modal__backdrop" data-wof-breakdown-close></div>';
 		echo '<div class="wof-breakdown-modal__dialog">';
 		echo '<div class="wof-breakdown-modal__header">';
 		echo '<div class="wof-breakdown-modal__title-area">';
 		echo '<div class="wof-breakdown-modal__icon" aria-hidden="true"><svg viewBox="0 0 20 20" width="18" height="18" fill="currentColor"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h7a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg></div>';
-		echo '<div><h3 class="wof-breakdown-modal__title">' . esc_html__('Price breakdown', 'wooptionsfic') . '</h3>';
-		echo '<p class="wof-breakdown-modal__subtitle">' . esc_html__('Summary of your selected options', 'wooptionsfic') . '</p></div>';
+		echo '<div><h3 class="wof-breakdown-modal__title">' . esc_html__('Price breakdown', 'wooptions-pro') . '</h3>';
+		echo '<p class="wof-breakdown-modal__subtitle">' . esc_html__('Summary of your selected options', 'wooptions-pro') . '</p></div>';
 		echo '</div>';
-		echo '<button type="button" class="wof-breakdown-modal__close" data-wof-breakdown-close aria-label="' . esc_attr__('Close breakdown', 'wooptionsfic') . '">';
+		echo '<button type="button" class="wof-breakdown-modal__close" data-wof-breakdown-close aria-label="' . esc_attr__('Close breakdown', 'wooptions-pro') . '">';
 		echo '<svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>';
 		echo '</button>';
 		echo '</div>';
 		echo '<div class="wof-breakdown-modal__body" data-wof-breakdown-modal-items>';
-		echo '<p class="wof-breakdown-modal__empty">' . esc_html__('No additional options selected.', 'wooptionsfic') . '</p>';
+		echo '<p class="wof-breakdown-modal__empty">' . esc_html__('No additional options selected.', 'wooptions-pro') . '</p>';
 		echo '</div>';
 		echo '<div class="wof-breakdown-modal__footer">';
 		echo '<div class="wof-breakdown-modal__total-row">';
 		echo '<span>' . esc_html($total_text) . '</span>';
 		echo '<strong data-wof-breakdown-total>—</strong>';
 		echo '</div>';
-		echo '<button type="button" class="wof-button wof-breakdown-modal__done" data-wof-breakdown-close>' . esc_html__('Done', 'wooptionsfic') . '</button>';
+		echo '<button type="button" class="wof-button wof-breakdown-modal__done" data-wof-breakdown-close>' . esc_html__('Done', 'wooptions-pro') . '</button>';
 		echo '</div>';
 		echo '</div>';
 		echo '</div>';
@@ -245,39 +245,39 @@ final class Renderer {
 		echo '<div class="wof-save-modal__title-area">';
 		echo '<div class="wof-save-modal__icon" aria-hidden="true"><svg viewBox="0 0 20 20" width="18" height="18" fill="currentColor"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"/></svg></div>';
 		echo '<div><h3 class="wof-save-modal__title">' . esc_html($modal_title) . '</h3>';
-		echo '<p class="wof-save-modal__subtitle">' . esc_html__('Save your custom options or create a shareable link', 'wooptionsfic') . '</p></div>';
+		echo '<p class="wof-save-modal__subtitle">' . esc_html__('Save your custom options or create a shareable link', 'wooptions-pro') . '</p></div>';
 		echo '</div>';
-		echo '<button type="button" class="wof-save-modal__close" data-wof-save-modal-close aria-label="' . esc_attr__('Close dialog', 'wooptionsfic') . '">';
+		echo '<button type="button" class="wof-save-modal__close" data-wof-save-modal-close aria-label="' . esc_attr__('Close dialog', 'wooptions-pro') . '">';
 		echo '<svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>';
 		echo '</button>';
 		echo '</div>';
 
 		echo '<div class="wof-save-modal__body">';
 		echo '<div class="wof-save-modal__section" data-wof-save-section' . ($save_enabled ? '' : ' hidden') . '>';
-		echo '<label class="wof-save-label" for="wof-save-name-input">' . esc_html__('Configuration name', 'wooptionsfic') . '</label>';
+		echo '<label class="wof-save-label" for="wof-save-name-input">' . esc_html__('Configuration name', 'wooptions-pro') . '</label>';
 		echo '<div class="wof-save-input-row">';
-		echo '<input id="wof-save-name-input" type="text" maxlength="191" value="' . esc_attr__('My configuration', 'wooptionsfic') . '" class="wof-save-input" data-wof-save-name placeholder="' . esc_attr__('e.g. My Custom Build', 'wooptionsfic') . '">';
+		echo '<input id="wof-save-name-input" type="text" maxlength="191" value="' . esc_attr__('My configuration', 'wooptions-pro') . '" class="wof-save-input" data-wof-save-name placeholder="' . esc_attr__('e.g. My Custom Build', 'wooptions-pro') . '">';
 		echo '<button type="button" class="wof-button wof-button--save" data-wof-save' . ($save_enabled ? '' : ' hidden') . '>';
 		echo '<svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>';
-		echo '<span>' . esc_html__('Save', 'wooptionsfic') . '</span>';
+		echo '<span>' . esc_html__('Save', 'wooptions-pro') . '</span>';
 		echo '</button>';
 		echo '</div>';
 		echo '</div>';
 
 		echo '<div class="wof-save-modal__section" data-wof-share-section' . ($share_enabled ? '' : ' hidden') . '>';
 		echo '<div class="wof-save-modal__share-row">';
-		echo '<div><strong class="wof-save-modal__label">' . esc_html__('Shareable Link', 'wooptionsfic') . '</strong>';
-		echo '<p class="wof-save-modal__hint">' . esc_html__('Create a link with your selections to share or bookmark.', 'wooptionsfic') . '</p></div>';
+		echo '<div><strong class="wof-save-modal__label">' . esc_html__('Shareable Link', 'wooptions-pro') . '</strong>';
+		echo '<p class="wof-save-modal__hint">' . esc_html__('Create a link with your selections to share or bookmark.', 'wooptions-pro') . '</p></div>';
 		echo '<button type="button" class="wof-button wof-button--share" data-wof-share' . ($share_enabled ? '' : ' hidden') . '>';
 		echo '<svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"/></svg>';
-		echo '<span>' . esc_html__('Create link', 'wooptionsfic') . '</span>';
+		echo '<span>' . esc_html__('Create link', 'wooptions-pro') . '</span>';
 		echo '</button>';
 		echo '</div>';
 		echo '<div class="wof-share-link" data-wof-share-link hidden>';
-		echo '<input type="url" readonly aria-label="' . esc_attr__('Share link', 'wooptionsfic') . '" class="wof-share-input">';
+		echo '<input type="url" readonly aria-label="' . esc_attr__('Share link', 'wooptions-pro') . '" class="wof-share-input">';
 		echo '<button type="button" class="wof-button wof-button--copy" data-wof-copy-share>';
 		echo '<svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"/><path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"/></svg>';
-		echo '<span>' . esc_html__('Copy', 'wooptionsfic') . '</span>';
+		echo '<span>' . esc_html__('Copy', 'wooptions-pro') . '</span>';
 		echo '</button>';
 		echo '</div>';
 		echo '</div>';
@@ -286,7 +286,7 @@ final class Renderer {
 		echo '</div>';
 
 		echo '<div class="wof-save-modal__footer">';
-		echo '<button type="button" class="wof-button wof-save-modal__done" data-wof-save-modal-close>' . esc_html__('Done', 'wooptionsfic') . '</button>';
+		echo '<button type="button" class="wof-button wof-save-modal__done" data-wof-save-modal-close>' . esc_html__('Done', 'wooptions-pro') . '</button>';
 		echo '</div>';
 		echo '</div>';
 		echo '</div>';
@@ -297,7 +297,7 @@ final class Renderer {
 	/**
 	 * @param array<string,mixed> $field Field definition.
 	 */
-	private function render_field(array $field, string $name_prefix = 'wooptionsfic_selection', string $row_uuid = ''): void {
+	private function render_field(array $field, string $name_prefix = 'wooptions-pro_selection', string $row_uuid = ''): void {
 		$type = (string) ($field['type'] ?? '');
 		$uuid = (string) ($field['uuid'] ?? '');
 		if ('' === $uuid) {
@@ -470,9 +470,9 @@ final class Renderer {
 
 		if (! in_array($type, ['checkbox', 'toggle', 'repeater'], true)) {
 			echo '<label class="wof-field__label" for="wof-' . esc_attr($uuid . $row_suffix) . '">';
-			echo esc_html((string) ($field['label'] ?? __('Option', 'wooptionsfic')));
+			echo esc_html((string) ($field['label'] ?? __('Option', 'wooptions-pro')));
 			if ($required) {
-				echo ' <span class="wof-required" aria-hidden="true">*</span><span class="screen-reader-text">' . esc_html__('required', 'wooptionsfic') . '</span>';
+				echo ' <span class="wof-required" aria-hidden="true">*</span><span class="screen-reader-text">' . esc_html__('required', 'wooptions-pro') . '</span>';
 			}
 			if ('' !== $price_text && in_array($type, ['text', 'textarea', 'number', 'tel', 'email', 'url', 'range', 'customer_defined_price', 'file'], true)) {
 				echo ' <span class="wof-field__price">' . esc_html($price_text) . '</span>';
@@ -533,7 +533,7 @@ final class Renderer {
 
 		// Find default selected choice
 		$default_uuid        = '';
-		$default_label       = $is_font_type ? __('Choose a font', 'wooptionsfic') : __('Choose an option', 'wooptionsfic');
+		$default_label       = $is_font_type ? __('Choose a font', 'wooptions-pro') : __('Choose an option', 'wooptions-pro');
 		$default_font_family = '';
 		$default_img         = '';
 		$default_price       = '';
@@ -570,7 +570,7 @@ final class Renderer {
 
 		echo '<div class="wof-custom-select__dropdown" data-wof-custom-select-dropdown role="listbox" tabindex="-1">';
 		$is_empty_selected = '' === $default_uuid;
-		$empty_label       = $is_font_type ? __('Choose a font', 'wooptionsfic') : __('Choose an option', 'wooptionsfic');
+		$empty_label       = $is_font_type ? __('Choose a font', 'wooptions-pro') : __('Choose an option', 'wooptions-pro');
 		echo '<div class="wof-custom-select__option' . ($is_empty_selected ? ' is-selected' : '') . '" data-wof-option-value="" data-wof-option-label="' . esc_attr($empty_label) . '" data-wof-option-image="" data-wof-option-price="" role="option" aria-selected="' . ($is_empty_selected ? 'true' : 'false') . '">';
 		echo '<span class="wof-custom-select__option-label">' . esc_html($empty_label) . '</span>';
 		echo '</div>';
@@ -709,7 +709,7 @@ final class Renderer {
 			if (! empty($field['enableQuantity'])) {
 				$min_qty = max(1, (int) ($field['minQuantity'] ?? 1));
 				$max_qty = ! empty($field['maxQuantity']) ? max($min_qty, (int) $field['maxQuantity']) : 9999;
-				echo '<span class="wof-choice-qty-wrap" onclick="event.stopPropagation();"><input type="number" class="wof-choice-qty-input" name="' . esc_attr('wooptionsfic_qty[' . $choice_uuid . ']') . '" data-wof-choice-uuid="' . esc_attr($choice_uuid) . '" data-wof-field-uuid="' . esc_attr((string) $field['uuid']) . '" value="' . esc_attr((string) $min_qty) . '" min="' . esc_attr((string) $min_qty) . '" max="' . esc_attr((string) $max_qty) . '" aria-label="' . esc_attr__('Quantity', 'wooptionsfic') . '"></span>';
+				echo '<span class="wof-choice-qty-wrap" onclick="event.stopPropagation();"><input type="number" class="wof-choice-qty-input" name="' . esc_attr('wooptions-pro_qty[' . $choice_uuid . ']') . '" data-wof-choice-uuid="' . esc_attr($choice_uuid) . '" data-wof-field-uuid="' . esc_attr((string) $field['uuid']) . '" value="' . esc_attr((string) $min_qty) . '" min="' . esc_attr((string) $min_qty) . '" max="' . esc_attr((string) $max_qty) . '" aria-label="' . esc_attr__('Quantity', 'wooptions-pro') . '"></span>';
 			}
 			echo '</span>';
 			echo '<span class="wof-choice__check" aria-hidden="true"><svg viewBox="0 0 20 20" width="12" height="12" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg></span></label>';
@@ -863,8 +863,8 @@ final class Renderer {
 			echo '</span>';
 
 			if ($has_active_vars && ! empty($variations)) {
-				echo '<select class="wof-product-variation-select" name="' . esc_attr('wooptionsfic_var[' . $choice_uuid . ']') . '" data-wof-choice-uuid="' . esc_attr($choice_uuid) . '" data-wof-field-uuid="' . esc_attr((string) $field['uuid']) . '" onclick="event.stopPropagation();" aria-label="' . esc_attr__('Select variation', 'wooptionsfic') . '">';
-				echo '<option value="">' . esc_html__('Select variation', 'wooptionsfic') . '</option>';
+				echo '<select class="wof-product-variation-select" name="' . esc_attr('wooptions-pro_var[' . $choice_uuid . ']') . '" data-wof-choice-uuid="' . esc_attr($choice_uuid) . '" data-wof-field-uuid="' . esc_attr((string) $field['uuid']) . '" onclick="event.stopPropagation();" aria-label="' . esc_attr__('Select variation', 'wooptions-pro') . '">';
+				echo '<option value="">' . esc_html__('Select variation', 'wooptions-pro') . '</option>';
 				foreach ($variations as $var) {
 					$var_id      = (int) ($var['id'] ?? 0);
 					$var_label   = (string) ($var['label'] ?? '');
@@ -883,7 +883,7 @@ final class Renderer {
 			if (! empty($field['enableQuantity'])) {
 				$min_qty = max(1, (int) ($field['minQuantity'] ?? 1));
 				$max_qty = ! empty($field['maxQuantity']) ? max($min_qty, (int) $field['maxQuantity']) : 9999;
-				echo '<span class="wof-choice-qty-wrap" onclick="event.stopPropagation();"><input type="number" class="wof-choice-qty-input" name="' . esc_attr('wooptionsfic_qty[' . $choice_uuid . ']') . '" data-wof-choice-uuid="' . esc_attr($choice_uuid) . '" data-wof-field-uuid="' . esc_attr((string) $field['uuid']) . '" value="' . esc_attr((string) $min_qty) . '" min="' . esc_attr((string) $min_qty) . '" max="' . esc_attr((string) $max_qty) . '" aria-label="' . esc_attr__('Quantity', 'wooptionsfic') . '"></span>';
+				echo '<span class="wof-choice-qty-wrap" onclick="event.stopPropagation();"><input type="number" class="wof-choice-qty-input" name="' . esc_attr('wooptions-pro_qty[' . $choice_uuid . ']') . '" data-wof-choice-uuid="' . esc_attr($choice_uuid) . '" data-wof-field-uuid="' . esc_attr((string) $field['uuid']) . '" value="' . esc_attr((string) $min_qty) . '" min="' . esc_attr((string) $min_qty) . '" max="' . esc_attr((string) $max_qty) . '" aria-label="' . esc_attr__('Quantity', 'wooptions-pro') . '"></span>';
 			}
 
 			echo '</label>';
@@ -937,7 +937,7 @@ final class Renderer {
 			if (! empty($field['enableQuantity'])) {
 				$min_qty = max(1, (int) ($field['minQuantity'] ?? 1));
 				$max_qty = ! empty($field['maxQuantity']) ? max($min_qty, (int) $field['maxQuantity']) : 9999;
-				echo '<span class="wof-choice-qty-wrap" onclick="event.stopPropagation();"><input type="number" class="wof-choice-qty-input" name="' . esc_attr($name . '_qty[' . $choice_uuid . ']') . '" value="' . esc_attr((string) $min_qty) . '" min="' . esc_attr((string) $min_qty) . '" max="' . esc_attr((string) $max_qty) . '" aria-label="' . esc_attr__('Quantity', 'wooptionsfic') . '"></span>';
+				echo '<span class="wof-choice-qty-wrap" onclick="event.stopPropagation();"><input type="number" class="wof-choice-qty-input" name="' . esc_attr($name . '_qty[' . $choice_uuid . ']') . '" value="' . esc_attr((string) $min_qty) . '" min="' . esc_attr((string) $min_qty) . '" max="' . esc_attr((string) $max_qty) . '" aria-label="' . esc_attr__('Quantity', 'wooptions-pro') . '"></span>';
 			}
 			echo '</label>';
 		}
@@ -1017,7 +1017,7 @@ final class Renderer {
 			if (! empty($field['enableQuantity'])) {
 				$min_qty = max(1, (int) ($field['minQuantity'] ?? 1));
 				$max_qty = ! empty($field['maxQuantity']) ? max($min_qty, (int) $field['maxQuantity']) : 9999;
-				echo '<span class="wof-choice-qty-wrap" onclick="event.stopPropagation();"><input type="number" class="wof-choice-qty-input" name="' . esc_attr($name . '_qty[' . $choice_uuid . ']') . '" value="' . esc_attr((string) $min_qty) . '" min="' . esc_attr((string) $min_qty) . '" max="' . esc_attr((string) $max_qty) . '" aria-label="' . esc_attr__('Quantity', 'wooptionsfic') . '"></span>';
+				echo '<span class="wof-choice-qty-wrap" onclick="event.stopPropagation();"><input type="number" class="wof-choice-qty-input" name="' . esc_attr($name . '_qty[' . $choice_uuid . ']') . '" value="' . esc_attr((string) $min_qty) . '" min="' . esc_attr((string) $min_qty) . '" max="' . esc_attr((string) $max_qty) . '" aria-label="' . esc_attr__('Quantity', 'wooptions-pro') . '"></span>';
 			}
 			echo '</label>';
 		}
@@ -1171,7 +1171,7 @@ final class Renderer {
 		echo $this->input_attributes($field, $description_id) . '>';
 		echo '<div class="wof-color-picker__trigger" data-wof-color-trigger tabindex="0" role="button" aria-haspopup="dialog" aria-expanded="false">';
 		echo '<span class="wof-color-picker__swatch" style="background-color:' . esc_attr($value) . '" data-wof-color-swatch aria-hidden="true"></span>';
-		echo '<span class="wof-color-picker__value"><strong data-wof-color-value>' . esc_html($value) . '</strong><small>' . esc_html__('Click to choose a color', 'wooptionsfic') . '</small></span>';
+		echo '<span class="wof-color-picker__value"><strong data-wof-color-value>' . esc_html($value) . '</strong><small>' . esc_html__('Click to choose a color', 'wooptions-pro') . '</small></span>';
 		if ('' !== $price_text) {
 			echo '<span class="wof-color-picker__price">' . esc_html($price_text) . '</span>';
 		}
@@ -1226,7 +1226,7 @@ final class Renderer {
 
 				echo '<div class="wof-phone-field-wrap" data-wof-phone-wrap>';
 				echo '<div class="wof-phone-picker" data-wof-phone-picker>';
-				echo '<button type="button" class="wof-phone-picker__trigger" data-wof-phone-trigger aria-haspopup="listbox" aria-expanded="false" aria-label="' . esc_attr__('Select country', 'wooptionsfic') . '">';
+				echo '<button type="button" class="wof-phone-picker__trigger" data-wof-phone-trigger aria-haspopup="listbox" aria-expanded="false" aria-label="' . esc_attr__('Select country', 'wooptions-pro') . '">';
 				echo '<span class="wof-phone-picker__flag" data-wof-flag-slot>' . $flag_svg . '</span>';
 				echo '<span class="wof-phone-picker__code" data-wof-country-slot>' . esc_html($default_country) . '</span>';
 				if ('number_flag_dialcode' === $flag_style) {
@@ -1235,7 +1235,7 @@ final class Renderer {
 				echo '<svg class="wof-phone-picker__chevron" viewBox="0 0 20 20" width="12" height="12" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>';
 				echo '</button>';
 
-				echo '<select class="wof-phone-country-select" name="' . esc_attr($name . '[country]') . '" aria-label="' . esc_attr__('Select country', 'wooptionsfic') . '" data-wof-phone-select tabindex="-1" style="display:none;" aria-hidden="true">';
+				echo '<select class="wof-phone-country-select" name="' . esc_attr($name . '[country]') . '" aria-label="' . esc_attr__('Select country', 'wooptions-pro') . '" data-wof-phone-select tabindex="-1" style="display:none;" aria-hidden="true">';
 				foreach ($countries as $code => $info) {
 					echo '<option value="' . esc_attr($code) . '" data-dial="' . esc_attr($info['dial']) . '"' . selected($code, $default_country, false) . '>';
 					echo esc_html($info['name'] . ' (' . $info['dial'] . ')');
@@ -1246,7 +1246,7 @@ final class Renderer {
 				echo '<div class="wof-phone-picker__dropdown" data-wof-phone-dropdown role="listbox" tabindex="-1">';
 				echo '<div class="wof-phone-picker__search-wrap">';
 				echo '<svg class="wof-phone-picker__search-icon" viewBox="0 0 20 20" width="13" height="13" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg>';
-				echo '<input type="text" class="wof-phone-picker__search" placeholder="' . esc_attr__('Search country…', 'wooptionsfic') . '" data-wof-phone-search autocomplete="off" spellcheck="false">';
+				echo '<input type="text" class="wof-phone-picker__search" placeholder="' . esc_attr__('Search country…', 'wooptions-pro') . '" data-wof-phone-search autocomplete="off" spellcheck="false">';
 				echo '</div>';
 				echo '<div class="wof-phone-picker__list" data-wof-phone-list>';
 				foreach ($countries as $code => $info) {
@@ -1263,7 +1263,7 @@ final class Renderer {
 				echo '</div>';
 				echo '</div>';
 				echo '<input id="' . esc_attr($id) . '" type="tel" name="' . esc_attr($name . '[number]') . '" value="' . esc_attr((string) ($field['default'] ?? '')) . '" class="wof-phone-number-input"';
-				echo ' placeholder="' . esc_attr((string) ($field['placeholder'] ?? __('Enter phone number…', 'wooptionsfic'))) . '"';
+				echo ' placeholder="' . esc_attr((string) ($field['placeholder'] ?? __('Enter phone number…', 'wooptions-pro'))) . '"';
 				echo $this->input_attributes($field, $description_id) . '>';
 				echo '</div>';
 				return;
@@ -1423,14 +1423,14 @@ final class Renderer {
 		echo '<input type="hidden" id="wof-' . esc_attr($uuid . $row_suffix) . '-end" name="' . esc_attr($name . '[end]') . '" value="' . esc_attr($default_end) . '" data-wof-daterange-end>';
 
 		echo '<div class="wof-custom-daterange__group">';
-		echo '<div class="wof-custom-datetime__trigger wof-custom-daterange__trigger--start" data-wof-daterange-trigger="start" tabindex="0" role="button" aria-haspopup="dialog" aria-expanded="false" aria-label="' . esc_attr__('Start date', 'wooptionsfic') . '">';
+		echo '<div class="wof-custom-datetime__trigger wof-custom-daterange__trigger--start" data-wof-daterange-trigger="start" tabindex="0" role="button" aria-haspopup="dialog" aria-expanded="false" aria-label="' . esc_attr__('Start date', 'wooptions-pro') . '">';
 		echo $cal_icon;
 		echo '<span class="wof-custom-datetime__display" data-wof-daterange-display="start" data-wof-placeholder="' . esc_attr($date_ph) . '">' . esc_html($default_start ?: $date_ph) . '</span>';
 		echo '</div>';
 
 		echo '<span class="wof-custom-daterange__sep" aria-hidden="true">→</span>';
 
-		echo '<div class="wof-custom-datetime__trigger wof-custom-daterange__trigger--end" data-wof-daterange-trigger="end" tabindex="0" role="button" aria-haspopup="dialog" aria-expanded="false" aria-label="' . esc_attr__('End date', 'wooptionsfic') . '">';
+		echo '<div class="wof-custom-datetime__trigger wof-custom-daterange__trigger--end" data-wof-daterange-trigger="end" tabindex="0" role="button" aria-haspopup="dialog" aria-expanded="false" aria-label="' . esc_attr__('End date', 'wooptions-pro') . '">';
 		echo $cal_icon;
 		echo '<span class="wof-custom-datetime__display" data-wof-daterange-display="end" data-wof-placeholder="' . esc_attr($date_ph) . '">' . esc_html($default_end ?: $date_ph) . '</span>';
 		if ('' !== $price_text) {
@@ -1518,9 +1518,9 @@ final class Renderer {
 		echo '>';
 		echo '<span class="wof-upload__button" aria-hidden="true">';
 		echo '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>';
-		echo esc_html__('Upload', 'wooptionsfic') . '</span>';
-		echo '<span class="wof-upload__hint">' . esc_html__('Click or drag and drop', 'wooptionsfic') . '</span>';
-		echo '<small class="wof-upload__limit">' . sprintf(esc_html__('Up to %1$d file(s), %2$d MB each', 'wooptionsfic'), $maximum_files, $maximum_mb) . '</small>';
+		echo esc_html__('Upload', 'wooptions-pro') . '</span>';
+		echo '<span class="wof-upload__hint">' . esc_html__('Click or drag and drop', 'wooptions-pro') . '</span>';
+		echo '<small class="wof-upload__limit">' . sprintf(esc_html__('Up to %1$d file(s), %2$d MB each', 'wooptions-pro'), $maximum_files, $maximum_mb) . '</small>';
 		echo '</div>';
 		echo '<div class="wof-upload__list" data-wof-upload-list aria-live="polite"></div>';
 		echo '</div>';
@@ -1536,7 +1536,7 @@ final class Renderer {
 		$initial_state = (string) ($field['initialState'] ?? 'open');
 		$is_open       = 'close' !== $initial_state;
 		$hide_title    = ! empty($field['hideSectionTitle']);
-		$title         = (string) ($field['label'] ?? __('Section Container', 'wooptionsfic'));
+		$title         = (string) ($field['label'] ?? __('Section Container', 'wooptions-pro'));
 		$help_text     = trim((string) ($field['help'] ?? ''));
 		$help_pos      = (string) ($field['helpTextPosition'] ?? 'below_title');
 		$repeatable    = ! isset($field['repeatable']) || ! empty($field['repeatable']);
@@ -1604,15 +1604,15 @@ final class Renderer {
 			$max_repeats   = max(0, (int) ($field['maxRepeats'] ?? $field['maxRows'] ?? 0));
 			$initial_rows  = max(1, $min_repeats, (int) ($field['defaultRows'] ?? 1));
 			$repeat_label  = (string) ($field['repeatLabel'] ?? ($field['rowTitle'] ?? 'Item {n}'));
-			$button_label  = (string) ($field['buttonLabel'] ?? __('Add Another', 'wooptionsfic'));
+			$button_label  = (string) ($field['buttonLabel'] ?? __('Add Another', 'wooptions-pro'));
 
 			if ('quantity' === $repeat_method) {
 				echo '<div class="wof-repeater__quantity-control" data-wof-repeater-quantity>';
-				echo '<label class="wof-repeater__quantity-label">' . esc_html__('Quantity', 'wooptionsfic') . '</label>';
+				echo '<label class="wof-repeater__quantity-label">' . esc_html__('Quantity', 'wooptions-pro') . '</label>';
 				echo '<div class="wof-qty-stepper">';
-				echo '<button type="button" class="wof-qty-stepper__btn" data-wof-repeater-qty-dec aria-label="' . esc_attr__('Decrease quantity', 'wooptionsfic') . '">−</button>';
+				echo '<button type="button" class="wof-qty-stepper__btn" data-wof-repeater-qty-dec aria-label="' . esc_attr__('Decrease quantity', 'wooptions-pro') . '">−</button>';
 				echo '<input type="number" class="wof-qty-stepper__input" data-wof-repeater-qty-input value="' . esc_attr((string) $initial_rows) . '" min="' . esc_attr((string) max(1, $min_repeats)) . '"' . ($max_repeats > 0 ? ' max="' . esc_attr((string) $max_repeats) . '"' : '') . ' readonly />';
-				echo '<button type="button" class="wof-qty-stepper__btn" data-wof-repeater-qty-inc aria-label="' . esc_attr__('Increase quantity', 'wooptionsfic') . '">+</button>';
+				echo '<button type="button" class="wof-qty-stepper__btn" data-wof-repeater-qty-inc aria-label="' . esc_attr__('Increase quantity', 'wooptions-pro') . '">+</button>';
 				echo '</div>';
 				echo '</div>';
 			}
@@ -1660,9 +1660,9 @@ final class Renderer {
 		echo '</div>';
 		if ('button' === $repeat_method) {
 			echo '<div class="wof-repeater__actions">';
-			echo '<button type="button" class="wof-icon-button" data-wof-move-row="up" aria-label="' . esc_attr__('Move up', 'wooptionsfic') . '" title="' . esc_attr__('Move up', 'wooptionsfic') . '"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></button>';
-			echo '<button type="button" class="wof-icon-button" data-wof-move-row="down" aria-label="' . esc_attr__('Move down', 'wooptionsfic') . '" title="' . esc_attr__('Move down', 'wooptionsfic') . '"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>';
-			echo '<button type="button" class="wof-icon-button is-remove" data-wof-remove-row aria-label="' . esc_attr__('Remove row', 'wooptionsfic') . '" title="' . esc_attr__('Remove row', 'wooptionsfic') . '"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
+			echo '<button type="button" class="wof-icon-button" data-wof-move-row="up" aria-label="' . esc_attr__('Move up', 'wooptions-pro') . '" title="' . esc_attr__('Move up', 'wooptions-pro') . '"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></button>';
+			echo '<button type="button" class="wof-icon-button" data-wof-move-row="down" aria-label="' . esc_attr__('Move down', 'wooptions-pro') . '" title="' . esc_attr__('Move down', 'wooptions-pro') . '"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>';
+			echo '<button type="button" class="wof-icon-button is-remove" data-wof-remove-row aria-label="' . esc_attr__('Remove row', 'wooptions-pro') . '" title="' . esc_attr__('Remove row', 'wooptions-pro') . '"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
 			echo '</div>';
 		}
 		echo '</div>';
@@ -1774,17 +1774,17 @@ final class Renderer {
 			if (! in_array($width, ['33%', '50%', '66%', '100%'], true)) {
 				$width = '100%';
 			}
-			$btn_text    = (string) ($field['buttonText'] ?? $field['label'] ?? __('View details', 'wooptionsfic'));
+			$btn_text    = (string) ($field['buttonText'] ?? $field['label'] ?? __('View details', 'wooptions-pro'));
 			if ('' === trim($btn_text)) {
-				$btn_text = __('View details', 'wooptionsfic');
+				$btn_text = __('View details', 'wooptions-pro');
 			}
 			$btn_style   = (string) ($field['buttonStyle'] ?? 'outline');
 			if (! in_array($btn_style, ['outline', 'primary', 'secondary', 'link'], true)) {
 				$btn_style = 'outline';
 			}
-			$modal_title = (string) ($field['modalTitle'] ?? $field['label'] ?? __('Information', 'wooptionsfic'));
+			$modal_title = (string) ($field['modalTitle'] ?? $field['label'] ?? __('Information', 'wooptions-pro'));
 			if ('' === trim($modal_title)) {
-				$modal_title = __('Information', 'wooptionsfic');
+				$modal_title = __('Information', 'wooptions-pro');
 			}
 			$content     = (string) ($field['content'] ?? ($field['description'] ?? ''));
 			$classes     = 'wof-field wof-field--modal wof-field--width-' . str_replace('%', '', $width) . $dis_cls;
@@ -1799,7 +1799,7 @@ final class Renderer {
 			echo '<div class="wof-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="' . esc_attr($modal_id) . '-title">';
 			echo '<div class="wof-modal-header">';
 			echo '<h3 id="' . esc_attr($modal_id) . '-title" class="wof-modal-title">' . esc_html($modal_title) . '</h3>';
-			echo '<button type="button" class="wof-modal-close" aria-label="' . esc_attr__('Close', 'wooptionsfic') . '">&times;</button>';
+			echo '<button type="button" class="wof-modal-close" aria-label="' . esc_attr__('Close', 'wooptions-pro') . '">&times;</button>';
 			echo '</div>';
 			echo '<div class="wof-modal-body wof-modal-content">';
 			echo wp_kses_post($content);
@@ -1901,7 +1901,7 @@ final class Renderer {
 			$is_negative = str_starts_with($raw, '-');
 			$clean = $is_negative ? substr($raw, 1) : (str_starts_with($raw, '+') ? substr($raw, 1) : $raw);
 			$prefix = $is_negative ? '-' : '+';
-			$suffix = 'setup' === $strategy ? ' ' . __('setup', 'wooptionsfic') : '';
+			$suffix = 'setup' === $strategy ? ' ' . __('setup', 'wooptions-pro') : '';
 			$text = $prefix . $currency . $clean . $suffix;
 			return $parentheses ? ' (' . $text . ')' : $text;
 		}
@@ -1986,7 +1986,7 @@ final class Renderer {
 		if (! isset($queries[$family])) {
 			return;
 		}
-		$handle = 'wooptionsfic-font-' . sanitize_key($family);
+		$handle = 'wooptions-pro-font-' . sanitize_key($family);
 		$url = 'https://fonts.googleapis.com/css2?family=' . $queries[$family] . '&display=swap';
 		wp_enqueue_style($handle, $url, [], null);
 	}
@@ -1999,7 +1999,7 @@ final class Renderer {
 	 * @param array<int,mixed> $fields Field definitions.
 	 */
 	private function enqueue_font_field_fonts(array $fields): void {
-		$catalog_file = WOOPTIONSFIC_PATH . 'config/fonts.php';
+		$catalog_file = WOOPTIONS_PRO_PATH . 'config/fonts.php';
 		$catalog      = file_exists($catalog_file) ? require $catalog_file : [];
 		$catalog_map  = [];
 		if (is_array($catalog)) {
@@ -2082,9 +2082,9 @@ final class Renderer {
 
 		$custom_css = CustomFontService::generate_font_face_css();
 		if ('' !== $custom_css) {
-			wp_add_inline_style('wooptionsfic-storefront', $custom_css);
+			wp_add_inline_style('wooptions-pro-storefront', $custom_css);
 			if (did_action('wp_head')) {
-				echo '<style id="wooptionsfic-custom-fonts-inline">' . $custom_css . '</style>';
+				echo '<style id="wooptions-pro-custom-fonts-inline">' . $custom_css . '</style>';
 			}
 		}
 
@@ -2097,7 +2097,7 @@ final class Renderer {
 			$query_parts[] = 'family=' . $param;
 		}
 		$url    = 'https://fonts.googleapis.com/css2?' . implode('&', $query_parts) . '&display=swap';
-		$handle = 'wooptionsfic-font-picker-' . substr(md5($url), 0, 10);
+		$handle = 'wooptions-pro-font-picker-' . substr(md5($url), 0, 10);
 		wp_enqueue_style($handle, $url, [], null);
 		if (did_action('wp_head')) {
 			echo '<link rel="stylesheet" id="' . esc_attr($handle) . '-inline" href="' . esc_url($url) . '" media="all">';

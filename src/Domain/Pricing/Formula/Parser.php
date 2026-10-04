@@ -2,12 +2,12 @@
 /**
  * Safe recursive-descent formula parser.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Pricing\Formula;
+namespace WooOptionsPro\Domain\Pricing\Formula;
 
 use RuntimeException;
 
@@ -174,7 +174,7 @@ final class Parser {
 				return $node;
 			}
 
-			throw new RuntimeException('wooptionsfic_formula_expected_expression_at_' . $token['position']);
+			throw new RuntimeException('wooptions-pro_formula_expected_expression_at_' . $token['position']);
 		} finally {
 			--$this->depth;
 		}
@@ -183,7 +183,7 @@ final class Parser {
 	private function enter(): void {
 		++$this->depth;
 		if ($this->depth > 32) {
-			throw new RuntimeException('wooptionsfic_formula_too_deep');
+			throw new RuntimeException('wooptions-pro_formula_too_deep');
 		}
 	}
 
@@ -216,7 +216,7 @@ final class Parser {
 	private function expect(string $type, ?string $value = null): void {
 		if (! $this->matches($type, $value)) {
 			$token = $this->current();
-			throw new RuntimeException('wooptionsfic_formula_unexpected_token_at_' . $token['position']);
+			throw new RuntimeException('wooptions-pro_formula_unexpected_token_at_' . $token['position']);
 		}
 	}
 

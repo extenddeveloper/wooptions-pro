@@ -2,20 +2,20 @@
 /**
  * Server-authoritative WooCommerce cart lifecycle.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Infrastructure\WooCommerce;
+namespace WooOptionsPro\Infrastructure\WooCommerce;
 
 use Throwable;
-use WooptionsFic\Application\AnalyticsService;
-use WooptionsFic\Application\QuoteService;
-use WooptionsFic\Application\UploadService;
-use WooptionsFic\Bootstrap\Settings;
-use WooptionsFic\Domain\Support\CanonicalJson;
-use WooptionsFic\Infrastructure\WordPress\SessionGuard;
+use WooOptionsPro\Application\AnalyticsService;
+use WooOptionsPro\Application\QuoteService;
+use WooOptionsPro\Application\UploadService;
+use WooOptionsPro\Bootstrap\Settings;
+use WooOptionsPro\Domain\Support\CanonicalJson;
+use WooOptionsPro\Infrastructure\WordPress\SessionGuard;
 
 final class CartIntegration {
 	/** @var array<string,array<string,mixed>> */
@@ -58,34 +58,34 @@ final class CartIntegration {
 	 * @return string|null Decimal price string, or null if no custom price.
 	 */
 	public static function get_cart_product_price(array $cart_item): ?string {
-		if (! isset($cart_item['wooptionsfic']['price']['unitPrice']['decimal'])) {
+		if (! isset($cart_item['wooptions-pro']['price']['unitPrice']['decimal'])) {
 			return null;
 		}
-		$wooptionsfic = (array) ($cart_item['wooptionsfic'] ?? []);
-		$decimal      = (string) ($wooptionsfic['price']['unitPrice']['decimal'] ?? '');
+		$wooptions_pro = (array) ($cart_item['wooptions-pro'] ?? []);
+		$decimal      = (string) ($wooptions_pro['price']['unitPrice']['decimal'] ?? '');
 		if (1 !== preg_match('/\A\d+(?:\.\d+)?\z/', $decimal)) {
 			return null;
 		}
 
-		if (apply_filters('wooptionsfic_add_linked_products_to_cart', true, $wooptionsfic, '')) {
-			$scale                = max(0, min(6, (int) ($wooptionsfic['price']['unitPrice']['scale'] ?? 2)));
-			$total_minor          = (int) ($wooptionsfic['price']['unitPrice']['minor'] ?? 0);
+		if (apply_filters('wooptions-pro_add_linked_products_to_cart', true, $wooptions_pro, '')) {
+			$scale                = max(0, min(6, (int) ($wooptions_pro['price']['unitPrice']['scale'] ?? 2)));
+			$total_minor          = (int) ($wooptions_pro['price']['unitPrice']['minor'] ?? 0);
 			$product_choice_minor = 0;
 
 			$product_field_uuids = [];
-			foreach ((array) ($wooptionsfic['snapshot']['summary'] ?? []) as $summary_line) {
+			foreach ((array) ($wooptions_pro['snapshot']['summary'] ?? []) as $summary_line) {
 				if (is_array($summary_line) && 'product' === ($summary_line['type'] ?? '')) {
 					$product_field_uuids[(string) ($summary_line['fieldUuid'] ?? '')] = true;
 				}
 			}
-			foreach ((array) ($wooptionsfic['linkedProducts'] ?? []) as $lp) {
+			foreach ((array) ($wooptions_pro['linkedProducts'] ?? []) as $lp) {
 				if (is_array($lp) && ! empty($lp['fieldUuid'])) {
 					$product_field_uuids[(string) $lp['fieldUuid']] = true;
 				}
 			}
 
 			if (! empty($product_field_uuids)) {
-				$contributions = (array) ($wooptionsfic['price']['contributions'] ?? []);
+				$contributions = (array) ($wooptions_pro['price']['contributions'] ?? []);
 				foreach ($contributions as $contrib) {
 					if (is_array($contrib) && isset($product_field_uuids[(string) ($contrib['sourceUuid'] ?? '')])) {
 						$product_choice_minor += (int) ($contrib['rounded']['minor'] ?? 0);
@@ -150,12 +150,12 @@ final class CartIntegration {
 				return $passed;
 			}
 
-			$token = $this->posted_string('wooptionsfic_token');
+			$token = $this->posted_string('wooptions-pro_token');
 			$token_valid = '' !== $token && $this->sessions->verify($token, $product_id, (string) $config['revisionUuid']);
 
 			$selection = $this->posted_selection();
 			if (! $token_valid && defined('WP_DEBUG') && WP_DEBUG) {
-				error_log('WooptionsFic add-to-cart token soft-refresh for product ' . $product_id); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+				error_log('WooOptionsPro add-to-cart token soft-refresh for product ' . $product_id); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			}
 			$quote     = $this->quotes->quote($selection, $context);
 			if (empty($quote['valid'])) {
@@ -166,9 +166,9 @@ final class CartIntegration {
 			return true;
 		} catch (Throwable $exception) {
 			if (defined('WP_DEBUG') && WP_DEBUG) {
-				error_log('WooptionsFic add-to-cart validation: ' . $exception->getMessage()); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+				error_log('WooOptionsPro add-to-cart validation: ' . $exception->getMessage()); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			}
-			wc_add_notice(__('We could not validate these product options. Please refresh and try again.', 'wooptionsfic'), 'error');
+			wc_add_notice(__('We could not validate these product options. Please refresh and try again.', 'wooptions-pro'), 'error');
 			return false;
 		}
 	}
@@ -183,7 +183,7 @@ final class CartIntegration {
 		int $variation_id,
 		int $quantity
 	): array {
-		if ($this->adding_linked || isset($cart_item_data['wooptionsfic_child'])) {
+		if ($this->adding_linked || isset($cart_item_data['wooptions-pro_child'])) {
 			return $cart_item_data;
 		}
 		try {
@@ -198,7 +198,7 @@ final class CartIntegration {
 			if (empty($quote['valid'])) {
 				return $cart_item_data;
 			}
-			$cart_item_data['wooptionsfic'] = [
+			$cart_item_data['wooptions-pro'] = [
 				'selection'         => (array) $quote['values'],
 				'snapshot'          => (array) $quote['snapshot'],
 				'price'             => (array) $quote['price'],
@@ -242,17 +242,17 @@ final class CartIntegration {
 		array $cart_item_data
 	): void {
 		unset($product_id, $variation_id, $variation);
-		if (! isset($cart_item_data['wooptionsfic']) || ! is_array($cart_item_data['wooptionsfic'])) {
+		if (! isset($cart_item_data['wooptions-pro']) || ! is_array($cart_item_data['wooptions-pro'])) {
 			return;
 		}
-		$data = $cart_item_data['wooptionsfic'];
+		$data = $cart_item_data['wooptions-pro'];
 		$this->uploads->attach_to_cart((array) ($data['uploadRefs'] ?? []), $cart_item_key);
 
 		if (! function_exists('WC') || ! WC()->cart) {
 			return;
 		}
 		// Selected product choices are added to the cart as separate products with their own product price.
-		if (apply_filters('wooptionsfic_add_linked_products_to_cart', true, $data, $cart_item_key)) {
+		if (apply_filters('wooptions-pro_add_linked_products_to_cart', true, $data, $cart_item_key)) {
 			$this->adding_linked = true;
 			try {
 				foreach ((array) ($data['linkedProducts'] ?? []) as $linked) {
@@ -287,7 +287,7 @@ final class CartIntegration {
 						$variation_id,
 						$variation_args,
 						[
-							'wooptionsfic_child' => [
+							'wooptions-pro_child' => [
 								'parentKey'  => $cart_item_key,
 								'factor'     => $factor,
 								'fieldUuid'  => (string) ($linked['fieldUuid'] ?? ''),
@@ -327,7 +327,7 @@ final class CartIntegration {
 			$cart = WC()->cart;
 		}
 		foreach ($cart->get_cart() as $cart_item) {
-			if (! is_array($cart_item) || ! is_array($cart_item['wooptionsfic']['price']['unitPrice'] ?? null)) {
+			if (! is_array($cart_item) || ! is_array($cart_item['wooptions-pro']['price']['unitPrice'] ?? null)) {
 				continue;
 			}
 			$product = $cart_item['data'] ?? null;
@@ -362,8 +362,8 @@ final class CartIntegration {
 	 * @return list<array<string,mixed>>
 	 */
 	public function display_item_data(array $item_data, array $cart_item): array {
-		$hide_in_cart     = (bool) apply_filters('wooptionsfic_hide_addon_in_cart', (bool) Settings::get('hide_addon_in_cart', false), $cart_item);
-		$hide_in_checkout = (bool) apply_filters('wooptionsfic_hide_addon_in_checkout', (bool) Settings::get('hide_addon_in_checkout', false), $cart_item);
+		$hide_in_cart     = (bool) apply_filters('wooptions-pro_hide_addon_in_cart', (bool) Settings::get('hide_addon_in_cart', false), $cart_item);
+		$hide_in_checkout = (bool) apply_filters('wooptions-pro_hide_addon_in_checkout', (bool) Settings::get('hide_addon_in_checkout', false), $cart_item);
 
 		$is_checkout = function_exists('is_checkout') && is_checkout();
 		if (! $is_checkout && wp_doing_ajax() && isset($_GET['wc-ajax']) && 'update_order_review' === $_GET['wc-ajax']) {
@@ -382,23 +382,23 @@ final class CartIntegration {
 			return $item_data;
 		}
 
-		if (is_array($cart_item['wooptionsfic']['snapshot']['summary'] ?? null)) {
-			$wooptionsfic = (array) ($cart_item['wooptionsfic'] ?? []);
-			foreach ($cart_item['wooptionsfic']['snapshot']['summary'] as $line) {
+		if (is_array($cart_item['wooptions-pro']['snapshot']['summary'] ?? null)) {
+			$wooptions_pro = (array) ($cart_item['wooptions-pro'] ?? []);
+			foreach ($cart_item['wooptions-pro']['snapshot']['summary'] as $line) {
 				if (! is_array($line) || ! empty($line['sensitive'])) {
 					continue;
 				}
 				$field_type = (string) ($line['type'] ?? '');
-				if ('product' === $field_type && apply_filters('wooptionsfic_add_linked_products_to_cart', true, $wooptionsfic, '')) {
+				if ('product' === $field_type && apply_filters('wooptions-pro_add_linked_products_to_cart', true, $wooptions_pro, '')) {
 					continue;
 				}
 				$field_uuid = (string) ($line['fieldUuid'] ?? '');
 				$raw_value  = (string) ($line['value'] ?? '');
-				$value      = self::format_value_with_price($raw_value, $field_uuid, $wooptionsfic);
+				$value      = self::format_value_with_price($raw_value, $field_uuid, $wooptions_pro);
 				if ('' === $value) {
 					continue;
 				}
-				$label = (string) ($line['label'] ?? __('Option', 'wooptionsfic'));
+				$label = (string) ($line['label'] ?? __('Option', 'wooptions-pro'));
 				$item_data[] = [
 					'key'     => $label,
 					'name'    => $label,
@@ -407,21 +407,21 @@ final class CartIntegration {
 				];
 			}
 		}
-		if (empty($item_data) && ! empty($cart_item['wooptionsfic']['price']['contributions']) && is_array($cart_item['wooptionsfic']['price']['contributions'])) {
-			$wooptionsfic = (array) ($cart_item['wooptionsfic'] ?? []);
+		if (empty($item_data) && ! empty($cart_item['wooptions-pro']['price']['contributions']) && is_array($cart_item['wooptions-pro']['price']['contributions'])) {
+			$wooptions_pro = (array) ($cart_item['wooptions-pro'] ?? []);
 			$product_field_uuids = [];
-			foreach ((array) ($wooptionsfic['snapshot']['summary'] ?? []) as $summary_line) {
+			foreach ((array) ($wooptions_pro['snapshot']['summary'] ?? []) as $summary_line) {
 				if (is_array($summary_line) && 'product' === ($summary_line['type'] ?? '')) {
 					$product_field_uuids[(string) ($summary_line['fieldUuid'] ?? '')] = true;
 				}
 			}
-			foreach ((array) ($wooptionsfic['linkedProducts'] ?? []) as $lp) {
+			foreach ((array) ($wooptions_pro['linkedProducts'] ?? []) as $lp) {
 				if (is_array($lp) && ! empty($lp['fieldUuid'])) {
 					$product_field_uuids[(string) $lp['fieldUuid']] = true;
 				}
 			}
 			$rendered_sources = [];
-			foreach ($cart_item['wooptionsfic']['price']['contributions'] as $contrib) {
+			foreach ($cart_item['wooptions-pro']['price']['contributions'] as $contrib) {
 				if (! is_array($contrib)) {
 					continue;
 				}
@@ -429,13 +429,13 @@ final class CartIntegration {
 				if ('' === $source || isset($rendered_sources[$source])) {
 					continue;
 				}
-				if (isset($product_field_uuids[$source]) && apply_filters('wooptionsfic_add_linked_products_to_cart', true, $wooptionsfic, '')) {
+				if (isset($product_field_uuids[$source]) && apply_filters('wooptions-pro_add_linked_products_to_cart', true, $wooptions_pro, '')) {
 					continue;
 				}
 				$rendered_sources[$source] = true;
-				$value = self::format_value_with_price('', $source, $wooptionsfic);
+				$value = self::format_value_with_price('', $source, $wooptions_pro);
 				if ('' !== $value) {
-					$label = (string) ($contrib['label'] ?? __('Option', 'wooptionsfic'));
+					$label = (string) ($contrib['label'] ?? __('Option', 'wooptions-pro'));
 					$item_data[] = [
 						'key'     => $label,
 						'name'    => $label,
@@ -445,12 +445,12 @@ final class CartIntegration {
 				}
 			}
 		}
-		if (is_array($cart_item['wooptionsfic_child'] ?? null)) {
-			if (apply_filters('wooptionsfic_show_part_of_configuration_meta', false, $cart_item)) {
-				$child_label = (string) ($cart_item['wooptionsfic_child']['label'] ?? '');
+		if (is_array($cart_item['wooptions-pro_child'] ?? null)) {
+			if (apply_filters('wooptions-pro_show_part_of_configuration_meta', false, $cart_item)) {
+				$child_label = (string) ($cart_item['wooptions-pro_child']['label'] ?? '');
 				$item_data[] = [
-					'key'     => __('Part of configuration', 'wooptionsfic'),
-					'name'    => __('Part of configuration', 'wooptionsfic'),
+					'key'     => __('Part of configuration', 'wooptions-pro'),
+					'name'    => __('Part of configuration', 'wooptions-pro'),
 					'value'   => $child_label,
 					'display' => esc_html($child_label),
 				];
@@ -464,23 +464,23 @@ final class CartIntegration {
 	 *
 	 * @param string $value Option value string.
 	 * @param string $field_uuid Field UUID.
-	 * @param array<string,mixed> $wooptionsfic Configuration cart item data.
+	 * @param array<string,mixed> $wooptions_pro Configuration cart item data.
 	 * @return string
 	 */
-	public static function format_value_with_price(string $value, string $field_uuid, array $wooptionsfic): string {
+	public static function format_value_with_price(string $value, string $field_uuid, array $wooptions_pro): string {
 		$value = trim($value);
 		if ('' === $value && '' === $field_uuid) {
 			return $value;
 		}
 
-		$contributions = (array) ($wooptionsfic['price']['contributions'] ?? []);
-		$scale         = max(0, min(6, (int) ($wooptionsfic['price']['unitPrice']['scale'] ?? 2)));
+		$contributions = (array) ($wooptions_pro['price']['contributions'] ?? []);
+		$scale         = max(0, min(6, (int) ($wooptions_pro['price']['unitPrice']['scale'] ?? 2)));
 		$total_minor   = 0;
 		$found         = false;
 
 		$child_uuids = [];
-		if (isset($wooptionsfic['selection'][$field_uuid]) && is_array($wooptionsfic['selection'][$field_uuid])) {
-			foreach ($wooptionsfic['selection'][$field_uuid] as $row) {
+		if (isset($wooptions_pro['selection'][$field_uuid]) && is_array($wooptions_pro['selection'][$field_uuid])) {
+			foreach ($wooptions_pro['selection'][$field_uuid] as $row) {
 				if (is_array($row['values'] ?? null)) {
 					foreach (array_keys($row['values']) as $child_id) {
 						$child_uuids[(string) $child_id] = true;
@@ -575,7 +575,7 @@ final class CartIntegration {
 	 */
 	public function restore_from_session(array $cart_item, array $session_values, string $cart_item_key): array {
 		unset($cart_item_key);
-		foreach (['wooptionsfic', 'wooptionsfic_child'] as $key) {
+		foreach (['wooptions-pro', 'wooptions-pro_child'] as $key) {
 			if (isset($session_values[$key]) && is_array($session_values[$key])) {
 				$cart_item[$key] = $session_values[$key];
 			}
@@ -595,7 +595,7 @@ final class CartIntegration {
 			return;
 		}
 		foreach (WC()->cart->get_cart() as $key => &$cart_item) {
-			if (! is_array($cart_item['wooptionsfic'] ?? null)) {
+			if (! is_array($cart_item['wooptions-pro'] ?? null)) {
 				continue;
 			}
 			try {
@@ -603,27 +603,27 @@ final class CartIntegration {
 				$variation_id = (int) ($cart_item['variation_id'] ?? 0);
 				$quantity     = max(1, (int) ($cart_item['quantity'] ?? 1));
 				$context      = $this->context($product_id, $variation_id, $quantity);
-				if (! empty($cart_item['wooptionsfic']['productVariations']) && is_array($cart_item['wooptionsfic']['productVariations'])) {
-					$context['productVariations'] = (array) $cart_item['wooptionsfic']['productVariations'];
+				if (! empty($cart_item['wooptions-pro']['productVariations']) && is_array($cart_item['wooptions-pro']['productVariations'])) {
+					$context['productVariations'] = (array) $cart_item['wooptions-pro']['productVariations'];
 				}
-				if (! empty($cart_item['wooptionsfic']['choiceQuantities']) && is_array($cart_item['wooptionsfic']['choiceQuantities'])) {
-					$context['choiceQuantities'] = (array) $cart_item['wooptionsfic']['choiceQuantities'];
+				if (! empty($cart_item['wooptions-pro']['choiceQuantities']) && is_array($cart_item['wooptions-pro']['choiceQuantities'])) {
+					$context['choiceQuantities'] = (array) $cart_item['wooptions-pro']['choiceQuantities'];
 				}
-				$quote        = $this->quotes->quote((array) $cart_item['wooptionsfic']['selection'], $context);
+				$quote        = $this->quotes->quote((array) $cart_item['wooptions-pro']['selection'], $context);
 				if (empty($quote['valid'])) {
 					wc_add_notice(
 						sprintf(
 							/* translators: %s: product name. */
-							__('Please review the configuration for “%s” before checking out.', 'wooptionsfic'),
-							(string) ($cart_item['data'] instanceof \WC_Product ? $cart_item['data']->get_name() : __('configured product', 'wooptionsfic'))
+							__('Please review the configuration for “%s” before checking out.', 'wooptions-pro'),
+							(string) ($cart_item['data'] instanceof \WC_Product ? $cart_item['data']->get_name() : __('configured product', 'wooptions-pro'))
 						),
 						'error'
 					);
 					continue;
 				}
-				$cart_item['wooptionsfic']['selection'] = $quote['values'];
-				$cart_item['wooptionsfic']['snapshot']  = $quote['snapshot'];
-				$cart_item['wooptionsfic']['price']     = $quote['price'];
+				$cart_item['wooptions-pro']['selection'] = $quote['values'];
+				$cart_item['wooptions-pro']['snapshot']  = $quote['snapshot'];
+				$cart_item['wooptions-pro']['price']     = $quote['price'];
 				$decimal = self::get_cart_product_price($cart_item);
 				if (null !== $decimal) {
 					$product = $cart_item['data'] ?? null;
@@ -633,7 +633,7 @@ final class CartIntegration {
 				}
 				WC()->cart->cart_contents[$key]         = $cart_item;
 			} catch (Throwable) {
-				wc_add_notice(__('A configured product could not be revalidated. Remove it and add it again.', 'wooptionsfic'), 'error');
+				wc_add_notice(__('A configured product could not be revalidated. Remove it and add it again.', 'wooptions-pro'), 'error');
 			}
 		}
 		unset($cart_item);
@@ -642,7 +642,7 @@ final class CartIntegration {
 	public function sync_linked_quantity(string $cart_item_key, int $quantity, int $old_quantity, \WC_Cart $cart): void {
 		unset($old_quantity);
 		foreach ($cart->get_cart() as $child_key => $item) {
-			$child = $item['wooptionsfic_child'] ?? null;
+			$child = $item['wooptions-pro_child'] ?? null;
 			if (! is_array($child) || (string) ($child['parentKey'] ?? '') !== $cart_item_key) {
 				continue;
 			}
@@ -657,14 +657,14 @@ final class CartIntegration {
 		$this->removing_related = true;
 		try {
 			$item = $cart->get_cart_item($cart_item_key);
-			$parent_key = is_array($item['wooptionsfic_child'] ?? null)
-				? (string) ($item['wooptionsfic_child']['parentKey'] ?? '')
+			$parent_key = is_array($item['wooptions-pro_child'] ?? null)
+				? (string) ($item['wooptions-pro_child']['parentKey'] ?? '')
 				: '';
 			if ('' !== $parent_key && $cart->get_cart_item($parent_key)) {
 				$cart->remove_cart_item($parent_key);
 			}
 			foreach ($cart->get_cart() as $key => $candidate) {
-				if ((string) ($candidate['wooptionsfic_child']['parentKey'] ?? '') === $cart_item_key) {
+				if ((string) ($candidate['wooptions-pro_child']['parentKey'] ?? '') === $cart_item_key) {
 					$cart->remove_cart_item($key);
 				}
 			}
@@ -675,10 +675,10 @@ final class CartIntegration {
 
 	public function cart_item_class(string $class, array $cart_item, string $cart_item_key): string {
 		unset($cart_item_key);
-		if (isset($cart_item['wooptionsfic_child'])) {
-			$class .= ' wooptionsfic-linked-child';
-		} elseif (isset($cart_item['wooptionsfic'])) {
-			$class .= ' wooptionsfic-configured-parent';
+		if (isset($cart_item['wooptions-pro_child'])) {
+			$class .= ' wooptions-pro-linked-child';
+		} elseif (isset($cart_item['wooptions-pro'])) {
+			$class .= ' wooptions-pro-configured-parent';
 		}
 		return trim($class);
 	}
@@ -697,7 +697,7 @@ final class CartIntegration {
 		$vars = [];
 		$qtys = [];
 
-		// 1. Direct POST arrays: e.g. name="wooptionsfic_var[CHOICE_UUID]" or name="xyz_var[CHOICE_UUID]"
+		// 1. Direct POST arrays: e.g. name="wooptions-pro_var[CHOICE_UUID]" or name="xyz_var[CHOICE_UUID]"
 		foreach ($_POST as $k => $v) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			if (str_ends_with((string) $k, '_var') && is_array($v)) {
 				foreach ($v as $cuuid => $var_id) {
@@ -715,7 +715,7 @@ final class CartIntegration {
 		}
 
 		// 2. Hidden JSON inputs populated by storefront JS
-		$raw_vars_json = $this->posted_string('wooptionsfic_product_variations');
+		$raw_vars_json = $this->posted_string('wooptions-pro_product_variations');
 		if ('' !== $raw_vars_json && strlen($raw_vars_json) <= 65536) {
 			$decoded_vars = json_decode($raw_vars_json, true);
 			if (is_array($decoded_vars)) {
@@ -727,7 +727,7 @@ final class CartIntegration {
 			}
 		}
 
-		$raw_qtys_json = $this->posted_string('wooptionsfic_choice_quantities');
+		$raw_qtys_json = $this->posted_string('wooptions-pro_choice_quantities');
 		if ('' !== $raw_qtys_json && strlen($raw_qtys_json) <= 65536) {
 			$decoded_qtys = json_decode($raw_qtys_json, true);
 			if (is_array($decoded_qtys)) {
@@ -752,14 +752,14 @@ final class CartIntegration {
 	 * @return array<string,mixed>
 	 */
 	private function posted_selection(): array {
-		$json = $this->posted_string('wooptionsfic_selection_json');
+		$json = $this->posted_string('wooptions-pro_selection_json');
 		if ('' !== $json && strlen($json) <= 262144) {
 			$decoded = json_decode($json, true);
 			if (is_array($decoded)) {
 				return $decoded;
 			}
 		}
-		$value = $_POST['wooptionsfic_selection'] ?? []; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$value = $_POST['wooptions-pro_selection'] ?? []; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$value = is_array($value) ? wp_unslash($value) : [];
 		return $this->bounded_array($value);
 	}
@@ -809,10 +809,10 @@ final class CartIntegration {
 			$message = '' !== $label
 				? sprintf(
 					/* translators: %s: option label. */
-					__('Please check “%s”.', 'wooptionsfic'),
+					__('Please check “%s”.', 'wooptions-pro'),
 					$label
 				)
-				: __('Please check your product options.', 'wooptionsfic');
+				: __('Please check your product options.', 'wooptions-pro');
 			wc_add_notice($message, 'error');
 			++$shown;
 		}

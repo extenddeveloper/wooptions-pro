@@ -2,18 +2,18 @@
 /**
  * Immutable human-readable configuration snapshots.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Snapshot;
+namespace WooOptionsPro\Domain\Snapshot;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use WooptionsFic\Domain\Definition\FieldTypeRegistry;
-use WooptionsFic\Domain\Support\CanonicalJson;
-use WooptionsFic\Domain\Support\Uuid;
+use WooOptionsPro\Domain\Definition\FieldTypeRegistry;
+use WooOptionsPro\Domain\Support\CanonicalJson;
+use WooOptionsPro\Domain\Support\Uuid;
 
 final class SnapshotFactory {
 	public function __construct(private readonly FieldTypeRegistry $registry) {
@@ -66,7 +66,7 @@ final class SnapshotFactory {
 							continue;
 						}
 						$c_val = $r_values[$c_uuid];
-						$c_formatted = $c_type instanceof \WooptionsFic\Domain\Definition\Type\ChoiceFieldType
+						$c_formatted = $c_type instanceof \WooOptionsPro\Domain\Definition\Type\ChoiceFieldType
 							? $c_type->format_value($c_val, $child, $context)
 							: $c_type->format_value($c_val, $child);
 
@@ -94,7 +94,7 @@ final class SnapshotFactory {
 							continue;
 						}
 
-						$c_label = trim((string) ($child['label'] ?? __('Option', 'wooptionsfic')));
+						$c_label = trim((string) ($child['label'] ?? __('Option', 'wooptions-pro')));
 						if ($repeatable) {
 							$item_prefix   = '' !== $section_label ? $section_label . ' (' . $item_name . ')' : $item_name;
 							$display_label = $item_prefix . ' - ' . $c_label;
@@ -116,7 +116,7 @@ final class SnapshotFactory {
 				continue;
 			}
 
-			$formatted = $type instanceof \WooptionsFic\Domain\Definition\Type\ChoiceFieldType
+			$formatted = $type instanceof \WooOptionsPro\Domain\Definition\Type\ChoiceFieldType
 				? $type->format_value($values[$uuid], $field, $context)
 				: $type->format_value($values[$uuid], $field);
 			if ('' === $formatted && ! empty($values[$uuid])) {

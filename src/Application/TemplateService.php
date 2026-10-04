@@ -2,12 +2,12 @@
 /**
  * Bundled template catalog.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Application;
+namespace WooOptionsPro\Application;
 
 use JsonException;
 use RuntimeException;
@@ -25,14 +25,14 @@ final class TemplateService {
 			array_map(
 				static function (array $item): array {
 					$slug = sanitize_file_name((string) $item['slug']);
-					$img_url = WOOPTIONSFIC_URL . 'assets/templates/' . $slug . '.jpg';
+					$img_url = WOOPTIONS_PRO_URL . 'assets/templates/' . $slug . '.jpg';
 
-					$hero_file = WOOPTIONSFIC_PATH . 'assets/templates/' . $slug . '-large.jpg';
+					$hero_file = WOOPTIONS_PRO_PATH . 'assets/templates/' . $slug . '-large.jpg';
 					$hero_url = file_exists($hero_file)
-						? WOOPTIONSFIC_URL . 'assets/templates/' . $slug . '-large.jpg'
+						? WOOPTIONS_PRO_URL . 'assets/templates/' . $slug . '-large.jpg'
 						: $img_url;
 
-					$file = WOOPTIONSFIC_PATH . 'templates/' . $slug . '.json';
+					$file = WOOPTIONS_PRO_PATH . 'templates/' . $slug . '.json';
 					$actual_fields = null;
 					$actual_rules = null;
 					if (is_readable($file)) {
@@ -48,8 +48,8 @@ final class TemplateService {
 					$rules_count = $actual_rules !== null ? $actual_rules : (int) ($item['rulesCount'] ?? 0);
 
 					$details = is_array($item['details'] ?? null) ? $item['details'] : [];
-					$details['fields'] = $fields_count . ' ' . ($fields_count === 1 ? __('field', 'wooptionsfic') : __('fields', 'wooptionsfic'));
-					$details['rules'] = $rules_count . ' ' . ($rules_count === 1 ? __('rule', 'wooptionsfic') : __('rules', 'wooptionsfic'));
+					$details['fields'] = $fields_count . ' ' . ($fields_count === 1 ? __('field', 'wooptions-pro') : __('fields', 'wooptions-pro'));
+					$details['rules'] = $rules_count . ' ' . ($rules_count === 1 ? __('rule', 'wooptions-pro') : __('rules', 'wooptions-pro'));
 
 					return [
 						'slug'          => (string) $item['slug'],
@@ -91,21 +91,21 @@ final class TemplateService {
 			if ($slug !== $item['slug']) {
 				continue;
 			}
-			$file = WOOPTIONSFIC_PATH . 'templates/' . $slug . '.json';
+			$file = WOOPTIONS_PRO_PATH . 'templates/' . $slug . '.json';
 			if (! is_readable($file)) {
-				throw new RuntimeException('wooptionsfic_template_file_missing');
+				throw new RuntimeException('wooptions-pro_template_file_missing');
 			}
 			try {
 				$data = json_decode((string) file_get_contents($file), true, 64, JSON_THROW_ON_ERROR);
 			} catch (JsonException) {
-				throw new ValidationException('wooptionsfic_template_invalid', [['code' => 'template_json_invalid']]);
+				throw new ValidationException('wooptions-pro_template_invalid', [['code' => 'template_json_invalid']]);
 			}
 			if (! is_array($data) || ! is_array($data['optionSet']['definition'] ?? null)) {
-				throw new ValidationException('wooptionsfic_template_invalid', [['code' => 'template_schema_invalid']]);
+				throw new ValidationException('wooptions-pro_template_invalid', [['code' => 'template_schema_invalid']]);
 			}
 			return $data;
 		}
-		throw new NotFoundException('wooptionsfic_template_not_found');
+		throw new NotFoundException('wooptions-pro_template_not_found');
 	}
 
 	/**
@@ -124,7 +124,7 @@ final class TemplateService {
 	 * @return list<array<string,mixed>>
 	 */
 	private function manifest(): array {
-		$file = WOOPTIONSFIC_PATH . 'templates/manifest.php';
+		$file = WOOPTIONS_PRO_PATH . 'templates/manifest.php';
 		$data = is_readable($file) ? require $file : [];
 		return is_array($data) ? array_values(array_filter($data, 'is_array')) : [];
 	}

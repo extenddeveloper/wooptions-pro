@@ -2,56 +2,56 @@
 /**
  * Plugin composition root.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Bootstrap;
+namespace WooOptionsPro\Bootstrap;
 
-use WooptionsFic\Application\AnalyticsService;
-use WooptionsFic\Application\AssignmentService;
-use WooptionsFic\Application\DiagnosticsService;
-use WooptionsFic\Application\OptionSetService;
-use WooptionsFic\Application\QuoteService;
-use WooptionsFic\Application\SavedConfigurationService;
-use WooptionsFic\Application\TemplateService;
-use WooptionsFic\Application\UploadService;
-use WooptionsFic\Domain\Definition\Compiler;
-use WooptionsFic\Domain\Definition\FieldTypeRegistry;
-use WooptionsFic\Domain\Pricing\Formula\Evaluator;
-use WooptionsFic\Domain\Pricing\Formula\Parser;
-use WooptionsFic\Domain\Pricing\PriceEngine;
-use WooptionsFic\Domain\Font\CustomFontService;
-use WooptionsFic\Domain\Rule\RuleEngine;
-use WooptionsFic\Domain\Selection\SelectionService;
-use WooptionsFic\Domain\Snapshot\SnapshotFactory;
-use WooptionsFic\Domain\Style\ContrastValidator;
-use WooptionsFic\Domain\Style\PaletteRegistry;
-use WooptionsFic\Infrastructure\Persistence\AnalyticsRepository;
-use WooptionsFic\Infrastructure\Persistence\AssignmentRepository;
-use WooptionsFic\Infrastructure\Persistence\OptionSetRepository;
-use WooptionsFic\Infrastructure\Persistence\SavedConfigurationRepository;
-use WooptionsFic\Infrastructure\Persistence\Schema;
-use WooptionsFic\Infrastructure\Persistence\Transaction;
-use WooptionsFic\Infrastructure\Persistence\UploadRepository;
-use WooptionsFic\Infrastructure\Storage\BaselineUploadScanner;
-use WooptionsFic\Infrastructure\Storage\LocalPrivateStorage;
-use WooptionsFic\Infrastructure\WooCommerce\CartIntegration;
-use WooptionsFic\Infrastructure\WooCommerce\OrderIntegration;
-use WooptionsFic\Infrastructure\WooCommerce\ProductContext;
-use WooptionsFic\Infrastructure\WooCommerce\StoreApiIntegration;
-use WooptionsFic\Infrastructure\WooCommerce\WooLinkedProductValidator;
-use WooptionsFic\Infrastructure\WordPress\DownloadController;
-use WooptionsFic\Infrastructure\WordPress\RateLimiter;
-use WooptionsFic\Infrastructure\WordPress\SessionGuard;
-use WooptionsFic\Infrastructure\WordPress\SiteHealth;
-use WooptionsFic\Presentation\Admin\AdminPage;
-use WooptionsFic\Presentation\Rest\AdminController;
-use WooptionsFic\Presentation\Rest\PublicController;
-use WooptionsFic\Presentation\Storefront\Assets;
-use WooptionsFic\Presentation\Storefront\BlockIntegration;
-use WooptionsFic\Presentation\Storefront\Renderer;
+use WooOptionsPro\Application\AnalyticsService;
+use WooOptionsPro\Application\AssignmentService;
+use WooOptionsPro\Application\DiagnosticsService;
+use WooOptionsPro\Application\OptionSetService;
+use WooOptionsPro\Application\QuoteService;
+use WooOptionsPro\Application\SavedConfigurationService;
+use WooOptionsPro\Application\TemplateService;
+use WooOptionsPro\Application\UploadService;
+use WooOptionsPro\Domain\Definition\Compiler;
+use WooOptionsPro\Domain\Definition\FieldTypeRegistry;
+use WooOptionsPro\Domain\Pricing\Formula\Evaluator;
+use WooOptionsPro\Domain\Pricing\Formula\Parser;
+use WooOptionsPro\Domain\Pricing\PriceEngine;
+use WooOptionsPro\Domain\Font\CustomFontService;
+use WooOptionsPro\Domain\Rule\RuleEngine;
+use WooOptionsPro\Domain\Selection\SelectionService;
+use WooOptionsPro\Domain\Snapshot\SnapshotFactory;
+use WooOptionsPro\Domain\Style\ContrastValidator;
+use WooOptionsPro\Domain\Style\PaletteRegistry;
+use WooOptionsPro\Infrastructure\Persistence\AnalyticsRepository;
+use WooOptionsPro\Infrastructure\Persistence\AssignmentRepository;
+use WooOptionsPro\Infrastructure\Persistence\OptionSetRepository;
+use WooOptionsPro\Infrastructure\Persistence\SavedConfigurationRepository;
+use WooOptionsPro\Infrastructure\Persistence\Schema;
+use WooOptionsPro\Infrastructure\Persistence\Transaction;
+use WooOptionsPro\Infrastructure\Persistence\UploadRepository;
+use WooOptionsPro\Infrastructure\Storage\BaselineUploadScanner;
+use WooOptionsPro\Infrastructure\Storage\LocalPrivateStorage;
+use WooOptionsPro\Infrastructure\WooCommerce\CartIntegration;
+use WooOptionsPro\Infrastructure\WooCommerce\OrderIntegration;
+use WooOptionsPro\Infrastructure\WooCommerce\ProductContext;
+use WooOptionsPro\Infrastructure\WooCommerce\StoreApiIntegration;
+use WooOptionsPro\Infrastructure\WooCommerce\WooLinkedProductValidator;
+use WooOptionsPro\Infrastructure\WordPress\DownloadController;
+use WooOptionsPro\Infrastructure\WordPress\RateLimiter;
+use WooOptionsPro\Infrastructure\WordPress\SessionGuard;
+use WooOptionsPro\Infrastructure\WordPress\SiteHealth;
+use WooOptionsPro\Presentation\Admin\AdminPage;
+use WooOptionsPro\Presentation\Rest\AdminController;
+use WooOptionsPro\Presentation\Rest\PublicController;
+use WooOptionsPro\Presentation\Storefront\Assets;
+use WooOptionsPro\Presentation\Storefront\BlockIntegration;
+use WooOptionsPro\Presentation\Storefront\Renderer;
 
 final class Plugin {
 	public function boot(): void {
@@ -67,7 +67,7 @@ final class Plugin {
 		 *
 		 * @param FieldTypeRegistry $registry Registry.
 		 */
-		do_action('wooptionsfic_register_field_types', $registry);
+		do_action('wooptions-pro_register_field_types', $registry);
 
 		$formula_parser = new Parser();
 		$formula_evaluator = new Evaluator(
@@ -76,7 +76,7 @@ final class Plugin {
 		);
 		$rules      = new RuleEngine((int) Settings::get('rule_node_limit', 500));
 		$contrast   = new ContrastValidator();
-		$palettes   = new PaletteRegistry((array) require WOOPTIONSFIC_PATH . 'config/style-presets.php', $contrast);
+		$palettes   = new PaletteRegistry((array) require WOOPTIONS_PRO_PATH . 'config/style-presets.php', $contrast);
 		$compiler   = new Compiler(
 			$registry,
 			$formula_parser,
@@ -124,7 +124,7 @@ final class Plugin {
 		$site_health->register();
 
 		add_action(
-			'wooptionsfic_cleanup',
+			'wooptions-pro_cleanup',
 			static function () use ($uploads, $analytics): void {
 				$uploads->cleanup(200);
 				$analytics->prune();

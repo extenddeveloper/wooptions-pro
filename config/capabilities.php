@@ -1,17 +1,17 @@
 <?php
 /**
- * WooptionsFic capabilities.
+ * WooOptionsPro capabilities.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 defined('ABSPATH') || exit;
 
 return [
-	'manage_wooptionsfic',
-	'edit_wooptionsfic_sets',
-	'publish_wooptionsfic_sets',
-	'manage_wooptionsfic_settings',
-	'view_wooptionsfic_analytics',
-	'manage_wooptionsfic_uploads',
+	'manage_wooptions-pro',
+	'edit_wooptions-pro_sets',
+	'publish_wooptions-pro_sets',
+	'manage_wooptions-pro_settings',
+	'view_wooptions-pro_analytics',
+	'manage_wooptions-pro_uploads',
 ];

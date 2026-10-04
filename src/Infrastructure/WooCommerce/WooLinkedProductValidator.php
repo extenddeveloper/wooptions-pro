@@ -2,14 +2,14 @@
 /**
  * WooCommerce product/variation stock validation.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Infrastructure\WooCommerce;
+namespace WooOptionsPro\Infrastructure\WooCommerce;
 
-use WooptionsFic\Application\LinkedProductValidator;
+use WooOptionsPro\Application\LinkedProductValidator;
 
 final class WooLinkedProductValidator implements LinkedProductValidator {
 	public function validate(array $compiled, array $values, int $parent_product_id, int $cart_quantity, array $context = []): array {

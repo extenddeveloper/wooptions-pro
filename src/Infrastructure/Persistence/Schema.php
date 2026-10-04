@@ -2,24 +2,24 @@
 /**
  * Versioned database schema.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Infrastructure\Persistence;
+namespace WooOptionsPro\Infrastructure\Persistence;
 
 final class Schema {
-	public const VERSION_OPTION = 'wooptionsfic_db_version';
+	public const VERSION_OPTION = 'wooptions-pro_db_version';
 
 	public static function migrate(): void {
 		$installed = (string) get_option(self::VERSION_OPTION, '0');
-		if (version_compare($installed, WOOPTIONSFIC_DB_VERSION, '>=')) {
+		if (version_compare($installed, WOOPTIONS_PRO_DB_VERSION, '>=')) {
 			return;
 		}
 
 		self::migration_1();
-		update_option(self::VERSION_OPTION, WOOPTIONSFIC_DB_VERSION, false);
+		update_option(self::VERSION_OPTION, WOOPTIONS_PRO_DB_VERSION, false);
 	}
 
 	public static function table(string $suffix): string {

@@ -2,42 +2,42 @@
 /**
  * WordPress-native administration shell.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Presentation\Admin;
+namespace WooOptionsPro\Presentation\Admin;
 
-use WooptionsFic\Bootstrap\Requirements;
-use WooptionsFic\Bootstrap\Settings;
-use WooptionsFic\Domain\Font\CustomFontService;
+use WooOptionsPro\Bootstrap\Requirements;
+use WooOptionsPro\Bootstrap\Settings;
+use WooOptionsPro\Domain\Font\CustomFontService;
 
 final class AdminPage {
 	private string $hook_suffix = '';
 
 	public function register_menu(): void {
 		$this->hook_suffix = (string) add_menu_page(
-			__('WooptionsFic', 'wooptionsfic'),
-			__('WooptionsFic', 'wooptionsfic'),
-			'manage_wooptionsfic',
-			'wooptionsfic',
+			__('WooOptions Pro', 'wooptions-pro'),
+			__('WooOptions Pro', 'wooptions-pro'),
+			'manage_wooptions-pro',
+			'wooptions-pro',
 			[$this, 'render'],
 			'dashicons-screenoptions',
 			56
 		);
 
 		$items = [
-			['dashboard', __('Dashboard', 'wooptionsfic'), 'manage_wooptionsfic'],
-			['option-sets', __('Option Sets', 'wooptionsfic'), 'edit_wooptionsfic_sets'],
-			['templates', __('Templates', 'wooptionsfic'), 'edit_wooptionsfic_sets'],
-			['analytics', __('Analytics', 'wooptionsfic'), 'view_wooptionsfic_analytics'],
-			['settings', __('Settings', 'wooptionsfic'), 'manage_wooptionsfic_settings'],
+			['dashboard', __('Dashboard', 'wooptions-pro'), 'manage_wooptions-pro'],
+			['option-sets', __('Option Sets', 'wooptions-pro'), 'edit_wooptions-pro_sets'],
+			['templates', __('Templates', 'wooptions-pro'), 'edit_wooptions-pro_sets'],
+			['analytics', __('Analytics', 'wooptions-pro'), 'view_wooptions-pro_analytics'],
+			['settings', __('Settings', 'wooptions-pro'), 'manage_wooptions-pro_settings'],
 		];
 		foreach ($items as [$route, $label, $capability]) {
-			$slug = 'dashboard' === $route ? 'wooptionsfic' : 'wooptionsfic-' . $route;
+			$slug = 'dashboard' === $route ? 'wooptions-pro' : 'wooptions-pro-' . $route;
 			add_submenu_page(
-				'wooptionsfic',
+				'wooptions-pro',
 				$label,
 				$label,
 				$capability,
@@ -48,11 +48,11 @@ final class AdminPage {
 	}
 
 	public function enqueue(string $hook_suffix): void {
-		if ($hook_suffix !== $this->hook_suffix && ! str_contains($hook_suffix, 'wooptionsfic')) {
+		if ($hook_suffix !== $this->hook_suffix && ! str_contains($hook_suffix, 'wooptions-pro')) {
 			return;
 		}
-		$asset = WOOPTIONSFIC_PATH . 'build/admin.asset.php';
-		$meta  = is_readable($asset) ? require $asset : ['dependencies' => [], 'version' => WOOPTIONSFIC_VERSION];
+		$asset = WOOPTIONS_PRO_PATH . 'build/admin.asset.php';
+		$meta  = is_readable($asset) ? require $asset : ['dependencies' => [], 'version' => WOOPTIONS_PRO_VERSION];
 		wp_enqueue_media();
 		if (function_exists('wp_enqueue_editor')) {
 			wp_enqueue_editor();
@@ -67,10 +67,10 @@ final class AdminPage {
 		wp_enqueue_script('wp-tinymce');
 		wp_enqueue_style('editor-buttons');
 		wp_enqueue_script(
-			'wooptionsfic-admin',
-			WOOPTIONSFIC_URL . 'build/admin.js',
+			'wooptions-pro-admin',
+			WOOPTIONS_PRO_URL . 'build/admin.js',
 			(array) ($meta['dependencies'] ?? []),
-			(string) ($meta['version'] ?? WOOPTIONSFIC_VERSION),
+			(string) ($meta['version'] ?? WOOPTIONS_PRO_VERSION),
 			true
 		);
 		wp_enqueue_style('wp-components');
@@ -101,40 +101,40 @@ final class AdminPage {
 			)
 		);
 		$font_url = 'https://fonts.googleapis.com/css2?' . $font_query . '&display=swap';
-		wp_enqueue_style('wooptionsfic-builder-fonts', $font_url, [], null);
+		wp_enqueue_style('wooptions-pro-builder-fonts', $font_url, [], null);
 
 		wp_enqueue_style(
-			'wooptionsfic-admin',
-			WOOPTIONSFIC_URL . 'build/admin.css',
-			['wp-components', 'wooptionsfic-builder-fonts'],
-			(string) ($meta['version'] ?? WOOPTIONSFIC_VERSION)
+			'wooptions-pro-admin',
+			WOOPTIONS_PRO_URL . 'build/admin.css',
+			['wp-components', 'wooptions-pro-builder-fonts'],
+			(string) ($meta['version'] ?? WOOPTIONS_PRO_VERSION)
 		);
-		wp_set_script_translations('wooptionsfic-admin', 'wooptionsfic', WOOPTIONSFIC_PATH . 'languages');
+		wp_set_script_translations('wooptions-pro-admin', 'wooptions-pro', WOOPTIONS_PRO_PATH . 'languages');
 
-		$field_types  = require WOOPTIONSFIC_PATH . 'config/field-types.php';
-		$palettes     = require WOOPTIONSFIC_PATH . 'config/style-presets.php';
-		$font_catalog = file_exists(WOOPTIONSFIC_PATH . 'config/fonts.php') ? require WOOPTIONSFIC_PATH . 'config/fonts.php' : [];
+		$field_types  = require WOOPTIONS_PRO_PATH . 'config/field-types.php';
+		$palettes     = require WOOPTIONS_PRO_PATH . 'config/style-presets.php';
+		$font_catalog = file_exists(WOOPTIONS_PRO_PATH . 'config/fonts.php') ? require WOOPTIONS_PRO_PATH . 'config/fonts.php' : [];
 		$custom_fonts = CustomFontService::get_custom_fonts();
 		if (! empty($custom_fonts) && is_array($font_catalog)) {
 			$font_catalog = array_merge($custom_fonts, $font_catalog);
 		}
 		$custom_fonts_css = CustomFontService::generate_font_face_css();
 		if ('' !== $custom_fonts_css) {
-			wp_add_inline_style('wooptionsfic-admin', $custom_fonts_css);
+			wp_add_inline_style('wooptions-pro-admin', $custom_fonts_css);
 			add_action('admin_head', static function () use ($custom_fonts_css): void {
-				echo '<style id="wooptionsfic-custom-fonts-admin">' . $custom_fonts_css . '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo '<style id="wooptions-pro-custom-fonts-admin">' . $custom_fonts_css . '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			});
 		}
 
-		$page         = isset($_GET['page']) ? sanitize_key(wp_unslash($_GET['page'])) : 'wooptionsfic'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$initial_route= 'wooptionsfic' === $page ? 'dashboard' : str_replace('wooptionsfic-', '', $page);
+		$page         = isset($_GET['page']) ? sanitize_key(wp_unslash($_GET['page'])) : 'wooptions-pro'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$initial_route= 'wooptions-pro' === $page ? 'dashboard' : str_replace('wooptions-pro-', '', $page);
 		wp_add_inline_script(
-			'wooptionsfic-admin',
-			'window.WooptionsFicAdmin=' . wp_json_encode(
+			'wooptions-pro-admin',
+			'window.WooOptionsProAdmin=' . wp_json_encode(
 				[
-					'restRoot'      => esc_url_raw(rest_url('wooptionsfic/v1/')),
+					'restRoot'      => esc_url_raw(rest_url('wooptions-pro/v1/')),
 					'nonce'         => wp_create_nonce('wp_rest'),
-					'version'       => WOOPTIONSFIC_VERSION,
+					'version'       => WOOPTIONS_PRO_VERSION,
 					'initialRoute'  => $initial_route,
 					'fieldTypes'    => is_array($field_types) ? $field_types : [],
 					'palettes'      => is_array($palettes) ? $palettes : [],
@@ -152,8 +152,8 @@ final class AdminPage {
 						'products' => admin_url('edit.php?post_type=product'),
 						'siteHealth'=> admin_url('site-health.php'),
 					],
-					'pluginUrl'     => WOOPTIONSFIC_URL,
-					'assetsUrl'     => WOOPTIONSFIC_URL . 'assets/',
+					'pluginUrl'     => WOOPTIONS_PRO_URL,
+					'assetsUrl'     => WOOPTIONS_PRO_URL . 'assets/',
 				],
 				JSON_UNESCAPED_SLASHES
 			) . ';',
@@ -162,12 +162,12 @@ final class AdminPage {
 	}
 
 	public function render(): void {
-		if (! current_user_can('manage_wooptionsfic')) {
-			wp_die(esc_html__('You do not have permission to manage WooptionsFic.', 'wooptionsfic'));
+		if (! current_user_can('manage_wooptions-pro')) {
+			wp_die(esc_html__('You do not have permission to manage WooOptions Pro.', 'wooptions-pro'));
 		}
 		echo '<div class="wrap wof-admin-wrap">';
-		echo '<div id="wooptionsfic-admin-root">';
-		echo '<div class="wof-admin-loading"><span class="spinner is-active"></span><p>' . esc_html__('Opening your option workshop…', 'wooptionsfic') . '</p></div>';
+		echo '<div id="wooptions-pro-admin-root">';
+		echo '<div class="wof-admin-loading"><span class="spinner is-active"></span><p>' . esc_html__('Opening your option workshop…', 'wooptions-pro') . '</p></div>';
 		echo '</div>';
 		// Preload WP Editor / TinyMCE scripts, quicktags, media buttons, and templates for dynamic React editor instances.
 		if (function_exists('wp_editor')) {
@@ -179,21 +179,21 @@ final class AdminPage {
 			]);
 			echo '</div>';
 		}
-		echo '<noscript><div class="notice notice-error"><p>' . esc_html__('WooptionsFic’s administration builder requires JavaScript. Storefront basic fields still have a server-rendered fallback.', 'wooptionsfic') . '</p></div></noscript>';
+		echo '<noscript><div class="notice notice-error"><p>' . esc_html__('WooOptions Pro’s administration builder requires JavaScript. Storefront basic fields still have a server-rendered fallback.', 'wooptions-pro') . '</p></div></noscript>';
 		echo '</div>';
 	}
 
 	public function activated_notice(): void {
-		if (! get_transient('wooptionsfic_activated') || ! current_user_can('manage_wooptionsfic')) {
+		if (! get_transient('wooptions-pro_activated') || ! current_user_can('manage_wooptions-pro')) {
 			return;
 		}
-		delete_transient('wooptionsfic_activated');
+		delete_transient('wooptions-pro_activated');
 		echo '<div class="notice notice-success is-dismissible"><p>';
 		echo wp_kses_post(
 			sprintf(
 				/* translators: %s: plugin admin URL. */
-				__('WooptionsFic is ready. <a href="%s">Open the Precision Workshop</a> to import a template or build your first option set.', 'wooptionsfic'),
-				esc_url(admin_url('admin.php?page=wooptionsfic#/templates'))
+				__('WooOptions Pro is ready. <a href="%s">Open the Precision Workshop</a> to import a template or build your first option set.', 'wooptions-pro'),
+				esc_url(admin_url('admin.php?page=wooptions-pro#/templates'))
 			)
 		);
 		echo '</p></div>';

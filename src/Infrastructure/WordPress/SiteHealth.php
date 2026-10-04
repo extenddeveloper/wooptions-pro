@@ -2,14 +2,14 @@
 /**
  * Site Health integration.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Infrastructure\WordPress;
+namespace WooOptionsPro\Infrastructure\WordPress;
 
-use WooptionsFic\Application\DiagnosticsService;
+use WooOptionsPro\Application\DiagnosticsService;
 
 final class SiteHealth {
 	public function __construct(private readonly DiagnosticsService $diagnostics) {
@@ -25,8 +25,8 @@ final class SiteHealth {
 	 * @return array<string,mixed>
 	 */
 	public function tests(array $tests): array {
-		$tests['direct']['wooptionsfic_runtime'] = [
-			'label' => __('WooptionsFic runtime', 'wooptionsfic'),
+		$tests['direct']['wooptions-pro_runtime'] = [
+			'label' => __('WooOptions Pro runtime', 'wooptions-pro'),
 			'test'  => [$this, 'runtime_test'],
 		];
 		return $tests;
@@ -40,17 +40,17 @@ final class SiteHealth {
 		$critical = array_filter((array) $report['checks'], static fn (array $check): bool => 'critical' === ($check['status'] ?? ''));
 		return [
 			'label'       => [] === $critical
-				? __('WooptionsFic’s required services are ready', 'wooptionsfic')
-				: __('WooptionsFic needs attention', 'wooptionsfic'),
+				? __('WooOptions Pro’s required services are ready', 'wooptions-pro')
+				: __('WooOptions Pro needs attention', 'wooptions-pro'),
 			'status'      => [] === $critical ? 'good' : 'critical',
-			'badge'       => ['label' => __('WooptionsFic', 'wooptionsfic'), 'color' => 'blue'],
+			'badge'       => ['label' => __('WooOptions Pro', 'wooptions-pro'), 'color' => 'blue'],
 			'description' => '<p>' . esc_html(
 				[] === $critical
-					? __('Database, assets, and private storage passed the runtime checks.', 'wooptionsfic')
-					: __('One or more required WooptionsFic services are unavailable.', 'wooptionsfic')
+					? __('Database, assets, and private storage passed the runtime checks.', 'wooptions-pro')
+					: __('One or more required WooOptions Pro services are unavailable.', 'wooptions-pro')
 			) . '</p>',
-			'actions'     => '<p><a href="' . esc_url(admin_url('admin.php?page=wooptionsfic')) . '">' . esc_html__('Open WooptionsFic', 'wooptionsfic') . '</a></p>',
-			'test'        => 'wooptionsfic_runtime',
+			'actions'     => '<p><a href="' . esc_url(admin_url('admin.php?page=wooptions-pro')) . '">' . esc_html__('Open WooOptions Pro', 'wooptions-pro') . '</a></p>',
+			'test'        => 'wooptions-pro_runtime',
 		];
 	}
 
@@ -60,12 +60,12 @@ final class SiteHealth {
 	 */
 	public function debug_information(array $information): array {
 		$report = $this->diagnostics->report();
-		$information['wooptionsfic'] = [
-			'label'  => __('WooptionsFic', 'wooptionsfic'),
+		$information['wooptions-pro'] = [
+			'label'  => __('WooOptions Pro', 'wooptions-pro'),
 			'fields' => [
-				'plugin'      => ['label' => __('Plugin version', 'wooptionsfic'), 'value' => $report['environment']['plugin']],
-				'database'    => ['label' => __('Database version', 'wooptionsfic'), 'value' => $report['environment']['database']],
-				'woocommerce' => ['label' => __('WooCommerce version', 'wooptionsfic'), 'value' => $report['environment']['woocommerce'] ?? __('Not active', 'wooptionsfic')],
+				'plugin'      => ['label' => __('Plugin version', 'wooptions-pro'), 'value' => $report['environment']['plugin']],
+				'database'    => ['label' => __('Database version', 'wooptions-pro'), 'value' => $report['environment']['database']],
+				'woocommerce' => ['label' => __('WooCommerce version', 'wooptions-pro'), 'value' => $report['environment']['woocommerce'] ?? __('Not active', 'wooptions-pro')],
 			],
 		];
 		return $information;

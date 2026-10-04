@@ -1,4 +1,4 @@
-namespace WooptionsFic.Builder {
+namespace WooOptionsPro.Builder {
   const { Button, Modal, SelectControl, TextControl } = wp.components;
   const { __ } = wp.i18n;
   const { useEffect, useMemo, useState } = wp.element;
@@ -15,27 +15,27 @@ namespace WooptionsFic.Builder {
   }
 
   const assignmentTypes: Array<{ type: PickerAssignmentType; label: string; icon: string }> = [
-    { type: 'product', label: __('Products', 'wooptionsfic'), icon: 'dashicons-products' },
-    { type: 'category', label: __('Categories', 'wooptionsfic'), icon: 'dashicons-category' },
-    { type: 'tag', label: __('Tags', 'wooptionsfic'), icon: 'dashicons-tag' },
-    { type: 'variation', label: __('Variations', 'wooptionsfic'), icon: 'dashicons-image-rotate' },
-    { type: 'global', label: __('All products', 'wooptionsfic'), icon: 'dashicons-admin-site-alt3' },
+    { type: 'product', label: __('Products', 'wooptions-pro'), icon: 'dashicons-products' },
+    { type: 'category', label: __('Categories', 'wooptions-pro'), icon: 'dashicons-category' },
+    { type: 'tag', label: __('Tags', 'wooptions-pro'), icon: 'dashicons-tag' },
+    { type: 'variation', label: __('Variations', 'wooptions-pro'), icon: 'dashicons-image-rotate' },
+    { type: 'global', label: __('All products', 'wooptions-pro'), icon: 'dashicons-admin-site-alt3' },
   ];
 
-  function assignmentTypeLabel(type: WooptionsFic.AssignmentType): string {
-    const labels: Record<WooptionsFic.AssignmentType, string> = {
-      global: __('All products', 'wooptionsfic'),
-      product: __('Product', 'wooptionsfic'),
-      category: __('Category', 'wooptionsfic'),
-      tag: __('Tag', 'wooptionsfic'),
-      variation: __('Variation', 'wooptionsfic'),
-      product_type: __('Product type', 'wooptionsfic'),
+  function assignmentTypeLabel(type: WooOptionsPro.AssignmentType): string {
+    const labels: Record<WooOptionsPro.AssignmentType, string> = {
+      global: __('All products', 'wooptions-pro'),
+      product: __('Product', 'wooptions-pro'),
+      category: __('Category', 'wooptions-pro'),
+      tag: __('Tag', 'wooptions-pro'),
+      variation: __('Variation', 'wooptions-pro'),
+      product_type: __('Product type', 'wooptions-pro'),
     };
     return labels[type] ?? type;
   }
 
-  function assignmentTypeIcon(type: WooptionsFic.AssignmentType): string {
-    const icons: Record<WooptionsFic.AssignmentType, string> = {
+  function assignmentTypeIcon(type: WooOptionsPro.AssignmentType): string {
+    const icons: Record<WooOptionsPro.AssignmentType, string> = {
       global: 'dashicons-admin-site-alt3',
       product: 'dashicons-products',
       category: 'dashicons-category',
@@ -46,7 +46,7 @@ namespace WooptionsFic.Builder {
     return icons[type] ?? 'dashicons-marker';
   }
 
-  function renderTypeIcon(type: PickerAssignmentType | WooptionsFic.AssignmentType): any {
+  function renderTypeIcon(type: PickerAssignmentType | WooOptionsPro.AssignmentType): any {
     switch (type) {
       case 'global':
         return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></svg>;
@@ -59,17 +59,17 @@ namespace WooptionsFic.Builder {
       case 'variation':
         return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></svg>;
       default:
-        return <span className={`dashicons ${assignmentTypeIcon(type as WooptionsFic.AssignmentType)}`} aria-hidden="true" />;
+        return <span className={`dashicons ${assignmentTypeIcon(type as WooOptionsPro.AssignmentType)}`} aria-hidden="true" />;
     }
   }
 
   function TargetSearch(props: {
     type: PickerAssignmentType;
-    assignments: WooptionsFic.AssignmentRecord[];
+    assignments: WooOptionsPro.AssignmentRecord[];
     onAdd: (target: AssignmentTargetDetails) => void;
   }): any {
     const [query, setQuery] = useState('');
-    const [results, setResults] = useState<WooptionsFic.AssignmentTarget[]>([]);
+    const [results, setResults] = useState<WooOptionsPro.AssignmentTarget[]>([]);
     const [loading, setLoading] = useState(false);
     const [focused, setFocused] = useState(false);
     const [error, setError] = useState('');
@@ -96,12 +96,12 @@ namespace WooptionsFic.Builder {
       const timeout = window.setTimeout(() => {
         setLoading(true);
         setError('');
-        WooptionsFic.Api.searchAssignmentTargets(targetType, query)
+        WooOptionsPro.Api.searchAssignmentTargets(targetType, query)
           .then((response) => {
             if (active) setResults(Array.isArray(response.items) ? response.items : []);
           })
           .catch((reason) => {
-            if (active) setError(WooptionsFic.Utils.errorMessage(reason));
+            if (active) setError(WooOptionsPro.Utils.errorMessage(reason));
           })
           .finally(() => {
             if (active) setLoading(false);
@@ -123,15 +123,15 @@ namespace WooptionsFic.Builder {
           onClick={() => props.onAdd({
             id: null,
             type: 'global',
-            label: __('All WooCommerce products', 'wooptionsfic'),
-            meta: __('Every product in the store', 'wooptionsfic'),
+            label: __('All WooCommerce products', 'wooptions-pro'),
+            meta: __('Every product in the store', 'wooptions-pro'),
             image: '',
           })}
         >
           <span className="wof-assignment-global__icon" aria-hidden="true">{renderTypeIcon('global')}</span>
           <span>
-            <strong>{__('All products', 'wooptionsfic')}</strong>
-            <small>{selected ? __('Already assigned', 'wooptionsfic') : __('Apply this option set store-wide', 'wooptionsfic')}</small>
+            <strong>{__('All products', 'wooptions-pro')}</strong>
+            <small>{selected ? __('Already assigned', 'wooptions-pro') : __('Apply this option set store-wide', 'wooptions-pro')}</small>
           </span>
           <span className="wof-assignment-global__status" aria-hidden="true">
             {selected ? (
@@ -145,12 +145,12 @@ namespace WooptionsFic.Builder {
     }
 
     const placeholder = props.type === 'product'
-      ? __('Search products by name, ID, or SKU…', 'wooptionsfic')
+      ? __('Search products by name, ID, or SKU…', 'wooptions-pro')
       : props.type === 'category'
-        ? __('Search product categories…', 'wooptionsfic')
+        ? __('Search product categories…', 'wooptions-pro')
         : props.type === 'tag'
-          ? __('Search product tags…', 'wooptionsfic')
-          : __('Search variations by name, ID, or SKU…', 'wooptionsfic');
+          ? __('Search product tags…', 'wooptions-pro')
+          : __('Search variations by name, ID, or SKU…', 'wooptions-pro');
 
     return (
       <div className="wof-target-search">
@@ -163,7 +163,7 @@ namespace WooptionsFic.Builder {
             onChange={(event: Event) => setQuery((event.target as HTMLInputElement).value)}
             onFocus={() => setFocused(true)}
             onBlur={() => window.setTimeout(() => setFocused(false), 160)}
-            aria-label={__('Search assignment targets', 'wooptionsfic')}
+            aria-label={__('Search assignment targets', 'wooptions-pro')}
           />
           {loading || query ? (
             <button
@@ -171,7 +171,7 @@ namespace WooptionsFic.Builder {
               className="wof-target-search__clear"
               onMouseDown={(event: Event) => event.preventDefault()}
               onClick={() => setQuery('')}
-              aria-label={__('Clear search', 'wooptionsfic')}
+              aria-label={__('Clear search', 'wooptions-pro')}
             >
               {loading ? <span className="wof-mini-spinner" aria-hidden="true" /> : <span className="dashicons dashicons-no-alt" aria-hidden="true" />}
             </button>
@@ -182,7 +182,7 @@ namespace WooptionsFic.Builder {
             {error ? <p className="wof-target-results__message is-error">{error}</p> : null}
             {!error && !loading && !results.length ? (
               <p className="wof-target-results__message">
-                {query ? __('No matching items found.', 'wooptionsfic') : __('Start typing or choose from recent items.', 'wooptionsfic')}
+                {query ? __('No matching items found.', 'wooptions-pro') : __('Start typing or choose from recent items.', 'wooptions-pro')}
               </p>
             ) : null}
             {results.map((target) => {
@@ -212,18 +212,18 @@ namespace WooptionsFic.Builder {
   }
 
   export function AssignmentsModal(props: {
-    assignments: WooptionsFic.AssignmentRecord[];
+    assignments: WooOptionsPro.AssignmentRecord[];
     busy: boolean;
     onClose: () => void;
-    onSave: (assignments: WooptionsFic.AssignmentRecord[]) => Promise<void>;
+    onSave: (assignments: WooOptionsPro.AssignmentRecord[]) => Promise<void>;
   }): any {
     const [type, setType] = useState<PickerAssignmentType>('product');
-    const [draft, setDraft] = useState<WooptionsFic.AssignmentRecord[]>(() => WooptionsFic.Utils.clone(props.assignments));
-    const [targetDetails, setTargetDetails] = useState<Record<string, WooptionsFic.AssignmentTarget>>({});
+    const [draft, setDraft] = useState<WooOptionsPro.AssignmentRecord[]>(() => WooOptionsPro.Utils.clone(props.assignments));
+    const [targetDetails, setTargetDetails] = useState<Record<string, WooOptionsPro.AssignmentTarget>>({});
     const [saving, setSaving] = useState(false);
 
     useEffect(() => {
-      setDraft(WooptionsFic.Utils.clone(props.assignments));
+      setDraft(WooOptionsPro.Utils.clone(props.assignments));
     }, [props.assignments]);
 
     const assignmentKey = useMemo(
@@ -242,14 +242,14 @@ namespace WooptionsFic.Builder {
 
       Promise.all(Array.from(grouped.entries()).map(async ([targetType, ids]) => {
         try {
-          const response = await WooptionsFic.Api.searchAssignmentTargets(targetType, '', [...new Set(ids)]);
+          const response = await WooOptionsPro.Api.searchAssignmentTargets(targetType, '', [...new Set(ids)]);
           return response.items.map((item) => [`${targetType}:${item.id}`, item] as const);
         } catch {
-          return [] as Array<readonly [string, WooptionsFic.AssignmentTarget]>;
+          return [] as Array<readonly [string, WooOptionsPro.AssignmentTarget]>;
         }
       })).then((groups) => {
         if (!active) return;
-        const next: Record<string, WooptionsFic.AssignmentTarget> = {};
+        const next: Record<string, WooOptionsPro.AssignmentTarget> = {};
         groups.flat().forEach(([key, item]) => { next[key] = item; });
         setTargetDetails(next);
       });
@@ -257,15 +257,15 @@ namespace WooptionsFic.Builder {
       return () => { active = false; };
     }, [assignmentKey]);
 
-    const updateAssignment = (index: number, patch: Partial<WooptionsFic.AssignmentRecord>) => {
+    const updateAssignment = (index: number, patch: Partial<WooOptionsPro.AssignmentRecord>) => {
       setDraft((current) => current.map((assignment, assignmentIndex) => assignmentIndex === index ? { ...assignment, ...patch } : assignment));
     };
 
     const addTarget = (target: AssignmentTargetDetails) => {
       const targetId = target.type === 'global' ? null : Number(target.id);
       if (draft.some((assignment) => assignment.targetType === target.type && assignment.targetId === targetId)) return;
-      const assignment: WooptionsFic.AssignmentRecord = {
-        uuid: WooptionsFic.Utils.uuid(),
+      const assignment: WooOptionsPro.AssignmentRecord = {
+        uuid: WooOptionsPro.Utils.uuid(),
         targetType: target.type,
         targetId,
         mode: 'include',
@@ -301,7 +301,7 @@ namespace WooptionsFic.Builder {
 
     return (
       <Modal
-        title={__('Product assignments', 'wooptionsfic')}
+        title={__('Product assignments', 'wooptions-pro')}
         onRequestClose={props.onClose}
         className="wof-modal wof-assignment-modal"
       >
@@ -310,8 +310,8 @@ namespace WooptionsFic.Builder {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></svg>
           </span>
           <div>
-            <h3>{__('Choose exactly where this option set appears', 'wooptionsfic')}</h3>
-            <p>{__('Search and select multiple products, categories, tags, or variations. Product-specific rules take priority over broader category rules.', 'wooptionsfic')}</p>
+            <h3>{__('Choose exactly where this option set appears', 'wooptions-pro')}</h3>
+            <p>{__('Search and select multiple products, categories, tags, or variations. Product-specific rules take priority over broader category rules.', 'wooptions-pro')}</p>
           </div>
         </div>
 
@@ -336,14 +336,14 @@ namespace WooptionsFic.Builder {
 
         <div className="wof-assignment-section-head">
           <div>
-            <h3>{__('Assigned targets', 'wooptionsfic')}</h3>
-            <p>{__('Adjust inclusion mode or priority for each selected target.', 'wooptionsfic')}</p>
+            <h3>{__('Assigned targets', 'wooptions-pro')}</h3>
+            <p>{__('Adjust inclusion mode or priority for each selected target.', 'wooptions-pro')}</p>
           </div>
-          <span>{draft.length} {draft.length === 1 ? __('rule', 'wooptionsfic') : __('rules', 'wooptionsfic')}</span>
+          <span>{draft.length} {draft.length === 1 ? __('rule', 'wooptions-pro') : __('rules', 'wooptions-pro')}</span>
         </div>
 
         {props.busy && !draft.length ? (
-          <WooptionsFic.Components.ModalLoading label={__('Loading assigned targets…', 'wooptionsfic')} />
+          <WooOptionsPro.Components.ModalLoading label={__('Loading assigned targets…', 'wooptions-pro')} />
         ) : draft.length ? (
           <div className="wof-assignment-cards">
             {draft.map((assignment, index) => {
@@ -352,11 +352,11 @@ namespace WooptionsFic.Builder {
               const label = assignment.targetLabel
                 || target?.label
                 || (assignment.targetType === 'global'
-                  ? __('All WooCommerce products', 'wooptionsfic')
+                  ? __('All WooCommerce products', 'wooptions-pro')
                   : `${assignmentTypeLabel(assignment.targetType)} #${assignment.targetId}`);
               const meta = assignment.targetMeta
                 || target?.meta
-                || (assignment.targetType === 'global' ? __('Store-wide assignment', 'wooptionsfic') : `ID: ${assignment.targetId}`);
+                || (assignment.targetType === 'global' ? __('Store-wide assignment', 'wooptions-pro') : `ID: ${assignment.targetId}`);
               const image = assignment.targetImage || target?.image || '';
               return (
                 <article className="wof-assignment-card" key={assignment.uuid || key}>
@@ -369,17 +369,17 @@ namespace WooptionsFic.Builder {
                   </div>
                   <div className="wof-assignment-card__controls">
                     <SelectControl
-                      label={__('Mode', 'wooptionsfic')}
+                      label={__('Mode', 'wooptions-pro')}
                       value={assignment.mode}
                       options={[
-                        { label: __('Include', 'wooptionsfic'), value: 'include' },
-                        { label: __('Exclude', 'wooptionsfic'), value: 'exclude' },
+                        { label: __('Include', 'wooptions-pro'), value: 'include' },
+                        { label: __('Exclude', 'wooptions-pro'), value: 'exclude' },
                       ]}
                       onChange={(mode: 'include' | 'exclude') => updateAssignment(index, { mode })}
                     />
                     <TextControl
                       type="number"
-                      label={__('Priority', 'wooptionsfic')}
+                      label={__('Priority', 'wooptions-pro')}
                       value={String(assignment.priority)}
                       min={-1000}
                       max={1000}
@@ -389,8 +389,8 @@ namespace WooptionsFic.Builder {
                       type="button"
                       className="wof-assignment-card__remove"
                       onClick={() => setDraft((current) => current.filter((candidate) => candidate !== assignment))}
-                      aria-label={__('Remove assignment', 'wooptionsfic')}
-                      title={__('Remove assignment', 'wooptionsfic')}
+                      aria-label={__('Remove assignment', 'wooptions-pro')}
+                      title={__('Remove assignment', 'wooptions-pro')}
                     >
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /><line x1="10" y1="11" x2="10" y2="17" /><line x1="14" y1="11" x2="14" y2="17" /></svg>
                     </button>
@@ -404,14 +404,14 @@ namespace WooptionsFic.Builder {
             <span className="wof-assignment-empty__icon" aria-hidden="true">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></svg>
             </span>
-            <h3>{__('No products assigned yet', 'wooptionsfic')}</h3>
-            <p>{__('Use the search above to select one or more targets.', 'wooptionsfic')}</p>
+            <h3>{__('No products assigned yet', 'wooptions-pro')}</h3>
+            <p>{__('Use the search above to select one or more targets.', 'wooptions-pro')}</p>
           </div>
         )}
 
         <div className="wof-modal__actions wof-assignment-actions">
           <Button variant="secondary" className="wof-btn-cancel" disabled={saving || props.busy} onClick={props.onClose}>
-            {__('Cancel', 'wooptionsfic')}
+            {__('Cancel', 'wooptions-pro')}
           </Button>
           <Button variant="primary" className="wof-btn-save" isBusy={saving || props.busy} disabled={saving || props.busy} onClick={save}>
             {saving || props.busy ? (
@@ -425,7 +425,7 @@ namespace WooptionsFic.Builder {
                 <polyline points="7 3 7 8 15 8" fill="none" stroke="currentColor" strokeWidth="2" />
               </svg>
             )}
-            <span>{saving || props.busy ? __('Saving…', 'wooptionsfic') : __('Save assignments', 'wooptionsfic')}</span>
+            <span>{saving || props.busy ? __('Saving…', 'wooptions-pro') : __('Save assignments', 'wooptions-pro')}</span>
           </Button>
         </div>
       </Modal>

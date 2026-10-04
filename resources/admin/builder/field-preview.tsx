@@ -1,9 +1,9 @@
-namespace WooptionsFic.Builder {
+namespace WooOptionsPro.Builder {
   const { __, sprintf } = wp.i18n;
 
-  export function formatChoicePrice(pricing?: WooptionsFic.PricingDefinition): string {
+  export function formatChoicePrice(pricing?: WooOptionsPro.PricingDefinition): string {
     if (!pricing || pricing.strategy === 'none') return '';
-    const adminConfig = (window as any).WooptionsFicAdmin;
+    const adminConfig = (window as any).WooOptionsProAdmin;
     const symbol = adminConfig?.currencySymbol || adminConfig?.currency || '$';
     if (pricing.strategy === 'fixed' || pricing.strategy === 'setup') {
       const raw = String(pricing.amount ?? '0').trim();
@@ -11,7 +11,7 @@ namespace WooptionsFic.Builder {
       const isNegative = raw.startsWith('-');
       const clean = isNegative ? raw.slice(1) : raw.startsWith('+') ? raw.slice(1) : raw;
       const prefix = isNegative ? '-' : '+';
-      const suffix = pricing.strategy === 'setup' ? ` ${__('setup', 'wooptionsfic')}` : '';
+      const suffix = pricing.strategy === 'setup' ? ` ${__('setup', 'wooptions-pro')}` : '';
       return `${prefix}${symbol}${clean}${suffix}`;
     }
     if (pricing.strategy === 'percentage') {
@@ -41,13 +41,13 @@ namespace WooptionsFic.Builder {
     return '';
   }
 
-  function choiceLabel(choice: WooptionsFic.ChoiceDefinition): string {
+  function choiceLabel(choice: WooOptionsPro.ChoiceDefinition): string {
     const priceText = formatChoicePrice(choice.pricing);
     const amount = priceText ? ` · ${priceText}` : '';
     return `${choice.label}${amount}`;
   }
 
-  function previewColor(field: WooptionsFic.FieldDefinition): string {
+  function previewColor(field: WooOptionsPro.FieldDefinition): string {
     const value = String(field.default ?? '#5B4FF5').toUpperCase();
     return /^#[0-9A-F]{6}$/.test(value) ? value : '#5B4FF5';
   }
@@ -126,7 +126,7 @@ namespace WooptionsFic.Builder {
     );
   }
 
-  function ModalPreviewControl(props: { field: WooptionsFic.FieldDefinition; buttonText: string; buttonStyle: string }): any {
+  function ModalPreviewControl(props: { field: WooOptionsPro.FieldDefinition; buttonText: string; buttonStyle: string }): any {
     const [isOpen, setIsOpen] = wp.element.useState(false);
     return (
       <div className="wof-preview-modal-shell">
@@ -153,7 +153,7 @@ namespace WooptionsFic.Builder {
               onClick={(e: any) => e.stopPropagation()}
             >
               <div className="wof-modal-header">
-                <h3 className="wof-modal-title">{props.field.modalTitle || props.field.label || __('Information', 'wooptionsfic')}</h3>
+                <h3 className="wof-modal-title">{props.field.modalTitle || props.field.label || __('Information', 'wooptions-pro')}</h3>
                 <button
                   type="button"
                   className="wof-modal-close"
@@ -161,7 +161,7 @@ namespace WooptionsFic.Builder {
                     e.stopPropagation();
                     setIsOpen(false);
                   }}
-                  aria-label={__('Close', 'wooptionsfic')}
+                  aria-label={__('Close', 'wooptions-pro')}
                 >
                   &times;
                 </button>
@@ -170,7 +170,7 @@ namespace WooptionsFic.Builder {
                 {props.field.content ? (
                   <div dangerouslySetInnerHTML={{ __html: props.field.content }} />
                 ) : (
-                  <p style={{ color: '#94a3b8', fontStyle: 'italic' }}>{__('No modal content added yet. Add text and images in the inspector.', 'wooptionsfic')}</p>
+                  <p style={{ color: '#94a3b8', fontStyle: 'italic' }}>{__('No modal content added yet. Add text and images in the inspector.', 'wooptions-pro')}</p>
                 )}
               </div>
             </div>
@@ -180,7 +180,7 @@ namespace WooptionsFic.Builder {
     );
   }
 
-  export function FieldPreview(props: { field: WooptionsFic.FieldDefinition; allFields?: WooptionsFic.FieldDefinition[] }): any {
+  export function FieldPreview(props: { field: WooOptionsPro.FieldDefinition; allFields?: WooOptionsPro.FieldDefinition[] }): any {
     const field = props.field;
     const choices = field.choices ?? [];
 
@@ -191,7 +191,7 @@ namespace WooptionsFic.Builder {
     const appliedFontFamily = appliedFontChoice?.fontFamily || appliedFontChoice?.label || undefined;
 
     if (field.type === 'heading') {
-      const headingText = field.label || field.content || __('Section heading', 'wooptionsfic');
+      const headingText = field.label || field.content || __('Section heading', 'wooptions-pro');
       const helpText = field.help ? String(field.help).trim() : '';
       const helpPos = field.helpTextPosition || 'below_title';
       return (
@@ -214,7 +214,7 @@ namespace WooptionsFic.Builder {
     }
 
     if (field.type === 'paragraph') {
-      const content = field.description || field.content || field.help || field.label || __('Add supporting product-option content here.', 'wooptionsfic');
+      const content = field.description || field.content || field.help || field.label || __('Add supporting product-option content here.', 'wooptions-pro');
       return (
         <div className="wof-preview-paragraph-box">
           <p className="wof-preview-paragraph-text">{content}</p>
@@ -223,7 +223,7 @@ namespace WooptionsFic.Builder {
     }
 
     if (field.type === 'help') {
-      const content = field.description || field.content || field.help || field.label || __('Helpful information for customers.', 'wooptionsfic');
+      const content = field.description || field.content || field.help || field.label || __('Helpful information for customers.', 'wooptions-pro');
       return (
         <div className="wof-preview-help-box">
           <div className="wof-preview-help-icon">
@@ -244,15 +244,15 @@ namespace WooptionsFic.Builder {
             />
           ) : (
             <div className="wof-preview-content-empty">
-              <WooptionsFic.Components.Dashicon name="editor-alignleft" />
-              <span>{__('Content block — add text and images in the inspector', 'wooptionsfic')}</span>
+              <WooOptionsPro.Components.Dashicon name="editor-alignleft" />
+              <span>{__('Content block — add text and images in the inspector', 'wooptions-pro')}</span>
             </div>
           )}
         </div>
       );
     }
     if (field.type === 'modal') {
-      const buttonText = field.buttonText || field.label || __('View details', 'wooptionsfic');
+      const buttonText = field.buttonText || field.label || __('View details', 'wooptions-pro');
       const buttonStyle = field.buttonStyle || 'outline';
       return <ModalPreviewControl field={field} buttonText={buttonText} buttonStyle={buttonStyle} />;
     }
@@ -285,7 +285,7 @@ namespace WooptionsFic.Builder {
           <span className="wof-preview-toggle__track">
             <span className="wof-preview-toggle__thumb" />
           </span>
-          <strong className="wof-preview-toggle__label">{field.label || __('Switch', 'wooptionsfic')}</strong>
+          <strong className="wof-preview-toggle__label">{field.label || __('Switch', 'wooptions-pro')}</strong>
           {priceText ? <span className="wof-preview-boolean__price">{priceText}</span> : null}
         </div>
       );
@@ -299,7 +299,7 @@ namespace WooptionsFic.Builder {
           <span className="wof-preview-checkbox__box">
             {isChecked ? renderCheckSvg(18, true) : null}
           </span>
-          <strong className="wof-preview-checkbox__label">{field.label || __('Checkbox', 'wooptionsfic')}</strong>
+          <strong className="wof-preview-checkbox__label">{field.label || __('Checkbox', 'wooptions-pro')}</strong>
           {priceText ? <span className="wof-preview-boolean__price">{priceText}</span> : null}
         </div>
       );
@@ -319,7 +319,7 @@ namespace WooptionsFic.Builder {
               textTransform: field.textTransform && field.textTransform !== 'none' ? field.textTransform : undefined,
               fontFamily: appliedFontFamily,
             }}
-            placeholder={field.placeholder || __('Enter text…', 'wooptionsfic')}
+            placeholder={field.placeholder || __('Enter text…', 'wooptions-pro')}
           />
           {priceText ? <span className="wof-preview-scalar__price wof-preview-scalar__price--textarea">{priceText}</span> : null}
         </div>
@@ -334,7 +334,7 @@ namespace WooptionsFic.Builder {
         <div className="wof-preview-font-control">
           <div className="wof-preview-font-selected">
             <span className="wof-preview-font-name" style={{ fontFamily }}>
-              {selectedChoice ? selectedChoice.label : __('Choose a font…', 'wooptionsfic')}
+              {selectedChoice ? selectedChoice.label : __('Choose a font…', 'wooptions-pro')}
             </span>
             {selectedChoice?.fontCategory ? (
               <span className="wof-font-category-tag">{selectedChoice.fontCategory}</span>
@@ -348,7 +348,7 @@ namespace WooptionsFic.Builder {
               </span>
             ) : null}
           </div>
-          <WooptionsFic.Components.Dashicon name="arrow-down-alt2" />
+          <WooOptionsPro.Components.Dashicon name="arrow-down-alt2" />
         </div>
       );
     }
@@ -358,9 +358,9 @@ namespace WooptionsFic.Builder {
       return (
         <div className="wof-preview-select-control">
           <select aria-disabled="true" tabIndex={-1} value="" onChange={() => undefined}>
-            <option value="">{selectedChoice?.label ? choiceLabel(selectedChoice) : __('Choose an option', 'wooptionsfic')}</option>
+            <option value="">{selectedChoice?.label ? choiceLabel(selectedChoice) : __('Choose an option', 'wooptions-pro')}</option>
           </select>
-          <WooptionsFic.Components.Dashicon name="arrow-down-alt2" />
+          <WooOptionsPro.Components.Dashicon name="arrow-down-alt2" />
         </div>
       );
     }
@@ -371,9 +371,9 @@ namespace WooptionsFic.Builder {
       return (
         <div className="wof-preview-color-picker">
           <span className="wof-preview-color-picker__swatch" style={{ background: color }} />
-          <span><strong>{color}</strong><small>{__('Click to choose a color', 'wooptionsfic')}</small></span>
+          <span><strong>{color}</strong><small>{__('Click to choose a color', 'wooptions-pro')}</small></span>
           {priceText ? <span className="wof-preview-color-picker__price">{priceText}</span> : null}
-          <WooptionsFic.Components.Dashicon name="admin-customizer" />
+          <WooOptionsPro.Components.Dashicon name="admin-customizer" />
         </div>
       );
     }
@@ -421,10 +421,10 @@ namespace WooptionsFic.Builder {
                 <polyline points="17 8 12 3 7 8" />
                 <line x1="12" y1="3" x2="12" y2="15" />
               </svg>
-              {__('Upload', 'wooptionsfic')}
+              {__('Upload', 'wooptions-pro')}
             </button>
-            <span className="wof-preview-upload__hint">{__('Click or drag and drop', 'wooptionsfic')}</span>
-            <small className="wof-preview-upload__limit">{sprintf(__('Up to %1$d file(s), %2$d MB each', 'wooptionsfic'), maxFiles, maxMb)}</small>
+            <span className="wof-preview-upload__hint">{__('Click or drag and drop', 'wooptions-pro')}</span>
+            <small className="wof-preview-upload__limit">{sprintf(__('Up to %1$d file(s), %2$d MB each', 'wooptions-pro'), maxFiles, maxMb)}</small>
           </div>
         </div>
       );
@@ -444,7 +444,7 @@ namespace WooptionsFic.Builder {
       const dialCode = dialCodes[country] ?? '+1';
 
       if (flagStyle === 'number_only') {
-        return <input disabled type="tel" placeholder={field.placeholder || __('Enter phone number…', 'wooptionsfic')} />;
+        return <input disabled type="tel" placeholder={field.placeholder || __('Enter phone number…', 'wooptions-pro')} />;
       }
 
       return (
@@ -455,7 +455,7 @@ namespace WooptionsFic.Builder {
             {flagStyle === 'number_flag_dialcode' ? <span style={{ color: '#64748b', fontSize: '12px' }}>{dialCode}</span> : null}
             <svg viewBox="0 0 20 20" width="12" height="12" fill="#64748b" style={{ display: 'block' }}><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
           </div>
-          <input disabled type="tel" placeholder={field.placeholder || __('Enter phone number…', 'wooptionsfic')} />
+          <input disabled type="tel" placeholder={field.placeholder || __('Enter phone number…', 'wooptions-pro')} />
         </div>
       );
     }
@@ -492,7 +492,7 @@ namespace WooptionsFic.Builder {
                       marginInlineEnd: '6px',
                     }}
                   >
-                    <WooptionsFic.Components.MediaImage attachmentId={choice.imageId} src={choice.imageUrl} alt="" />
+                    <WooOptionsPro.Components.MediaImage attachmentId={choice.imageId} src={choice.imageUrl} alt="" />
                   </span>
                 ) : null}
                 <span style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
@@ -544,7 +544,7 @@ namespace WooptionsFic.Builder {
                       marginInlineEnd: '6px',
                     }}
                   >
-                    <WooptionsFic.Components.MediaImage attachmentId={choice.imageId} src={choice.imageUrl} alt="" />
+                    <WooOptionsPro.Components.MediaImage attachmentId={choice.imageId} src={choice.imageUrl} alt="" />
                   </span>
                 ) : null}
                 <span style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
@@ -620,7 +620,7 @@ namespace WooptionsFic.Builder {
                       background: '#f1f5f9',
                     }}
                   >
-                    <WooptionsFic.Components.MediaImage attachmentId={choice.imageId} src={choice.imageUrl} alt="" />
+                    <WooOptionsPro.Components.MediaImage attachmentId={choice.imageId} src={choice.imageUrl} alt="" />
                   </span>
                 ) : null}
                 <span style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-start', gap: '1px' }}>
@@ -720,7 +720,7 @@ namespace WooptionsFic.Builder {
                   {imgSrc ? (
                     <img src={imgSrc} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   ) : (
-                    <WooptionsFic.Components.Dashicon name="format-image" />
+                    <WooOptionsPro.Components.Dashicon name="format-image" />
                   )}
                   {isSelected ? (
                     <span className="wof-preview-image-tile__check" style={{ position: 'absolute', top: '2px', right: '2px', background: '#172033', color: '#fff', borderRadius: '50%', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid #fff', boxShadow: '0 1px 3px rgba(0,0,0,0.25)', zIndex: 3 }}>
@@ -756,7 +756,7 @@ namespace WooptionsFic.Builder {
                         className="wof-product-variation-select"
                         disabled
                       >
-                        <option value="">{__('Select variation', 'wooptionsfic')}</option>
+                        <option value="">{__('Select variation', 'wooptions-pro')}</option>
                         {displayVars.map((v: any) => (
                           <option key={v.id} value={v.id}>
                             {v.label}{v.price ? ` — ${v.price}` : ''}
@@ -800,7 +800,7 @@ namespace WooptionsFic.Builder {
             return (
               <div className={`wof-preview-image-tile${isSelected ? ' is-selected' : ''}`} key={choice.uuid} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <span className="wof-preview-image-tile__thumb" style={{ ...thumbStyle, position: 'relative', overflow: 'hidden' }}>
-                  {choice.imageId || choice.imageUrl ? <WooptionsFic.Components.MediaImage attachmentId={choice.imageId} src={choice.imageUrl} alt="" /> : <WooptionsFic.Components.Dashicon name="format-image" />}
+                  {choice.imageId || choice.imageUrl ? <WooOptionsPro.Components.MediaImage attachmentId={choice.imageId} src={choice.imageUrl} alt="" /> : <WooOptionsPro.Components.Dashicon name="format-image" />}
                   {isSelected ? <span className="wof-preview-image-tile__check" style={{ position: 'absolute', top: '2px', right: '2px', background: '#172033', color: '#fff', borderRadius: '50%', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid #fff', boxShadow: '0 1px 3px rgba(0,0,0,0.25)', zIndex: 3 }}>{renderCheckSvg(10)}</span> : null}
                   {imageStyle === 'overlay' ? (
                     <span style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '4px 6px', background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%)', color: '#fff', fontSize: '9px', fontWeight: 600, textAlign: 'center', lineHeight: 1.25, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'normal', wordBreak: 'break-word' }}>
@@ -908,7 +908,7 @@ namespace WooptionsFic.Builder {
     if (field.type === 'formula') {
       const mode = field.displayMode || 'currency';
       const decimals = Math.max(0, Math.min(6, field.decimalPlaces ?? 2));
-      const adminConfig = (window as any).WooptionsFicAdmin;
+      const adminConfig = (window as any).WooOptionsProAdmin;
       const currencySymbol = adminConfig?.currencySymbol || adminConfig?.currency || '$';
       const currencyPos = adminConfig?.currencyPosition || 'left_space';
       let prefix = field.prefix ?? '';
@@ -951,7 +951,7 @@ namespace WooptionsFic.Builder {
           textTransform: field.textTransform && field.textTransform !== 'none' ? field.textTransform : undefined,
           fontFamily: appliedFontFamily,
         }}
-        placeholder={defaultValue !== undefined ? undefined : (field.placeholder || __('Enter value…', 'wooptionsfic'))}
+        placeholder={defaultValue !== undefined ? undefined : (field.placeholder || __('Enter value…', 'wooptions-pro'))}
       />
     );
     if (priceText) {

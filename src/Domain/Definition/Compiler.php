@@ -2,18 +2,18 @@
 /**
  * Authored-definition validator and compiler.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Definition;
+namespace WooOptionsPro\Domain\Definition;
 
 use RuntimeException;
-use WooptionsFic\Domain\Pricing\Formula\Parser;
-use WooptionsFic\Domain\Style\PaletteRegistry;
-use WooptionsFic\Domain\Support\CanonicalJson;
-use WooptionsFic\Domain\Support\Uuid;
+use WooOptionsPro\Domain\Pricing\Formula\Parser;
+use WooOptionsPro\Domain\Style\PaletteRegistry;
+use WooOptionsPro\Domain\Support\CanonicalJson;
+use WooOptionsPro\Domain\Support\Uuid;
 
 final class Compiler {
 	public const SCHEMA_VERSION   = 1;

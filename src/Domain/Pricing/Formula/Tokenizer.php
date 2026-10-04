@@ -2,12 +2,12 @@
 /**
  * Formula tokenizer.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Domain\Pricing\Formula;
+namespace WooOptionsPro\Domain\Pricing\Formula;
 
 use RuntimeException;
 
@@ -17,7 +17,7 @@ final class Tokenizer {
 	 */
 	public function tokenize(string $source): array {
 		if (strlen($source) > 2000) {
-			throw new RuntimeException('wooptionsfic_formula_too_long');
+			throw new RuntimeException('wooptions-pro_formula_too_long');
 		}
 
 		$tokens = [];
@@ -93,7 +93,7 @@ final class Tokenizer {
 					++$index;
 				}
 				if (! $closed) {
-					throw new RuntimeException('wooptionsfic_formula_unterminated_string');
+					throw new RuntimeException('wooptions-pro_formula_unterminated_string');
 				}
 				$tokens[] = ['type' => 'string', 'value' => $value, 'position' => $start];
 				continue;
@@ -113,11 +113,11 @@ final class Tokenizer {
 				continue;
 			}
 
-			throw new RuntimeException('wooptionsfic_formula_invalid_character_at_' . $index);
+			throw new RuntimeException('wooptions-pro_formula_invalid_character_at_' . $index);
 		}
 
 		if (count($tokens) > 1000) {
-			throw new RuntimeException('wooptionsfic_formula_too_many_tokens');
+			throw new RuntimeException('wooptions-pro_formula_too_many_tokens');
 		}
 
 		$tokens[] = ['type' => 'eof', 'value' => '', 'position' => $length];

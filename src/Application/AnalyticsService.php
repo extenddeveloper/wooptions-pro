@@ -2,15 +2,15 @@
 /**
  * Privacy-safe analytics policy and recording.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Application;
+namespace WooOptionsPro\Application;
 
-use WooptionsFic\Bootstrap\Settings;
-use WooptionsFic\Infrastructure\Persistence\AnalyticsRepository;
+use WooOptionsPro\Bootstrap\Settings;
+use WooOptionsPro\Infrastructure\Persistence\AnalyticsRepository;
 
 final class AnalyticsService {
 	private const ALLOWED_METRICS = [

@@ -2,17 +2,17 @@
 /**
  * Immutable option-set application service.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Application;
+namespace WooOptionsPro\Application;
 
-use WooptionsFic\Domain\Definition\Compiler;
-use WooptionsFic\Domain\Support\Uuid;
-use WooptionsFic\Infrastructure\Persistence\OptionSetRepository;
-use WooptionsFic\Infrastructure\Persistence\Transaction;
+use WooOptionsPro\Domain\Definition\Compiler;
+use WooOptionsPro\Domain\Support\Uuid;
+use WooOptionsPro\Infrastructure\Persistence\OptionSetRepository;
+use WooOptionsPro\Infrastructure\Persistence\Transaction;
 
 final class OptionSetService {
 	public function __construct(
@@ -82,7 +82,7 @@ final class OptionSetService {
 	public function get(string $uuid): array {
 		$set = $this->repository->find_set($uuid);
 		if (! $set) {
-			throw new NotFoundException('wooptionsfic_set_not_found');
+			throw new NotFoundException('wooptions-pro_set_not_found');
 		}
 		$current_id = $set['draftRevisionId'] ?? $set['publishedRevisionId'];
 		$revision   = $current_id ? $this->repository->find_revision_by_id((int) $current_id) : null;
@@ -105,14 +105,14 @@ final class OptionSetService {
 	): array {
 		$set = $this->repository->find_set($uuid);
 		if (! $set) {
-			throw new NotFoundException('wooptionsfic_set_not_found');
+			throw new NotFoundException('wooptions-pro_set_not_found');
 		}
 
 		$parent_id = $set['draftRevisionId'] ?? $set['publishedRevisionId'];
 		$parent    = $parent_id ? $this->repository->find_revision_by_id((int) $parent_id) : null;
 		if ('' !== $expected_hash && $parent && $parent['contentHash'] !== $expected_hash) {
 			throw new ConflictException(
-				'wooptionsfic_revision_conflict',
+				'wooptions-pro_revision_conflict',
 				[
 					'currentHash'         => $parent['contentHash'],
 					'currentRevisionUuid' => $parent['uuid'],
@@ -163,17 +163,17 @@ final class OptionSetService {
 		$set = $this->get($uuid);
 		$draft = $set['currentRevision'];
 		if (! is_array($draft)) {
-			throw new ValidationException('wooptionsfic_no_draft_to_publish', [['code' => 'no_draft']]);
+			throw new ValidationException('wooptions-pro_no_draft_to_publish', [['code' => 'no_draft']]);
 		}
 		if ('' !== $expected_hash && $draft['contentHash'] !== $expected_hash) {
-			throw new ConflictException('wooptionsfic_revision_conflict', ['currentHash' => $draft['contentHash']]);
+			throw new ConflictException('wooptions-pro_revision_conflict', ['currentHash' => $draft['contentHash']]);
 		}
 
 		$definition                 = $draft['definition'];
 		$definition['revisionUuid'] = Uuid::v4();
 		$result                     = $this->compiler->compile($definition);
 		if (! $result['valid']) {
-			throw new ValidationException('wooptionsfic_publish_preflight_failed', $result['errors']);
+			throw new ValidationException('wooptions-pro_publish_preflight_failed', $result['errors']);
 		}
 
 		return $this->transaction->run(function () use ($set, $draft, $result, $version_note, $user_id): array {
@@ -203,8 +203,8 @@ final class OptionSetService {
 				]
 			);
 			update_option(
-				'wooptionsfic_revision_generation',
-				(int) get_option('wooptionsfic_revision_generation', 1) + 1,
+				'wooptions-pro_revision_generation',
+				(int) get_option('wooptions-pro_revision_generation', 1) + 1,
 				false
 			);
 			return $this->get((string) $set['uuid']);
@@ -218,7 +218,7 @@ final class OptionSetService {
 		$set      = $this->repository->find_set($set_uuid);
 		$revision = $this->repository->find_revision($revision_uuid);
 		if (! $set || ! $revision || (int) $revision['optionSetId'] !== (int) $set['id']) {
-			throw new NotFoundException('wooptionsfic_revision_not_found');
+			throw new NotFoundException('wooptions-pro_revision_not_found');
 		}
 
 		$definition                 = $revision['definition'];
@@ -287,7 +287,7 @@ final class OptionSetService {
 		$set = $this->get($uuid);
 		return [
 			'exportSchemaVersion' => 1,
-			'pluginVersion'       => WOOPTIONSFIC_VERSION,
+			'pluginVersion'       => WOOPTIONS_PRO_VERSION,
 			'exportedAtGmt'       => gmdate('Y-m-d\TH:i:s\Z'),
 			'optionSet'           => [
 				'title'      => $set['title'],
@@ -302,7 +302,7 @@ final class OptionSetService {
 	public function revisions(string $uuid): array {
 		$set = $this->repository->find_set($uuid);
 		if (! $set) {
-			throw new NotFoundException('wooptionsfic_set_not_found');
+			throw new NotFoundException('wooptions-pro_set_not_found');
 		}
 		return $this->repository->revisions((int) $set['id']);
 	}
@@ -314,7 +314,7 @@ final class OptionSetService {
 		$set      = $this->repository->find_set($set_uuid);
 		$revision = $this->repository->find_revision($revision_uuid);
 		if (! $set || ! $revision || (int) $revision['optionSetId'] !== (int) $set['id']) {
-			throw new NotFoundException('wooptionsfic_revision_not_found');
+			throw new NotFoundException('wooptions-pro_revision_not_found');
 		}
 		return $revision;
 	}
@@ -341,14 +341,14 @@ final class OptionSetService {
 	public function delete_permanently(string $uuid): array {
 		$set = $this->repository->find_set($uuid);
 		if (! $set) {
-			throw new NotFoundException('wooptionsfic_set_not_found');
+			throw new NotFoundException('wooptions-pro_set_not_found');
 		}
 		$this->transaction->run(function () use ($set): void {
 			$this->repository->delete_set((int) $set['id'], (string) $set['uuid']);
 		});
 		update_option(
-			'wooptionsfic_revision_generation',
-			(int) get_option('wooptionsfic_revision_generation', 1) + 1,
+			'wooptions-pro_revision_generation',
+			(int) get_option('wooptions-pro_revision_generation', 1) + 1,
 			false
 		);
 		return ['deleted' => true, 'uuid' => $uuid];
@@ -357,15 +357,15 @@ final class OptionSetService {
 	private function set_status(string $uuid, string $status, int $user_id): array {
 		$set = $this->repository->find_set($uuid);
 		if (! $set) {
-			throw new NotFoundException('wooptionsfic_set_not_found');
+			throw new NotFoundException('wooptions-pro_set_not_found');
 		}
 		if (! in_array($status, ['active', 'inactive', 'archived'], true)) {
-			throw new ValidationException('wooptionsfic_set_status_invalid', [['code' => 'status_invalid']]);
+			throw new ValidationException('wooptions-pro_set_status_invalid', [['code' => 'status_invalid']]);
 		}
 		$this->repository->update_set((int) $set['id'], ['status' => $status, 'updated_by' => $user_id]);
 		update_option(
-			'wooptionsfic_revision_generation',
-			(int) get_option('wooptionsfic_revision_generation', 1) + 1,
+			'wooptions-pro_revision_generation',
+			(int) get_option('wooptions-pro_revision_generation', 1) + 1,
 			false
 		);
 		return $this->get($uuid);
@@ -444,7 +444,7 @@ final class OptionSetService {
 	private function title(string $title): string {
 		$title = trim(wp_strip_all_tags($title));
 		$title = function_exists('mb_substr') ? (string) mb_substr($title, 0, 255) : substr($title, 0, 255);
-		return '' !== $title ? $title : __('Untitled option set', 'wooptionsfic');
+		return '' !== $title ? $title : __('Untitled option set', 'wooptions-pro');
 	}
 
 	private function note(string $note): string {

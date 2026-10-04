@@ -1,13 +1,13 @@
-namespace WooptionsFic.FieldFactory {
+namespace WooOptionsPro.FieldFactory {
   const choiceTypes = new Set(['select', 'radio', 'checkbox_group', 'segmented', 'color_swatch', 'image_swatch', 'product', 'font']);
 
-  export function emptyPricing(): WooptionsFic.PricingDefinition {
+  export function emptyPricing(): WooOptionsPro.PricingDefinition {
     return { strategy: 'none', amount: '0', percent: '0', mode: 'adjustment' };
   }
 
-  export function choice(label: string, index = 0): WooptionsFic.ChoiceDefinition {
+  export function choice(label: string, index = 0): WooOptionsPro.ChoiceDefinition {
     return {
-      uuid: WooptionsFic.Utils.uuid(),
+      uuid: WooOptionsPro.Utils.uuid(),
       label,
       description: '',
       adminLabel: '',
@@ -25,11 +25,11 @@ namespace WooptionsFic.FieldFactory {
     };
   }
 
-  export function create(type: string): WooptionsFic.FieldDefinition {
-    const manifest = window.WooptionsFicAdmin.fieldTypes[type];
+  export function create(type: string): WooOptionsPro.FieldDefinition {
+    const manifest = window.WooOptionsProAdmin.fieldTypes[type];
     const label = manifest?.label ?? 'Field';
-    const field: WooptionsFic.FieldDefinition = {
-      uuid: WooptionsFic.Utils.uuid(),
+    const field: WooOptionsPro.FieldDefinition = {
+      uuid: WooOptionsPro.Utils.uuid(),
       type,
       label,
       description: '',
@@ -73,7 +73,7 @@ namespace WooptionsFic.FieldFactory {
         field.placeholder = 'Choose a font...';
         field.choices = [
           {
-            uuid: WooptionsFic.Utils.uuid(),
+            uuid: WooOptionsPro.Utils.uuid(),
             label: 'Roboto',
             description: '',
             adminLabel: '',
@@ -93,7 +93,7 @@ namespace WooptionsFic.FieldFactory {
             fontSource: 'google',
           },
           {
-            uuid: WooptionsFic.Utils.uuid(),
+            uuid: WooOptionsPro.Utils.uuid(),
             label: 'Playfair Display',
             description: '',
             adminLabel: '',
@@ -113,7 +113,7 @@ namespace WooptionsFic.FieldFactory {
             fontSource: 'google',
           },
           {
-            uuid: WooptionsFic.Utils.uuid(),
+            uuid: WooOptionsPro.Utils.uuid(),
             label: 'Dancing Script',
             description: '',
             adminLabel: '',
@@ -133,7 +133,7 @@ namespace WooptionsFic.FieldFactory {
             fontSource: 'google',
           },
           {
-            uuid: WooptionsFic.Utils.uuid(),
+            uuid: WooOptionsPro.Utils.uuid(),
             label: 'Pacifico',
             description: '',
             adminLabel: '',
@@ -305,13 +305,13 @@ namespace WooptionsFic.FieldFactory {
     return field;
   }
 
-  export function duplicate(field: WooptionsFic.FieldDefinition): WooptionsFic.FieldDefinition {
-    const copy = WooptionsFic.Utils.clone(field);
-    const remap = (item: WooptionsFic.FieldDefinition): WooptionsFic.FieldDefinition => ({
+  export function duplicate(field: WooOptionsPro.FieldDefinition): WooOptionsPro.FieldDefinition {
+    const copy = WooOptionsPro.Utils.clone(field);
+    const remap = (item: WooOptionsPro.FieldDefinition): WooOptionsPro.FieldDefinition => ({
       ...item,
-      uuid: WooptionsFic.Utils.uuid(),
+      uuid: WooOptionsPro.Utils.uuid(),
       label: item === copy ? `${item.label} copy` : item.label,
-      choices: item.choices?.map((choiceItem) => ({ ...choiceItem, uuid: WooptionsFic.Utils.uuid() })),
+      choices: item.choices?.map((choiceItem) => ({ ...choiceItem, uuid: WooOptionsPro.Utils.uuid() })),
       children: item.children?.map(remap),
     });
     return remap(copy);

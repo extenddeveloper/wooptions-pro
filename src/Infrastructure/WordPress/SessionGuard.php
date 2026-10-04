@@ -2,15 +2,15 @@
 /**
  * Guest/customer session binding and signed public request tokens.
  *
- * @package WooptionsFic
+ * @package WooOptionsPro
  */
 
 declare(strict_types=1);
 
-namespace WooptionsFic\Infrastructure\WordPress;
+namespace WooOptionsPro\Infrastructure\WordPress;
 
 final class SessionGuard {
-	private const COOKIE = 'wooptionsfic_guest';
+	private const COOKIE = 'wooptions-pro_guest';
 
 	public function ensure_guest_cookie(): void {
 		if (is_user_logged_in()) {
