@@ -2,18 +2,18 @@
 /**
  * Saved and shareable configuration use cases.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Application;
+namespace WooptionsFic\Application;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use WooOptionsFic\Bootstrap\Settings;
-use WooOptionsFic\Domain\Support\Uuid;
-use WooOptionsFic\Infrastructure\Persistence\SavedConfigurationRepository;
+use WooptionsFic\Bootstrap\Settings;
+use WooptionsFic\Domain\Support\Uuid;
+use WooptionsFic\Infrastructure\Persistence\SavedConfigurationRepository;
 
 final class SavedConfigurationService {
 	public function __construct(private readonly SavedConfigurationRepository $repository) {

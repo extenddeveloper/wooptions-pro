@@ -4,7 +4,7 @@
  *
  * Experimental behavior is deliberately absent from the customer UI.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 defined('ABSPATH') || exit;

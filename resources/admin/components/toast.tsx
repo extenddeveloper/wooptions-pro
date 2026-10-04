@@ -1,4 +1,4 @@
-namespace WooOptionsFic.Toast {
+namespace WooptionsFic.Toast {
   export interface ToastItem {
     id: string;
     type: 'success' | 'error' | 'warning' | 'info';
@@ -74,14 +74,14 @@ namespace WooOptionsFic.Toast {
   }
 }
 
-namespace WooOptionsFic.Components {
+namespace WooptionsFic.Components {
   const { useEffect, useRef, useState } = wp.element;
 
   export function ToastContainer(): any {
-    const [toasts, setToasts] = useState<WooOptionsFic.Toast.ToastItem[]>([]);
+    const [toasts, setToasts] = useState<WooptionsFic.Toast.ToastItem[]>([]);
 
     useEffect(() => {
-      return WooOptionsFic.Toast.subscribe(setToasts);
+      return WooptionsFic.Toast.subscribe(setToasts);
     }, []);
 
     if (!toasts.length) return null;
@@ -92,7 +92,7 @@ namespace WooOptionsFic.Components {
           <ToastCard
             key={toast.id}
             toast={toast}
-            onDismiss={() => WooOptionsFic.Toast.dismiss(toast.id)}
+            onDismiss={() => WooptionsFic.Toast.dismiss(toast.id)}
           />
         ))}
       </div>
@@ -100,7 +100,7 @@ namespace WooOptionsFic.Components {
   }
 
   function ToastCard(props: {
-    toast: WooOptionsFic.Toast.ToastItem;
+    toast: WooptionsFic.Toast.ToastItem;
     onDismiss: () => void;
   }): any {
     const { toast, onDismiss } = props;
@@ -134,7 +134,7 @@ namespace WooOptionsFic.Components {
 
     return (
       <div
-        className={WooOptionsFic.Utils.classNames(
+        className={WooptionsFic.Utils.classNames(
           'wof-toast',
           `wof-toast--${toast.type}`,
           toast.isHiding && 'is-hiding'

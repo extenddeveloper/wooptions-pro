@@ -2,15 +2,15 @@
 /**
  * WooCommerce product/customer facts adapter.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Infrastructure\WooCommerce;
+namespace WooptionsFic\Infrastructure\WooCommerce;
 
-use WooOptionsFic\Application\NotFoundException;
-use WooOptionsFic\Bootstrap\Settings;
+use WooptionsFic\Application\NotFoundException;
+use WooptionsFic\Bootstrap\Settings;
 
 final class ProductContext {
 	/**

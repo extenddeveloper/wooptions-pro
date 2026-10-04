@@ -1,6 +1,6 @@
-namespace WooOptionsFic.Api {
+namespace WooptionsFic.Api {
   const apiFetch = wp.apiFetch;
-  apiFetch.use(apiFetch.createNonceMiddleware(window.WooOptionsFicAdmin.nonce));
+  apiFetch.use(apiFetch.createNonceMiddleware(window.WooptionsFicAdmin.nonce));
 
   export async function request<T>(path: string, options: { method?: string; data?: unknown } = {}): Promise<T> {
     return apiFetch({
@@ -13,11 +13,11 @@ namespace WooOptionsFic.Api {
   export function listOptionSets(params: {
     page?: number;
     perPage?: number;
-    status?: WooOptionsFic.OptionSetStatus;
+    status?: WooptionsFic.OptionSetStatus;
     search?: string;
     orderBy?: string;
     order?: 'ASC' | 'DESC';
-  } = {}): Promise<WooOptionsFic.OptionSetCollection> {
+  } = {}): Promise<WooptionsFic.OptionSetCollection> {
     const query = new URLSearchParams({
       page: String(params.page ?? 1),
       perPage: String(params.perPage ?? 10),
@@ -26,22 +26,22 @@ namespace WooOptionsFic.Api {
       orderBy: params.orderBy ?? 'updated_at_gmt',
       order: params.order ?? 'DESC',
     });
-    return request<WooOptionsFic.OptionSetCollection>(`/option-sets?${query.toString()}`);
+    return request<WooptionsFic.OptionSetCollection>(`/option-sets?${query.toString()}`);
   }
 
-  export function createOptionSet(title: string): Promise<WooOptionsFic.OptionSetRecord> {
+  export function createOptionSet(title: string): Promise<WooptionsFic.OptionSetRecord> {
     return request('/option-sets', { method: 'POST', data: { title } });
   }
 
-  export function getOptionSet(uuid: string): Promise<WooOptionsFic.OptionSetRecord> {
+  export function getOptionSet(uuid: string): Promise<WooptionsFic.OptionSetRecord> {
     return request(`/option-sets/${uuid}`);
   }
 
-  export function updateOptionSet(uuid: string, data: Record<string, unknown>): Promise<WooOptionsFic.OptionSetRecord> {
+  export function updateOptionSet(uuid: string, data: Record<string, unknown>): Promise<WooptionsFic.OptionSetRecord> {
     return request(`/option-sets/${uuid}`, { method: 'PUT', data });
   }
 
-  export function duplicateOptionSet(uuid: string): Promise<WooOptionsFic.OptionSetRecord> {
+  export function duplicateOptionSet(uuid: string): Promise<WooptionsFic.OptionSetRecord> {
     return request(`/option-sets/${uuid}/duplicate`, { method: 'POST' });
   }
 
@@ -51,45 +51,45 @@ namespace WooOptionsFic.Api {
 
   export function saveRevision(
     uuid: string,
-    definition: WooOptionsFic.OptionSetDefinition,
+    definition: WooptionsFic.OptionSetDefinition,
     expectedHash: string,
     versionNote: string,
-  ): Promise<WooOptionsFic.OptionSetRecord> {
+  ): Promise<WooptionsFic.OptionSetRecord> {
     return request(`/option-sets/${uuid}/revisions`, {
       method: 'POST',
       data: { definition, expectedHash, versionNote },
     });
   }
 
-  export function validateDefinition(uuid: string, definition: WooOptionsFic.OptionSetDefinition): Promise<{
+  export function validateDefinition(uuid: string, definition: WooptionsFic.OptionSetDefinition): Promise<{
     valid: boolean;
-    errors: WooOptionsFic.ValidationIssue[];
-    warnings: WooOptionsFic.ValidationIssue[];
+    errors: WooptionsFic.ValidationIssue[];
+    warnings: WooptionsFic.ValidationIssue[];
     contentHash: string;
   }> {
     return request(`/option-sets/${uuid}/validate`, { method: 'POST', data: { definition } });
   }
 
-  export function publishOptionSet(uuid: string, expectedHash: string): Promise<WooOptionsFic.OptionSetRecord> {
+  export function publishOptionSet(uuid: string, expectedHash: string): Promise<WooptionsFic.OptionSetRecord> {
     return request(`/option-sets/${uuid}/publish`, {
       method: 'POST',
       data: { expectedHash, versionNote: 'Published from the builder' },
     });
   }
 
-  export function listRevisions(uuid: string): Promise<WooOptionsFic.RevisionRecord[]> {
+  export function listRevisions(uuid: string): Promise<WooptionsFic.RevisionRecord[]> {
     return request(`/option-sets/${uuid}/revisions`);
   }
 
-  export function rollback(uuid: string, revisionUuid: string): Promise<WooOptionsFic.OptionSetRecord> {
+  export function rollback(uuid: string, revisionUuid: string): Promise<WooptionsFic.OptionSetRecord> {
     return request(`/option-sets/${uuid}/rollback`, { method: 'POST', data: { revisionUuid } });
   }
 
-  export function getAssignments(uuid: string): Promise<{ items: WooOptionsFic.AssignmentRecord[] }> {
+  export function getAssignments(uuid: string): Promise<{ items: WooptionsFic.AssignmentRecord[] }> {
     return request(`/option-sets/${uuid}/assignments`);
   }
 
-  export function saveAssignments(uuid: string, assignments: WooOptionsFic.AssignmentRecord[]): Promise<{ items: WooOptionsFic.AssignmentRecord[] }> {
+  export function saveAssignments(uuid: string, assignments: WooptionsFic.AssignmentRecord[]): Promise<{ items: WooptionsFic.AssignmentRecord[] }> {
     return request(`/option-sets/${uuid}/assignments`, { method: 'PUT', data: { assignments } });
   }
 
@@ -97,7 +97,7 @@ namespace WooOptionsFic.Api {
     type: 'product' | 'variation' | 'category' | 'tag',
     search: string,
     include: number[] = [],
-  ): Promise<{ items: WooOptionsFic.AssignmentTarget[] }> {
+  ): Promise<{ items: WooptionsFic.AssignmentTarget[] }> {
     const query = new URLSearchParams({ type, search, include: include.join(','), perPage: '25' });
     return request(`/assignment-targets?${query.toString()}`);
   }
@@ -107,19 +107,19 @@ namespace WooOptionsFic.Api {
     return request(`/assignment-targets?${query.toString()}`);
   }
 
-  export function listTemplates(): Promise<{ items: WooOptionsFic.TemplateRecord[] }> {
+  export function listTemplates(): Promise<{ items: WooptionsFic.TemplateRecord[] }> {
     return request('/templates');
   }
 
-  export function importTemplate(slug: string): Promise<WooOptionsFic.OptionSetRecord> {
+  export function importTemplate(slug: string): Promise<WooptionsFic.OptionSetRecord> {
     return request('/templates', { method: 'POST', data: { slug } });
   }
 
-  export function previewImport(payload: Record<string, unknown>): Promise<{ valid: boolean; errors: WooOptionsFic.ValidationIssue[]; warnings: WooOptionsFic.ValidationIssue[]; title: string; fieldCount: number; contentHash: string }> {
+  export function previewImport(payload: Record<string, unknown>): Promise<{ valid: boolean; errors: WooptionsFic.ValidationIssue[]; warnings: WooptionsFic.ValidationIssue[]; title: string; fieldCount: number; contentHash: string }> {
     return request('/imports/preview', { method: 'POST', data: payload });
   }
 
-  export function commitImport(payload: Record<string, unknown>, title: string): Promise<WooOptionsFic.OptionSetRecord> {
+  export function commitImport(payload: Record<string, unknown>, title: string): Promise<WooptionsFic.OptionSetRecord> {
     return request('/imports/commit', { method: 'POST', data: { ...payload, title } });
   }
 

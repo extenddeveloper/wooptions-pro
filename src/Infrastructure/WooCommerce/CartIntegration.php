@@ -2,20 +2,20 @@
 /**
  * Server-authoritative WooCommerce cart lifecycle.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Infrastructure\WooCommerce;
+namespace WooptionsFic\Infrastructure\WooCommerce;
 
 use Throwable;
-use WooOptionsFic\Application\AnalyticsService;
-use WooOptionsFic\Application\QuoteService;
-use WooOptionsFic\Application\UploadService;
-use WooOptionsFic\Bootstrap\Settings;
-use WooOptionsFic\Domain\Support\CanonicalJson;
-use WooOptionsFic\Infrastructure\WordPress\SessionGuard;
+use WooptionsFic\Application\AnalyticsService;
+use WooptionsFic\Application\QuoteService;
+use WooptionsFic\Application\UploadService;
+use WooptionsFic\Bootstrap\Settings;
+use WooptionsFic\Domain\Support\CanonicalJson;
+use WooptionsFic\Infrastructure\WordPress\SessionGuard;
 
 final class CartIntegration {
 	/** @var array<string,array<string,mixed>> */
@@ -155,7 +155,7 @@ final class CartIntegration {
 
 			$selection = $this->posted_selection();
 			if (! $token_valid && defined('WP_DEBUG') && WP_DEBUG) {
-				error_log('WooOptionsFic add-to-cart token soft-refresh for product ' . $product_id); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+				error_log('WooptionsFic add-to-cart token soft-refresh for product ' . $product_id); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			}
 			$quote     = $this->quotes->quote($selection, $context);
 			if (empty($quote['valid'])) {
@@ -166,7 +166,7 @@ final class CartIntegration {
 			return true;
 		} catch (Throwable $exception) {
 			if (defined('WP_DEBUG') && WP_DEBUG) {
-				error_log('WooOptionsFic add-to-cart validation: ' . $exception->getMessage()); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+				error_log('WooptionsFic add-to-cart validation: ' . $exception->getMessage()); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			}
 			wc_add_notice(__('We could not validate these product options. Please refresh and try again.', 'wooptionsfic'), 'error');
 			return false;

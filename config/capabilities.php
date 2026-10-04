@@ -1,8 +1,8 @@
 <?php
 /**
- * WooOptionsFic capabilities.
+ * WooptionsFic capabilities.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 defined('ABSPATH') || exit;

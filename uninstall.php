@@ -1,11 +1,11 @@
 <?php
 /**
- * WooOptionsFic uninstall routine.
+ * WooptionsFic uninstall routine.
  *
  * Merchant data is retained by default. It is removed only when the merchant
  * enabled the uninstall setting or explicitly defined WOOPTIONSFIC_REMOVE_DATA.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);

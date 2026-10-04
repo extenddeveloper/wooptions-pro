@@ -2,15 +2,15 @@
 /**
  * Formula AST evaluator with operation/depth limits.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Domain\Pricing\Formula;
+namespace WooptionsFic\Domain\Pricing\Formula;
 
 use RuntimeException;
-use WooOptionsFic\Domain\Pricing\Decimal;
+use WooptionsFic\Domain\Pricing\Decimal;
 
 final class Evaluator {
 	private int $operations = 0;

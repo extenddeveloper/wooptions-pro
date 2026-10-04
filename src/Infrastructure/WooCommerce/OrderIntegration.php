@@ -2,16 +2,16 @@
 /**
  * Immutable WooCommerce order-item snapshots.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Infrastructure\WooCommerce;
+namespace WooptionsFic\Infrastructure\WooCommerce;
 
-use WooOptionsFic\Application\AnalyticsService;
-use WooOptionsFic\Application\UploadService;
-use WooOptionsFic\Infrastructure\WordPress\SessionGuard;
+use WooptionsFic\Application\AnalyticsService;
+use WooptionsFic\Application\UploadService;
+use WooptionsFic\Infrastructure\WordPress\SessionGuard;
 
 final class OrderIntegration {
 	public function __construct(

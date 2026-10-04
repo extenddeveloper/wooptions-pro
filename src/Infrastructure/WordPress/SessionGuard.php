@@ -2,12 +2,12 @@
 /**
  * Guest/customer session binding and signed public request tokens.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Infrastructure\WordPress;
+namespace WooptionsFic\Infrastructure\WordPress;
 
 final class SessionGuard {
 	private const COOKIE = 'wooptionsfic_guest';

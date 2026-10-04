@@ -5,14 +5,14 @@
  * Handles WordPress font upload MIME types, custom font retrieval,
  * and @font-face CSS generation for admin and storefront.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Domain\Font;
+namespace WooptionsFic\Domain\Font;
 
-use WooOptionsFic\Bootstrap\Settings;
+use WooptionsFic\Bootstrap\Settings;
 
 final class CustomFontService {
 	public static function register(): void {

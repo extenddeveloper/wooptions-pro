@@ -2,21 +2,21 @@
 /**
  * Private upload intents, completion, ownership, and cleanup.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Application;
+namespace WooptionsFic\Application;
 
 use DateTimeImmutable;
 use DateTimeZone;
 use RuntimeException;
-use WooOptionsFic\Bootstrap\Settings;
-use WooOptionsFic\Domain\Support\Uuid;
-use WooOptionsFic\Domain\Upload\UploadScanner;
-use WooOptionsFic\Infrastructure\Persistence\UploadRepository;
-use WooOptionsFic\Infrastructure\Storage\LocalPrivateStorage;
+use WooptionsFic\Bootstrap\Settings;
+use WooptionsFic\Domain\Support\Uuid;
+use WooptionsFic\Domain\Upload\UploadScanner;
+use WooptionsFic\Infrastructure\Persistence\UploadRepository;
+use WooptionsFic\Infrastructure\Storage\LocalPrivateStorage;
 
 final class UploadService {
 	private const MIME_BY_EXTENSION = [

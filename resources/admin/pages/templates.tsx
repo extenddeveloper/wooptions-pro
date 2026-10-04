@@ -1,8 +1,8 @@
-namespace WooOptionsFic.Pages {
+namespace WooptionsFic.Pages {
   const { __, sprintf } = wp.i18n;
   const { useEffect, useMemo, useRef, useState } = wp.element;
   const { Button } = wp.components;
-  const { Dashicon } = WooOptionsFic.Components;
+  const { Dashicon } = WooptionsFic.Components;
 
   type TemplateSort = 'popular' | 'newest' | 'name';
   type ViewMode = 'grid' | 'list';
@@ -129,7 +129,7 @@ namespace WooOptionsFic.Pages {
   }
 
   function TemplateCard(props: {
-    item: WooOptionsFic.TemplateRecord;
+    item: WooptionsFic.TemplateRecord;
     selected: boolean;
     busy: boolean;
     onSelect: () => void;
@@ -142,7 +142,7 @@ namespace WooOptionsFic.Pages {
 
     return (
       <article
-        className={WooOptionsFic.Utils.classNames(
+        className={WooptionsFic.Utils.classNames(
           'wof-new-template-card',
           selected && 'is-selected'
         )}
@@ -217,7 +217,7 @@ namespace WooOptionsFic.Pages {
   }
 
   export function Templates(props: { navigate: (route: string) => void }): any {
-    const [items, setItems] = useState<WooOptionsFic.TemplateRecord[]>([]);
+    const [items, setItems] = useState<WooptionsFic.TemplateRecord[]>([]);
     const [search, setSearch] = useState('');
     const [category, setCategory] = useState('all');
     const [fieldTypeFilter, setFieldTypeFilter] = useState('all');
@@ -236,14 +236,14 @@ namespace WooOptionsFic.Pages {
     const searchInputRef = useRef<any>(null);
 
     useEffect(() => {
-      WooOptionsFic.Api.listTemplates()
+      WooptionsFic.Api.listTemplates()
         .then((response) => {
           setItems(response.items);
           if (response.items.length && !selectedSlug) {
             setSelectedSlug(response.items[0].slug);
           }
         })
-        .catch((reason) => setError(WooOptionsFic.Utils.errorMessage(reason)))
+        .catch((reason) => setError(WooptionsFic.Utils.errorMessage(reason)))
         .finally(() => setLoading(false));
     }, []);
 
@@ -316,10 +316,10 @@ namespace WooOptionsFic.Pages {
       setBusy(slug);
       setError('');
       try {
-        const result = await WooOptionsFic.Api.importTemplate(slug);
+        const result = await WooptionsFic.Api.importTemplate(slug);
         props.navigate(`builder/${result.uuid}`);
       } catch (reason) {
-        setError(WooOptionsFic.Utils.errorMessage(reason));
+        setError(WooptionsFic.Utils.errorMessage(reason));
       } finally {
         setBusy(null);
       }
@@ -329,10 +329,10 @@ namespace WooOptionsFic.Pages {
       setCreating(true);
       setError('');
       try {
-        const created = await WooOptionsFic.Api.createOptionSet(__('Untitled option set', 'wooptionsfic'));
+        const created = await WooptionsFic.Api.createOptionSet(__('Untitled option set', 'wooptionsfic'));
         props.navigate(`builder/${created.uuid}`);
       } catch (reason) {
-        setError(WooOptionsFic.Utils.errorMessage(reason));
+        setError(WooptionsFic.Utils.errorMessage(reason));
       } finally {
         setCreating(false);
       }
@@ -347,14 +347,14 @@ namespace WooOptionsFic.Pages {
       try {
         const raw = await file.text();
         const payload = JSON.parse(raw);
-        const previewResult = await WooOptionsFic.Api.previewImport(payload);
+        const previewResult = await WooptionsFic.Api.previewImport(payload);
         if (!previewResult.valid) {
           throw new Error(__('The selected file is not a valid option set template.', 'wooptionsfic'));
         }
-        const result = await WooOptionsFic.Api.commitImport(payload, previewResult.title || __('Imported template', 'wooptionsfic'));
+        const result = await WooptionsFic.Api.commitImport(payload, previewResult.title || __('Imported template', 'wooptionsfic'));
         props.navigate(`builder/${result.uuid}`);
       } catch (reason) {
-        setError(WooOptionsFic.Utils.errorMessage(reason));
+        setError(WooptionsFic.Utils.errorMessage(reason));
       } finally {
         setImporting(false);
       }
@@ -531,9 +531,9 @@ namespace WooOptionsFic.Pages {
 
         {error ? (
           <div className="wof-notice-wrap">
-            <WooOptionsFic.Components.InlineNotice type="error" onClose={() => setError('')}>
+            <WooptionsFic.Components.InlineNotice type="error" onClose={() => setError('')}>
               {error}
-            </WooOptionsFic.Components.InlineNotice>
+            </WooptionsFic.Components.InlineNotice>
           </div>
         ) : null}
 
@@ -542,7 +542,7 @@ namespace WooOptionsFic.Pages {
           {/* Left / Center Catalog Cards */}
           <div className="wof-templates-catalog-column">
             {loading ? (
-              <WooOptionsFic.Components.Loading label={__('Loading templates…', 'wooptionsfic')} />
+              <WooptionsFic.Components.Loading label={__('Loading templates…', 'wooptionsfic')} />
             ) : visible.length ? (
               <div className={`wof-templates-cards-grid is-${viewMode}`}>
                 {visible.map((item) => (
@@ -558,7 +558,7 @@ namespace WooOptionsFic.Pages {
                 ))}
               </div>
             ) : (
-              <WooOptionsFic.Components.EmptyState
+              <WooptionsFic.Components.EmptyState
                 icon="search"
                 title={__('No templates found', 'wooptionsfic')}
                 description={__('Try adjusting your search terms or category filters.', 'wooptionsfic')}

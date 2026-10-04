@@ -2,18 +2,18 @@
 /**
  * Server-authoritative configuration quote.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Application;
+namespace WooptionsFic\Application;
 
 use RuntimeException;
-use WooOptionsFic\Bootstrap\Settings;
-use WooOptionsFic\Domain\Pricing\PriceEngine;
-use WooOptionsFic\Domain\Selection\SelectionService;
-use WooOptionsFic\Domain\Snapshot\SnapshotFactory;
+use WooptionsFic\Bootstrap\Settings;
+use WooptionsFic\Domain\Pricing\PriceEngine;
+use WooptionsFic\Domain\Selection\SelectionService;
+use WooptionsFic\Domain\Snapshot\SnapshotFactory;
 
 final class QuoteService {
 	public function __construct(

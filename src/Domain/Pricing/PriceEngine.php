@@ -2,16 +2,16 @@
 /**
  * Deterministic price engine.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Domain\Pricing;
+namespace WooptionsFic\Domain\Pricing;
 
 use RuntimeException;
-use WooOptionsFic\Domain\Pricing\Formula\Evaluator;
-use WooOptionsFic\Domain\Rule\RuleEngine;
+use WooptionsFic\Domain\Pricing\Formula\Evaluator;
+use WooptionsFic\Domain\Rule\RuleEngine;
 
 final class PriceEngine
 {

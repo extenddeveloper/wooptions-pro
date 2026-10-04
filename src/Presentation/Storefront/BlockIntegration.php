@@ -2,12 +2,12 @@
 /**
  * Dynamic product-options block.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Presentation\Storefront;
+namespace WooptionsFic\Presentation\Storefront;
 
 final class BlockIntegration {
 	public function __construct(private readonly Renderer $renderer) {

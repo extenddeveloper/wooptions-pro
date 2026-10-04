@@ -2,12 +2,12 @@
 /**
  * Versioned database schema.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Infrastructure\Persistence;
+namespace WooptionsFic\Infrastructure\Persistence;
 
 final class Schema {
 	public const VERSION_OPTION = 'wooptionsfic_db_version';

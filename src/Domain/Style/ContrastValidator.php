@@ -2,12 +2,12 @@
 /**
  * WCAG contrast calculations.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Domain\Style;
+namespace WooptionsFic\Domain\Style;
 
 final class ContrastValidator {
 	public function ratio(string $foreground, string $background): ?float {

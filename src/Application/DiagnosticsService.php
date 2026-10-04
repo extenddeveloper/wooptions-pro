@@ -2,16 +2,16 @@
 /**
  * Merchant-facing bounded diagnostics.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Application;
+namespace WooptionsFic\Application;
 
-use WooOptionsFic\Bootstrap\Requirements;
-use WooOptionsFic\Infrastructure\Persistence\Schema;
-use WooOptionsFic\Infrastructure\Storage\LocalPrivateStorage;
+use WooptionsFic\Bootstrap\Requirements;
+use WooptionsFic\Infrastructure\Persistence\Schema;
+use WooptionsFic\Infrastructure\Storage\LocalPrivateStorage;
 
 final class DiagnosticsService {
 	public function __construct(private readonly LocalPrivateStorage $storage) {

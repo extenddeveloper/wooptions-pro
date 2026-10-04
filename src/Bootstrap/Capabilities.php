@@ -2,12 +2,12 @@
 /**
  * Capability installation.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Bootstrap;
+namespace WooptionsFic\Bootstrap;
 
 final class Capabilities {
 	/**

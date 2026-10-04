@@ -2,12 +2,12 @@
 /**
  * Plugin deactivation.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Bootstrap;
+namespace WooptionsFic\Bootstrap;
 
 final class Deactivation {
 	public static function deactivate(bool $network_wide = false): void {

@@ -2,12 +2,12 @@
 /**
  * Storefront asset registration.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Presentation\Storefront;
+namespace WooptionsFic\Presentation\Storefront;
 
 final class Assets {
 	public function register(): void {
@@ -28,7 +28,7 @@ final class Assets {
 		);
 		wp_add_inline_script(
 			'wooptionsfic-storefront',
-			'window.WooOptionsFicStorefront=' . wp_json_encode(
+			'window.WooptionsFicStorefront=' . wp_json_encode(
 				[
 					'restRoot'       => esc_url_raw(rest_url('wooptionsfic/v1/')),
 					'locale'           => determine_locale(),

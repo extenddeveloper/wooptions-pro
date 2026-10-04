@@ -1,4 +1,4 @@
-namespace WooOptionsFic.Components {
+namespace WooptionsFic.Components {
   const { __ } = wp.i18n;
   const { useState } = wp.element;
 
@@ -31,7 +31,7 @@ namespace WooOptionsFic.Components {
             <span className="wof-brand-mark">
               <Dashicon name="screenoptions" />
             </span>
-            <span className="wof-brand-name">WooOptionsFic</span>
+            <span className="wof-brand-name">WooptionsFic</span>
           </button>
 
           {/* Middle: Navigation Links */}
@@ -95,7 +95,7 @@ namespace WooOptionsFic.Components {
                   <span className="wof-brand-mark">
                     <Dashicon name="screenoptions" />
                   </span>
-                  <span className="wof-brand-name">WooOptionsFic</span>
+                  <span className="wof-brand-name">WooptionsFic</span>
                 </div>
                 <button
                   type="button"

@@ -2,14 +2,14 @@
 /**
  * Opaque upload-reference field.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Domain\Definition\Type;
+namespace WooptionsFic\Domain\Definition\Type;
 
-use WooOptionsFic\Domain\Support\Uuid;
+use WooptionsFic\Domain\Support\Uuid;
 
 final class UploadFieldType extends AbstractFieldType {
 	public function key(): string {

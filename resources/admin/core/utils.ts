@@ -1,4 +1,4 @@
-namespace WooOptionsFic.Utils {
+namespace WooptionsFic.Utils {
   export const i18n = wp.i18n;
 
   export function clone<T>(value: T): T {
@@ -57,9 +57,9 @@ namespace WooOptionsFic.Utils {
       .replace(/^-|-$/g, '');
   }
 
-  export function fieldByUuid(document: WooOptionsFic.OptionSetDefinition | null, uuidValue: string | null): WooOptionsFic.FieldDefinition | null {
+  export function fieldByUuid(document: WooptionsFic.OptionSetDefinition | null, uuidValue: string | null): WooptionsFic.FieldDefinition | null {
     if (!document || !uuidValue) return null;
-    const walk = (fields: WooOptionsFic.FieldDefinition[]): WooOptionsFic.FieldDefinition | null => {
+    const walk = (fields: WooptionsFic.FieldDefinition[]): WooptionsFic.FieldDefinition | null => {
       for (const field of fields) {
         if (field.uuid === uuidValue) return field;
         if (field.children?.length) {
@@ -73,10 +73,10 @@ namespace WooOptionsFic.Utils {
   }
 
   export function updateFieldTree(
-    fields: WooOptionsFic.FieldDefinition[],
+    fields: WooptionsFic.FieldDefinition[],
     uuidValue: string,
-    updater: (field: WooOptionsFic.FieldDefinition) => WooOptionsFic.FieldDefinition,
-  ): WooOptionsFic.FieldDefinition[] {
+    updater: (field: WooptionsFic.FieldDefinition) => WooptionsFic.FieldDefinition,
+  ): WooptionsFic.FieldDefinition[] {
     return fields.map((field) => {
       if (field.uuid === uuidValue) return updater(field);
       if (field.children?.length) {
@@ -86,7 +86,7 @@ namespace WooOptionsFic.Utils {
     });
   }
 
-  export function removeFieldTree(fields: WooOptionsFic.FieldDefinition[], uuidValue: string): WooOptionsFic.FieldDefinition[] {
+  export function removeFieldTree(fields: WooptionsFic.FieldDefinition[], uuidValue: string): WooptionsFic.FieldDefinition[] {
     return fields
       .filter((field) => field.uuid !== uuidValue)
       .map((field) => ({
@@ -95,9 +95,9 @@ namespace WooOptionsFic.Utils {
       }));
   }
 
-  export function allFields(fields: WooOptionsFic.FieldDefinition[]): WooOptionsFic.FieldDefinition[] {
-    const result: WooOptionsFic.FieldDefinition[] = [];
-    const walk = (items: WooOptionsFic.FieldDefinition[]) => {
+  export function allFields(fields: WooptionsFic.FieldDefinition[]): WooptionsFic.FieldDefinition[] {
+    const result: WooptionsFic.FieldDefinition[] = [];
+    const walk = (items: WooptionsFic.FieldDefinition[]) => {
       items.forEach((field) => {
         result.push(field);
         if (field.children?.length) walk(field.children);
@@ -107,7 +107,7 @@ namespace WooOptionsFic.Utils {
     return result;
   }
 
-  export function countChoices(fields: WooOptionsFic.FieldDefinition[]): number {
+  export function countChoices(fields: WooptionsFic.FieldDefinition[]): number {
     return allFields(fields).reduce((count, field) => count + (field.choices?.length ?? 0), 0);
   }
 

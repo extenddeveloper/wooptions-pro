@@ -5,7 +5,7 @@
 
 (() => {
     "use strict";
-    const e = window.WooOptionsFicStorefront?.i18n ?? {}, t = { checking: e.checking ?? "Checking your options…", confirmed: e.confirmed ?? "Configuration confirmed", couldNotQuote: e.couldNotQuote ?? "Please review your options before adding this product.", uploading: e.uploading ?? "Uploading…", uploadComplete: e.uploadComplete ?? "Upload complete" }, o = window.WooOptionsFicStorefront?.restRoot ?? "/wp-json/wooptionsfic/v1/";
+    const e = window.WooptionsFicStorefront?.i18n ?? {}, t = { checking: e.checking ?? "Checking your options…", confirmed: e.confirmed ?? "Configuration confirmed", couldNotQuote: e.couldNotQuote ?? "Please review your options before adding this product.", uploading: e.uploading ?? "Uploading…", uploadComplete: e.uploadComplete ?? "Upload complete" }, o = window.WooptionsFicStorefront?.restRoot ?? "/wp-json/wooptionsfic/v1/";
     function r(e) { return window.CSS?.escape ? window.CSS.escape(e) : e.replace(/[^a-zA-Z0-9_-]/g, "\\$&"); }
     class a {
         quoteTimer = 0;
@@ -18,7 +18,7 @@
         productImageSnapshot = null;
         hasSubmitted = !1;
         constructor(e) { this.root = e; const t = e.querySelector("[data-wof-config]"); if (!t?.textContent)
-            throw new Error("WooOptionsFic configuration payload is missing."); this.payload = JSON.parse(t.textContent), this.configuration = this.payload.configuration, this.form = e.closest("form.cart"), this.root.querySelectorAll("input, select, textarea").forEach(e => { e.disabled && (e.dataset.wofFixedDisabled = "true"), e.required = !1; });
+            throw new Error("WooptionsFic configuration payload is missing."); this.payload = JSON.parse(t.textContent), this.configuration = this.payload.configuration, this.form = e.closest("form.cart"), this.root.querySelectorAll("input, select, textarea").forEach(e => { e.disabled && (e.dataset.wofFixedDisabled = "true"), e.required = !1; });
             (this.configuration?.fields ?? []).forEach(f => {
                 if (f && f.disabled && f.uuid) {
                     const el = this.root.querySelector(`[data-wof-field="${r(f.uuid)}"]`);
@@ -1317,7 +1317,7 @@
             const price = opt?.dataset?.price ?? "";
             const regPrice = opt?.dataset?.regularPrice ?? "";
             const salePrice = opt?.dataset?.salePrice ?? "";
-            const currency = window.WooOptionsFicStorefront?.currencySymbol || "$";
+            const currency = window.WooptionsFicStorefront?.currencySymbol || "$";
 
             if (price && sel.value) {
                 if (regPrice && salePrice && regPrice !== salePrice) {
@@ -1515,7 +1515,7 @@
                 }
 
                 if (e.price?.formulas) {
-                    const currency = e.price.unitPrice?.currency || window.WooOptionsFicStorefront?.currency || 'USD';
+                    const currency = e.price.unitPrice?.currency || window.WooptionsFicStorefront?.currency || 'USD';
                     Object.entries(e.price.formulas).forEach(([uuid, info]) => {
                         const outs = this.root.querySelectorAll(`[data-wof-calculated="${r(uuid)}"]`);
                         if (!outs.length) return;
@@ -2585,8 +2585,8 @@
         money(e, t) {
             const o = Number(e);
             if (Number.isFinite(o)) {
-                const symbol = window.WooOptionsFicStorefront?.currencySymbol || '$';
-                const pos = window.WooOptionsFicStorefront?.currencyPosition || 'left_space';
+                const symbol = window.WooptionsFicStorefront?.currencySymbol || '$';
+                const pos = window.WooptionsFicStorefront?.currencyPosition || 'left_space';
                 const dec = (String(e).split('.')[1] || '00').length;
                 const formattedNum = o.toFixed(Math.min(6, Math.max(2, dec)));
                 if (pos === 'right') return `${formattedNum}${symbol}`;
@@ -2606,7 +2606,7 @@
             new a(e);
         }
         catch (e) {
-            window.console.error("WooOptionsFic could not initialize.", e);
+            window.console.error("WooptionsFic could not initialize.", e);
         }
     } }); }
     "loading" === document.readyState ? document.addEventListener("DOMContentLoaded", i, { once: !0 }) : i();

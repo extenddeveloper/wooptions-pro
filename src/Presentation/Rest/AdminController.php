@@ -2,24 +2,24 @@
 /**
  * Capability-protected administration REST API.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Presentation\Rest;
+namespace WooptionsFic\Presentation\Rest;
 
-use WooOptionsFic\Application\AnalyticsService;
-use WooOptionsFic\Application\AssignmentService;
-use WooOptionsFic\Application\DiagnosticsService;
-use WooOptionsFic\Application\OptionSetService;
-use WooOptionsFic\Application\TemplateService;
-use WooOptionsFic\Bootstrap\Settings;
-use WooOptionsFic\Domain\Definition\Compiler;
-use WooOptionsFic\Domain\Pricing\Formula\Evaluator;
-use WooOptionsFic\Domain\Pricing\Formula\Parser;
-use WooOptionsFic\Domain\Rule\RuleEngine;
-use WooOptionsFic\Domain\Style\ContrastValidator;
+use WooptionsFic\Application\AnalyticsService;
+use WooptionsFic\Application\AssignmentService;
+use WooptionsFic\Application\DiagnosticsService;
+use WooptionsFic\Application\OptionSetService;
+use WooptionsFic\Application\TemplateService;
+use WooptionsFic\Bootstrap\Settings;
+use WooptionsFic\Domain\Definition\Compiler;
+use WooptionsFic\Domain\Pricing\Formula\Evaluator;
+use WooptionsFic\Domain\Pricing\Formula\Parser;
+use WooptionsFic\Domain\Rule\RuleEngine;
+use WooptionsFic\Domain\Style\ContrastValidator;
 
 final class AdminController
 {
@@ -628,7 +628,7 @@ final class AdminController
 			$body = $this->body($request);
 			$expression = substr(trim((string) ($body['expression'] ?? '0')), 0, 2000);
 			$fields = (array) ($body['fields'] ?? []);
-			$resolved = \WooOptionsFic\Domain\Pricing\Formula\Evaluator::resolve_tokens($expression, $fields);
+			$resolved = \WooptionsFic\Domain\Pricing\Formula\Evaluator::resolve_tokens($expression, $fields);
 			$ast = $this->formula_parser->parse($resolved);
 
 			$variables = (array) ($body['variables'] ?? []);
@@ -687,7 +687,7 @@ final class AdminController
 					}
 				}
 
-				$variables['fields'] = \WooOptionsFic\Domain\Pricing\PriceEngine::resolve_formula_variables(
+				$variables['fields'] = \WooptionsFic\Domain\Pricing\PriceEngine::resolve_formula_variables(
 					$fields,
 					$sample_values,
 					$sample_context
@@ -727,7 +727,7 @@ final class AdminController
 							strtolower($c_lbl),
 							strtolower($c_slug),
 						]));
-						$c_num = \WooOptionsFic\Domain\Pricing\PriceEngine::calculate_choice_price(
+						$c_num = \WooptionsFic\Domain\Pricing\PriceEngine::calculate_choice_price(
 							$ch,
 							$f,
 							$sample_context['basePrice'],

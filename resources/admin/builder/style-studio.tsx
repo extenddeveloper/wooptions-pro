@@ -1,4 +1,4 @@
-namespace WooOptionsFic.Builder {
+namespace WooptionsFic.Builder {
   const { ColorPicker, SelectControl, ToggleControl } = wp.components;
   const { __ } = wp.i18n;
   const { useState, useEffect, useRef } = wp.element;
@@ -158,17 +158,17 @@ namespace WooOptionsFic.Builder {
     );
   }
 
-  export function StyleStudio(props: { document: WooOptionsFic.OptionSetDefinition; onChange: (patch: Partial<WooOptionsFic.OptionSetDefinition>) => void }): any {
+  export function StyleStudio(props: { document: WooptionsFic.OptionSetDefinition; onChange: (patch: Partial<WooptionsFic.OptionSetDefinition>) => void }): any {
     const document = props.document;
     const [isCustomizeOpen, setIsCustomizeOpen] = useState(true);
 
-    const updateStyle = (patch: Partial<WooOptionsFic.OptionSetDefinition['style']>) => props.onChange({ style: { ...document.style, ...patch } });
-    const updateTypography = (patch: Partial<WooOptionsFic.TypographyDefinition>) => updateStyle({ typography: { ...document.style.typography, ...patch } });
-    const updateSettings = (patch: Partial<WooOptionsFic.OptionSetDefinition['settings']>) => props.onChange({ settings: { ...document.settings, ...patch } });
+    const updateStyle = (patch: Partial<WooptionsFic.OptionSetDefinition['style']>) => props.onChange({ style: { ...document.style, ...patch } });
+    const updateTypography = (patch: Partial<WooptionsFic.TypographyDefinition>) => updateStyle({ typography: { ...document.style.typography, ...patch } });
+    const updateSettings = (patch: Partial<WooptionsFic.OptionSetDefinition['settings']>) => props.onChange({ settings: { ...document.settings, ...patch } });
     const fonts = ['inherit', 'system-ui', 'Inter', 'Manrope', 'Poppins', 'Outfit', 'Plus Jakarta Sans', 'Roboto'];
 
     const handleSelectPalette = (key: string) => {
-      const preset = window.WooOptionsFicAdmin.palettes[key];
+      const preset = window.WooptionsFicAdmin.palettes[key];
       const newOverrides = preset?.tokens ? { ...preset.tokens } : {};
       updateStyle({
         palette: key,
@@ -177,7 +177,7 @@ namespace WooOptionsFic.Builder {
     };
 
     const handleColorChange = (tokenKey: string, hex: string) => {
-      const presetTokens = window.WooOptionsFicAdmin.palettes[document.style.palette]?.tokens ?? {};
+      const presetTokens = window.WooptionsFicAdmin.palettes[document.style.palette]?.tokens ?? {};
       const currentOverrides = document.style.overrides ?? {};
       const updated = {
         ...presetTokens,
@@ -194,7 +194,7 @@ namespace WooOptionsFic.Builder {
       if (document.style?.overrides && document.style.overrides[tokenKey]) {
         color = document.style.overrides[tokenKey];
       } else {
-        const preset = window.WooOptionsFicAdmin.palettes?.[document.style?.palette];
+        const preset = window.WooptionsFicAdmin.palettes?.[document.style?.palette];
         if (preset?.tokens && preset.tokens[tokenKey]) {
           color = preset.tokens[tokenKey];
         }
@@ -208,7 +208,7 @@ namespace WooOptionsFic.Builder {
     return <div className="wof-style-studio">
       <h3>{__('Color palette', 'wooptionsfic')}</h3>
       <div className="wof-palette-picker">
-        {Object.entries(window.WooOptionsFicAdmin.palettes).map(([key, palette]) => (
+        {Object.entries(window.WooptionsFicAdmin.palettes).map(([key, palette]) => (
           <button
             type="button"
             key={key}

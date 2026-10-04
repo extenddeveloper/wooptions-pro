@@ -2,17 +2,17 @@
 /**
  * Immutable option-set application service.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Application;
+namespace WooptionsFic\Application;
 
-use WooOptionsFic\Domain\Definition\Compiler;
-use WooOptionsFic\Domain\Support\Uuid;
-use WooOptionsFic\Infrastructure\Persistence\OptionSetRepository;
-use WooOptionsFic\Infrastructure\Persistence\Transaction;
+use WooptionsFic\Domain\Definition\Compiler;
+use WooptionsFic\Domain\Support\Uuid;
+use WooptionsFic\Infrastructure\Persistence\OptionSetRepository;
+use WooptionsFic\Infrastructure\Persistence\Transaction;
 
 final class OptionSetService {
 	public function __construct(

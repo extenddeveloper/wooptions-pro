@@ -2,12 +2,12 @@
 /**
  * Bounded plugin settings.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Bootstrap;
+namespace WooptionsFic\Bootstrap;
 
 final class Settings {
 	public const OPTION = 'wooptionsfic_settings';

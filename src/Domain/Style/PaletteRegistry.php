@@ -2,12 +2,12 @@
 /**
  * Semantic storefront palette resolution.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Domain\Style;
+namespace WooptionsFic\Domain\Style;
 
 final class PaletteRegistry {
 	/** @var array<string, array<string,mixed>> */

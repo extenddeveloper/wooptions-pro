@@ -1,4 +1,4 @@
-namespace WooOptionsFic.Components {
+namespace WooptionsFic.Components {
   const { Button, Modal, Spinner } = wp.components;
   const { __ } = wp.i18n;
   const { useEffect, useState } = wp.element;
@@ -29,7 +29,7 @@ namespace WooOptionsFic.Components {
 
   export function Loading(props: { label?: string; overlay?: boolean }): any {
     return (
-      <div className={WooOptionsFic.Utils.classNames('wof-loading', props.overlay && 'is-overlay')} role="status">
+      <div className={WooptionsFic.Utils.classNames('wof-loading', props.overlay && 'is-overlay')} role="status">
         <span className="wof-loader" aria-hidden="true" />
         <span>{props.label ?? __('Loading…', 'wooptionsfic')}</span>
       </div>
@@ -78,7 +78,7 @@ namespace WooOptionsFic.Components {
       <Modal
         title={props.title}
         onRequestClose={() => !props.busy && props.onCancel()}
-        className={WooOptionsFic.Utils.classNames(
+        className={WooptionsFic.Utils.classNames(
           'wof-modal',
           'wof-confirm-modal',
           props.destructive && 'is-destructive'
@@ -123,7 +123,7 @@ namespace WooOptionsFic.Components {
           </button>
           <button
             type="button"
-            className={WooOptionsFic.Utils.classNames(
+            className={WooptionsFic.Utils.classNames(
               'wof-btn-modal-confirm',
               props.destructive && 'is-destructive'
             )}
@@ -146,7 +146,7 @@ namespace WooOptionsFic.Components {
 
   export function InlineNotice(props: { type?: 'error' | 'success' | 'warning'; children?: any; onClose?: () => void }): any {
     return (
-      <div className={WooOptionsFic.Utils.classNames('wof-inline-notice', props.type && `is-${props.type}`)} role={props.type === 'error' ? 'alert' : 'status'}>
+      <div className={WooptionsFic.Utils.classNames('wof-inline-notice', props.type && `is-${props.type}`)} role={props.type === 'error' ? 'alert' : 'status'}>
         <span aria-hidden="true">{props.type === 'error' ? '!' : props.type === 'warning' ? '•' : '✓'}</span>
         <div>{props.children}</div>
         {props.onClose ? <button type="button" onClick={props.onClose} aria-label={__('Dismiss', 'wooptionsfic')}>×</button> : null}

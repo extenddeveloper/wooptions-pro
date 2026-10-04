@@ -1,4 +1,4 @@
-=== WooOptionsFic - Product Options for WooCommerce ===
+=== WooptionsFic - Product Options for WooCommerce ===
 Contributors: wooptionsfic
 Tags: woocommerce, product options, conditional logic, formula pricing, product addons, custom fields, product configurator
 Requires at least: 6.9
@@ -12,7 +12,7 @@ Build accessible, styled, server-validated WooCommerce product configurators and
 
 == Description ==
 
-WooOptionsFic is a powerful, modern, accessible product options and configurator plugin for WooCommerce. It provides an intuitive WordPress-native React builder (Precision Workshop) with real-time preview, advanced conditional logic, dynamic formula pricing, customizable color palettes, and 13 ready-to-use templates.
+WooptionsFic is a powerful, modern, accessible product options and configurator plugin for WooCommerce. It provides an intuitive WordPress-native React builder (Precision Workshop) with real-time preview, advanced conditional logic, dynamic formula pricing, customizable color palettes, and 13 ready-to-use templates.
 
 All pricing and conditional rules are revalidated securely on the server with PHP. Client-side price tampering is impossible. Published revisions are immutable, ensuring every cart and order snapshot preserves the exact options selected by the customer.
 
@@ -34,7 +34,7 @@ All pricing and conditional rules are revalidated securely on the server with PH
 1. In WordPress, navigate to Plugins > Add New > Upload Plugin.
 2. Select the plugin ZIP file and click Install Now, then Activate.
 3. Ensure WooCommerce 9.0 or newer is installed and active.
-4. Navigate to WooOptionsFic > Templates to explore starter templates or create a custom Option Set.
+4. Navigate to WooptionsFic > Templates to explore starter templates or create a custom Option Set.
 5. Add fields, configure conditional logic and pricing, and assign to your products or categories.
 6. Click Publish to make your product options live.
 
@@ -50,7 +50,7 @@ Yes. Customer uploads use unique opaque identifiers and are stored in a protecte
 
 = Can I customize the styling of the options? =
 
-Yes. WooOptionsFic includes a built-in Style Studio allowing you to select from pre-designed color palettes or customize individual colors, typography, borders, and layouts to match your store theme.
+Yes. WooptionsFic includes a built-in Style Studio allowing you to select from pre-designed color palettes or customize individual colors, typography, borders, and layouts to match your store theme.
 
 = What happens when I update a published option set? =
 

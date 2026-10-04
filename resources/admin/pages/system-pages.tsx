@@ -1,4 +1,4 @@
-namespace WooOptionsFic.Pages {
+namespace WooptionsFic.Pages {
   const { Button, SelectControl, TextControl, ToggleControl } = wp.components;
   const { __ } = wp.i18n;
   const { useEffect, useState } = wp.element;
@@ -54,7 +54,7 @@ namespace WooOptionsFic.Pages {
 
     const openMediaUploader = () => {
       if (!wp.media) {
-        WooOptionsFic.Toast.error(__('WordPress Media Library is unavailable.', 'wooptionsfic'));
+        WooptionsFic.Toast.error(__('WordPress Media Library is unavailable.', 'wooptionsfic'));
         return;
       }
       const frame = wp.media({
@@ -83,7 +83,7 @@ namespace WooOptionsFic.Pages {
               detectedName = base.charAt(0).toUpperCase() + base.slice(1);
             }
           } else {
-            WooOptionsFic.Toast.error(__('Please select a valid font file: .woff2, .woff, .ttf, or .otf.', 'wooptionsfic'));
+            WooptionsFic.Toast.error(__('Please select a valid font file: .woff2, .woff, .ttf, or .otf.', 'wooptionsfic'));
           }
         });
 
@@ -99,11 +99,11 @@ namespace WooOptionsFic.Pages {
     const addFont = () => {
       const trimmedName = name.trim();
       if (!trimmedName) {
-        WooOptionsFic.Toast.error(__('Please enter a font name.', 'wooptionsfic'));
+        WooptionsFic.Toast.error(__('Please enter a font name.', 'wooptionsfic'));
         return;
       }
       if (Object.keys(files).length === 0) {
-        WooOptionsFic.Toast.error(__('Please upload at least one font file (.woff2, .woff, .ttf, .otf).', 'wooptionsfic'));
+        WooptionsFic.Toast.error(__('Please upload at least one font file (.woff2, .woff, .ttf, .otf).', 'wooptionsfic'));
         return;
       }
 
@@ -121,20 +121,20 @@ namespace WooOptionsFic.Pages {
 
       const nextFonts = [...props.fonts, newFont];
       props.onChange(nextFonts);
-      WooOptionsFic.injectCustomFontsCss(nextFonts);
+      WooptionsFic.injectCustomFontsCss(nextFonts);
       setName('');
       setWeight('400');
       setStyle('normal');
       setFiles({});
-      WooOptionsFic.Toast.success(__('Custom font added! Remember to click "Save settings" at top right to finalize.', 'wooptionsfic'));
+      WooptionsFic.Toast.success(__('Custom font added! Remember to click "Save settings" at top right to finalize.', 'wooptionsfic'));
     };
 
     const removeFont = (index: number) => {
       if (window.confirm(__('Are you sure you want to remove this custom font?', 'wooptionsfic'))) {
         const next = props.fonts.filter((_, i) => i !== index);
         props.onChange(next);
-        WooOptionsFic.injectCustomFontsCss(next);
-        WooOptionsFic.Toast.success(__('Custom font removed. Click "Save settings" to finalize.', 'wooptionsfic'));
+        WooptionsFic.injectCustomFontsCss(next);
+        WooptionsFic.Toast.success(__('Custom font removed. Click "Save settings" to finalize.', 'wooptionsfic'));
       }
     };
 
@@ -160,7 +160,7 @@ namespace WooOptionsFic.Pages {
           {props.fonts.length === 0 ? (
             <div style={{ padding: '36px', textAlign: 'center', background: '#f8fafc', borderRadius: '12px', border: '1px dashed #cbd5e1' }}>
               <div style={{ fontSize: '32px', marginBottom: '10px', color: '#94a3b8' }}>
-                <WooOptionsFic.Components.Dashicon name="editor-textcolor" />
+                <WooptionsFic.Components.Dashicon name="editor-textcolor" />
               </div>
               <strong style={{ display: 'block', fontSize: '14px', color: '#334155', marginBottom: '4px' }}>
                 {__('No custom fonts uploaded yet', 'wooptionsfic')}
@@ -301,7 +301,7 @@ namespace WooOptionsFic.Pages {
                 onClick={openMediaUploader}
                 style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
               >
-                <WooOptionsFic.Components.Dashicon name="upload" />
+                <WooptionsFic.Components.Dashicon name="upload" />
                 {__('Select / Upload Font Files…', 'wooptionsfic')}
               </Button>
               <span style={{ fontSize: '12px', color: '#64748b' }}>
@@ -367,13 +367,13 @@ namespace WooOptionsFic.Pages {
     const [saving, setSaving] = useState(false);
 
     useEffect(() => {
-      WooOptionsFic.Api.getSettings().then(setSettings);
+      WooptionsFic.Api.getSettings().then(setSettings);
     }, []);
 
     if (!settings) {
       return (
         <div className="wof-page">
-          <WooOptionsFic.Components.Loading />
+          <WooptionsFic.Components.Loading />
         </div>
       );
     }
@@ -383,16 +383,16 @@ namespace WooOptionsFic.Pages {
     const save = async () => {
       setSaving(true);
       try {
-        const saved = await WooOptionsFic.Api.saveSettings(settings);
+        const saved = await WooptionsFic.Api.saveSettings(settings);
         setSettings(saved);
         if (Array.isArray(saved.custom_fonts)) {
-          WooOptionsFic.injectCustomFontsCss(saved.custom_fonts);
-          const otherFonts = (window.WooOptionsFicAdmin.fontCatalog || []).filter((f: any) => f.source !== 'custom');
-          window.WooOptionsFicAdmin.fontCatalog = [...saved.custom_fonts, ...otherFonts];
+          WooptionsFic.injectCustomFontsCss(saved.custom_fonts);
+          const otherFonts = (window.WooptionsFicAdmin.fontCatalog || []).filter((f: any) => f.source !== 'custom');
+          window.WooptionsFicAdmin.fontCatalog = [...saved.custom_fonts, ...otherFonts];
         }
-        WooOptionsFic.Toast.success(__('Settings saved successfully.', 'wooptionsfic'));
+        WooptionsFic.Toast.success(__('Settings saved successfully.', 'wooptionsfic'));
       } catch (err: any) {
-        WooOptionsFic.Toast.error(WooOptionsFic.Utils.errorMessage(err));
+        WooptionsFic.Toast.error(WooptionsFic.Utils.errorMessage(err));
       } finally {
         setSaving(false);
       }
@@ -427,7 +427,7 @@ namespace WooOptionsFic.Pages {
 
     return (
       <div className="wof-page">
-        <WooOptionsFic.Components.PageHeader
+        <WooptionsFic.Components.PageHeader
           eyebrow={__('Operational defaults', 'wooptionsfic')}
           title={__('Settings', 'wooptionsfic')}
           description={__('Control limits, file retention, summary labels, and storefront visibility without editing code.', 'wooptionsfic')}
@@ -450,11 +450,11 @@ namespace WooOptionsFic.Pages {
               <button
                 type="button"
                 key={tab.id}
-                className={WooOptionsFic.Utils.classNames('wof-settings-nav-item', activeTab === tab.id && 'is-active')}
+                className={WooptionsFic.Utils.classNames('wof-settings-nav-item', activeTab === tab.id && 'is-active')}
                 onClick={() => setActiveTab(tab.id)}
               >
                 <span className="wof-settings-nav-item__icon">
-                  <WooOptionsFic.Components.Dashicon name={tab.icon} />
+                  <WooptionsFic.Components.Dashicon name={tab.icon} />
                 </span>
                 <span className="wof-settings-nav-item__text">
                   <span className="wof-settings-nav-item__title">{tab.label}</span>

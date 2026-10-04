@@ -2,7 +2,7 @@
 /**
  * Built-in storefront palettes.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 defined('ABSPATH') || exit;

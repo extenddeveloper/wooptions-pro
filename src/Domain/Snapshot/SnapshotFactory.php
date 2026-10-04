@@ -2,18 +2,18 @@
 /**
  * Immutable human-readable configuration snapshots.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Domain\Snapshot;
+namespace WooptionsFic\Domain\Snapshot;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use WooOptionsFic\Domain\Definition\FieldTypeRegistry;
-use WooOptionsFic\Domain\Support\CanonicalJson;
-use WooOptionsFic\Domain\Support\Uuid;
+use WooptionsFic\Domain\Definition\FieldTypeRegistry;
+use WooptionsFic\Domain\Support\CanonicalJson;
+use WooptionsFic\Domain\Support\Uuid;
 
 final class SnapshotFactory {
 	public function __construct(private readonly FieldTypeRegistry $registry) {
@@ -66,7 +66,7 @@ final class SnapshotFactory {
 							continue;
 						}
 						$c_val = $r_values[$c_uuid];
-						$c_formatted = $c_type instanceof \WooOptionsFic\Domain\Definition\Type\ChoiceFieldType
+						$c_formatted = $c_type instanceof \WooptionsFic\Domain\Definition\Type\ChoiceFieldType
 							? $c_type->format_value($c_val, $child, $context)
 							: $c_type->format_value($c_val, $child);
 
@@ -116,7 +116,7 @@ final class SnapshotFactory {
 				continue;
 			}
 
-			$formatted = $type instanceof \WooOptionsFic\Domain\Definition\Type\ChoiceFieldType
+			$formatted = $type instanceof \WooptionsFic\Domain\Definition\Type\ChoiceFieldType
 				? $type->format_value($values[$uuid], $field, $context)
 				: $type->format_value($values[$uuid], $field);
 			if ('' === $formatted && ! empty($values[$uuid])) {

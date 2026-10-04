@@ -2,12 +2,12 @@
 /**
  * Boolean field type.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Domain\Definition\Type;
+namespace WooptionsFic\Domain\Definition\Type;
 
 final class BooleanFieldType extends AbstractFieldType {
 	public function __construct(private readonly string $type_key) {

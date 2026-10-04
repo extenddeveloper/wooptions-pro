@@ -2,21 +2,21 @@
 /**
  * Extensible field type registry.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Domain\Definition;
+namespace WooptionsFic\Domain\Definition;
 
 use InvalidArgumentException;
-use WooOptionsFic\Domain\Definition\Type\BooleanFieldType;
-use WooOptionsFic\Domain\Definition\Type\CalculatedFieldType;
-use WooOptionsFic\Domain\Definition\Type\ChoiceFieldType;
-use WooOptionsFic\Domain\Definition\Type\ContentFieldType;
-use WooOptionsFic\Domain\Definition\Type\RepeaterFieldType;
-use WooOptionsFic\Domain\Definition\Type\ScalarFieldType;
-use WooOptionsFic\Domain\Definition\Type\UploadFieldType;
+use WooptionsFic\Domain\Definition\Type\BooleanFieldType;
+use WooptionsFic\Domain\Definition\Type\CalculatedFieldType;
+use WooptionsFic\Domain\Definition\Type\ChoiceFieldType;
+use WooptionsFic\Domain\Definition\Type\ContentFieldType;
+use WooptionsFic\Domain\Definition\Type\RepeaterFieldType;
+use WooptionsFic\Domain\Definition\Type\ScalarFieldType;
+use WooptionsFic\Domain\Definition\Type\UploadFieldType;
 
 final class FieldTypeRegistry {
 	/** @var array<string, FieldType> */

@@ -1,17 +1,17 @@
-namespace WooOptionsFic.Pages {
+namespace WooptionsFic.Pages {
   const { Button } = wp.components;
   const { __, sprintf } = wp.i18n;
   const { useEffect, useState } = wp.element;
 
   export function Dashboard(props: { navigate: (route: string) => void }): any {
-    const [items, setItems] = useState<WooOptionsFic.OptionSetRecord[]>([]);
-    const [templates, setTemplates] = useState<WooOptionsFic.TemplateRecord[]>([]);
+    const [items, setItems] = useState<WooptionsFic.OptionSetRecord[]>([]);
+    const [templates, setTemplates] = useState<WooptionsFic.TemplateRecord[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
       Promise.all([
-        WooOptionsFic.Api.listOptionSets({ perPage: 5 }),
-        WooOptionsFic.Api.listTemplates().catch(() => ({ items: [] }))
+        WooptionsFic.Api.listOptionSets({ perPage: 5 }),
+        WooptionsFic.Api.listTemplates().catch(() => ({ items: [] }))
       ])
         .then(([optionSetsRes, templatesRes]) => {
           setItems(optionSetsRes.items || []);
@@ -21,13 +21,13 @@ namespace WooOptionsFic.Pages {
     }, []);
 
     const published = items.filter((item) => item.publishedRevisionId).length;
-    const adminConfig = (window as any).WooOptionsFicAdmin || {};
+    const adminConfig = (window as any).WooptionsFicAdmin || {};
     const userName = adminConfig.currentUser?.name?.split(' ')[0] ?? adminConfig.currentUser?.name ?? 'Admin';
     const previewImage = (adminConfig.assetsUrl || '') + 'images/builder-preview.webp';
 
     return (
       <div className="wof-page">
-        <WooOptionsFic.Components.PageHeader
+        <WooptionsFic.Components.PageHeader
           title={sprintf(__('Good to see you, %s.', 'wooptionsfic'), userName)}
           description={__('Build thoughtful product choices, price them safely, and publish without touching theme code.', 'wooptionsfic')}
           actions={
@@ -91,7 +91,7 @@ namespace WooOptionsFic.Pages {
                   <i className="is-maximize" />
                 </div>
                 <div className="wof-preview-window__title">
-                  <span>{__('WooOptionsFic Live Builder', 'wooptionsfic')}</span>
+                  <span>{__('WooptionsFic Live Builder', 'wooptionsfic')}</span>
                 </div>
                 <div className="wof-preview-window__badge">
                   <span className="wof-pulse-dot" />
@@ -101,7 +101,7 @@ namespace WooOptionsFic.Pages {
               <div className="wof-preview-window__screen">
                 <img
                   src={previewImage}
-                  alt={__('WooOptionsFic Live Builder Interface', 'wooptionsfic')}
+                  alt={__('WooptionsFic Live Builder Interface', 'wooptionsfic')}
                   className="wof-preview-window__img"
                   loading="eager"
                 />
@@ -159,7 +159,7 @@ namespace WooOptionsFic.Pages {
                 </div>
               </div>
               {loading ? (
-                <WooOptionsFic.Components.Loading label={__('Loading your workshop…', 'wooptionsfic')} />
+                <WooptionsFic.Components.Loading label={__('Loading your workshop…', 'wooptionsfic')} />
               ) : items.length ? (
                 <div className="wof-recent-list">
                   {items.map((item) => (
@@ -169,13 +169,13 @@ namespace WooOptionsFic.Pages {
                       onClick={() => props.navigate(`builder/${item.uuid}`)}
                     >
                       <span className="wof-set-glyph">
-                        <WooOptionsFic.Components.Dashicon name="screenoptions" />
+                        <WooptionsFic.Components.Dashicon name="screenoptions" />
                       </span>
                       <span>
                         <strong>{item.title}</strong>
-                        <small>{WooOptionsFic.Utils.formatDate(item.updatedAtGmt)}</small>
+                        <small>{WooptionsFic.Utils.formatDate(item.updatedAtGmt)}</small>
                       </span>
-                      <WooOptionsFic.Components.StatusPill
+                      <WooptionsFic.Components.StatusPill
                         status={item.publishedRevisionId ? __('Published', 'wooptionsfic') : __('Draft', 'wooptionsfic')}
                       />
                       <b aria-hidden="true">→</b>

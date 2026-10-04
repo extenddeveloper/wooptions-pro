@@ -2,12 +2,12 @@
 /**
  * Formula tokenizer.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Domain\Pricing\Formula;
+namespace WooptionsFic\Domain\Pricing\Formula;
 
 use RuntimeException;
 

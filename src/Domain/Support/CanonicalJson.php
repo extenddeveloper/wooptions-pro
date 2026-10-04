@@ -2,12 +2,12 @@
 /**
  * Canonical JSON for immutable revision hashes.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Domain\Support;
+namespace WooptionsFic\Domain\Support;
 
 use JsonException;
 

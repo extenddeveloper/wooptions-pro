@@ -2,16 +2,16 @@
 /**
  * Typed nested condition engine and trace.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Domain\Rule;
+namespace WooptionsFic\Domain\Rule;
 
 use DateTimeImmutable;
 use RuntimeException;
-use WooOptionsFic\Domain\Pricing\Decimal;
+use WooptionsFic\Domain\Pricing\Decimal;
 
 final class RuleEngine {
 	private int $nodes = 0;

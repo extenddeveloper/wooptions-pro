@@ -2,12 +2,12 @@
 /**
  * Small explicit database transaction boundary.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Infrastructure\Persistence;
+namespace WooptionsFic\Infrastructure\Persistence;
 
 use Throwable;
 

@@ -1,7 +1,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: WooOptionsFic — Product Options for WooCommerce\n"
+"Project-Id-Version: WooptionsFic — Product Options for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-27 07:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -53,7 +53,7 @@ msgstr ""
 
 #: blocks/product-options/block.json:1
 msgctxt "block title"
-msgid "WooOptionsFic Product Options"
+msgid "WooptionsFic Product Options"
 msgstr ""
 
 #: src/Application/DiagnosticsService.php:110
@@ -144,11 +144,11 @@ msgid "Not active"
 msgstr ""
 
 #: src/Infrastructure/WordPress/SiteHealth.php:50
-msgid "One or more required WooOptionsFic services are unavailable."
+msgid "One or more required WooptionsFic services are unavailable."
 msgstr ""
 
 #: src/Infrastructure/WordPress/SiteHealth.php:52
-msgid "Open WooOptionsFic"
+msgid "Open WooptionsFic"
 msgstr ""
 
 #: src/Presentation/Admin/AdminPage.php:170
@@ -278,7 +278,7 @@ msgid "The request contains invalid configuration data."
 msgstr ""
 
 #: src/Presentation/Rest/Responder.php:29
-msgid "The requested WooOptionsFic resource was not found."
+msgid "The requested WooptionsFic resource was not found."
 msgstr ""
 
 #: src/Presentation/Rest/Responder.php:31
@@ -330,7 +330,7 @@ msgid ""
 msgstr ""
 
 #: src/Infrastructure/WooCommerce/StoreApiIntegration.php:73
-msgid "Whether this cart line has a WooOptionsFic configuration."
+msgid "Whether this cart line has a WooptionsFic configuration."
 msgstr ""
 
 #: src/Application/DiagnosticsService.php:96
@@ -350,32 +350,32 @@ msgstr ""
 #: src/Infrastructure/WordPress/SiteHealth.php:64
 #: src/Presentation/Admin/AdminPage.php:21
 #: src/Presentation/Admin/AdminPage.php:22
-msgid "WooOptionsFic"
+msgid "WooptionsFic"
 msgstr ""
 
 #: src/Presentation/Rest/Responder.php:35
-msgid "WooOptionsFic could not complete the request."
+msgid "WooptionsFic could not complete the request."
 msgstr ""
 
 #: src/Presentation/Rest/Responder.php:40
-msgid "WooOptionsFic encountered an unexpected error."
+msgid "WooptionsFic encountered an unexpected error."
 msgstr ""
 
 #. %s: plugin admin URL.
 #: src/Presentation/Admin/AdminPage.php:195
 #, php-format
 msgid ""
-"WooOptionsFic is ready. <a href=\"%s\">Open the Precision Workshop</a> to "
+"WooptionsFic is ready. <a href=\"%s\">Open the Precision Workshop</a> to "
 "import a template or build your first option set."
 msgstr ""
 
 #: src/Infrastructure/WordPress/SiteHealth.php:44
-msgid "WooOptionsFic needs attention"
+msgid "WooptionsFic needs attention"
 msgstr ""
 
 #: src/Bootstrap/Requirements.php:84
 msgid ""
-"WooOptionsFic needs WooCommerce to render options and process configured "
+"WooptionsFic needs WooCommerce to render options and process configured "
 "products. Install and activate WooCommerce to enable commerce features."
 msgstr ""
 
@@ -383,46 +383,46 @@ msgstr ""
 #: src/Bootstrap/Requirements.php:45
 #, php-format
 msgid ""
-"WooOptionsFic requires PHP %1$s or newer and WordPress %2$s or newer. The "
+"WooptionsFic requires PHP %1$s or newer and WordPress %2$s or newer. The "
 "plugin has not loaded."
 msgstr ""
 
 #. %s: minimum PHP version.
 #: src/Bootstrap/Requirements.php:99
 #, php-format
-msgid "WooOptionsFic requires PHP %s or newer."
+msgid "WooptionsFic requires PHP %s or newer."
 msgstr ""
 
 #. 1: required WooCommerce version, 2: detected version.
 #: src/Bootstrap/Requirements.php:80
 #, php-format
 msgid ""
-"WooOptionsFic requires WooCommerce %1$s or newer. Version %2$s is active, so "
+"WooptionsFic requires WooCommerce %1$s or newer. Version %2$s is active, so "
 "commerce features are paused."
 msgstr ""
 
 #. %s: minimum WordPress version.
 #: src/Bootstrap/Requirements.php:113
 #, php-format
-msgid "WooOptionsFic requires WordPress %s or newer."
+msgid "WooptionsFic requires WordPress %s or newer."
 msgstr ""
 
 #: src/Infrastructure/WordPress/SiteHealth.php:29
-msgid "WooOptionsFic runtime"
+msgid "WooptionsFic runtime"
 msgstr ""
 
 #. Name of the plugin
-msgid "WooOptionsFic — Product Options for WooCommerce"
+msgid "WooptionsFic — Product Options for WooCommerce"
 msgstr ""
 
 #: src/Presentation/Admin/AdminPage.php:182
 msgid ""
-"WooOptionsFic’s administration builder requires JavaScript. Storefront basic "
+"WooptionsFic’s administration builder requires JavaScript. Storefront basic "
 "fields still have a server-rendered fallback."
 msgstr ""
 
 #: src/Infrastructure/WordPress/SiteHealth.php:43
-msgid "WooOptionsFic’s required services are ready"
+msgid "WooptionsFic’s required services are ready"
 msgstr ""
 
 #: src/Application/DiagnosticsService.php:46
@@ -430,5 +430,5 @@ msgid "Writable and protected by server fallback files."
 msgstr ""
 
 #: src/Presentation/Admin/AdminPage.php:166
-msgid "You do not have permission to manage WooOptionsFic."
+msgid "You do not have permission to manage WooptionsFic."
 msgstr ""

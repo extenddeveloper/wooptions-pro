@@ -2,7 +2,7 @@
 /**
  * Bundled original template catalog.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 defined('ABSPATH') || exit;

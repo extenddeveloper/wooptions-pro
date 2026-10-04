@@ -2,16 +2,16 @@
 /**
  * Assignment persistence and candidate query.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Infrastructure\Persistence;
+namespace WooptionsFic\Infrastructure\Persistence;
 
 use RuntimeException;
-use WooOptionsFic\Domain\Support\CanonicalJson;
-use WooOptionsFic\Domain\Support\Uuid;
+use WooptionsFic\Domain\Support\CanonicalJson;
+use WooptionsFic\Domain\Support\Uuid;
 
 final class AssignmentRepository {
 	/**

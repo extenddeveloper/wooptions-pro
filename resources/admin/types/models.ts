@@ -1,4 +1,4 @@
-namespace WooOptionsFic {
+namespace WooptionsFic {
   export type UUID = string;
   export type OptionSetStatus = 'active' | 'inactive' | 'archived';
   export type RevisionState = 'draft' | 'published';

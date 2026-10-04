@@ -1,4 +1,4 @@
-namespace WooOptionsFic.Builder {
+namespace WooptionsFic.Builder {
   const { Button, Modal, SelectControl, TextControl } = wp.components;
   const { __ } = wp.i18n;
   const { useEffect, useMemo, useState } = wp.element;
@@ -22,8 +22,8 @@ namespace WooOptionsFic.Builder {
     { type: 'global', label: __('All products', 'wooptionsfic'), icon: 'dashicons-admin-site-alt3' },
   ];
 
-  function assignmentTypeLabel(type: WooOptionsFic.AssignmentType): string {
-    const labels: Record<WooOptionsFic.AssignmentType, string> = {
+  function assignmentTypeLabel(type: WooptionsFic.AssignmentType): string {
+    const labels: Record<WooptionsFic.AssignmentType, string> = {
       global: __('All products', 'wooptionsfic'),
       product: __('Product', 'wooptionsfic'),
       category: __('Category', 'wooptionsfic'),
@@ -34,8 +34,8 @@ namespace WooOptionsFic.Builder {
     return labels[type] ?? type;
   }
 
-  function assignmentTypeIcon(type: WooOptionsFic.AssignmentType): string {
-    const icons: Record<WooOptionsFic.AssignmentType, string> = {
+  function assignmentTypeIcon(type: WooptionsFic.AssignmentType): string {
+    const icons: Record<WooptionsFic.AssignmentType, string> = {
       global: 'dashicons-admin-site-alt3',
       product: 'dashicons-products',
       category: 'dashicons-category',
@@ -46,7 +46,7 @@ namespace WooOptionsFic.Builder {
     return icons[type] ?? 'dashicons-marker';
   }
 
-  function renderTypeIcon(type: PickerAssignmentType | WooOptionsFic.AssignmentType): any {
+  function renderTypeIcon(type: PickerAssignmentType | WooptionsFic.AssignmentType): any {
     switch (type) {
       case 'global':
         return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></svg>;
@@ -59,17 +59,17 @@ namespace WooOptionsFic.Builder {
       case 'variation':
         return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></svg>;
       default:
-        return <span className={`dashicons ${assignmentTypeIcon(type as WooOptionsFic.AssignmentType)}`} aria-hidden="true" />;
+        return <span className={`dashicons ${assignmentTypeIcon(type as WooptionsFic.AssignmentType)}`} aria-hidden="true" />;
     }
   }
 
   function TargetSearch(props: {
     type: PickerAssignmentType;
-    assignments: WooOptionsFic.AssignmentRecord[];
+    assignments: WooptionsFic.AssignmentRecord[];
     onAdd: (target: AssignmentTargetDetails) => void;
   }): any {
     const [query, setQuery] = useState('');
-    const [results, setResults] = useState<WooOptionsFic.AssignmentTarget[]>([]);
+    const [results, setResults] = useState<WooptionsFic.AssignmentTarget[]>([]);
     const [loading, setLoading] = useState(false);
     const [focused, setFocused] = useState(false);
     const [error, setError] = useState('');
@@ -96,12 +96,12 @@ namespace WooOptionsFic.Builder {
       const timeout = window.setTimeout(() => {
         setLoading(true);
         setError('');
-        WooOptionsFic.Api.searchAssignmentTargets(targetType, query)
+        WooptionsFic.Api.searchAssignmentTargets(targetType, query)
           .then((response) => {
             if (active) setResults(Array.isArray(response.items) ? response.items : []);
           })
           .catch((reason) => {
-            if (active) setError(WooOptionsFic.Utils.errorMessage(reason));
+            if (active) setError(WooptionsFic.Utils.errorMessage(reason));
           })
           .finally(() => {
             if (active) setLoading(false);
@@ -212,18 +212,18 @@ namespace WooOptionsFic.Builder {
   }
 
   export function AssignmentsModal(props: {
-    assignments: WooOptionsFic.AssignmentRecord[];
+    assignments: WooptionsFic.AssignmentRecord[];
     busy: boolean;
     onClose: () => void;
-    onSave: (assignments: WooOptionsFic.AssignmentRecord[]) => Promise<void>;
+    onSave: (assignments: WooptionsFic.AssignmentRecord[]) => Promise<void>;
   }): any {
     const [type, setType] = useState<PickerAssignmentType>('product');
-    const [draft, setDraft] = useState<WooOptionsFic.AssignmentRecord[]>(() => WooOptionsFic.Utils.clone(props.assignments));
-    const [targetDetails, setTargetDetails] = useState<Record<string, WooOptionsFic.AssignmentTarget>>({});
+    const [draft, setDraft] = useState<WooptionsFic.AssignmentRecord[]>(() => WooptionsFic.Utils.clone(props.assignments));
+    const [targetDetails, setTargetDetails] = useState<Record<string, WooptionsFic.AssignmentTarget>>({});
     const [saving, setSaving] = useState(false);
 
     useEffect(() => {
-      setDraft(WooOptionsFic.Utils.clone(props.assignments));
+      setDraft(WooptionsFic.Utils.clone(props.assignments));
     }, [props.assignments]);
 
     const assignmentKey = useMemo(
@@ -242,14 +242,14 @@ namespace WooOptionsFic.Builder {
 
       Promise.all(Array.from(grouped.entries()).map(async ([targetType, ids]) => {
         try {
-          const response = await WooOptionsFic.Api.searchAssignmentTargets(targetType, '', [...new Set(ids)]);
+          const response = await WooptionsFic.Api.searchAssignmentTargets(targetType, '', [...new Set(ids)]);
           return response.items.map((item) => [`${targetType}:${item.id}`, item] as const);
         } catch {
-          return [] as Array<readonly [string, WooOptionsFic.AssignmentTarget]>;
+          return [] as Array<readonly [string, WooptionsFic.AssignmentTarget]>;
         }
       })).then((groups) => {
         if (!active) return;
-        const next: Record<string, WooOptionsFic.AssignmentTarget> = {};
+        const next: Record<string, WooptionsFic.AssignmentTarget> = {};
         groups.flat().forEach(([key, item]) => { next[key] = item; });
         setTargetDetails(next);
       });
@@ -257,15 +257,15 @@ namespace WooOptionsFic.Builder {
       return () => { active = false; };
     }, [assignmentKey]);
 
-    const updateAssignment = (index: number, patch: Partial<WooOptionsFic.AssignmentRecord>) => {
+    const updateAssignment = (index: number, patch: Partial<WooptionsFic.AssignmentRecord>) => {
       setDraft((current) => current.map((assignment, assignmentIndex) => assignmentIndex === index ? { ...assignment, ...patch } : assignment));
     };
 
     const addTarget = (target: AssignmentTargetDetails) => {
       const targetId = target.type === 'global' ? null : Number(target.id);
       if (draft.some((assignment) => assignment.targetType === target.type && assignment.targetId === targetId)) return;
-      const assignment: WooOptionsFic.AssignmentRecord = {
-        uuid: WooOptionsFic.Utils.uuid(),
+      const assignment: WooptionsFic.AssignmentRecord = {
+        uuid: WooptionsFic.Utils.uuid(),
         targetType: target.type,
         targetId,
         mode: 'include',
@@ -343,7 +343,7 @@ namespace WooOptionsFic.Builder {
         </div>
 
         {props.busy && !draft.length ? (
-          <WooOptionsFic.Components.ModalLoading label={__('Loading assigned targets…', 'wooptionsfic')} />
+          <WooptionsFic.Components.ModalLoading label={__('Loading assigned targets…', 'wooptionsfic')} />
         ) : draft.length ? (
           <div className="wof-assignment-cards">
             {draft.map((assignment, index) => {

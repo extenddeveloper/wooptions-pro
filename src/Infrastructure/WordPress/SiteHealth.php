@@ -2,14 +2,14 @@
 /**
  * Site Health integration.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Infrastructure\WordPress;
+namespace WooptionsFic\Infrastructure\WordPress;
 
-use WooOptionsFic\Application\DiagnosticsService;
+use WooptionsFic\Application\DiagnosticsService;
 
 final class SiteHealth {
 	public function __construct(private readonly DiagnosticsService $diagnostics) {
@@ -26,7 +26,7 @@ final class SiteHealth {
 	 */
 	public function tests(array $tests): array {
 		$tests['direct']['wooptionsfic_runtime'] = [
-			'label' => __('WooOptionsFic runtime', 'wooptionsfic'),
+			'label' => __('WooptionsFic runtime', 'wooptionsfic'),
 			'test'  => [$this, 'runtime_test'],
 		];
 		return $tests;
@@ -40,16 +40,16 @@ final class SiteHealth {
 		$critical = array_filter((array) $report['checks'], static fn (array $check): bool => 'critical' === ($check['status'] ?? ''));
 		return [
 			'label'       => [] === $critical
-				? __('WooOptionsFic’s required services are ready', 'wooptionsfic')
-				: __('WooOptionsFic needs attention', 'wooptionsfic'),
+				? __('WooptionsFic’s required services are ready', 'wooptionsfic')
+				: __('WooptionsFic needs attention', 'wooptionsfic'),
 			'status'      => [] === $critical ? 'good' : 'critical',
-			'badge'       => ['label' => __('WooOptionsFic', 'wooptionsfic'), 'color' => 'blue'],
+			'badge'       => ['label' => __('WooptionsFic', 'wooptionsfic'), 'color' => 'blue'],
 			'description' => '<p>' . esc_html(
 				[] === $critical
 					? __('Database, assets, and private storage passed the runtime checks.', 'wooptionsfic')
-					: __('One or more required WooOptionsFic services are unavailable.', 'wooptionsfic')
+					: __('One or more required WooptionsFic services are unavailable.', 'wooptionsfic')
 			) . '</p>',
-			'actions'     => '<p><a href="' . esc_url(admin_url('admin.php?page=wooptionsfic')) . '">' . esc_html__('Open WooOptionsFic', 'wooptionsfic') . '</a></p>',
+			'actions'     => '<p><a href="' . esc_url(admin_url('admin.php?page=wooptionsfic')) . '">' . esc_html__('Open WooptionsFic', 'wooptionsfic') . '</a></p>',
 			'test'        => 'wooptionsfic_runtime',
 		];
 	}
@@ -61,7 +61,7 @@ final class SiteHealth {
 	public function debug_information(array $information): array {
 		$report = $this->diagnostics->report();
 		$information['wooptionsfic'] = [
-			'label'  => __('WooOptionsFic', 'wooptionsfic'),
+			'label'  => __('WooptionsFic', 'wooptionsfic'),
 			'fields' => [
 				'plugin'      => ['label' => __('Plugin version', 'wooptionsfic'), 'value' => $report['environment']['plugin']],
 				'database'    => ['label' => __('Database version', 'wooptionsfic'), 'value' => $report['environment']['database']],

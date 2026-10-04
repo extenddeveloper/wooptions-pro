@@ -2,7 +2,7 @@
 /**
  * Field type manifest.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 defined('ABSPATH') || exit;

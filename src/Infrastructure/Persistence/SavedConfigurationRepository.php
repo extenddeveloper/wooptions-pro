@@ -2,15 +2,15 @@
 /**
  * Saved configuration persistence.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Infrastructure\Persistence;
+namespace WooptionsFic\Infrastructure\Persistence;
 
 use RuntimeException;
-use WooOptionsFic\Domain\Support\CanonicalJson;
+use WooptionsFic\Domain\Support\CanonicalJson;
 
 final class SavedConfigurationRepository {
 	/**

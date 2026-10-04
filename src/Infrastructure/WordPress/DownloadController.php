@@ -2,16 +2,16 @@
 /**
  * Authorized streaming of private uploads.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Infrastructure\WordPress;
+namespace WooptionsFic\Infrastructure\WordPress;
 
 use Throwable;
-use WooOptionsFic\Application\UploadService;
-use WooOptionsFic\Infrastructure\Storage\LocalPrivateStorage;
+use WooptionsFic\Application\UploadService;
+use WooptionsFic\Infrastructure\Storage\LocalPrivateStorage;
 
 final class DownloadController {
 	public function __construct(

@@ -4,14 +4,14 @@
  *
  * This is a defensive file-policy check, not an antivirus claim.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Infrastructure\Storage;
+namespace WooptionsFic\Infrastructure\Storage;
 
-use WooOptionsFic\Domain\Upload\UploadScanner;
+use WooptionsFic\Domain\Upload\UploadScanner;
 
 final class BaselineUploadScanner implements UploadScanner {
 	public function scan(string $path, string $detected_mime, string $extension): array {

@@ -3,7 +3,7 @@
   "apiVersion": 3,
   "name": "wooptionsfic/product-options",
   "version": "1.0.0",
-  "title": "WooOptionsFic Product Options",
+  "title": "WooptionsFic Product Options",
   "category": "woocommerce",
   "icon": "screenoptions",
   "description": "Displays the effective product options for the current WooCommerce product.",

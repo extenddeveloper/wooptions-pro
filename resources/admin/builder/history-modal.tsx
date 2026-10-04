@@ -1,10 +1,10 @@
-namespace WooOptionsFic.Builder {
+namespace WooptionsFic.Builder {
   const { Button, Modal } = wp.components;
   const { __ } = wp.i18n;
   const { useMemo, useState } = wp.element;
 
   export function HistoryModal(props: {
-    revisions: WooOptionsFic.RevisionRecord[];
+    revisions: WooptionsFic.RevisionRecord[];
     busy: boolean;
     onClose: () => void;
     onRollback: (uuid: string) => Promise<void>;
@@ -48,7 +48,7 @@ namespace WooOptionsFic.Builder {
         </section>
 
         {props.busy && !revisions.length ? (
-          <WooOptionsFic.Components.ModalLoading label={__('Loading version history…', 'wooptionsfic')} />
+          <WooptionsFic.Components.ModalLoading label={__('Loading version history…', 'wooptionsfic')} />
         ) : revisions.length ? (
           <div className="wof-version-list">
             {revisions.map((revision, index) => {
@@ -71,7 +71,7 @@ namespace WooOptionsFic.Builder {
                         </span>
                         {latest ? <span className="wof-version-latest">{__('Latest', 'wooptionsfic')}</span> : null}
                       </div>
-                      <time dateTime={revision.createdAtGmt}>{WooOptionsFic.Utils.formatDate(revision.createdAtGmt)}</time>
+                      <time dateTime={revision.createdAtGmt}>{WooptionsFic.Utils.formatDate(revision.createdAtGmt)}</time>
                     </div>
                     <p>{revision.versionNote || __('No version note was added for this save.', 'wooptionsfic')}</p>
                   </div>

@@ -2654,7 +2654,7 @@
 	justify-content: flex-start;
 }
 
-/* beta.30 type-specific builder preview styles */
+/* type-specific builder preview styles */
 
 /* --- Radio List preview --- */
 .wof-preview-radio-list {
@@ -4717,7 +4717,7 @@
 	}
 }
 
-/*WooOptionsFic 0.9.0-beta.2 — refined builder field palette*/
+/* refined builder field palette */
 
 .wof-builder-workspace {
 	grid-template-columns: 296px minmax(500px, 1fr) 360px;
@@ -4982,7 +4982,7 @@
 	}
 }
 
-/*WooOptionsFic beta.7 precision builder header*/
+/* precision builder header*/
 
 .wof-admin.is-builder .wof-admin__masthead,
 .wof-admin.is-builder .wof-admin__content {
@@ -5859,7 +5859,7 @@
 	}
 }
 
-/*WooOptionsFic beta.8 product-page canvas preview*/
+/* product-page canvas preview*/
 
 .wof-canvas-frame {
 	background: linear-gradient(180deg, #f4f6fa, #eef2f7);
@@ -6103,7 +6103,7 @@
 	}
 }
 
-/*WooOptionsFic beta.9 canvas block controls*/
+/* canvas block controls*/
 
 .wof-canvas-sheet__heading--product {
 	display: block;
@@ -6237,7 +6237,7 @@
 	}
 }
 
-/*WooOptionsFic beta.10 canvas cleanup and embedded Style Studio*/
+/* canvas cleanup and embedded Style Studio*/
 
 .wof-canvas-field {
 	grid-template-columns: minmax(0, 1fr);
@@ -6286,7 +6286,7 @@
 	margin-right: -17px;
 }
 
-/*WooOptionsFic beta.11 clean canvas copy and Elementor-style element palette*/
+/* clean canvas copy and Elementor-style element palette*/
 
 .wof-product-preview-meta {
 	gap: 6px;
@@ -6468,7 +6468,7 @@
 	}
 }
 
-/*WooOptionsFic beta.12 palette grip, compact canvas spacing, and persistent choice media*/
+/* palette grip, compact canvas spacing, and persistent choice media*/
 
 .wof-palette-item>.wof-palette-item__grip {
 	background-color: transparent;
@@ -6515,7 +6515,7 @@
 	}
 }
 
-/* WooOptionsFic Builder - Standard Inspector Tabs Navigation */
+/* WooptionsFic Builder - Standard Inspector Tabs Navigation */
 
 .wof-inspector-tabs-shell {
 	align-items: stretch;
@@ -6676,7 +6676,7 @@
 	}
 }
 
-/*WooOptionsFic beta.15 uploader preview and grouped conditional logic*/
+/* uploader preview and grouped conditional logic*/
 
 .wof-preview-upload {
 	align-items: stretch;
@@ -7062,7 +7062,7 @@
 	}
 }
 
-/*WooOptionsFic beta.16 modern history and assignment dialogs*/
+/* modern history and assignment dialogs*/
 
 .wof-history-modal .components-modal__content {
 	width: min(860px, 94vw);
@@ -8138,7 +8138,7 @@
 	}
 }
 
-/*WooOptionsFic beta.17 version browser and modal polish*/
+/* version browser and modal polish*/
 
 .wof-history-modal .components-modal__content {
 	background: #f6f7fb;
@@ -8468,7 +8468,7 @@
 	}
 }
 
-/*WooOptionsFic beta.19 palette typography and compact canvas toolbar*/
+/* palette typography and compact canvas toolbar*/
 
 .wof-palette-item strong {
 	display: block;
@@ -8499,7 +8499,7 @@
 	width: 38px;
 }
 
-/*WooOptionsFic beta.20 modal spacing*/
+/* modal spacing*/
 
 .wof-history-modal .components-modal__header {
 	background: #fff;
@@ -8508,7 +8508,7 @@
 	padding: 0 24px;
 }
 
-/*WooOptionsFic beta.22 builder typography rendering*/
+/* builder typography rendering*/
 
 .wof-canvas-sheet,
 .wof-canvas-sheet :where(button, input, select, textarea) {
@@ -8525,7 +8525,7 @@
 	font-weight: var(--wof-preview-label-weight, 650);
 }
 
-/*WooOptionsFic beta.23 option-set manager*/
+/* option-set manager*/
 
 .wof-option-set-results {
 	min-height: 260px;
@@ -8784,7 +8784,7 @@
 	}
 }
 
-/*WooOptionsFic beta.25 always-visible DataTables-style pagination*/
+/* always-visible DataTables-style pagination*/
 
 .wof-pagination {
 	align-items: center;
@@ -9457,7 +9457,7 @@
 	}
 }
 
-/* WooOptionsFic beta.27 TSX visual parity fixes. */
+/* TSX visual parity fixes. */
 .wof-bulk-bar--modern .components-button {
 	align-items: center;
 	border-radius: 8px;
@@ -9751,7 +9751,7 @@
 	}
 }
 
-/* beta.28 media selection polish */
+/* media selection polish */
 .wof-media-control__preview {
 	appearance: none;
 	cursor: pointer;
@@ -9759,7 +9759,7 @@
 	padding: 0;
 }
 
-/* beta.29 drag targets, color controls, and canvas preview repairs */
+/* drag targets, color controls, and canvas preview repairs */
 .wof-canvas-sheet.is-drag-active {
 	background: color-mix(in srgb, var(--wof-preview-primary, #5b4ff5) 3%, var(--wof-preview-background, #fff));
 	box-shadow: 0 0 0 3px color-mix(in srgb, var(--wof-preview-primary, #5b4ff5) 22%, transparent), 0 20px 50px rgb(23 32 51/9%);
@@ -10185,7 +10185,7 @@
 	pointer-events: none;
 }
 
-/* beta.30 template marketplace */
+/* template marketplace */
 .wof-admin.is-template-studio {
 	background: #f8fafc;
 	min-height: calc(100vh - 32px)

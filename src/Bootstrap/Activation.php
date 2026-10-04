@@ -2,15 +2,15 @@
 /**
  * Plugin activation.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Bootstrap;
+namespace WooptionsFic\Bootstrap;
 
-use WooOptionsFic\Infrastructure\Persistence\Schema;
-use WooOptionsFic\Infrastructure\Storage\LocalPrivateStorage;
+use WooptionsFic\Infrastructure\Persistence\Schema;
+use WooptionsFic\Infrastructure\Storage\LocalPrivateStorage;
 
 final class Activation {
 	public static function activate(bool $network_wide = false): void {

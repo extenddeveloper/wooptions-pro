@@ -1,4 +1,4 @@
-namespace WooOptionsFic.Pages {
+namespace WooptionsFic.Pages {
   const { __, sprintf } = wp.i18n;
   const { useCallback, useEffect, useMemo, useRef, useState } = wp.element;
 
@@ -139,9 +139,9 @@ namespace WooOptionsFic.Pages {
     const loadData = useCallback((selectedRange: string) => {
       setLoading(true);
       setError('');
-      WooOptionsFic.Api.analytics({ range: selectedRange })
+      WooptionsFic.Api.analytics({ range: selectedRange })
         .then((response: any) => setData(response))
-        .catch((reason: any) => setError(WooOptionsFic.Utils.errorMessage(reason)))
+        .catch((reason: any) => setError(WooptionsFic.Utils.errorMessage(reason)))
         .finally(() => setLoading(false));
     }, []);
 
@@ -155,8 +155,8 @@ namespace WooOptionsFic.Pages {
       { key: '12m', label: __('Last 12 Months', 'wooptionsfic') },
     ];
 
-    const currencySymbol = data?.currencySymbol || (window as any).WooOptionsFicAdmin?.currencySymbol || '$';
-    const currencyPosition = data?.currencyPosition || (window as any).WooOptionsFicAdmin?.currencyPosition || 'right';
+    const currencySymbol = data?.currencySymbol || (window as any).WooptionsFicAdmin?.currencySymbol || '$';
+    const currencyPosition = data?.currencyPosition || (window as any).WooptionsFicAdmin?.currencyPosition || 'right';
 
     // Chart parameters
     const chartWidth = 960;
@@ -331,15 +331,15 @@ namespace WooOptionsFic.Pages {
               title={__('Refresh data', 'wooptionsfic')}
               disabled={loading}
             >
-              <WooOptionsFic.Components.Dashicon name="update" />
+              <WooptionsFic.Components.Dashicon name="update" />
             </button>
           </div>
         </div>
 
         {error ? (
-          <WooOptionsFic.Components.InlineNotice type="error" onClose={() => setError('')}>
+          <WooptionsFic.Components.InlineNotice type="error" onClose={() => setError('')}>
             {error}
-          </WooOptionsFic.Components.InlineNotice>
+          </WooptionsFic.Components.InlineNotice>
         ) : null}
 
         {/* 4 Bespoke Executive KPI Cards */}
@@ -725,7 +725,7 @@ namespace WooOptionsFic.Pages {
                       <td className="wof-cell-set">
                         <div className="wof-set-identity">
                           <span className="wof-set-icon">
-                            <WooOptionsFic.Components.Dashicon name="screenoptions" />
+                            <WooptionsFic.Components.Dashicon name="screenoptions" />
                           </span>
                           <div className="wof-set-meta">
                             <button

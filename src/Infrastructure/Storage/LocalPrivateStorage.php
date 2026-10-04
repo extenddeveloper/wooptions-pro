@@ -2,12 +2,12 @@
 /**
  * Private local file storage.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Infrastructure\Storage;
+namespace WooptionsFic\Infrastructure\Storage;
 
 use RuntimeException;
 

@@ -1785,7 +1785,7 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 	}
 }
 
-/*WooOptionsFic beta.15 standard private uploader*/
+/* standard private uploader*/
 
 .wof-upload {
 	position: relative;
@@ -2067,7 +2067,7 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 	}
 }
 
-/*WooOptionsFic beta.16 uploader hardening*/
+/* uploader hardening*/
 
 .wof-configurator .wof-upload-item__remove {
 	all: unset !important;
@@ -2138,7 +2138,7 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 	color: color-mix(in srgb, var(--wof-danger) 68%, var(--wof-muted)) !important;
 }
 
-/*WooOptionsFic beta.18 uploaded-file preview icons*/
+/* uploaded-file preview icons*/
 
 .wof-upload-item {
 	grid-template-columns: 24px 38px minmax(0, 1fr) auto;
@@ -2259,7 +2259,7 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 	}
 }
 
-/*WooOptionsFic beta.19 storefront settings enforcement*/
+/* storefront settings enforcement*/
 
 .wof-summary__rows[hidden],
 .wof-customer-actions[hidden] {
@@ -2274,13 +2274,13 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 	border-top: 0;
 }
 
-/*WooOptionsFic beta.20 live summary settings*/
+/* live summary settings*/
 
 .wof-configurator__grid {
 	position: relative;
 }
 
-/*WooOptionsFic beta.21 effective palette and typography*/
+/* effective palette and typography*/
 
 .wof-configurator {
 	font-family: var(--wof-font, inherit);
@@ -2315,7 +2315,7 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 	flex: 0 0 auto;
 }
 
-/*WooOptionsFic beta.22 palette and typography contract.
+/* palette and typography contract.
  * These declarations intentionally outrank theme form styles while remaining
  * scoped to the configurator. The wrapper itself stays transparent.*/
 
@@ -2420,7 +2420,7 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 	color: var(--wof-on-primary) !important;
 }
 
-/* beta.29 color picker field */
+/* color picker field */
 .wof-color-picker {
 	position: relative;
 	user-select: none;
@@ -2702,7 +2702,7 @@ input[type="range"].wof-range-slider::-moz-range-thumb {
 	opacity: 0.9;
 }
 
-/* beta.30 type-specific field layouts */
+/* type-specific field layouts */
 
 /* --- Color Swatches (block squares with label + price below) --- */
 .wof-swatches {

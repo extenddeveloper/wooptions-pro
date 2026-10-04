@@ -2,7 +2,7 @@
   "name": "wooptionsfic",
   "version": "1.0.0",
   "private": true,
-  "description": "WooOptionsFic React + TypeScript development source",
+  "description": "WooptionsFic React + TypeScript development source",
   "type": "module",
   "engines": {
     "node": ">=18.0.0"

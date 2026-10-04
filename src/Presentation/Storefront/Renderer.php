@@ -2,21 +2,21 @@
 /**
  * Accessible server-rendered configurator baseline.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Presentation\Storefront;
+namespace WooptionsFic\Presentation\Storefront;
 
-use WooOptionsFic\Application\AnalyticsService;
-use WooOptionsFic\Application\QuoteService;
-use WooOptionsFic\Bootstrap\Settings;
-use WooOptionsFic\Domain\Definition\Type\ScalarFieldType;
-use WooOptionsFic\Domain\Font\CustomFontService;
-use WooOptionsFic\Domain\Support\Uuid;
-use WooOptionsFic\Infrastructure\WooCommerce\ProductContext;
-use WooOptionsFic\Infrastructure\WordPress\SessionGuard;
+use WooptionsFic\Application\AnalyticsService;
+use WooptionsFic\Application\QuoteService;
+use WooptionsFic\Bootstrap\Settings;
+use WooptionsFic\Domain\Definition\Type\ScalarFieldType;
+use WooptionsFic\Domain\Font\CustomFontService;
+use WooptionsFic\Domain\Support\Uuid;
+use WooptionsFic\Infrastructure\WooCommerce\ProductContext;
+use WooptionsFic\Infrastructure\WordPress\SessionGuard;
 
 final class Renderer {
 	/** @var array<int,bool> */

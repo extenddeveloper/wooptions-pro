@@ -2,24 +2,24 @@
 /**
  * WordPress-native administration shell.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Presentation\Admin;
+namespace WooptionsFic\Presentation\Admin;
 
-use WooOptionsFic\Bootstrap\Requirements;
-use WooOptionsFic\Bootstrap\Settings;
-use WooOptionsFic\Domain\Font\CustomFontService;
+use WooptionsFic\Bootstrap\Requirements;
+use WooptionsFic\Bootstrap\Settings;
+use WooptionsFic\Domain\Font\CustomFontService;
 
 final class AdminPage {
 	private string $hook_suffix = '';
 
 	public function register_menu(): void {
 		$this->hook_suffix = (string) add_menu_page(
-			__('WooOptionsFic', 'wooptionsfic'),
-			__('WooOptionsFic', 'wooptionsfic'),
+			__('WooptionsFic', 'wooptionsfic'),
+			__('WooptionsFic', 'wooptionsfic'),
 			'manage_wooptionsfic',
 			'wooptionsfic',
 			[$this, 'render'],
@@ -130,7 +130,7 @@ final class AdminPage {
 		$initial_route= 'wooptionsfic' === $page ? 'dashboard' : str_replace('wooptionsfic-', '', $page);
 		wp_add_inline_script(
 			'wooptionsfic-admin',
-			'window.WooOptionsFicAdmin=' . wp_json_encode(
+			'window.WooptionsFicAdmin=' . wp_json_encode(
 				[
 					'restRoot'      => esc_url_raw(rest_url('wooptionsfic/v1/')),
 					'nonce'         => wp_create_nonce('wp_rest'),
@@ -163,7 +163,7 @@ final class AdminPage {
 
 	public function render(): void {
 		if (! current_user_can('manage_wooptionsfic')) {
-			wp_die(esc_html__('You do not have permission to manage WooOptionsFic.', 'wooptionsfic'));
+			wp_die(esc_html__('You do not have permission to manage WooptionsFic.', 'wooptionsfic'));
 		}
 		echo '<div class="wrap wof-admin-wrap">';
 		echo '<div id="wooptionsfic-admin-root">';
@@ -179,7 +179,7 @@ final class AdminPage {
 			]);
 			echo '</div>';
 		}
-		echo '<noscript><div class="notice notice-error"><p>' . esc_html__('WooOptionsFic’s administration builder requires JavaScript. Storefront basic fields still have a server-rendered fallback.', 'wooptionsfic') . '</p></div></noscript>';
+		echo '<noscript><div class="notice notice-error"><p>' . esc_html__('WooptionsFic’s administration builder requires JavaScript. Storefront basic fields still have a server-rendered fallback.', 'wooptionsfic') . '</p></div></noscript>';
 		echo '</div>';
 	}
 
@@ -192,7 +192,7 @@ final class AdminPage {
 		echo wp_kses_post(
 			sprintf(
 				/* translators: %s: plugin admin URL. */
-				__('WooOptionsFic is ready. <a href="%s">Open the Precision Workshop</a> to import a template or build your first option set.', 'wooptionsfic'),
+				__('WooptionsFic is ready. <a href="%s">Open the Precision Workshop</a> to import a template or build your first option set.', 'wooptionsfic'),
 				esc_url(admin_url('admin.php?page=wooptionsfic#/templates'))
 			)
 		);

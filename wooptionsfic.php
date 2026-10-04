@@ -1,19 +1,19 @@
 <?php
 /**
- * Plugin Name:       WooOptionsFic — Product Options for WooCommerce
+ * Plugin Name:       WooptionsFic — Product Options for WooCommerce
  * Description:       Accessible product options, conditional logic, formula pricing, repeaters, uploads, and visual configuration for WooCommerce.
  * Version:           1.0.0
  * Requires at least: 6.9
  * Requires PHP:      8.1
  * Requires Plugins:  woocommerce
  * WC requires at least: 9.0
- * Author:            WooOptionsFic
+ * Author:            WooptionsFic
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       wooptionsfic
  * Domain Path:       /languages
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
@@ -29,19 +29,19 @@ define('WOOPTIONSFIC_BASENAME', plugin_basename(__FILE__));
 
 require_once WOOPTIONSFIC_PATH . 'src/Autoload.php';
 
-\WooOptionsFic\Autoload::register();
+\WooptionsFic\Autoload::register();
 
 register_activation_hook(
 	__FILE__,
 	static function (bool $network_wide = false): void {
-		\WooOptionsFic\Bootstrap\Activation::activate($network_wide);
+		\WooptionsFic\Bootstrap\Activation::activate($network_wide);
 	}
 );
 
 register_deactivation_hook(
 	__FILE__,
 	static function (bool $network_wide = false): void {
-		\WooOptionsFic\Bootstrap\Deactivation::deactivate($network_wide);
+		\WooptionsFic\Bootstrap\Deactivation::deactivate($network_wide);
 	}
 );
 
@@ -59,12 +59,12 @@ add_action(
 add_action(
 	'plugins_loaded',
 	static function (): void {
-		if (! \WooOptionsFic\Bootstrap\Requirements::runtime_is_supported()) {
-			\WooOptionsFic\Bootstrap\Requirements::register_runtime_notice();
+		if (! \WooptionsFic\Bootstrap\Requirements::runtime_is_supported()) {
+			\WooptionsFic\Bootstrap\Requirements::register_runtime_notice();
 			return;
 		}
 
-		$plugin = new \WooOptionsFic\Bootstrap\Plugin();
+		$plugin = new \WooptionsFic\Bootstrap\Plugin();
 		$plugin->boot();
 	},
 	20

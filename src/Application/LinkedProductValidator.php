@@ -2,12 +2,12 @@
 /**
  * Linked-product commerce validation port.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Application;
+namespace WooptionsFic\Application;
 
 interface LinkedProductValidator {
 	/**

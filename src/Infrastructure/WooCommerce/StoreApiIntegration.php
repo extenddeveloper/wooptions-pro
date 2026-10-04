@@ -2,12 +2,12 @@
 /**
  * WooCommerce Store API extension data.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Infrastructure\WooCommerce;
+namespace WooptionsFic\Infrastructure\WooCommerce;
 
 final class StoreApiIntegration {
 	public function register(): void {
@@ -70,7 +70,7 @@ final class StoreApiIntegration {
 	 */
 	public function cart_item_schema(): array {
 		return [
-			'configured' => ['description' => __('Whether this cart line has a WooOptionsFic configuration.', 'wooptionsfic'), 'type' => 'boolean', 'readonly' => true],
+			'configured' => ['description' => __('Whether this cart line has a WooptionsFic configuration.', 'wooptionsfic'), 'type' => 'boolean', 'readonly' => true],
 			'summary'    => ['description' => __('Sanitized option summary.', 'wooptionsfic'), 'type' => 'array', 'readonly' => true],
 			'price'      => ['description' => __('Server-calculated price breakdown.', 'wooptionsfic'), 'type' => ['object', 'null'], 'readonly' => true],
 			'revisionUuid'=> ['description' => __('Immutable definition revision identifier.', 'wooptionsfic'), 'type' => 'string', 'readonly' => true],

@@ -2,23 +2,23 @@
 /**
  * Session-bound customer REST API.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Presentation\Rest;
+namespace WooptionsFic\Presentation\Rest;
 
-use WooOptionsFic\Application\AnalyticsService;
-use WooOptionsFic\Application\NotFoundException;
-use WooOptionsFic\Application\QuoteService;
-use WooOptionsFic\Application\SavedConfigurationService;
-use WooOptionsFic\Application\UploadService;
-use WooOptionsFic\Application\ValidationException;
-use WooOptionsFic\Bootstrap\Settings;
-use WooOptionsFic\Infrastructure\WooCommerce\ProductContext;
-use WooOptionsFic\Infrastructure\WordPress\RateLimiter;
-use WooOptionsFic\Infrastructure\WordPress\SessionGuard;
+use WooptionsFic\Application\AnalyticsService;
+use WooptionsFic\Application\NotFoundException;
+use WooptionsFic\Application\QuoteService;
+use WooptionsFic\Application\SavedConfigurationService;
+use WooptionsFic\Application\UploadService;
+use WooptionsFic\Application\ValidationException;
+use WooptionsFic\Bootstrap\Settings;
+use WooptionsFic\Infrastructure\WooCommerce\ProductContext;
+use WooptionsFic\Infrastructure\WordPress\RateLimiter;
+use WooptionsFic\Infrastructure\WordPress\SessionGuard;
 
 final class PublicController {
 	use Responder;

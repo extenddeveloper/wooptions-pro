@@ -6,7 +6,7 @@
  * Only fonts explicitly chosen by the administrator in the builder
  * will be enqueued and loaded on the storefront and builder.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 defined('ABSPATH') || exit;

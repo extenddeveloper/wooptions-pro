@@ -1,10 +1,10 @@
-namespace WooOptionsFic {
+namespace WooptionsFic {
   const { useEffect, useState } = wp.element;
   const { __ } = wp.i18n;
 
   function routeFromLocation(): string {
     const hash = window.location.hash.replace(/^#\/?/, '').trim();
-    return hash || window.WooOptionsFicAdmin.initialRoute || 'dashboard';
+    return hash || window.WooptionsFicAdmin.initialRoute || 'dashboard';
   }
 
   export function injectCustomFontsCss(customFonts: any[]): void {
@@ -55,7 +55,7 @@ namespace WooOptionsFic {
     useEffect(() => {
       const update = () => setRoute(routeFromLocation());
       window.addEventListener('hashchange', update);
-      injectCustomFontsCss(((window.WooOptionsFicAdmin?.settings as any)?.custom_fonts) || []);
+      injectCustomFontsCss(((window.WooptionsFicAdmin?.settings as any)?.custom_fonts) || []);
       return () => window.removeEventListener('hashchange', update);
     }, []);
 
@@ -67,17 +67,17 @@ namespace WooOptionsFic {
 
     let page: any;
     if (route.startsWith('builder/')) {
-      page = <WooOptionsFic.Builder.BuilderPage uuid={route.slice('builder/'.length)} navigate={navigate} />;
+      page = <WooptionsFic.Builder.BuilderPage uuid={route.slice('builder/'.length)} navigate={navigate} />;
     } else {
       switch (route) {
-        case 'dashboard': page = <WooOptionsFic.Pages.Dashboard navigate={navigate} />; break;
-        case 'option-sets': page = <WooOptionsFic.Pages.OptionSets navigate={navigate} />; break;
-        case 'templates': page = <WooOptionsFic.Pages.Templates navigate={navigate} />; break;
-        case 'analytics': page = <WooOptionsFic.Pages.Analytics navigate={navigate} />; break;
-        case 'settings': page = <WooOptionsFic.Pages.Settings />; break;
-        default: page = <div className="wof-fatal"><h1>{__('Page not found', 'wooptionsfic')}</h1><p>{__('This WooOptionsFic route does not exist.', 'wooptionsfic')}</p><button type="button" onClick={() => navigate('dashboard')}>{__('Open dashboard', 'wooptionsfic')}</button></div>;
+        case 'dashboard': page = <WooptionsFic.Pages.Dashboard navigate={navigate} />; break;
+        case 'option-sets': page = <WooptionsFic.Pages.OptionSets navigate={navigate} />; break;
+        case 'templates': page = <WooptionsFic.Pages.Templates navigate={navigate} />; break;
+        case 'analytics': page = <WooptionsFic.Pages.Analytics navigate={navigate} />; break;
+        case 'settings': page = <WooptionsFic.Pages.Settings />; break;
+        default: page = <div className="wof-fatal"><h1>{__('Page not found', 'wooptionsfic')}</h1><p>{__('This WooptionsFic route does not exist.', 'wooptionsfic')}</p><button type="button" onClick={() => navigate('dashboard')}>{__('Open dashboard', 'wooptionsfic')}</button></div>;
       }
     }
-    return <WooOptionsFic.Components.AdminShell route={route} navigate={navigate}>{page}</WooOptionsFic.Components.AdminShell>;
+    return <WooptionsFic.Components.AdminShell route={route} navigate={navigate}>{page}</WooptionsFic.Components.AdminShell>;
   }
 }

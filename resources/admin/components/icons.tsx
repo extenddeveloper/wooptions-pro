@@ -1,4 +1,4 @@
-namespace WooOptionsFic.Components {
+namespace WooptionsFic.Components {
   const iconMap: Record<string, string> = {
     select: 'list-view',
     radio: 'marker',
@@ -37,7 +37,7 @@ namespace WooOptionsFic.Components {
   };
 
   export function Dashicon(props: { name: string; className?: string }): any {
-    return <span className={WooOptionsFic.Utils.classNames('dashicons', `dashicons-${props.name}`, props.className)} aria-hidden="true" />;
+    return <span className={WooptionsFic.Utils.classNames('dashicons', `dashicons-${props.name}`, props.className)} aria-hidden="true" />;
   }
 
   export function FieldIcon(props: { type: string }): any {

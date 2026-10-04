@@ -2,20 +2,20 @@
 /**
  * Deterministic assignment resolver and compiler merge.
  *
- * @package WooOptionsFic
+ * @package WooptionsFic
  */
 
 declare(strict_types=1);
 
-namespace WooOptionsFic\Application;
+namespace WooptionsFic\Application;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use WooOptionsFic\Domain\Support\CanonicalJson;
-use WooOptionsFic\Domain\Support\Uuid;
-use WooOptionsFic\Infrastructure\Persistence\AssignmentRepository;
-use WooOptionsFic\Infrastructure\Persistence\OptionSetRepository;
-use WooOptionsFic\Infrastructure\Persistence\Transaction;
+use WooptionsFic\Domain\Support\CanonicalJson;
+use WooptionsFic\Domain\Support\Uuid;
+use WooptionsFic\Infrastructure\Persistence\AssignmentRepository;
+use WooptionsFic\Infrastructure\Persistence\OptionSetRepository;
+use WooptionsFic\Infrastructure\Persistence\Transaction;
 
 final class AssignmentService {
 	public function __construct(
@@ -154,9 +154,9 @@ final class AssignmentService {
 			$context = is_array($assignment['context'] ?? null) ? $assignment['context'] : [];
 			$uuid    = (string) ($assignment['uuid'] ?? '');
 			$normalized[] = [
-				'uuid'       => \WooOptionsFic\Domain\Support\Uuid::is_valid($uuid)
+				'uuid'       => \WooptionsFic\Domain\Support\Uuid::is_valid($uuid)
 					? strtolower($uuid)
-					: \WooOptionsFic\Domain\Support\Uuid::v4(),
+					: \WooptionsFic\Domain\Support\Uuid::v4(),
 				'targetType' => $type,
 				'targetId'   => $target_id,
 				'mode'       => 'exclude' === ($assignment['mode'] ?? '') ? 'exclude' : 'include',
