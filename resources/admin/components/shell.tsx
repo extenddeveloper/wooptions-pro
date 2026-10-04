@@ -5,6 +5,7 @@ namespace WooOptionsPro.Components {
   export function AdminShell(props: { route: string; navigate: (route: string) => void; children?: any }): any {
     const isBuilder = props.route.startsWith('builder/');
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [overlayDismissed, setOverlayDismissed] = useState(false);
 
     if (isBuilder) {
       return (
@@ -16,9 +17,8 @@ namespace WooOptionsPro.Components {
     }
 
     const licenseInfo = (window as any).WooOptionsProAdmin?.license;
-    const isLicenseActive = licenseInfo?.active === true && !!licenseInfo?.key;
+    const isLicenseActive = licenseInfo?.active === true || licenseInfo?.canConfigure === true;
     const canConfigure = licenseInfo?.canConfigure !== false && isLicenseActive;
-    const [overlayDismissed, setOverlayDismissed] = useState(false);
 
     const navItems = [
       { id: 'dashboard', label: __('Dashboard', 'wooptions-pro') },

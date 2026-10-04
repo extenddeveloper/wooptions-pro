@@ -52,7 +52,8 @@ namespace WooOptionsPro.Pages {
       styleTag.textContent = css;
     }, [props.fonts, name, files, weight, style]);
 
-    const canConfigure = !!(window as any).WooOptionsProAdmin?.license?.canConfigure;
+    const licenseInfo = (window as any).WooOptionsProAdmin?.license;
+    const canConfigure = licenseInfo?.canConfigure !== false && (licenseInfo?.active === true || licenseInfo?.canConfigure === true);
 
     const openMediaUploader = () => {
       if (!canConfigure) {
@@ -392,7 +393,8 @@ namespace WooOptionsPro.Pages {
       );
     }
 
-    const canConfigure = !!(window as any).WooOptionsProAdmin?.license?.canConfigure;
+    const licenseInfo = (window as any).WooOptionsProAdmin?.license;
+    const canConfigure = licenseInfo?.canConfigure !== false && (licenseInfo?.active === true || licenseInfo?.canConfigure === true);
 
     const set = (key: string, value: unknown) => {
       if (!canConfigure) return;

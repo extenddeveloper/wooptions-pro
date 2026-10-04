@@ -437,30 +437,48 @@ class EliteLicensing {
 	 * @param string $email  Email.
 	 * @return string
 	 */
-	private function decrypt_license_key( $stored, $email ) {
+	public function decrypt_license_key( $stored, $email = '' ) {
 		if ( '' === $stored || 0 !== strpos( $stored, 'v1:' ) ) {
 			return $stored;
 		}
 
 		$parts = explode( ':', $stored );
-		if ( 3 !== count( $parts ) ) {
-			return '';
+		if ( 3 === count( $parts ) ) {
+			$cipher = base64_decode( $parts[1], true );
+			if ( false === $cipher ) {
+				return '';
+			}
+
+			$secret = $this->license_storage_key( $email );
+			$mac    = hash_hmac( 'sha256', $cipher, $secret );
+			if ( ! hash_equals( $mac, (string) $parts[2] ) ) {
+				return '';
+			}
+
+			$iv        = substr( hash( 'sha256', 'iv:' . $secret ), 0, 16 );
+			$plaintext = openssl_decrypt( $cipher, 'aes-256-cbc', substr( $secret, 0, 32 ), OPENSSL_RAW_DATA, $iv );
+			return false === $plaintext ? '' : (string) $plaintext;
 		}
 
-		$cipher = base64_decode( $parts[1], true );
-		if ( false === $cipher ) {
-			return '';
+		if ( 2 === count( $parts ) ) {
+			$raw = base64_decode( $parts[1], true );
+			if ( false === $raw || strlen( $raw ) < 49 ) {
+				return '';
+			}
+			$iv     = substr( $raw, 0, 16 );
+			$mac    = substr( $raw, 16, 32 );
+			$cipher = substr( $raw, 48 );
+			$secret = hash( 'sha256', ( defined( 'AUTH_SALT' ) ? AUTH_SALT : 'wooptions_pro_salt' ) . '|' . ( $this->config['product_id'] ?? '13' ) . '|' . strtolower( trim( (string) $email ) ), true );
+			$check  = hash_hmac( 'sha256', $iv . $cipher, $secret, true );
+			if ( hash_equals( $mac, $check ) ) {
+				$plaintext = openssl_decrypt( $cipher, 'aes-256-cbc', $secret, OPENSSL_RAW_DATA, $iv );
+				if ( false !== $plaintext ) {
+					return (string) $plaintext;
+				}
+			}
 		}
 
-		$secret = $this->license_storage_key( $email );
-		$mac    = hash_hmac( 'sha256', $cipher, $secret );
-		if ( ! hash_equals( $mac, (string) $parts[2] ) ) {
-			return '';
-		}
-
-		$iv        = substr( hash( 'sha256', 'iv:' . $secret ), 0, 16 );
-		$plaintext = openssl_decrypt( $cipher, 'aes-256-cbc', substr( $secret, 0, 32 ), OPENSSL_RAW_DATA, $iv );
-		return false === $plaintext ? '' : (string) $plaintext;
+		return '';
 	}
 
 	/**

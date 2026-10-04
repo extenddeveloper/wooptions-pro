@@ -35,7 +35,7 @@ namespace WooOptionsPro.Builder {
     }, [props.uuid]);
 
     const licenseInfo = (window as any).WooOptionsProAdmin?.license;
-    const isLicenseActive = licenseInfo?.active === true && !!licenseInfo?.key;
+    const isLicenseActive = licenseInfo?.active === true || licenseInfo?.canConfigure === true;
     const canConfigure = licenseInfo?.canConfigure !== false && isLicenseActive;
     const [overlayDismissed, setOverlayDismissed] = useState(false);
 

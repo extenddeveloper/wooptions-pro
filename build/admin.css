@@ -1510,6 +1510,215 @@
 	padding-top: 17px;
 }
 
+/* ==========================================================================
+   Modern Simple Light UI Modal (Create Option Set)
+   ========================================================================== */
+
+.wof-create-modal-backdrop {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 16px;
+	background: rgba(15, 23, 42, 0.45);
+	backdrop-filter: blur(4px);
+	box-sizing: border-box;
+	animation: wofModalFadeIn 0.15s ease-out;
+}
+
+.wof-create-modal-card {
+	position: relative;
+	width: 100%;
+	max-width: 440px;
+	background: #ffffff;
+	border: 1px solid #e2e8f0;
+	border-radius: 16px;
+	box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.12), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+	padding: 24px;
+	box-sizing: border-box;
+	animation: wofModalScaleIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes wofModalFadeIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@keyframes wofModalScaleIn {
+	from {
+		opacity: 0;
+		transform: scale(0.96) translateY(6px);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+}
+
+.wof-create-modal-header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 20px;
+}
+
+.wof-create-modal-header__text {
+	flex: 1;
+}
+
+.wof-create-modal-title {
+	font-size: 18px;
+	font-weight: 600;
+	color: #0f172a;
+	margin: 0 0 4px 0;
+	line-height: 1.35;
+	font-family: inherit;
+}
+
+.wof-create-modal-subtitle {
+	font-size: 13px;
+	color: #64748b;
+	margin: 0;
+	line-height: 1.45;
+}
+
+.wof-create-modal-close {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 8px;
+	border: none;
+	background: transparent;
+	color: #94a3b8;
+	cursor: pointer;
+	padding: 0;
+	transition: background-color 0.15s, color 0.15s;
+	flex-shrink: 0;
+}
+
+.wof-create-modal-close:hover {
+	background-color: #f1f5f9;
+	color: #334155;
+}
+
+.wof-create-modal-form {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.wof-create-modal-field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.wof-create-modal-label {
+	font-size: 13px;
+	font-weight: 500;
+	color: #334155;
+	line-height: 1.4;
+}
+
+.wof-create-modal-input {
+	width: 100%;
+	height: 42px;
+	padding: 8px 14px;
+	background: #ffffff;
+	border: 1px solid #cbd5e1;
+	border-radius: 8px;
+	font-size: 14px;
+	color: #0f172a;
+	box-sizing: border-box;
+	transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.wof-create-modal-input:focus {
+	border-color: #6366f1;
+	box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+	outline: none;
+}
+
+.wof-create-modal-input::placeholder {
+	color: #94a3b8;
+}
+
+.wof-create-modal-actions {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 10px;
+}
+
+.wof-create-modal-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 9px 18px;
+	font-size: 13px;
+	font-weight: 500;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: all 0.15s ease;
+	line-height: 1.4;
+	box-sizing: border-box;
+}
+
+.wof-create-modal-btn--cancel {
+	background: #ffffff;
+	border: 1px solid #e2e8f0;
+	color: #475569;
+}
+
+.wof-create-modal-btn--cancel:hover:not(:disabled) {
+	background: #f8fafc;
+	border-color: #cbd5e1;
+	color: #1e293b;
+}
+
+.wof-create-modal-btn--submit {
+	background: #4f46e5;
+	border: 1px solid #4f46e5;
+	color: #ffffff;
+	font-weight: 600;
+	box-shadow: 0 1px 2px 0 rgba(79, 70, 229, 0.2);
+}
+
+.wof-create-modal-btn--submit:hover:not(:disabled) {
+	background: #4338ca;
+	border-color: #4338ca;
+}
+
+.wof-create-modal-btn--submit:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+	box-shadow: none;
+}
+
+.wof-create-modal-spinner-wrap {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.wof-create-modal-spinner {
+	width: 14px;
+	height: 14px;
+	border: 2px solid rgba(255, 255, 255, 0.35);
+	border-top-color: #ffffff;
+	border-radius: 50%;
+	animation: wofSpin 0.7s linear infinite;
+}
+
+@keyframes wofSpin {
+	to { transform: rotate(360deg); }
+}
+
 .wof-template-toolbar {
 	background: var(--wof-admin-surface);
 	border: 1px solid var(--wof-admin-line);
@@ -16616,6 +16825,8 @@ body.rtl .wof-toast__progress-bar,
 .wholesalefic-license-info-row .value.license-key {
 	font-family: inherit;
 	letter-spacing: 0.5px;
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
 }
 
 .wholesalefic-license-aside {

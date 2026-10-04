@@ -2,21 +2,23 @@ namespace WooOptionsPro.Pages {
   const { __ } = wp.i18n;
   const { useState } = wp.element;
 
-  function maskKey(key: string, start = 6, end = 6): string {
-    if (!key) return '';
+  function maskKey(key: string, start = 4, end = 4): string {
+    if (!key) return '••••••••••••••••';
+    if (key.startsWith('v1:')) return '••••••••••••••••';
     if (key.includes('•')) return key;
     if (key.length <= start + end) return key;
     const prefix = key.slice(0, start);
     const suffix = key.slice(-end);
-    return `${prefix}${'•'.repeat(Math.max(8, key.length - start - end))}${suffix}`;
+    const bullets = Math.min(14, Math.max(8, key.length - start - end));
+    return `${prefix}${'•'.repeat(bullets)}${suffix}`;
   }
 
-  export function LicensePage(): any {
+  export function LicensePage(props?: { navigate?: (route: string) => void }): any {
     const adminData = (window as any).WooOptionsProAdmin || {};
     const initialLicense = adminData.license || {};
 
     const [licenseState, setLicenseState] = useState({
-      active: !!initialLicense.active && !!initialLicense.key,
+      active: !!initialLicense.active || initialLicense.state === 'active' || !!initialLicense.canConfigure,
       key: initialLicense.key || '',
       expires: initialLicense.expires || 'Lifetime',
       licenseTitle: initialLicense.licenseTitle || 'Unlimited Site (Lifetime)',
@@ -130,7 +132,7 @@ namespace WooOptionsPro.Pages {
       }
     };
 
-    const isActivated = licenseState.active && !!licenseState.key;
+    const isActivated = licenseState.active;
 
     return (
       <div className="wholesalefic_licensing_wrap wof-license-wrap">
@@ -176,6 +178,23 @@ namespace WooOptionsPro.Pages {
                         <span className="label">{__('Support Expires', 'wooptions-pro')}</span>
                         <span className="value">{licenseState.supportExpires}</span>
                       </div>
+                    </div>
+
+                    <div className="wholesalefic-license-quick-actions" style={{ marginTop: '24px', display: 'flex', gap: '12px' }}>
+                      <button
+                        type="button"
+                        className="button wholesalefic-license-button wholesalefic-license-button--primary"
+                        onClick={() => props?.navigate ? props.navigate('templates') : (window.location.hash = '#/templates')}
+                      >
+                        {__('Browse Templates', 'wooptions-pro')}
+                      </button>
+                      <button
+                        type="button"
+                        className="button wholesalefic-license-button wholesalefic-license-button--ghost"
+                        onClick={() => props?.navigate ? props.navigate('option-sets') : (window.location.hash = '#/option-sets')}
+                      >
+                        {__('Option Sets', 'wooptions-pro')}
+                      </button>
                     </div>
                   </div>
                 </>

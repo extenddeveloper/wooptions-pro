@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       WooOptions Pro Updated — Product Options for WooCommerce
+ * Plugin Name:       WooOptions Pro — Product Options for WooCommerce
  * Description:       Accessible product options, conditional logic, formula pricing, repeaters, uploads, and visual configuration for WooCommerce.
  * Version:           1.0.0
  * Requires at least: 6.9
@@ -8,6 +8,8 @@
  * Requires Plugins:  woocommerce
  * WC requires at least: 9.0
  * Author:            Themefic
+ * Author URI:        https://themefic.com
+ * Plugin URI:        https://themefic.com/plugins/woooptions-pro
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       wooptions-pro
@@ -73,9 +75,9 @@ add_action(
 add_filter(
 	'plugin_action_links_' . WOOPTIONS_PRO_BASENAME,
 	static function (array $links): array {
-		$license_url   = admin_url('admin.php?page=wooptions-pro-license');
-		$settings_url  = admin_url('admin.php?page=wooptions-pro#/settings');
-		$label         = did_action('init') ? esc_html__('Settings', 'wooptions-pro') : 'Settings';
+		$license_url = admin_url('admin.php?page=wooptions-pro-license');
+		$settings_url = admin_url('admin.php?page=wooptions-pro#/settings');
+		$label = did_action('init') ? esc_html__('Settings', 'wooptions-pro') : 'Settings';
 		$license_label = did_action('init') ? esc_html__('License', 'wooptions-pro') : 'License';
 		array_unshift(
 			$links,

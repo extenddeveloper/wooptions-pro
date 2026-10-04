@@ -4,7 +4,29 @@ namespace WooOptionsPro {
 
   function routeFromLocation(): string {
     const hash = window.location.hash.replace(/^#\/?/, '').trim();
-    return hash || window.WooOptionsProAdmin.initialRoute || 'dashboard';
+    if (hash) {
+      return hash;
+    }
+    try {
+      const url = new URL(window.location.href);
+      const pageParam = url.searchParams.get('page');
+      if (pageParam === 'wooptions-pro-license') return 'license';
+      if (pageParam === 'wooptions-pro-option-sets') return 'option-sets';
+      if (pageParam === 'wooptions-pro-templates') return 'templates';
+      if (pageParam === 'wooptions-pro-analytics') return 'analytics';
+      if (pageParam === 'wooptions-pro-settings') return 'settings';
+      if (pageParam === 'wooptions-pro') return 'dashboard';
+    } catch (e) {}
+    return window.WooOptionsProAdmin?.initialRoute || 'dashboard';
+  }
+
+  function getPageSlugForRoute(r: string): string {
+    if (r === 'license') return 'wooptions-pro-license';
+    if (r === 'option-sets') return 'wooptions-pro-option-sets';
+    if (r === 'templates') return 'wooptions-pro-templates';
+    if (r === 'analytics') return 'wooptions-pro-analytics';
+    if (r === 'settings') return 'wooptions-pro-settings';
+    return 'wooptions-pro';
   }
 
   export function injectCustomFontsCss(customFonts: any[]): void {
@@ -55,14 +77,42 @@ namespace WooOptionsPro {
     useEffect(() => {
       const update = () => setRoute(routeFromLocation());
       window.addEventListener('hashchange', update);
+      window.addEventListener('popstate', update);
       injectCustomFontsCss(((window.WooOptionsProAdmin?.settings as any)?.custom_fonts) || []);
-      return () => window.removeEventListener('hashchange', update);
+
+      // Normalize URL if opened on a subpage like wooptions-pro-license#/builder/...
+      const initial = routeFromLocation();
+      if (initial.startsWith('builder/')) {
+        try {
+          const url = new URL(window.location.href);
+          if (url.searchParams.get('page') !== 'wooptions-pro') {
+            url.searchParams.set('page', 'wooptions-pro');
+            window.history.replaceState({ route: initial }, '', url.toString());
+          }
+        } catch (e) {}
+      }
+
+      return () => {
+        window.removeEventListener('hashchange', update);
+        window.removeEventListener('popstate', update);
+      };
     }, []);
 
     const navigate = (nextRoute: string) => {
       const nextHash = `#/${nextRoute}`;
-      if (window.location.hash === nextHash) setRoute(nextRoute);
-      else window.location.hash = nextHash;
+      const targetPage = getPageSlugForRoute(nextRoute);
+
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set('page', targetPage);
+        url.hash = nextHash;
+        if (window.location.href !== url.toString()) {
+          window.history.pushState({ route: nextRoute }, '', url.toString());
+        }
+      } catch (e) {
+        window.location.hash = nextHash;
+      }
+      setRoute(nextRoute);
     };
 
     let page: any;
@@ -75,7 +125,7 @@ namespace WooOptionsPro {
         case 'templates': page = <WooOptionsPro.Pages.Templates navigate={navigate} />; break;
         case 'analytics': page = <WooOptionsPro.Pages.Analytics navigate={navigate} />; break;
         case 'settings': page = <WooOptionsPro.Pages.Settings />; break;
-        case 'license': page = <WooOptionsPro.Pages.LicensePage />; break;
+        case 'license': page = <WooOptionsPro.Pages.LicensePage navigate={navigate} />; break;
         default: page = <div className="wof-fatal"><h1>{__('Page not found', 'wooptions-pro')}</h1><p>{__('This WooOptions Pro route does not exist.', 'wooptions-pro')}</p><button type="button" onClick={() => navigate('dashboard')}>{__('Open dashboard', 'wooptions-pro')}</button></div>;
       }
     }

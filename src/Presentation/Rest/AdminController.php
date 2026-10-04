@@ -942,27 +942,27 @@ final class AdminController
 
 	public function can_edit(): bool
 	{
-		return current_user_can('edit_wooptions-pro_sets');
+		return current_user_can('manage_options') || current_user_can('manage_woocommerce') || current_user_can('edit_wooptions-pro_sets');
 	}
 
 	public function can_publish(): bool
 	{
-		return current_user_can('publish_wooptions-pro_sets');
+		return current_user_can('manage_options') || current_user_can('manage_woocommerce') || current_user_can('publish_wooptions-pro_sets');
 	}
 
 	public function can_manage(): bool
 	{
-		return current_user_can('manage_wooptions-pro');
+		return current_user_can('manage_options') || current_user_can('manage_woocommerce') || current_user_can('manage_wooptions-pro');
 	}
 
 	public function can_settings(): bool
 	{
-		return current_user_can('manage_wooptions-pro_settings');
+		return current_user_can('manage_options') || current_user_can('manage_woocommerce') || current_user_can('manage_wooptions-pro_settings');
 	}
 
 	public function can_analytics(): bool
 	{
-		return current_user_can('view_wooptions-pro_analytics');
+		return current_user_can('manage_options') || current_user_can('manage_woocommerce') || current_user_can('view_wooptions-pro_analytics');
 	}
 
 	/**

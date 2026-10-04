@@ -222,13 +222,32 @@ class LicenseSettings {
 	 * @return string
 	 */
 	public static function mask_license_key( $key, $start = 4, $end = 4 ) {
+		$key = trim( (string) $key );
+		if ( '' === $key ) {
+			return '';
+		}
+		if ( 0 === strpos( $key, 'v1:' ) ) {
+			if ( class_exists( '\WooOptionsPro\License\Updater\EliteLicensing' ) ) {
+				$client = \WooOptionsPro\License\Updater\EliteLicensing::getInstance();
+				$key    = $client ? $client->decrypt_license_key( $key ) : '';
+			} else {
+				return '';
+			}
+		}
+		if ( '' === $key || 0 === strpos( $key, 'v1:' ) ) {
+			return '';
+		}
+		if ( false !== strpos( $key, '•' ) ) {
+			return $key;
+		}
 		$length = strlen( $key );
 		if ( $length <= $start + $end ) {
 			return $key;
 		}
-		$prefix = substr( $key, 0, $start );
-		$suffix = substr( $key, -$end );
-		return $prefix . str_repeat( '•', max( 8, $length - $start - $end ) ) . $suffix;
+		$prefix  = substr( $key, 0, $start );
+		$suffix  = substr( $key, -$end );
+		$bullets = min( 14, max( 8, $length - $start - $end ) );
+		return $prefix . str_repeat( '•', $bullets ) . $suffix;
 	}
 
 	/**

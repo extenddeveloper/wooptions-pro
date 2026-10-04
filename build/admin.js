@@ -1462,15 +1462,15 @@ var WooOptionsPro;
         function AdminShell(props) {
             const isBuilder = props.route.startsWith('builder/');
             const [mobileOpen, setMobileOpen] = useState(false);
+            const [overlayDismissed, setOverlayDismissed] = useState(false);
             if (isBuilder) {
                 return (wp.element.createElement("div", { className: "wof-admin is-builder" },
                     wp.element.createElement("main", { className: "wof-admin__content" }, props.children),
                     wp.element.createElement(Components.ToastContainer, null)));
             }
             const licenseInfo = window.WooOptionsProAdmin?.license;
-            const isLicenseActive = licenseInfo?.active === true && !!licenseInfo?.key;
+            const isLicenseActive = licenseInfo?.active === true || licenseInfo?.canConfigure === true;
             const canConfigure = licenseInfo?.canConfigure !== false && isLicenseActive;
-            const [overlayDismissed, setOverlayDismissed] = useState(false);
             const navItems = [
                 { id: 'dashboard', label: __('Dashboard', 'wooptions-pro') },
                 { id: 'option-sets', label: __('Option Sets', 'wooptions-pro') },
@@ -1747,9 +1747,66 @@ var WooOptionsPro;
 (function (WooOptionsPro) {
     var Pages;
     (function (Pages) {
-        const { Button, Modal, SearchControl, SelectControl, TextControl } = wp.components;
+        const { Button, SearchControl, SelectControl } = wp.components;
         const { __ } = wp.i18n;
-        const { useCallback, useEffect, useMemo, useState } = wp.element;
+        const { useCallback, useEffect, useMemo, useRef, useState } = wp.element;
+        function CreateOptionSetModal(props) {
+            const [title, setTitle] = useState('');
+            const inputRef = useRef(null);
+            useEffect(() => {
+                if (props.isOpen) {
+                    setTitle('');
+                    const timer = setTimeout(() => {
+                        if (inputRef.current)
+                            inputRef.current.focus();
+                    }, 50);
+                    return () => clearTimeout(timer);
+                }
+            }, [props.isOpen]);
+            useEffect(() => {
+                const handleKeyDown = (e) => {
+                    if (!props.isOpen)
+                        return;
+                    if (e.key === 'Escape' && !props.busy) {
+                        e.preventDefault();
+                        props.onClose();
+                    }
+                };
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, [props.isOpen, props.busy, props.onClose]);
+            if (!props.isOpen)
+                return null;
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                if (!title.trim() || props.busy)
+                    return;
+                props.onCreate(title.trim());
+            };
+            return (wp.element.createElement("div", { className: "wof-create-modal-backdrop", onClick: (e) => {
+                    if (e.target === e.currentTarget && !props.busy) {
+                        props.onClose();
+                    }
+                }, role: "dialog", "aria-modal": "true", "aria-labelledby": "wof-create-modal-title" },
+                wp.element.createElement("div", { className: "wof-create-modal-card" },
+                    wp.element.createElement("div", { className: "wof-create-modal-header" },
+                        wp.element.createElement("div", { className: "wof-create-modal-header__text" },
+                            wp.element.createElement("h3", { id: "wof-create-modal-title", className: "wof-create-modal-title" }, __('Create an option set', 'wooptions-pro')),
+                            wp.element.createElement("p", { className: "wof-create-modal-subtitle" }, __('Enter a name for your option set to begin designing fields.', 'wooptions-pro'))),
+                        wp.element.createElement("button", { type: "button", className: "wof-create-modal-close", onClick: props.onClose, disabled: props.busy, "aria-label": __('Close modal', 'wooptions-pro') },
+                            wp.element.createElement("svg", { width: "18", height: "18", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" },
+                                wp.element.createElement("line", { x1: "18", y1: "6", x2: "6", y2: "18" }),
+                                wp.element.createElement("line", { x1: "6", y1: "6", x2: "18", y2: "18" })))),
+                    wp.element.createElement("form", { onSubmit: handleSubmit, className: "wof-create-modal-form" },
+                        wp.element.createElement("div", { className: "wof-create-modal-field" },
+                            wp.element.createElement("label", { htmlFor: "wof-create-title-input", className: "wof-create-modal-label" }, __('Option set title', 'wooptions-pro')),
+                            wp.element.createElement("input", { id: "wof-create-title-input", ref: inputRef, type: "text", className: "wof-create-modal-input", placeholder: __('e.g. Pizza Toppings, Custom Engraving…', 'wooptions-pro'), value: title, onChange: (e) => setTitle(e.target.value), disabled: props.busy, autoComplete: "off" })),
+                        wp.element.createElement("div", { className: "wof-create-modal-actions" },
+                            wp.element.createElement("button", { type: "button", className: "wof-create-modal-btn wof-create-modal-btn--cancel", onClick: props.onClose, disabled: props.busy }, __('Cancel', 'wooptions-pro')),
+                            wp.element.createElement("button", { type: "submit", className: "wof-create-modal-btn wof-create-modal-btn--submit", disabled: !title.trim() || props.busy }, props.busy ? (wp.element.createElement("span", { className: "wof-create-modal-spinner-wrap" },
+                                wp.element.createElement("span", { className: "wof-create-modal-spinner" }),
+                                wp.element.createElement("span", null, __('Creating…', 'wooptions-pro')))) : (__('Create and open', 'wooptions-pro'))))))));
+        }
         function ActionMenu(props) {
             const [open, setOpen] = useState(false);
             useEffect(() => {
@@ -1796,7 +1853,8 @@ var WooOptionsPro;
             const [createTitle, setCreateTitle] = useState('');
             const [busy, setBusy] = useState(false);
             const [deleteTarget, setDeleteTarget] = useState(null);
-            const canConfigure = !!window.WooOptionsProAdmin?.license?.canConfigure;
+            const licenseInfo = window.WooOptionsProAdmin?.license;
+            const canConfigure = licenseInfo?.canConfigure !== false && (licenseInfo?.active === true || licenseInfo?.canConfigure === true);
             const load = useCallback(() => {
                 setLoading(true);
                 setError('');
@@ -1814,8 +1872,9 @@ var WooOptionsPro;
             const start = collection.total ? (collection.page - 1) * collection.perPage + 1 : 0;
             const end = collection.total ? Math.min(collection.total, start + collection.items.length - 1) : 0;
             const allSelected = collection.items.length > 0 && collection.items.every((item) => selected.includes(item.uuid));
-            const create = async () => {
-                if (!createTitle.trim())
+            const create = async (titleToCreate) => {
+                const title = (typeof titleToCreate === 'string' ? titleToCreate : createTitle).trim();
+                if (!title)
                     return;
                 if (!canConfigure) {
                     WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to create option sets.', 'wooptions-pro'));
@@ -1823,7 +1882,7 @@ var WooOptionsPro;
                 }
                 setBusy(true);
                 try {
-                    const result = await WooOptionsPro.Api.createOptionSet(createTitle);
+                    const result = await WooOptionsPro.Api.createOptionSet(title);
                     setCreateOpen(false);
                     setCreateTitle('');
                     props.navigate(`builder/${result.uuid}`);
@@ -2030,11 +2089,7 @@ var WooOptionsPro;
                             wp.element.createElement("button", { type: "button", className: "wof-pagination__direction", disabled: page <= 1 || loading, onClick: () => setPage(Math.max(1, page - 1)) }, __('Previous', 'wooptions-pro')),
                             pages.map((value) => wp.element.createElement("button", { type: "button", key: value, className: page === value ? 'is-current' : '', "aria-current": page === value ? 'page' : undefined, disabled: loading, onClick: () => setPage(value) }, value)),
                             wp.element.createElement("button", { type: "button", className: "wof-pagination__direction", disabled: page >= totalPages || loading, onClick: () => setPage(Math.min(totalPages, page + 1)) }, __('Next', 'wooptions-pro'))))),
-                createOpen ? wp.element.createElement(Modal, { title: __('Create an option set', 'wooptions-pro'), onRequestClose: () => !busy && setCreateOpen(false), className: "wof-modal" },
-                    wp.element.createElement(TextControl, { label: __('Option set title', 'wooptions-pro'), value: createTitle, onChange: setCreateTitle, autoFocus: true }),
-                    wp.element.createElement("div", { className: "wof-modal__actions" },
-                        wp.element.createElement(Button, { variant: "tertiary", onClick: () => setCreateOpen(false) }, __('Cancel', 'wooptions-pro')),
-                        wp.element.createElement(Button, { variant: "primary", isBusy: busy, disabled: !createTitle.trim(), onClick: create }, __('Create and open', 'wooptions-pro')))) : null,
+                wp.element.createElement(CreateOptionSetModal, { isOpen: createOpen, busy: busy, onClose: () => !busy && setCreateOpen(false), onCreate: (title) => create(title) }),
                 deleteTarget ? wp.element.createElement(WooOptionsPro.Components.ConfirmModal, { title: __('Delete permanently?', 'wooptions-pro'), message: __('This removes the option set and its complete revision history. This action cannot be undone.', 'wooptions-pro'), confirmLabel: __('Delete permanently', 'wooptions-pro'), busy: busy, destructive: true, onConfirm: confirmDelete, onCancel: () => setDeleteTarget(null) }) : null);
         }
         Pages.OptionSets = OptionSets;
@@ -2983,7 +3038,8 @@ var WooOptionsPro;
                 }
                 styleTag.textContent = css;
             }, [props.fonts, name, files, weight, style]);
-            const canConfigure = !!window.WooOptionsProAdmin?.license?.canConfigure;
+            const licenseInfo = window.WooOptionsProAdmin?.license;
+            const canConfigure = licenseInfo?.canConfigure !== false && (licenseInfo?.active === true || licenseInfo?.canConfigure === true);
             const openMediaUploader = () => {
                 if (!canConfigure) {
                     WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to manage custom fonts.', 'wooptions-pro'));
@@ -3185,7 +3241,8 @@ var WooOptionsPro;
                 return (wp.element.createElement("div", { className: "wof-page" },
                     wp.element.createElement(WooOptionsPro.Components.Loading, null)));
             }
-            const canConfigure = !!window.WooOptionsProAdmin?.license?.canConfigure;
+            const licenseInfo = window.WooOptionsProAdmin?.license;
+            const canConfigure = licenseInfo?.canConfigure !== false && (licenseInfo?.active === true || licenseInfo?.canConfigure === true);
             const set = (key, value) => {
                 if (!canConfigure)
                     return;
@@ -3391,22 +3448,25 @@ var WooOptionsPro;
     (function (Pages) {
         const { __ } = wp.i18n;
         const { useState } = wp.element;
-        function maskKey(key, start = 6, end = 6) {
+        function maskKey(key, start = 4, end = 4) {
             if (!key)
-                return '';
+                return '••••••••••••••••';
+            if (key.startsWith('v1:'))
+                return '••••••••••••••••';
             if (key.includes('•'))
                 return key;
             if (key.length <= start + end)
                 return key;
             const prefix = key.slice(0, start);
             const suffix = key.slice(-end);
-            return `${prefix}${'•'.repeat(Math.max(8, key.length - start - end))}${suffix}`;
+            const bullets = Math.min(14, Math.max(8, key.length - start - end));
+            return `${prefix}${'•'.repeat(bullets)}${suffix}`;
         }
-        function LicensePage() {
+        function LicensePage(props) {
             const adminData = window.WooOptionsProAdmin || {};
             const initialLicense = adminData.license || {};
             const [licenseState, setLicenseState] = useState({
-                active: !!initialLicense.active && !!initialLicense.key,
+                active: !!initialLicense.active || initialLicense.state === 'active' || !!initialLicense.canConfigure,
                 key: initialLicense.key || '',
                 expires: initialLicense.expires || 'Lifetime',
                 licenseTitle: initialLicense.licenseTitle || 'Unlimited Site (Lifetime)',
@@ -3510,7 +3570,7 @@ var WooOptionsPro;
                     setBusy(false);
                 }
             };
-            const isActivated = licenseState.active && !!licenseState.key;
+            const isActivated = licenseState.active;
             return (wp.element.createElement("div", { className: "wholesalefic_licensing_wrap wof-license-wrap" },
                 wp.element.createElement("div", { id: "wholesalefic_license_body", className: `wholesalefic_licensing_body ${busy ? 'wholesalefic_loading' : ''}` },
                     wp.element.createElement("div", { className: "wholesalefic-license-layout" },
@@ -3537,7 +3597,10 @@ var WooOptionsPro;
                                         wp.element.createElement("span", { className: "value" }, licenseState.expires)),
                                     wp.element.createElement("div", { className: "wholesalefic-license-info-row" },
                                         wp.element.createElement("span", { className: "label" }, __('Support Expires', 'wooptions-pro')),
-                                        wp.element.createElement("span", { className: "value" }, licenseState.supportExpires)))))) : (wp.element.createElement(wp.element.Fragment, null,
+                                        wp.element.createElement("span", { className: "value" }, licenseState.supportExpires))),
+                                wp.element.createElement("div", { className: "wholesalefic-license-quick-actions", style: { marginTop: '24px', display: 'flex', gap: '12px' } },
+                                    wp.element.createElement("button", { type: "button", className: "button wholesalefic-license-button wholesalefic-license-button--primary", onClick: () => props?.navigate ? props.navigate('templates') : (window.location.hash = '#/templates') }, __('Browse Templates', 'wooptions-pro')),
+                                    wp.element.createElement("button", { type: "button", className: "button wholesalefic-license-button wholesalefic-license-button--ghost", onClick: () => props?.navigate ? props.navigate('option-sets') : (window.location.hash = '#/option-sets') }, __('Option Sets', 'wooptions-pro')))))) : (wp.element.createElement(wp.element.Fragment, null,
                             wp.element.createElement("div", { className: "wholesalefic-license-main__header" },
                                 wp.element.createElement("h2", { id: "wooptions-license-title" }, __('Activate License', 'wooptions-pro')),
                                 wp.element.createElement("p", null, __('Enter your license key from your purchase email to unlock premium features and receive plugin updates.', 'wooptions-pro'))),
@@ -8301,7 +8364,7 @@ var WooOptionsPro;
                 return () => { active = false; };
             }, [props.uuid]);
             const licenseInfo = window.WooOptionsProAdmin?.license;
-            const isLicenseActive = licenseInfo?.active === true && !!licenseInfo?.key;
+            const isLicenseActive = licenseInfo?.active === true || licenseInfo?.canConfigure === true;
             const canConfigure = licenseInfo?.canConfigure !== false && isLicenseActive;
             const [overlayDismissed, setOverlayDismissed] = useState(false);
             const saveNow = useCallback(async (note = 'Manual save') => {
@@ -8487,7 +8550,40 @@ var WooOptionsPro;
     const { __ } = wp.i18n;
     function routeFromLocation() {
         const hash = window.location.hash.replace(/^#\/?/, '').trim();
-        return hash || window.WooOptionsProAdmin.initialRoute || 'dashboard';
+        if (hash) {
+            return hash;
+        }
+        try {
+            const url = new URL(window.location.href);
+            const pageParam = url.searchParams.get('page');
+            if (pageParam === 'wooptions-pro-license')
+                return 'license';
+            if (pageParam === 'wooptions-pro-option-sets')
+                return 'option-sets';
+            if (pageParam === 'wooptions-pro-templates')
+                return 'templates';
+            if (pageParam === 'wooptions-pro-analytics')
+                return 'analytics';
+            if (pageParam === 'wooptions-pro-settings')
+                return 'settings';
+            if (pageParam === 'wooptions-pro')
+                return 'dashboard';
+        }
+        catch (e) { }
+        return window.WooOptionsProAdmin?.initialRoute || 'dashboard';
+    }
+    function getPageSlugForRoute(r) {
+        if (r === 'license')
+            return 'wooptions-pro-license';
+        if (r === 'option-sets')
+            return 'wooptions-pro-option-sets';
+        if (r === 'templates')
+            return 'wooptions-pro-templates';
+        if (r === 'analytics')
+            return 'wooptions-pro-analytics';
+        if (r === 'settings')
+            return 'wooptions-pro-settings';
+        return 'wooptions-pro';
     }
     function injectCustomFontsCss(customFonts) {
         if (!Array.isArray(customFonts) || customFonts.length === 0)
@@ -8540,15 +8636,40 @@ var WooOptionsPro;
         useEffect(() => {
             const update = () => setRoute(routeFromLocation());
             window.addEventListener('hashchange', update);
+            window.addEventListener('popstate', update);
             injectCustomFontsCss((window.WooOptionsProAdmin?.settings?.custom_fonts) || []);
-            return () => window.removeEventListener('hashchange', update);
+            // Normalize URL if opened on a subpage like wooptions-pro-license#/builder/...
+            const initial = routeFromLocation();
+            if (initial.startsWith('builder/')) {
+                try {
+                    const url = new URL(window.location.href);
+                    if (url.searchParams.get('page') !== 'wooptions-pro') {
+                        url.searchParams.set('page', 'wooptions-pro');
+                        window.history.replaceState({ route: initial }, '', url.toString());
+                    }
+                }
+                catch (e) { }
+            }
+            return () => {
+                window.removeEventListener('hashchange', update);
+                window.removeEventListener('popstate', update);
+            };
         }, []);
         const navigate = (nextRoute) => {
             const nextHash = `#/${nextRoute}`;
-            if (window.location.hash === nextHash)
-                setRoute(nextRoute);
-            else
+            const targetPage = getPageSlugForRoute(nextRoute);
+            try {
+                const url = new URL(window.location.href);
+                url.searchParams.set('page', targetPage);
+                url.hash = nextHash;
+                if (window.location.href !== url.toString()) {
+                    window.history.pushState({ route: nextRoute }, '', url.toString());
+                }
+            }
+            catch (e) {
                 window.location.hash = nextHash;
+            }
+            setRoute(nextRoute);
         };
         let page;
         if (route.startsWith('builder/')) {
@@ -8572,7 +8693,7 @@ var WooOptionsPro;
                     page = wp.element.createElement(WooOptionsPro.Pages.Settings, null);
                     break;
                 case 'license':
-                    page = wp.element.createElement(WooOptionsPro.Pages.LicensePage, null);
+                    page = wp.element.createElement(WooOptionsPro.Pages.LicensePage, { navigate: navigate });
                     break;
                 default: page = wp.element.createElement("div", { className: "wof-fatal" },
                     wp.element.createElement("h1", null, __('Page not found', 'wooptions-pro')),

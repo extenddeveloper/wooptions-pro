@@ -45,4 +45,20 @@ final class Capabilities {
 			}
 		}
 	}
+
+	public static function register_hooks(): void {
+		add_filter(
+			'user_has_cap',
+			static function ( array $allcaps ): array {
+				if ( ! empty( $allcaps['manage_options'] ) || ! empty( $allcaps['manage_woocommerce'] ) ) {
+					foreach ( self::all() as $cap ) {
+						$allcaps[ $cap ] = true;
+					}
+				}
+				return $allcaps;
+			},
+			10,
+			1
+		);
+	}
 }

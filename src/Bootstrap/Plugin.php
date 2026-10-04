@@ -60,6 +60,12 @@ final class Plugin {
 	private ?LicenseManager $license = null;
 
 	public function boot(): void {
+		// Register capability filters and hooks early so admin users always have full plugin access.
+		Capabilities::register_hooks();
+		if (is_admin()) {
+			add_action('admin_init', [Capabilities::class, 'add']);
+		}
+
 		// Licensing boots first so the gate reflects the real state and the License admin page is always reachable.
 		$this->license = new LicenseManager();
 		$this->license->init();

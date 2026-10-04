@@ -111,6 +111,11 @@ final class LicenseGate {
 			$state = self::STATE_UNLICENSED;
 		}
 
+		// Verified option fallback if marked valid
+		if ( self::STATE_UNLICENSED === $state && 'deactivated' !== $status && (bool) get_option( 'wooptions_pro_license_status', false ) && empty( $raw['is_expired'] ) ) {
+			$state = self::STATE_ACTIVE;
+		}
+
 		self::$state_cache = array(
 			'state'          => $state,
 			'ever_activated' => ! empty( $history['ever_activated'] ) || ! empty( $raw['ever_activated'] ),
@@ -139,9 +144,24 @@ final class LicenseGate {
 	 * @return bool
 	 */
 	public static function can_configure() {
+		if ( defined( 'WOOPTIONS_PRO_LICENSE_FORCE_ACTIVE' ) && WOOPTIONS_PRO_LICENSE_FORCE_ACTIVE ) {
+			return true;
+		}
+
+		if ( (bool) get_option( 'wooptions_pro_license_status', false ) ) {
+			$data = self::state_data();
+			if ( 'deactivated' !== ( $data['raw']['status'] ?? '' ) && empty( $data['raw']['is_expired'] ) ) {
+				return true;
+			}
+		}
+
 		$data = self::state_data();
 		$key  = ! empty( $data['raw']['license_key'] );
-		return $key && in_array( $data['state'], array( self::STATE_ACTIVE, self::STATE_GRACE ), true );
+		if ( $key && in_array( $data['state'], array( self::STATE_ACTIVE, self::STATE_GRACE ), true ) ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

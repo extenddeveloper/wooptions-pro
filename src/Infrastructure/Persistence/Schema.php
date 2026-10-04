@@ -13,8 +13,12 @@ final class Schema {
 	public const VERSION_OPTION = 'wooptions-pro_db_version';
 
 	public static function migrate(): void {
+		global $wpdb;
 		$installed = (string) get_option(self::VERSION_OPTION, '0');
-		if (version_compare($installed, WOOPTIONS_PRO_DB_VERSION, '>=')) {
+		$table_name = self::table('option_sets');
+		$table_exists = $wpdb && $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $table_name)) === $table_name;
+
+		if ($table_exists && version_compare($installed, WOOPTIONS_PRO_DB_VERSION, '>=')) {
 			return;
 		}
 

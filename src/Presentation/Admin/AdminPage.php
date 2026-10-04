@@ -178,7 +178,7 @@ final class AdminPage {
 	}
 
 	public function render(): void {
-		if (! current_user_can('manage_wooptions-pro')) {
+		if (! current_user_can('manage_options') && ! current_user_can('manage_woocommerce') && ! current_user_can('manage_wooptions-pro')) {
 			wp_die(esc_html__('You do not have permission to manage WooOptions Pro.', 'wooptions-pro'));
 		}
 		echo '<div class="wrap wof-admin-wrap">';
@@ -200,7 +200,7 @@ final class AdminPage {
 	}
 
 	public function activated_notice(): void {
-		if (! get_transient('wooptions-pro_activated') || ! current_user_can('manage_wooptions-pro')) {
+		if (! get_transient('wooptions-pro_activated') || (! current_user_can('manage_options') && ! current_user_can('manage_woocommerce') && ! current_user_can('manage_wooptions-pro'))) {
 			return;
 		}
 		delete_transient('wooptions-pro_activated');

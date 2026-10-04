@@ -149,7 +149,15 @@ class LicenseManager {
 			return true;
 		}
 
-		return LicenseGate::can_configure();
+		if ( LicenseGate::can_configure() ) {
+			return true;
+		}
+
+		if ( null !== self::$active_cache && self::$active_cache ) {
+			return true;
+		}
+
+		return (bool) get_option( self::STATUS_OPTION, false );
 	}
 
 	/**
@@ -167,11 +175,28 @@ class LicenseManager {
 	 * @return string
 	 */
 	public static function get_masked_key() {
-		$raw = get_option( 'wooptions_pro_elite_license', array() );
-		$key = ! empty( $raw['license_key'] ) ? (string) $raw['license_key'] : '';
+		$client = EliteLicensing::getInstance();
+		$key    = $client ? $client->getCurrentLicenseKey() : '';
+
 		if ( empty( $key ) ) {
+			$raw     = get_option( 'wooptions_pro_elite_license', array() );
+			$raw     = is_array( $raw ) ? $raw : array();
+			$raw_key = ! empty( $raw['license_key'] ) ? (string) $raw['license_key'] : '';
+			$email   = ! empty( $raw['license_email'] ) ? (string) $raw['license_email'] : '';
+
+			if ( ! empty( $raw_key ) ) {
+				if ( 0 === strpos( $raw_key, 'v1:' ) && $client ) {
+					$key = $client->decrypt_license_key( $raw_key, $email );
+				} else {
+					$key = $raw_key;
+				}
+			}
+		}
+
+		if ( empty( $key ) || 0 === strpos( $key, 'v1:' ) ) {
 			return '';
 		}
+
 		return LicenseSettings::mask_license_key( $key );
 	}
 
