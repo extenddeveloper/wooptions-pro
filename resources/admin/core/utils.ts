@@ -20,8 +20,20 @@ namespace WooOptionsPro.Utils {
   }
 
   export function errorMessage(error: unknown): string {
-    if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
-      return (error as { message: string }).message;
+    if (typeof error === 'string' && error.trim() !== '') {
+      return error;
+    }
+    if (error && typeof error === 'object') {
+      const anyErr = error as any;
+      if (typeof anyErr.message === 'string' && anyErr.message.trim() !== '') {
+        return anyErr.message;
+      }
+      if (anyErr.data && typeof anyErr.data.message === 'string' && anyErr.data.message.trim() !== '') {
+        return anyErr.data.message;
+      }
+      if (anyErr.code === 'wooptions_pro_license_required') {
+        return i18n.__('Activate your WooOptions Pro license to create and edit product option sets.', 'wooptions-pro');
+      }
     }
     return i18n.__('Something went wrong. Please try again.', 'wooptions-pro');
   }

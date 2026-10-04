@@ -34,8 +34,19 @@ namespace WooOptionsPro.Builder {
       return () => { active = false; };
     }, [props.uuid]);
 
+    const licenseInfo = (window as any).WooOptionsProAdmin?.license;
+    const isLicenseActive = licenseInfo?.active === true && !!licenseInfo?.key;
+    const canConfigure = licenseInfo?.canConfigure !== false && isLicenseActive;
+    const [overlayDismissed, setOverlayDismissed] = useState(false);
+
     const saveNow = useCallback(async (note = 'Manual save'): Promise<WooOptionsPro.OptionSetRecord> => {
       if (savePromise.current) return savePromise.current;
+      if (!canConfigure) {
+        const msg = licenseInfo?.message || __('Activate your WooOptions Pro license to create and edit product option sets.', 'wooptions-pro');
+        actions.setSaveStatus('error');
+        WooOptionsPro.Toast.error(msg, __('License Required', 'wooptions-pro'));
+        throw new Error(msg);
+      }
       if (!state.optionSet || !state.document) throw new Error(__('The builder is not ready.', 'wooptions-pro'));
       actions.setSaveStatus('saving');
       const expectedHash = state.optionSet.currentRevision?.contentHash ?? '';
@@ -51,7 +62,7 @@ namespace WooOptionsPro.Builder {
       } finally {
         savePromise.current = null;
       }
-    }, [state.optionSet, state.document]);
+    }, [state.optionSet, state.document, canConfigure]);
 
     /* Autosave removed — saves are now manual via "Save draft" button */
 
@@ -66,6 +77,11 @@ namespace WooOptionsPro.Builder {
     }, [state.document, state.optionSet]);
 
     const publish = async () => {
+      if (!canConfigure) {
+        const msg = licenseInfo?.message || __('Activate your WooOptions Pro license to create and edit product option sets.', 'wooptions-pro');
+        WooOptionsPro.Toast.error(msg, __('License Required', 'wooptions-pro'));
+        return;
+      }
       if (!state.optionSet || !state.document) return;
       if (state.errors.length) {
         WooOptionsPro.Toast.error(__('Please resolve configuration errors before publishing.', 'wooptions-pro'));
@@ -106,12 +122,21 @@ namespace WooOptionsPro.Builder {
     const addField = (field: WooOptionsPro.FieldDefinition, index?: number, parentUuid?: string) => { actions.addField(field, index, parentUuid); actions.selectField(field.uuid); actions.setInspectorTab('content'); };
     const duplicateSelected = () => selectedField && addField(WooOptionsPro.FieldFactory.duplicate(selectedField));
 
-    return <div className="wof-builder">
+    const showOverlay = !canConfigure && !overlayDismissed;
+
+    return <div className={`wof-builder ${showOverlay ? 'wof-builder--locked' : ''}`}>
       <header className="wof-builder-topbar"><div className="wof-builder-context"><button type="button" className="wof-builder-brand" onClick={() => props.navigate('dashboard')}><span className="wof-builder-brand-mark"><WooOptionsPro.Components.Dashicon name="screenoptions" /></span><strong>WooOptionsPro</strong></button><span className="wof-builder-divider" /><button type="button" className="wof-builder-back" onClick={() => props.navigate('option-sets')}><WooOptionsPro.Components.Dashicon name="arrow-left-alt2" /></button><div className="wof-builder-breadcrumb"><button type="button" onClick={() => props.navigate('option-sets')}>{__('Option Sets', 'wooptions-pro')}</button><span>/</span><div className="wof-builder-title-editor"><TextControl label={__('Option set title', 'wooptions-pro')} hideLabelFromVision value={state.document.title} onChange={(title: string) => actions.updateDocument({ title })} /><span className="wof-builder-title-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" /><path d="m15 5 4 4" /></svg></span></div></div></div><div className="wof-builder-tools"><div className="wof-tool-group wof-history-tools"><button type="button" disabled={!state.history.length} onClick={actions.undo}><WooOptionsPro.Components.Dashicon name="undo" /></button><button type="button" disabled={!state.future.length} onClick={actions.redo}><WooOptionsPro.Components.Dashicon name="redo" /></button></div><div className="wof-tool-group wof-device-switcher">{(['desktop', 'tablet', 'mobile'] as WooOptionsPro.PreviewDevice[]).map((device) => <button type="button" key={device} className={state.device === device ? 'is-active' : ''} onClick={() => actions.setDevice(device)}><WooOptionsPro.Components.Dashicon name={device === 'desktop' ? 'desktop' : device === 'tablet' ? 'tablet' : 'smartphone'} /></button>)}</div><Button variant="tertiary" className="wof-header-action" onClick={openHistory}><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ fill: 'none', stroke: 'currentColor' }}><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="2" /><polyline points="12 7 12 12 15 15" fill="none" stroke="currentColor" strokeWidth="2" /></svg>{__('History', 'wooptions-pro')}</Button><Button variant="tertiary" className="wof-header-action" onClick={openAssignments}><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ fill: 'none', stroke: 'currentColor' }}><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke="currentColor" strokeWidth="2" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke="currentColor" strokeWidth="2" /></svg>{__('Assignments', 'wooptions-pro')}</Button><Button variant="secondary" className="wof-header-action wof-header-save" isBusy={state.saveStatus === 'saving'} onClick={() => saveNow('Manual save').then(() => WooOptionsPro.Toast.success(__('Draft saved.', 'wooptions-pro'))).catch(() => undefined)}>{state.saveStatus === 'saving' ? __('Saving…', 'wooptions-pro') : __('Save draft', 'wooptions-pro')}</Button><Button variant="primary" className="wof-header-publish" isBusy={publishBusy} disabled={state.errors.length > 0 || publishBusy} onClick={publish}>{publishBusy ? __('Publishing…', 'wooptions-pro') : __('Publish', 'wooptions-pro')}</Button></div></header>
-      <div className="wof-builder-workspace"><ElementsPanel onAdd={addField} onOpenStyle={() => { actions.selectField(null); actions.setInspectorTab('style'); }} /><Canvas document={state.document} selectedUuid={state.selectedUuid} device={state.device} onSelect={(uuid) => { actions.selectField(uuid); actions.setInspectorTab('content'); }} onAdd={addField} onAddChild={(parentUuid, field, index) => addField(field, index, parentUuid)} onMove={actions.moveField} onMoveChild={actions.moveChildField} onMoveToParent={actions.moveFieldToParent} onDuplicate={(field) => addField(WooOptionsPro.FieldFactory.duplicate(field))} onDelete={setDeleteUuid} /><Inspector field={selectedField} document={state.document} tab={state.inspectorTab} onTabChange={actions.setInspectorTab} onFieldChange={(field) => actions.replaceField(field.uuid, field)} onDocumentChange={actions.updateDocument} onDuplicate={duplicateSelected} onDelete={() => selectedField && setDeleteUuid(selectedField.uuid)} /></div>
-      {historyOpen ? <HistoryModal revisions={revisions} busy={modalBusy} onClose={() => setHistoryOpen(false)} onRollback={async (revisionUuid) => { setModalBusy(true); try { const result = await WooOptionsPro.Api.rollback(state.optionSet!.uuid, revisionUuid); actions.loadSet(result); setHistoryOpen(false); WooOptionsPro.Toast.success(__('A new draft was created from that revision.', 'wooptions-pro')); } finally { setModalBusy(false); } }} /> : null}
-      {assignmentOpen ? <AssignmentsModal assignments={assignments} busy={modalBusy} onClose={() => setAssignmentOpen(false)} onSave={async (nextAssignments) => { setModalBusy(true); try { const response = await WooOptionsPro.Api.saveAssignments(state.optionSet!.uuid, nextAssignments); setAssignments(response.items); setAssignmentOpen(false); WooOptionsPro.Toast.success(__('Product assignments saved.', 'wooptions-pro')); } finally { setModalBusy(false); } }} /> : null}
+      <div className="wof-builder-workspace" inert={showOverlay ? true : undefined}><ElementsPanel onAdd={addField} onOpenStyle={() => { actions.selectField(null); actions.setInspectorTab('style'); }} /><Canvas document={state.document} selectedUuid={state.selectedUuid} device={state.device} onSelect={(uuid) => { actions.selectField(uuid); actions.setInspectorTab('content'); }} onAdd={addField} onAddChild={(parentUuid, field, index) => addField(field, index, parentUuid)} onMove={actions.moveField} onMoveChild={actions.moveChildField} onMoveToParent={actions.moveFieldToParent} onDuplicate={(field) => addField(WooOptionsPro.FieldFactory.duplicate(field))} onDelete={setDeleteUuid} /><Inspector field={selectedField} document={state.document} tab={state.inspectorTab} onTabChange={actions.setInspectorTab} onFieldChange={(field) => actions.replaceField(field.uuid, field)} onDocumentChange={actions.updateDocument} onDuplicate={duplicateSelected} onDelete={() => selectedField && setDeleteUuid(selectedField.uuid)} /></div>
+      {historyOpen ? <HistoryModal revisions={revisions} busy={modalBusy} onClose={() => setHistoryOpen(false)} onRollback={async (revisionUuid) => { if (!canConfigure) { WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to rollback revisions.', 'wooptions-pro')); return; } setModalBusy(true); try { const result = await WooOptionsPro.Api.rollback(state.optionSet!.uuid, revisionUuid); actions.loadSet(result); setHistoryOpen(false); WooOptionsPro.Toast.success(__('A new draft was created from that revision.', 'wooptions-pro')); } finally { setModalBusy(false); } }} /> : null}
+      {assignmentOpen ? <AssignmentsModal assignments={assignments} busy={modalBusy} onClose={() => setAssignmentOpen(false)} onSave={async (nextAssignments) => { if (!canConfigure) { WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to save assignments.', 'wooptions-pro')); return; } setModalBusy(true); try { const response = await WooOptionsPro.Api.saveAssignments(state.optionSet!.uuid, nextAssignments); setAssignments(response.items); setAssignmentOpen(false); WooOptionsPro.Toast.success(__('Product assignments saved.', 'wooptions-pro')); } finally { setModalBusy(false); } }} /> : null}
       {deleteUuid ? <WooOptionsPro.Components.ConfirmModal title={__('Delete field?', 'wooptions-pro')} message={__('Delete this field and its configuration? This can be undone until you leave the builder.', 'wooptions-pro')} confirmLabel={__('Delete field', 'wooptions-pro')} destructive onCancel={() => setDeleteUuid(null)} onConfirm={() => { actions.deleteField(deleteUuid); setDeleteUuid(null); }} /> : null}
+      {showOverlay && (
+        <WooOptionsPro.Components.LicenseOverlayModal
+          featureTitle={__('Precision Option Builder', 'wooptions-pro')}
+          onActivate={() => props.navigate('license')}
+          onDismiss={() => setOverlayDismissed(true)}
+        />
+      )}
     </div>;
   }
 }

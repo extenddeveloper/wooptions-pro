@@ -15,13 +15,30 @@ namespace WooOptionsPro.Components {
       );
     }
 
+    const licenseInfo = (window as any).WooOptionsProAdmin?.license;
+    const isLicenseActive = licenseInfo?.active === true && !!licenseInfo?.key;
+    const canConfigure = licenseInfo?.canConfigure !== false && isLicenseActive;
+    const [overlayDismissed, setOverlayDismissed] = useState(false);
+
     const navItems = [
       { id: 'dashboard', label: __('Dashboard', 'wooptions-pro') },
       { id: 'option-sets', label: __('Option Sets', 'wooptions-pro') },
       { id: 'templates', label: __('Templates', 'wooptions-pro') },
       { id: 'analytics', label: __('Analytics', 'wooptions-pro') },
       { id: 'settings', label: __('Settings', 'wooptions-pro') },
+      { id: 'license', label: __('License', 'wooptions-pro') },
     ];
+
+    const featureTitles: Record<string, string> = {
+      dashboard: __('Dashboard', 'wooptions-pro'),
+      'option-sets': __('Option Sets', 'wooptions-pro'),
+      templates: __('Templates', 'wooptions-pro'),
+      analytics: __('Analytics', 'wooptions-pro'),
+      settings: __('Settings', 'wooptions-pro'),
+    };
+
+    const isLicensePage = props.route === 'license';
+    const showOverlay = !canConfigure && !isLicensePage && !overlayDismissed;
 
     return (
       <div className="wof-admin">
@@ -56,12 +73,12 @@ namespace WooOptionsPro.Components {
             <div className="wof-masthead__support">
               <span className="wof-masthead__support-text">{__('Having troubles?', 'wooptions-pro')}</span>{' '}
               <a
-                href="https://wholesalefic.com/support"
+                href="https://themefic.com/support"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="wof-masthead__tutorial-link"
               >
-                {__('Tutorial', 'wooptions-pro')}
+                {__('Support', 'wooptions-pro')}
               </a>
             </div>
 
@@ -134,12 +151,12 @@ namespace WooOptionsPro.Components {
                 <div className="wof-masthead__support">
                   <span>{__('Having troubles?', 'wooptions-pro')}</span>{' '}
                   <a
-                    href="https://wholesalefic.com/support"
+                    href="https://themefic.com/support"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="wof-masthead__tutorial-link"
                   >
-                    {__('Tutorial', 'wooptions-pro')}
+                    {__('Support', 'wooptions-pro')}
                   </a>
                 </div>
               </div>
@@ -147,8 +164,42 @@ namespace WooOptionsPro.Components {
           </>
         )}
 
-        <div className="wof-admin__body">
-          <main className="wof-admin__content">{props.children}</main>
+        {!canConfigure && !isLicensePage && overlayDismissed && (
+          <div className="wof-license-banner">
+            <div className="wof-license-banner__content">
+              <span className="wof-license-banner__icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                  <line x1="12" y1="9" x2="12" y2="13"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+              </span>
+              <span>
+                {licenseInfo?.message ||
+                  __('Activate your WooOptions Pro license to create and edit product option sets.', 'wooptions-pro')}
+              </span>
+            </div>
+            <button
+              type="button"
+              className="wof-license-banner__button"
+              onClick={() => props.navigate('license')}
+            >
+              {licenseInfo?.state === 'expired' ? __('Renew License', 'wooptions-pro') : __('Activate License', 'wooptions-pro')}
+            </button>
+          </div>
+        )}
+
+        <div className={`wof-admin__body ${showOverlay ? 'wof-admin__body--locked' : ''}`}>
+          <main className="wof-admin__content" inert={showOverlay ? true : undefined} aria-hidden={showOverlay ? true : undefined}>
+            {props.children}
+          </main>
+          {showOverlay && (
+            <LicenseOverlayModal
+              featureTitle={featureTitles[props.route] || __('Option Sets', 'wooptions-pro')}
+              onActivate={() => props.navigate('license')}
+              onDismiss={() => setOverlayDismissed(true)}
+            />
+          )}
         </div>
         <ToastContainer />
       </div>

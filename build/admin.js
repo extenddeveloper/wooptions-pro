@@ -23,8 +23,20 @@ var WooOptionsPro;
         }
         Utils.uuid = uuid;
         function errorMessage(error) {
-            if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string') {
-                return error.message;
+            if (typeof error === 'string' && error.trim() !== '') {
+                return error;
+            }
+            if (error && typeof error === 'object') {
+                const anyErr = error;
+                if (typeof anyErr.message === 'string' && anyErr.message.trim() !== '') {
+                    return anyErr.message;
+                }
+                if (anyErr.data && typeof anyErr.data.message === 'string' && anyErr.data.message.trim() !== '') {
+                    return anyErr.data.message;
+                }
+                if (anyErr.code === 'wooptions_pro_license_required') {
+                    return Utils.i18n.__('Activate your WooOptions Pro license to create and edit product option sets.', 'wooptions-pro');
+                }
             }
             return Utils.i18n.__('Something went wrong. Please try again.', 'wooptions-pro');
         }
@@ -1361,6 +1373,91 @@ var WooOptionsPro;
     var Components;
     (function (Components) {
         const { __ } = wp.i18n;
+        function LicenseOverlayModal(props) {
+            const adminData = window.WooOptionsProAdmin || {};
+            const licenseInfo = adminData.license;
+            const state = (licenseInfo?.state || 'unlicensed').toLowerCase();
+            const stateLabels = {
+                unlicensed: __('LICENSE INACTIVE', 'wooptions-pro'),
+                expired: __('LICENSE EXPIRED', 'wooptions-pro'),
+                connection_error: __('LICENSE CHECK FAILED', 'wooptions-pro'),
+                invalid: __('LICENSE INVALID', 'wooptions-pro'),
+                deactivated: __('LICENSE DEACTIVATED', 'wooptions-pro'),
+            };
+            const stateLabel = stateLabels[state] || state.toUpperCase().replace(/_/g, ' ');
+            const title = props.featureTitle || __('WooOptions Pro', 'wooptions-pro');
+            const message = licenseInfo?.message ||
+                __('The WooOptions Pro license is deactivated. Activate a license to continue.', 'wooptions-pro');
+            const assetsUrl = adminData.assetsUrl || (adminData.pluginUrl ? adminData.pluginUrl + 'assets/' : '');
+            const shieldUrl = assetsUrl ? `${assetsUrl}images/pro-badge-sheild.svg` : '';
+            const supportUrl = 'https://themefic.com/support';
+            const features = [
+                {
+                    icon: (wp.element.createElement("svg", { viewBox: "0 0 24 24", xmlns: "http://www.w3.org/2000/svg" },
+                        wp.element.createElement("circle", { cx: "12", cy: "8", r: "4" }),
+                        wp.element.createElement("path", { d: "M5 20v-1.5A6.5 6.5 0 0 1 11.5 12h1A6.5 6.5 0 0 1 19 18.5V20" }))),
+                    title: __('Option Fields', 'wooptions-pro'),
+                },
+                {
+                    icon: (wp.element.createElement("svg", { viewBox: "0 0 24 24", xmlns: "http://www.w3.org/2000/svg" },
+                        wp.element.createElement("circle", { cx: "12", cy: "12", r: "9" }),
+                        wp.element.createElement("path", { d: "M3.5 12h17M12 3c2.4 2.5 3.5 5.5 3.5 9S14.4 18.5 12 21c-2.4-2.5-3.5-5.5-3.5-9S9.6 5.5 12 3Z" }))),
+                    title: __('Pricing Formulas', 'wooptions-pro'),
+                },
+                {
+                    icon: (wp.element.createElement("svg", { viewBox: "0 0 24 24", xmlns: "http://www.w3.org/2000/svg" },
+                        wp.element.createElement("path", { d: "M4 5.5V12l7.5 7.5a2 2 0 0 0 2.8 0l5.2-5.2a2 2 0 0 0 0-2.8L12 4H5.5A1.5 1.5 0 0 0 4 5.5Z" }),
+                        wp.element.createElement("circle", { cx: "8.2", cy: "8.2", r: "1.2" }))),
+                    title: __('Conditional Rules', 'wooptions-pro'),
+                },
+                {
+                    icon: (wp.element.createElement("svg", { viewBox: "0 0 24 24", xmlns: "http://www.w3.org/2000/svg" },
+                        wp.element.createElement("path", { d: "m8 4 3 5H5l3-5Zm8 0 3 5h-6l3-5ZM5 14h6v6H5v-6Zm11 0a3 3 0 1 1 0 6 3 3 0 0 1 0-6Z" }))),
+                    title: __('Product Assignment', 'wooptions-pro'),
+                },
+            ];
+            return (wp.element.createElement("div", { className: "ws-license-overlay wof-license-overlay", role: "region", "aria-label": __('WooOptions Pro license required', 'wooptions-pro') },
+                wp.element.createElement("div", { className: "ws-license-overlay__card" },
+                    wp.element.createElement("div", { className: "ws-license-overlay__body" },
+                        wp.element.createElement("div", { className: "ws-license-overlay__icon", "aria-hidden": "true" }, shieldUrl ? (wp.element.createElement("img", { src: shieldUrl, alt: "badge", width: "132", height: "100" })) : (wp.element.createElement("svg", { width: "48", height: "48", viewBox: "0 0 48 48", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
+                            wp.element.createElement("rect", { width: "48", height: "48", rx: "24", fill: "#EEF2FF" }),
+                            wp.element.createElement("path", { d: "M24 12L34 16.5V23C34 29.5 29.7 35.5 24 37C18.3 35.5 14 29.5 14 23V16.5L24 12Z", fill: "#5271FF" }),
+                            wp.element.createElement("path", { d: "M20 24L23 27L28 21", stroke: "white", strokeWidth: "2.5", strokeLinecap: "round", strokeLinejoin: "round" })))),
+                        wp.element.createElement("div", { className: "ws-license-overlay__topline" },
+                            wp.element.createElement("span", { className: "ws-license-overlay__badge", "aria-hidden": "true" },
+                                wp.element.createElement("svg", { viewBox: "0 0 20 20", xmlns: "http://www.w3.org/2000/svg" },
+                                    wp.element.createElement("path", { d: "m10 1.8 2 2.1 2.9-.1.7 2.8 2.5 1.6-1.3 2.7.9 2.8-2.6 1.4-.6 2.9-2.9-.3L10 20l-2-2.1-2.9.1-.7-2.8-2.5-1.6 1.3-2.7-.9-2.8 2.6-1.4.6-2.9 2.9.3L10 1.8Z", fill: "currentColor" }),
+                                    wp.element.createElement("path", { d: "m8 10 1.3 1.3 2.8-3", fill: "none", stroke: "#fff", strokeWidth: "1.6", strokeLinecap: "round", strokeLinejoin: "round" }))),
+                            wp.element.createElement("span", null, __('PRO', 'wooptions-pro')),
+                            wp.element.createElement("span", { className: "ws-license-overlay__dot", "aria-hidden": "true" }, "\u00B7"),
+                            wp.element.createElement("span", { className: "ws-license-overlay__state" }, stateLabel)),
+                        wp.element.createElement("h2", null,
+                            __('Activate your license to unlock', 'wooptions-pro'),
+                            " ",
+                            title),
+                        wp.element.createElement("p", { className: "ws-license-overlay__message" }, message),
+                        wp.element.createElement("div", { className: "ws-license-overlay__features", "aria-label": __('Premium feature highlights', 'wooptions-pro') }, features.map((item, idx) => (wp.element.createElement("div", { key: idx, className: "ws-license-overlay__feature" },
+                            wp.element.createElement("span", { className: "ws-license-overlay__feature-icon", "aria-hidden": "true" }, item.icon),
+                            wp.element.createElement("span", null, item.title))))),
+                        wp.element.createElement("div", { className: "ws-license-overlay__actions" },
+                            wp.element.createElement("button", { type: "button", className: "wholesalefic-btn wholesalefic-btn--primary", onClick: props.onActivate }, __('Activate License', 'wooptions-pro')),
+                            wp.element.createElement("button", { type: "button", className: "wholesalefic-btn wholesalefic-btn--secondary", onClick: props.onDismiss }, __('Dismiss & View Preview', 'wooptions-pro')))),
+                    wp.element.createElement("div", { className: "ws-license-overlay__footer" },
+                        wp.element.createElement("a", { className: "ws-license-overlay__help", href: supportUrl, target: "_blank", rel: "noopener noreferrer" },
+                            wp.element.createElement("svg", { viewBox: "0 0 24 24", xmlns: "http://www.w3.org/2000/svg", "aria-hidden": "true" },
+                                wp.element.createElement("circle", { cx: "12", cy: "12", r: "9" }),
+                                wp.element.createElement("path", { d: "M12 10v6M12 7h.01" })),
+                            wp.element.createElement("span", null, __('Need help? Contact support', 'wooptions-pro'))),
+                        wp.element.createElement("button", { type: "button", className: "ws-license-overlay__dismiss", onClick: props.onDismiss }, __('Dismiss', 'wooptions-pro'))))));
+        }
+        Components.LicenseOverlayModal = LicenseOverlayModal;
+    })(Components = WooOptionsPro.Components || (WooOptionsPro.Components = {}));
+})(WooOptionsPro || (WooOptionsPro = {}));
+var WooOptionsPro;
+(function (WooOptionsPro) {
+    var Components;
+    (function (Components) {
+        const { __ } = wp.i18n;
         const { useState } = wp.element;
         function AdminShell(props) {
             const isBuilder = props.route.startsWith('builder/');
@@ -1370,13 +1467,27 @@ var WooOptionsPro;
                     wp.element.createElement("main", { className: "wof-admin__content" }, props.children),
                     wp.element.createElement(Components.ToastContainer, null)));
             }
+            const licenseInfo = window.WooOptionsProAdmin?.license;
+            const isLicenseActive = licenseInfo?.active === true && !!licenseInfo?.key;
+            const canConfigure = licenseInfo?.canConfigure !== false && isLicenseActive;
+            const [overlayDismissed, setOverlayDismissed] = useState(false);
             const navItems = [
                 { id: 'dashboard', label: __('Dashboard', 'wooptions-pro') },
                 { id: 'option-sets', label: __('Option Sets', 'wooptions-pro') },
                 { id: 'templates', label: __('Templates', 'wooptions-pro') },
                 { id: 'analytics', label: __('Analytics', 'wooptions-pro') },
                 { id: 'settings', label: __('Settings', 'wooptions-pro') },
+                { id: 'license', label: __('License', 'wooptions-pro') },
             ];
+            const featureTitles = {
+                dashboard: __('Dashboard', 'wooptions-pro'),
+                'option-sets': __('Option Sets', 'wooptions-pro'),
+                templates: __('Templates', 'wooptions-pro'),
+                analytics: __('Analytics', 'wooptions-pro'),
+                settings: __('Settings', 'wooptions-pro'),
+            };
+            const isLicensePage = props.route === 'license';
+            const showOverlay = !canConfigure && !isLicensePage && !overlayDismissed;
             return (wp.element.createElement("div", { className: "wof-admin" },
                 wp.element.createElement("header", { className: "wof-admin__masthead" },
                     wp.element.createElement("button", { type: "button", className: "wof-brand", onClick: () => props.navigate('dashboard'), title: __('Go to Dashboard', 'wooptions-pro') },
@@ -1391,7 +1502,7 @@ var WooOptionsPro;
                         wp.element.createElement("div", { className: "wof-masthead__support" },
                             wp.element.createElement("span", { className: "wof-masthead__support-text" }, __('Having troubles?', 'wooptions-pro')),
                             ' ',
-                            wp.element.createElement("a", { href: "https://wholesalefic.com/support", target: "_blank", rel: "noopener noreferrer", className: "wof-masthead__tutorial-link" }, __('Tutorial', 'wooptions-pro'))),
+                            wp.element.createElement("a", { href: "https://themefic.com/support", target: "_blank", rel: "noopener noreferrer", className: "wof-masthead__tutorial-link" }, __('Support', 'wooptions-pro'))),
                         wp.element.createElement("button", { type: "button", className: "wof-masthead__hamburger", onClick: () => setMobileOpen(!mobileOpen), "aria-label": __('Toggle mobile navigation', 'wooptions-pro'), "aria-expanded": mobileOpen },
                             wp.element.createElement("svg", { width: "20", height: "20", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" },
                                 wp.element.createElement("line", { x1: "3", y1: "12", x2: "21", y2: "12" }),
@@ -1422,9 +1533,20 @@ var WooOptionsPro;
                             wp.element.createElement("div", { className: "wof-masthead__support" },
                                 wp.element.createElement("span", null, __('Having troubles?', 'wooptions-pro')),
                                 ' ',
-                                wp.element.createElement("a", { href: "https://wholesalefic.com/support", target: "_blank", rel: "noopener noreferrer", className: "wof-masthead__tutorial-link" }, __('Tutorial', 'wooptions-pro'))))))),
-                wp.element.createElement("div", { className: "wof-admin__body" },
-                    wp.element.createElement("main", { className: "wof-admin__content" }, props.children)),
+                                wp.element.createElement("a", { href: "https://themefic.com/support", target: "_blank", rel: "noopener noreferrer", className: "wof-masthead__tutorial-link" }, __('Support', 'wooptions-pro'))))))),
+                !canConfigure && !isLicensePage && overlayDismissed && (wp.element.createElement("div", { className: "wof-license-banner" },
+                    wp.element.createElement("div", { className: "wof-license-banner__content" },
+                        wp.element.createElement("span", { className: "wof-license-banner__icon", "aria-hidden": "true" },
+                            wp.element.createElement("svg", { width: "18", height: "18", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" },
+                                wp.element.createElement("path", { d: "M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" }),
+                                wp.element.createElement("line", { x1: "12", y1: "9", x2: "12", y2: "13" }),
+                                wp.element.createElement("line", { x1: "12", y1: "17", x2: "12.01", y2: "17" }))),
+                        wp.element.createElement("span", null, licenseInfo?.message ||
+                            __('Activate your WooOptions Pro license to create and edit product option sets.', 'wooptions-pro'))),
+                    wp.element.createElement("button", { type: "button", className: "wof-license-banner__button", onClick: () => props.navigate('license') }, licenseInfo?.state === 'expired' ? __('Renew License', 'wooptions-pro') : __('Activate License', 'wooptions-pro')))),
+                wp.element.createElement("div", { className: `wof-admin__body ${showOverlay ? 'wof-admin__body--locked' : ''}` },
+                    wp.element.createElement("main", { className: "wof-admin__content", inert: showOverlay ? true : undefined, "aria-hidden": showOverlay ? true : undefined }, props.children),
+                    showOverlay && (wp.element.createElement(Components.LicenseOverlayModal, { featureTitle: featureTitles[props.route] || __('Option Sets', 'wooptions-pro'), onActivate: () => props.navigate('license'), onDismiss: () => setOverlayDismissed(true) }))),
                 wp.element.createElement(Components.ToastContainer, null)));
         }
         Components.AdminShell = AdminShell;
@@ -1674,6 +1796,7 @@ var WooOptionsPro;
             const [createTitle, setCreateTitle] = useState('');
             const [busy, setBusy] = useState(false);
             const [deleteTarget, setDeleteTarget] = useState(null);
+            const canConfigure = !!window.WooOptionsProAdmin?.license?.canConfigure;
             const load = useCallback(() => {
                 setLoading(true);
                 setError('');
@@ -1694,6 +1817,10 @@ var WooOptionsPro;
             const create = async () => {
                 if (!createTitle.trim())
                     return;
+                if (!canConfigure) {
+                    WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to create option sets.', 'wooptions-pro'));
+                    return;
+                }
                 setBusy(true);
                 try {
                     const result = await WooOptionsPro.Api.createOptionSet(createTitle);
@@ -1713,9 +1840,17 @@ var WooOptionsPro;
                 WooOptionsPro.Utils.downloadJson(uuids.length === 1 ? `wooptions-pro-${uuids[0]}.json` : `wooptions-pro-option-sets-${Date.now()}.json`, uuids.length === 1 ? exports[0] : { exportSchemaVersion: 1, exportedAtGmt: new Date().toISOString(), optionSets: exports });
             };
             const updateStatus = async (uuid, nextStatus) => {
+                if (!canConfigure) {
+                    WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to modify option sets.', 'wooptions-pro'));
+                    return;
+                }
                 await WooOptionsPro.Api.updateOptionSet(uuid, { status: nextStatus });
             };
             const rowAction = async (item, action) => {
+                if (action !== 'export' && action !== 'edit' && !canConfigure) {
+                    WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to modify option sets.', 'wooptions-pro'));
+                    return;
+                }
                 setBusy(true);
                 try {
                     if (action === 'edit')
@@ -1746,6 +1881,10 @@ var WooOptionsPro;
             const bulk = async (action) => {
                 if (!selected.length)
                     return;
+                if (action !== 'export' && !canConfigure) {
+                    WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to modify option sets.', 'wooptions-pro'));
+                    return;
+                }
                 if (action === 'delete') {
                     const target = collection.items.find((item) => item.uuid === selected[0]);
                     if (target)
@@ -1771,6 +1910,10 @@ var WooOptionsPro;
             const confirmDelete = async () => {
                 if (!deleteTarget)
                     return;
+                if (!canConfigure) {
+                    WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to delete option sets.', 'wooptions-pro'));
+                    return;
+                }
                 setBusy(true);
                 try {
                     const targets = deleteTarget.title.includes('selected option sets') ? selected : [deleteTarget.uuid];
@@ -1797,7 +1940,10 @@ var WooOptionsPro;
             return wp.element.createElement("div", { className: "wof-page" },
                 wp.element.createElement(WooOptionsPro.Components.PageHeader, { eyebrow: __('Configuration library', 'wooptions-pro'), title: __('Option Sets', 'wooptions-pro'), description: __('Design once, assign precisely, and preserve every published revision.', 'wooptions-pro'), actions: wp.element.createElement(wp.element.Fragment, null,
                         wp.element.createElement(Button, { variant: "secondary", onClick: () => props.navigate('templates') }, __('Browse templates', 'wooptions-pro')),
-                        wp.element.createElement(Button, { variant: "primary", onClick: () => setCreateOpen(true) },
+                        wp.element.createElement(Button, { variant: "primary", onClick: () => { if (!canConfigure) {
+                                WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to create option sets.', 'wooptions-pro'));
+                                return;
+                            } setCreateOpen(true); } },
                             wp.element.createElement(WooOptionsPro.Components.Dashicon, { name: "plus-alt2" }),
                             __('New option set', 'wooptions-pro'))) }),
                 error ? wp.element.createElement(WooOptionsPro.Components.InlineNotice, { type: "error", onClose: () => setError('') }, error) : null,
@@ -2837,7 +2983,12 @@ var WooOptionsPro;
                 }
                 styleTag.textContent = css;
             }, [props.fonts, name, files, weight, style]);
+            const canConfigure = !!window.WooOptionsProAdmin?.license?.canConfigure;
             const openMediaUploader = () => {
+                if (!canConfigure) {
+                    WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to manage custom fonts.', 'wooptions-pro'));
+                    return;
+                }
                 if (!wp.media) {
                     WooOptionsPro.Toast.error(__('WordPress Media Library is unavailable.', 'wooptions-pro'));
                     return;
@@ -2877,6 +3028,10 @@ var WooOptionsPro;
                 frame.open();
             };
             const addFont = () => {
+                if (!canConfigure) {
+                    WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to add custom fonts.', 'wooptions-pro'));
+                    return;
+                }
                 const trimmedName = name.trim();
                 if (!trimmedName) {
                     WooOptionsPro.Toast.error(__('Please enter a font name.', 'wooptions-pro'));
@@ -2907,6 +3062,10 @@ var WooOptionsPro;
                 WooOptionsPro.Toast.success(__('Custom font added! Remember to click "Save settings" at top right to finalize.', 'wooptions-pro'));
             };
             const removeFont = (index) => {
+                if (!canConfigure) {
+                    WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to remove custom fonts.', 'wooptions-pro'));
+                    return;
+                }
                 if (window.confirm(__('Are you sure you want to remove this custom font?', 'wooptions-pro'))) {
                     const next = props.fonts.filter((_, i) => i !== index);
                     props.onChange(next);
@@ -3026,8 +3185,17 @@ var WooOptionsPro;
                 return (wp.element.createElement("div", { className: "wof-page" },
                     wp.element.createElement(WooOptionsPro.Components.Loading, null)));
             }
-            const set = (key, value) => setSettings({ ...settings, [key]: value });
+            const canConfigure = !!window.WooOptionsProAdmin?.license?.canConfigure;
+            const set = (key, value) => {
+                if (!canConfigure)
+                    return;
+                setSettings({ ...settings, [key]: value });
+            };
             const save = async () => {
+                if (!canConfigure) {
+                    WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to save settings.', 'wooptions-pro'));
+                    return;
+                }
                 setSaving(true);
                 try {
                     const saved = await WooOptionsPro.Api.saveSettings(settings);
@@ -3073,7 +3241,7 @@ var WooOptionsPro;
                 },
             ];
             return (wp.element.createElement("div", { className: "wof-page" },
-                wp.element.createElement(WooOptionsPro.Components.PageHeader, { eyebrow: __('Operational defaults', 'wooptions-pro'), title: __('Settings', 'wooptions-pro'), description: __('Control limits, file retention, summary labels, and storefront visibility without editing code.', 'wooptions-pro'), actions: wp.element.createElement(Button, { variant: "primary", isBusy: saving, disabled: saving, onClick: save }, saving ? __('Saving…', 'wooptions-pro') : __('Save settings', 'wooptions-pro')) }),
+                wp.element.createElement(WooOptionsPro.Components.PageHeader, { eyebrow: __('Operational defaults', 'wooptions-pro'), title: __('Settings', 'wooptions-pro'), description: __('Control limits, file retention, summary labels, and storefront visibility without editing code.', 'wooptions-pro'), actions: wp.element.createElement(Button, { variant: "primary", isBusy: saving, disabled: !canConfigure || saving, onClick: save, title: !canConfigure ? __('Activate your license to save settings', 'wooptions-pro') : undefined }, saving ? __('Saving…', 'wooptions-pro') : __('Save settings', 'wooptions-pro')) }),
                 wp.element.createElement("div", { className: "wof-settings-layout" },
                     wp.element.createElement("nav", { className: "wof-settings-nav", "aria-label": __('Settings navigation', 'wooptions-pro') }, tabs.map((tab) => (wp.element.createElement("button", { type: "button", key: tab.id, className: WooOptionsPro.Utils.classNames('wof-settings-nav-item', activeTab === tab.id && 'is-active'), onClick: () => setActiveTab(tab.id) },
                         wp.element.createElement("span", { className: "wof-settings-nav-item__icon" },
@@ -3082,108 +3250,360 @@ var WooOptionsPro;
                             wp.element.createElement("span", { className: "wof-settings-nav-item__title" }, tab.label),
                             wp.element.createElement("span", { className: "wof-settings-nav-item__subtitle" }, tab.subtitle)))))),
                     wp.element.createElement("main", { className: "wof-settings-panel" },
-                        activeTab === 'cleanup' && (wp.element.createElement("section", { "aria-labelledby": "wof-cleanup-heading" },
-                            wp.element.createElement("div", { className: "wof-settings-panel__header" },
-                                wp.element.createElement("h2", { id: "wof-cleanup-heading", className: "wof-settings-panel__title" }, __('Cleanup Upload Field Files', 'wooptions-pro')),
-                                wp.element.createElement("p", { className: "wof-settings-panel__desc" }, __('Clean up all files uploaded through this field to free storage and remove unused data.', 'wooptions-pro'))),
-                            wp.element.createElement("div", { className: "wof-settings-rows" },
-                                wp.element.createElement("div", { className: "wof-setting-row" },
-                                    wp.element.createElement("div", { className: "wof-setting-row__info" },
-                                        wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Files uploaded but not in order', 'wooptions-pro')),
-                                        wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Removes unplaced temporary uploads after a specified number of days (0 to disable).', 'wooptions-pro'))),
-                                    wp.element.createElement("div", { className: "wof-setting-row__control" },
-                                        wp.element.createElement("div", { className: "wof-setting-input-wrap" },
-                                            wp.element.createElement(TextControl, { hideLabelFromVision: true, label: __('Days to retain unplaced uploads', 'wooptions-pro'), type: "number", min: "0", value: String(settings.cleanup_unplaced_upload_days ?? 0), onChange: (val) => set('cleanup_unplaced_upload_days', Math.max(0, parseInt(val, 10) || 0)) }),
-                                            wp.element.createElement("span", { className: "wof-setting-input-unit" }, __('days', 'wooptions-pro'))))),
-                                wp.element.createElement("div", { className: "wof-setting-row" },
-                                    wp.element.createElement("div", { className: "wof-setting-row__info" },
-                                        wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Files uploaded and placed in order', 'wooptions-pro')),
-                                        wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Removes uploads attached to placed orders after a specified number of days (0 to disable).', 'wooptions-pro'))),
-                                    wp.element.createElement("div", { className: "wof-setting-row__control" },
-                                        wp.element.createElement("div", { className: "wof-setting-input-wrap" },
-                                            wp.element.createElement(TextControl, { hideLabelFromVision: true, label: __('Days to retain placed uploads', 'wooptions-pro'), type: "number", min: "0", value: String(settings.cleanup_placed_upload_days ?? 0), onChange: (val) => set('cleanup_placed_upload_days', Math.max(0, parseInt(val, 10) || 0)) }),
-                                            wp.element.createElement("span", { className: "wof-setting-input-unit" }, __('days', 'wooptions-pro'))))),
-                                wp.element.createElement("div", { className: "wof-setting-row" },
-                                    wp.element.createElement("div", { className: "wof-setting-row__info" },
-                                        wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Files uploaded in completed orders', 'wooptions-pro')),
-                                        wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Removes uploads once their corresponding order is marked Completed (0 to disable).', 'wooptions-pro'))),
-                                    wp.element.createElement("div", { className: "wof-setting-row__control" },
-                                        wp.element.createElement("div", { className: "wof-setting-input-wrap" },
-                                            wp.element.createElement(TextControl, { hideLabelFromVision: true, label: __('Days to retain completed uploads', 'wooptions-pro'), type: "number", min: "0", value: String(settings.cleanup_completed_upload_days ?? 0), onChange: (val) => set('cleanup_completed_upload_days', Math.max(0, parseInt(val, 10) || 0)) }),
-                                            wp.element.createElement("span", { className: "wof-setting-input-unit" }, __('days', 'wooptions-pro')))))))),
-                        activeTab === 'custom_fonts' && (wp.element.createElement(CustomFontsManager, { fonts: settings.custom_fonts || [], onChange: (custom_fonts) => set('custom_fonts', custom_fonts) })),
-                        activeTab === 'other' && (wp.element.createElement("section", { "aria-labelledby": "wof-other-heading" },
-                            wp.element.createElement("div", { className: "wof-settings-panel__header" },
-                                wp.element.createElement("h2", { id: "wof-other-heading", className: "wof-settings-panel__title" }, __('Other Settings', 'wooptions-pro')),
-                                wp.element.createElement("p", { className: "wof-settings-panel__desc" }, __('Configure summary labels, storefront display text, and cart/checkout visibility.', 'wooptions-pro'))),
-                            wp.element.createElement("div", { className: "wof-settings-rows" },
-                                wp.element.createElement("div", { className: "wof-setting-row" },
-                                    wp.element.createElement("div", { className: "wof-setting-row__info" },
-                                        wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Addons Total Price Label', 'wooptions-pro')),
-                                        wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Customize the total price label shown in the storefront configurator summary.', 'wooptions-pro'))),
-                                    wp.element.createElement("div", { className: "wof-setting-row__control" },
-                                        wp.element.createElement(ToggleControl, { label: __('Enable Addons Price Total Text In Product Page', 'wooptions-pro'), checked: Boolean(settings.enable_addons_total_text), onChange: (checked) => set('enable_addons_total_text', checked) }),
-                                        settings.enable_addons_total_text ? (wp.element.createElement("div", { className: "wof-setting-row__subfield" },
-                                            wp.element.createElement(TextControl, { label: __('TOTAL PRICE TEXT', 'wooptions-pro'), value: settings.addons_total_text ?? 'Total Price', placeholder: "Total Price", help: __('Change your Total Price / Configured price text here.', 'wooptions-pro'), onChange: (val) => set('addons_total_text', val) }))) : null)),
-                                wp.element.createElement("div", { className: "wof-setting-row" },
-                                    wp.element.createElement("div", { className: "wof-setting-row__info" },
-                                        wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Summary Status Prompt', 'wooptions-pro')),
-                                        wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Customize the ready state prompt shown in the summary before selection changes.', 'wooptions-pro'))),
-                                    wp.element.createElement("div", { className: "wof-setting-row__control" },
-                                        wp.element.createElement(ToggleControl, { label: __('Enable Summary Status Text In Product Page', 'wooptions-pro'), checked: Boolean(settings.enable_summary_status_text), onChange: (checked) => set('enable_summary_status_text', checked) }),
-                                        settings.enable_summary_status_text ? (wp.element.createElement("div", { className: "wof-setting-row__subfield" },
-                                            wp.element.createElement(TextControl, { label: __('SUMMARY STATUS TEXT', 'wooptions-pro'), value: settings.summary_status_text ?? 'Ready for your choices', placeholder: "Ready for your choices", help: __('Change your summary status prompt text here.', 'wooptions-pro'), onChange: (val) => set('summary_status_text', val) }))) : null)),
-                                wp.element.createElement("div", { className: "wof-setting-row" },
-                                    wp.element.createElement("div", { className: "wof-setting-row__info" },
-                                        wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Summary Notice Message', 'wooptions-pro')),
-                                        wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Customize the server-confirmed disclaimer text beneath the summary price.', 'wooptions-pro'))),
-                                    wp.element.createElement("div", { className: "wof-setting-row__control" },
-                                        wp.element.createElement(ToggleControl, { label: __('Enable Summary Notice Text In Product Page', 'wooptions-pro'), checked: Boolean(settings.enable_summary_notice_text), onChange: (checked) => set('enable_summary_notice_text', checked) }),
-                                        settings.enable_summary_notice_text ? (wp.element.createElement("div", { className: "wof-setting-row__subfield" },
-                                            wp.element.createElement(TextControl, { label: __('SUMMARY NOTICE TEXT', 'wooptions-pro'), value: settings.summary_notice_text ?? 'Server-confirmed total, before shipping.', placeholder: "Server-confirmed total, before shipping.", help: __('Change your summary disclaimer text here.', 'wooptions-pro'), onChange: (val) => set('summary_notice_text', val) }))) : null)),
-                                wp.element.createElement("div", { className: "wof-setting-row" },
-                                    wp.element.createElement("div", { className: "wof-setting-row__info" },
-                                        wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Cart Page Display', 'wooptions-pro')),
-                                        wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Control whether addon option details are shown under cart line items.', 'wooptions-pro'))),
-                                    wp.element.createElement("div", { className: "wof-setting-row__control" },
-                                        wp.element.createElement(ToggleControl, { label: __('Hide addon fields in Cart Page', 'wooptions-pro'), checked: Boolean(settings.hide_addon_in_cart), onChange: (checked) => set('hide_addon_in_cart', checked) }))),
-                                wp.element.createElement("div", { className: "wof-setting-row" },
-                                    wp.element.createElement("div", { className: "wof-setting-row__info" },
-                                        wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Checkout Page Display', 'wooptions-pro')),
-                                        wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Control whether addon option details are shown on checkout and order review tables.', 'wooptions-pro'))),
-                                    wp.element.createElement("div", { className: "wof-setting-row__control" },
-                                        wp.element.createElement(ToggleControl, { label: __('Hide addon fields in Checkout Page', 'wooptions-pro'), checked: Boolean(settings.hide_addon_in_checkout), onChange: (checked) => set('hide_addon_in_checkout', checked) })))))),
-                        activeTab === 'general' && (wp.element.createElement("section", { "aria-labelledby": "wof-general-heading" },
-                            wp.element.createElement("div", { className: "wof-settings-panel__header" },
-                                wp.element.createElement("h2", { id: "wof-general-heading", className: "wof-settings-panel__title" }, __('Operational Defaults & Limits', 'wooptions-pro')),
-                                wp.element.createElement("p", { className: "wof-settings-panel__desc" }, __('Configure security limits and optional capabilities across your catalog.', 'wooptions-pro'))),
-                            wp.element.createElement("div", { className: "wof-settings-rows" },
-                                wp.element.createElement("div", { className: "wof-setting-row" },
-                                    wp.element.createElement("div", { className: "wof-setting-row__info" },
-                                        wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Quote requests per minute', 'wooptions-pro')),
-                                        wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Maximum pricing quote calculations allowed per visitor per minute.', 'wooptions-pro'))),
-                                    wp.element.createElement("div", { className: "wof-setting-row__control" },
-                                        wp.element.createElement("div", { className: "wof-setting-input-wrap" },
-                                            wp.element.createElement(TextControl, { hideLabelFromVision: true, label: __('Quote requests per minute', 'wooptions-pro'), type: "number", value: String(settings.quote_rate_limit_per_minute ?? 60), onChange: (value) => set('quote_rate_limit_per_minute', Number(value)) }),
-                                            wp.element.createElement("span", { className: "wof-setting-input-unit" }, __('requests / min', 'wooptions-pro'))))),
-                                wp.element.createElement("div", { className: "wof-setting-row" },
-                                    wp.element.createElement("div", { className: "wof-setting-row__info" },
-                                        wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Upload size limit', 'wooptions-pro')),
-                                        wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Maximum allowed file size in megabytes for customer upload fields.', 'wooptions-pro'))),
-                                    wp.element.createElement("div", { className: "wof-setting-row__control" },
-                                        wp.element.createElement("div", { className: "wof-setting-input-wrap" },
-                                            wp.element.createElement(TextControl, { hideLabelFromVision: true, label: __('Upload size limit (MB)', 'wooptions-pro'), type: "number", value: String(settings.upload_max_mb ?? 10), onChange: (value) => set('upload_max_mb', Number(value)) }),
-                                            wp.element.createElement("span", { className: "wof-setting-input-unit" }, __('MB', 'wooptions-pro'))))),
-                                wp.element.createElement("div", { className: "wof-setting-row" },
-                                    wp.element.createElement("div", { className: "wof-setting-row__info" },
-                                        wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Features & Telemetry', 'wooptions-pro')),
-                                        wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Enable or disable global behavior toggles and analytics.', 'wooptions-pro'))),
-                                    wp.element.createElement("div", { className: "wof-setting-row__control" }, Object.entries(settings)
-                                        .filter(([key, value]) => typeof value === 'boolean' && !['enable_addons_total_text', 'enable_summary_status_text', 'enable_summary_notice_text', 'hide_addon_in_cart', 'hide_addon_in_checkout'].includes(key))
-                                        .map(([key, value]) => (wp.element.createElement("div", { key: key, style: { marginBottom: '8px' } },
-                                        wp.element.createElement(ToggleControl, { label: key.replace(/_/g, ' '), checked: Boolean(value), onChange: (checked) => set(key, checked) })))))))))))));
+                        !canConfigure && (wp.element.createElement("div", { className: "wof-settings-readonly-banner", style: {
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                gap: '12px',
+                                padding: '12px 18px',
+                                marginBottom: '20px',
+                                borderRadius: '8px',
+                                background: '#eff6ff',
+                                border: '1px solid #bfdbfe',
+                                color: '#1e40af',
+                                fontSize: '13px',
+                                fontWeight: 500,
+                            } },
+                            wp.element.createElement("div", { style: { display: 'flex', alignItems: 'center', gap: '8px' } },
+                                wp.element.createElement("svg", { width: "18", height: "18", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": "true" },
+                                    wp.element.createElement("rect", { x: "3", y: "11", width: "18", height: "11", rx: "2", ry: "2" }),
+                                    wp.element.createElement("path", { d: "M7 11V7a5 5 0 0 1 10 0v4" })),
+                                wp.element.createElement("span", null, __('WooOptions Pro license is not active. Settings are in read-only preview mode.', 'wooptions-pro'))),
+                            wp.element.createElement("button", { type: "button", style: {
+                                    background: '#2563eb',
+                                    color: '#fff',
+                                    border: 'none',
+                                    borderRadius: '6px',
+                                    padding: '6px 14px',
+                                    fontSize: '12px',
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                    whiteSpace: 'nowrap',
+                                }, onClick: () => { window.location.hash = '#license'; } }, __('Activate License', 'wooptions-pro')))),
+                        wp.element.createElement("fieldset", { disabled: !canConfigure, style: { border: 0, padding: 0, margin: 0, minWidth: 0 } },
+                            activeTab === 'cleanup' && (wp.element.createElement("section", { "aria-labelledby": "wof-cleanup-heading" },
+                                wp.element.createElement("div", { className: "wof-settings-panel__header" },
+                                    wp.element.createElement("h2", { id: "wof-cleanup-heading", className: "wof-settings-panel__title" }, __('Cleanup Upload Field Files', 'wooptions-pro')),
+                                    wp.element.createElement("p", { className: "wof-settings-panel__desc" }, __('Clean up all files uploaded through this field to free storage and remove unused data.', 'wooptions-pro'))),
+                                wp.element.createElement("div", { className: "wof-settings-rows" },
+                                    wp.element.createElement("div", { className: "wof-setting-row" },
+                                        wp.element.createElement("div", { className: "wof-setting-row__info" },
+                                            wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Files uploaded but not in order', 'wooptions-pro')),
+                                            wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Removes unplaced temporary uploads after a specified number of days (0 to disable).', 'wooptions-pro'))),
+                                        wp.element.createElement("div", { className: "wof-setting-row__control" },
+                                            wp.element.createElement("div", { className: "wof-setting-input-wrap" },
+                                                wp.element.createElement(TextControl, { hideLabelFromVision: true, label: __('Days to retain unplaced uploads', 'wooptions-pro'), type: "number", min: "0", value: String(settings.cleanup_unplaced_upload_days ?? 0), onChange: (val) => set('cleanup_unplaced_upload_days', Math.max(0, parseInt(val, 10) || 0)) }),
+                                                wp.element.createElement("span", { className: "wof-setting-input-unit" }, __('days', 'wooptions-pro'))))),
+                                    wp.element.createElement("div", { className: "wof-setting-row" },
+                                        wp.element.createElement("div", { className: "wof-setting-row__info" },
+                                            wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Files uploaded and placed in order', 'wooptions-pro')),
+                                            wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Removes uploads attached to placed orders after a specified number of days (0 to disable).', 'wooptions-pro'))),
+                                        wp.element.createElement("div", { className: "wof-setting-row__control" },
+                                            wp.element.createElement("div", { className: "wof-setting-input-wrap" },
+                                                wp.element.createElement(TextControl, { hideLabelFromVision: true, label: __('Days to retain placed uploads', 'wooptions-pro'), type: "number", min: "0", value: String(settings.cleanup_placed_upload_days ?? 0), onChange: (val) => set('cleanup_placed_upload_days', Math.max(0, parseInt(val, 10) || 0)) }),
+                                                wp.element.createElement("span", { className: "wof-setting-input-unit" }, __('days', 'wooptions-pro'))))),
+                                    wp.element.createElement("div", { className: "wof-setting-row" },
+                                        wp.element.createElement("div", { className: "wof-setting-row__info" },
+                                            wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Files uploaded in completed orders', 'wooptions-pro')),
+                                            wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Removes uploads once their corresponding order is marked Completed (0 to disable).', 'wooptions-pro'))),
+                                        wp.element.createElement("div", { className: "wof-setting-row__control" },
+                                            wp.element.createElement("div", { className: "wof-setting-input-wrap" },
+                                                wp.element.createElement(TextControl, { hideLabelFromVision: true, label: __('Days to retain completed uploads', 'wooptions-pro'), type: "number", min: "0", value: String(settings.cleanup_completed_upload_days ?? 0), onChange: (val) => set('cleanup_completed_upload_days', Math.max(0, parseInt(val, 10) || 0)) }),
+                                                wp.element.createElement("span", { className: "wof-setting-input-unit" }, __('days', 'wooptions-pro')))))))),
+                            activeTab === 'custom_fonts' && (wp.element.createElement(CustomFontsManager, { fonts: settings.custom_fonts || [], onChange: (custom_fonts) => set('custom_fonts', custom_fonts) })),
+                            activeTab === 'other' && (wp.element.createElement("section", { "aria-labelledby": "wof-other-heading" },
+                                wp.element.createElement("div", { className: "wof-settings-panel__header" },
+                                    wp.element.createElement("h2", { id: "wof-other-heading", className: "wof-settings-panel__title" }, __('Other Settings', 'wooptions-pro')),
+                                    wp.element.createElement("p", { className: "wof-settings-panel__desc" }, __('Configure summary labels, storefront display text, and cart/checkout visibility.', 'wooptions-pro'))),
+                                wp.element.createElement("div", { className: "wof-settings-rows" },
+                                    wp.element.createElement("div", { className: "wof-setting-row" },
+                                        wp.element.createElement("div", { className: "wof-setting-row__info" },
+                                            wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Addons Total Price Label', 'wooptions-pro')),
+                                            wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Customize the total price label shown in the storefront configurator summary.', 'wooptions-pro'))),
+                                        wp.element.createElement("div", { className: "wof-setting-row__control" },
+                                            wp.element.createElement(ToggleControl, { label: __('Enable Addons Price Total Text In Product Page', 'wooptions-pro'), checked: Boolean(settings.enable_addons_total_text), onChange: (checked) => set('enable_addons_total_text', checked) }),
+                                            settings.enable_addons_total_text ? (wp.element.createElement("div", { className: "wof-setting-row__subfield" },
+                                                wp.element.createElement(TextControl, { label: __('TOTAL PRICE TEXT', 'wooptions-pro'), value: settings.addons_total_text ?? 'Total Price', placeholder: "Total Price", help: __('Change your Total Price / Configured price text here.', 'wooptions-pro'), onChange: (val) => set('addons_total_text', val) }))) : null)),
+                                    wp.element.createElement("div", { className: "wof-setting-row" },
+                                        wp.element.createElement("div", { className: "wof-setting-row__info" },
+                                            wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Summary Status Prompt', 'wooptions-pro')),
+                                            wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Customize the ready state prompt shown in the summary before selection changes.', 'wooptions-pro'))),
+                                        wp.element.createElement("div", { className: "wof-setting-row__control" },
+                                            wp.element.createElement(ToggleControl, { label: __('Enable Summary Status Text In Product Page', 'wooptions-pro'), checked: Boolean(settings.enable_summary_status_text), onChange: (checked) => set('enable_summary_status_text', checked) }),
+                                            settings.enable_summary_status_text ? (wp.element.createElement("div", { className: "wof-setting-row__subfield" },
+                                                wp.element.createElement(TextControl, { label: __('SUMMARY STATUS TEXT', 'wooptions-pro'), value: settings.summary_status_text ?? 'Ready for your choices', placeholder: "Ready for your choices", help: __('Change your summary status prompt text here.', 'wooptions-pro'), onChange: (val) => set('summary_status_text', val) }))) : null)),
+                                    wp.element.createElement("div", { className: "wof-setting-row" },
+                                        wp.element.createElement("div", { className: "wof-setting-row__info" },
+                                            wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Summary Notice Message', 'wooptions-pro')),
+                                            wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Customize the server-confirmed disclaimer text beneath the summary price.', 'wooptions-pro'))),
+                                        wp.element.createElement("div", { className: "wof-setting-row__control" },
+                                            wp.element.createElement(ToggleControl, { label: __('Enable Summary Notice Text In Product Page', 'wooptions-pro'), checked: Boolean(settings.enable_summary_notice_text), onChange: (checked) => set('enable_summary_notice_text', checked) }),
+                                            settings.enable_summary_notice_text ? (wp.element.createElement("div", { className: "wof-setting-row__subfield" },
+                                                wp.element.createElement(TextControl, { label: __('SUMMARY NOTICE TEXT', 'wooptions-pro'), value: settings.summary_notice_text ?? 'Server-confirmed total, before shipping.', placeholder: "Server-confirmed total, before shipping.", help: __('Change your summary disclaimer text here.', 'wooptions-pro'), onChange: (val) => set('summary_notice_text', val) }))) : null)),
+                                    wp.element.createElement("div", { className: "wof-setting-row" },
+                                        wp.element.createElement("div", { className: "wof-setting-row__info" },
+                                            wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Cart Page Display', 'wooptions-pro')),
+                                            wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Control whether addon option details are shown under cart line items.', 'wooptions-pro'))),
+                                        wp.element.createElement("div", { className: "wof-setting-row__control" },
+                                            wp.element.createElement(ToggleControl, { label: __('Hide addon fields in Cart Page', 'wooptions-pro'), checked: Boolean(settings.hide_addon_in_cart), onChange: (checked) => set('hide_addon_in_cart', checked) }))),
+                                    wp.element.createElement("div", { className: "wof-setting-row" },
+                                        wp.element.createElement("div", { className: "wof-setting-row__info" },
+                                            wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Checkout Page Display', 'wooptions-pro')),
+                                            wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Control whether addon option details are shown on checkout and order review tables.', 'wooptions-pro'))),
+                                        wp.element.createElement("div", { className: "wof-setting-row__control" },
+                                            wp.element.createElement(ToggleControl, { label: __('Hide addon fields in Checkout Page', 'wooptions-pro'), checked: Boolean(settings.hide_addon_in_checkout), onChange: (checked) => set('hide_addon_in_checkout', checked) })))))),
+                            activeTab === 'general' && (wp.element.createElement("section", { "aria-labelledby": "wof-general-heading" },
+                                wp.element.createElement("div", { className: "wof-settings-panel__header" },
+                                    wp.element.createElement("h2", { id: "wof-general-heading", className: "wof-settings-panel__title" }, __('Operational Defaults & Limits', 'wooptions-pro')),
+                                    wp.element.createElement("p", { className: "wof-settings-panel__desc" }, __('Configure security limits and optional capabilities across your catalog.', 'wooptions-pro'))),
+                                wp.element.createElement("div", { className: "wof-settings-rows" },
+                                    wp.element.createElement("div", { className: "wof-setting-row" },
+                                        wp.element.createElement("div", { className: "wof-setting-row__info" },
+                                            wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Quote requests per minute', 'wooptions-pro')),
+                                            wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Maximum pricing quote calculations allowed per visitor per minute.', 'wooptions-pro'))),
+                                        wp.element.createElement("div", { className: "wof-setting-row__control" },
+                                            wp.element.createElement("div", { className: "wof-setting-input-wrap" },
+                                                wp.element.createElement(TextControl, { hideLabelFromVision: true, label: __('Quote requests per minute', 'wooptions-pro'), type: "number", value: String(settings.quote_rate_limit_per_minute ?? 60), onChange: (value) => set('quote_rate_limit_per_minute', Number(value)) }),
+                                                wp.element.createElement("span", { className: "wof-setting-input-unit" }, __('requests / min', 'wooptions-pro'))))),
+                                    wp.element.createElement("div", { className: "wof-setting-row" },
+                                        wp.element.createElement("div", { className: "wof-setting-row__info" },
+                                            wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Upload size limit', 'wooptions-pro')),
+                                            wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Maximum allowed file size in megabytes for customer upload fields.', 'wooptions-pro'))),
+                                        wp.element.createElement("div", { className: "wof-setting-row__control" },
+                                            wp.element.createElement("div", { className: "wof-setting-input-wrap" },
+                                                wp.element.createElement(TextControl, { hideLabelFromVision: true, label: __('Upload size limit (MB)', 'wooptions-pro'), type: "number", value: String(settings.upload_max_mb ?? 10), onChange: (value) => set('upload_max_mb', Number(value)) }),
+                                                wp.element.createElement("span", { className: "wof-setting-input-unit" }, __('MB', 'wooptions-pro'))))),
+                                    wp.element.createElement("div", { className: "wof-setting-row" },
+                                        wp.element.createElement("div", { className: "wof-setting-row__info" },
+                                            wp.element.createElement("strong", { className: "wof-setting-row__title" }, __('Features & Telemetry', 'wooptions-pro')),
+                                            wp.element.createElement("p", { className: "wof-setting-row__desc" }, __('Enable or disable global behavior toggles and analytics.', 'wooptions-pro'))),
+                                        wp.element.createElement("div", { className: "wof-setting-row__control" }, Object.entries(settings)
+                                            .filter(([key, value]) => typeof value === 'boolean' && !['enable_addons_total_text', 'enable_summary_status_text', 'enable_summary_notice_text', 'hide_addon_in_cart', 'hide_addon_in_checkout'].includes(key))
+                                            .map(([key, value]) => (wp.element.createElement("div", { key: key, style: { marginBottom: '8px' } },
+                                            wp.element.createElement(ToggleControl, { label: key.replace(/_/g, ' '), checked: Boolean(value), onChange: (checked) => set(key, checked) }))))))))))))));
         }
         Pages.Settings = Settings;
+    })(Pages = WooOptionsPro.Pages || (WooOptionsPro.Pages = {}));
+})(WooOptionsPro || (WooOptionsPro = {}));
+var WooOptionsPro;
+(function (WooOptionsPro) {
+    var Pages;
+    (function (Pages) {
+        const { __ } = wp.i18n;
+        const { useState } = wp.element;
+        function maskKey(key, start = 6, end = 6) {
+            if (!key)
+                return '';
+            if (key.includes('•'))
+                return key;
+            if (key.length <= start + end)
+                return key;
+            const prefix = key.slice(0, start);
+            const suffix = key.slice(-end);
+            return `${prefix}${'•'.repeat(Math.max(8, key.length - start - end))}${suffix}`;
+        }
+        function LicensePage() {
+            const adminData = window.WooOptionsProAdmin || {};
+            const initialLicense = adminData.license || {};
+            const [licenseState, setLicenseState] = useState({
+                active: !!initialLicense.active && !!initialLicense.key,
+                key: initialLicense.key || '',
+                expires: initialLicense.expires || 'Lifetime',
+                licenseTitle: initialLicense.licenseTitle || 'Unlimited Site (Lifetime)',
+                supportExpires: initialLicense.supportExpires || 'Unlimited',
+                state: initialLicense.state || 'unlicensed',
+                message: initialLicense.message || '',
+            });
+            const [inputKey, setInputKey] = useState('');
+            const [inputEmail, setInputEmail] = useState('');
+            const [keyError, setKeyError] = useState(false);
+            const [busy, setBusy] = useState(false);
+            const [notice, setNotice] = useState(null);
+            const ajaxUrl = initialLicense.ajaxUrl || adminData.ajaxUrl || 'admin-ajax.php';
+            const nonce = initialLicense.nonce || adminData.nonce || '';
+            const accountUrl = initialLicense.accountUrl || 'https://portal.themefic.com/my-account/';
+            const purchaseUrl = initialLicense.purchaseUrl || 'https://themefic.com/plugins/woooptions-pro/';
+            const handleActivate = async (e) => {
+                e.preventDefault();
+                if (!inputKey.trim()) {
+                    setKeyError(true);
+                    setNotice({ type: 'error', text: __('Please enter your license key.', 'wooptions-pro') });
+                    const inputEl = document.getElementById('wooptions_license_key');
+                    if (inputEl)
+                        inputEl.focus();
+                    return;
+                }
+                setBusy(true);
+                setNotice(null);
+                setKeyError(false);
+                try {
+                    const formData = new URLSearchParams();
+                    formData.append('action', 'wooptions-pro_license_activate');
+                    formData.append('license_key', inputKey.trim());
+                    formData.append('license_email', inputEmail.trim());
+                    formData.append('_nonce', nonce);
+                    const res = await fetch(ajaxUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+                        body: formData.toString(),
+                    });
+                    const data = await res.json().catch(() => ({}));
+                    if (!data || !data.success) {
+                        throw new Error(data?.data?.message || __('License activation failed. Please check the key.', 'wooptions-pro'));
+                    }
+                    setNotice({ type: 'success', text: __('License activated successfully! Reloading…', 'wooptions-pro') });
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 800);
+                }
+                catch (err) {
+                    setKeyError(true);
+                    setNotice({
+                        type: 'error',
+                        text: err?.message || __('License activation failed. Please check your credentials.', 'wooptions-pro'),
+                    });
+                }
+                finally {
+                    setBusy(false);
+                }
+            };
+            const handleDeactivate = async () => {
+                if (!window.confirm(__('Deactivate this license on the current site?', 'wooptions-pro'))) {
+                    return;
+                }
+                setBusy(true);
+                setNotice(null);
+                try {
+                    const formData = new URLSearchParams();
+                    formData.append('action', 'wooptions-pro_license_deactivate');
+                    formData.append('_nonce', nonce);
+                    const res = await fetch(ajaxUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+                        body: formData.toString(),
+                    });
+                    const data = await res.json().catch(() => ({}));
+                    if (!data || !data.success) {
+                        throw new Error(data?.data?.message || __('Deactivation failed.', 'wooptions-pro'));
+                    }
+                    setNotice({ type: 'success', text: __('License deactivated successfully! Reloading…', 'wooptions-pro') });
+                    setLicenseState({
+                        active: false,
+                        key: '',
+                        expires: '',
+                        licenseTitle: '',
+                        supportExpires: '',
+                        state: 'deactivated',
+                        message: __('The WooOptions Pro license is deactivated.', 'wooptions-pro'),
+                    });
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 800);
+                }
+                catch (err) {
+                    setNotice({
+                        type: 'error',
+                        text: err?.message || __('Deactivation failed.', 'wooptions-pro'),
+                    });
+                }
+                finally {
+                    setBusy(false);
+                }
+            };
+            const isActivated = licenseState.active && !!licenseState.key;
+            return (wp.element.createElement("div", { className: "wholesalefic_licensing_wrap wof-license-wrap" },
+                wp.element.createElement("div", { id: "wholesalefic_license_body", className: `wholesalefic_licensing_body ${busy ? 'wholesalefic_loading' : ''}` },
+                    wp.element.createElement("div", { className: "wholesalefic-license-layout" },
+                        wp.element.createElement("section", { className: "wholesalefic-license-main", "aria-labelledby": "wooptions-license-title" }, isActivated ? (wp.element.createElement(wp.element.Fragment, null,
+                            wp.element.createElement("div", { className: "wholesalefic-license-main__header" },
+                                wp.element.createElement("div", { className: "wholesalefic-license-title-row" },
+                                    wp.element.createElement("h2", { id: "wooptions-license-title" }, __('Your license is active', 'wooptions-pro')),
+                                    wp.element.createElement("span", { className: "wholesalefic-license-badge" },
+                                        wp.element.createElement("span", { className: "wholesalefic-license-badge__dot", "aria-hidden": "true" }),
+                                        __('Activated', 'wooptions-pro'))),
+                                wp.element.createElement("p", null, __('This site is licensed and can receive plugin updates and access all premium WooOptions Pro features.', 'wooptions-pro'))),
+                            wp.element.createElement("div", { className: "wholesalefic-license-main__body wholesalefic-license-main__body--active" },
+                                wp.element.createElement("h3", { className: "wholesalefic-license-section-title" }, __('License details', 'wooptions-pro')),
+                                wp.element.createElement("p", { className: "wholesalefic-license-section-description" }, __('Details about the license currently activated on this site', 'wooptions-pro')),
+                                wp.element.createElement("div", { className: "wholesalefic-license-info-list" },
+                                    wp.element.createElement("div", { className: "wholesalefic-license-info-row" },
+                                        wp.element.createElement("span", { className: "label" }, __('License key', 'wooptions-pro')),
+                                        wp.element.createElement("span", { className: "value license-key" }, maskKey(licenseState.key))),
+                                    wp.element.createElement("div", { className: "wholesalefic-license-info-row" },
+                                        wp.element.createElement("span", { className: "label" }, __('License Type', 'wooptions-pro')),
+                                        wp.element.createElement("span", { className: "value" }, licenseState.licenseTitle)),
+                                    wp.element.createElement("div", { className: "wholesalefic-license-info-row" },
+                                        wp.element.createElement("span", { className: "label" }, __('License Expires', 'wooptions-pro')),
+                                        wp.element.createElement("span", { className: "value" }, licenseState.expires)),
+                                    wp.element.createElement("div", { className: "wholesalefic-license-info-row" },
+                                        wp.element.createElement("span", { className: "label" }, __('Support Expires', 'wooptions-pro')),
+                                        wp.element.createElement("span", { className: "value" }, licenseState.supportExpires)))))) : (wp.element.createElement(wp.element.Fragment, null,
+                            wp.element.createElement("div", { className: "wholesalefic-license-main__header" },
+                                wp.element.createElement("h2", { id: "wooptions-license-title" }, __('Activate License', 'wooptions-pro')),
+                                wp.element.createElement("p", null, __('Enter your license key from your purchase email to unlock premium features and receive plugin updates.', 'wooptions-pro'))),
+                            wp.element.createElement("div", { className: "wholesalefic-license-main__body" },
+                                wp.element.createElement("form", { className: "wholesalefic_licensing_form", onSubmit: handleActivate },
+                                    wp.element.createElement("div", { className: "wholesalefic-license-field" },
+                                        wp.element.createElement("div", { className: "wholesalefic-license-field__label-row" },
+                                            wp.element.createElement("label", { htmlFor: "wooptions_license_key" }, __('License key', 'wooptions-pro')),
+                                            wp.element.createElement("a", { className: "wholesalefic-license-field__link", rel: "noopener noreferrer", target: "_blank", href: accountUrl }, __("Can't find your license key?", 'wooptions-pro'))),
+                                        wp.element.createElement("div", { className: `license-input ${keyError ? 'license-input--error' : ''}` },
+                                            wp.element.createElement("span", { className: "license-input__icon", "aria-hidden": "true" },
+                                                wp.element.createElement("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
+                                                    wp.element.createElement("circle", { cx: "5.25", cy: "9.25", r: "2.75", stroke: "currentColor", strokeWidth: "1.4" }),
+                                                    wp.element.createElement("path", { d: "M7.2 7.3L12.4 2.1M10.6 3.9L12.1 5.4M9.2 5.3L10.7 6.8", stroke: "currentColor", strokeWidth: "1.4", strokeLinecap: "round", strokeLinejoin: "round" }))),
+                                            wp.element.createElement("input", { id: "wooptions_license_key", type: "password", autoComplete: "off", spellCheck: false, name: "wooptions_license_key", value: inputKey, onChange: (e) => {
+                                                    setInputKey(e.target.value);
+                                                    if (keyError)
+                                                        setKeyError(false);
+                                                    if (notice)
+                                                        setNotice(null);
+                                                }, placeholder: __('Enter your license key', 'wooptions-pro'), disabled: busy })),
+                                        wp.element.createElement("p", { className: "wholesalefic-license-field__help" }, __('You can find your license key in your purchase confirmation email.', 'wooptions-pro'))),
+                                    wp.element.createElement("div", { className: "wholesalefic-license-field" },
+                                        wp.element.createElement("div", { className: "wholesalefic-license-field__label-row" },
+                                            wp.element.createElement("label", { htmlFor: "wooptions_license_email" },
+                                                __('Purchase email', 'wooptions-pro'),
+                                                " ",
+                                                wp.element.createElement("span", null, __('(Optional)', 'wooptions-pro')))),
+                                        wp.element.createElement("div", { className: "license-input" },
+                                            wp.element.createElement("span", { className: "license-input__icon", "aria-hidden": "true" },
+                                                wp.element.createElement("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
+                                                    wp.element.createElement("rect", { x: "2.25", y: "3.5", width: "11.5", height: "9", rx: "1.25", stroke: "currentColor", strokeWidth: "1.4" }),
+                                                    wp.element.createElement("path", { d: "M2.8 4.25L8 8.15L13.2 4.25", stroke: "currentColor", strokeWidth: "1.4", strokeLinecap: "round", strokeLinejoin: "round" }))),
+                                            wp.element.createElement("input", { id: "wooptions_license_email", type: "email", autoComplete: "email", name: "wooptions_license_email", value: inputEmail, onChange: (e) => setInputEmail(e.target.value), placeholder: __('you@example.com', 'wooptions-pro'), disabled: busy })),
+                                        wp.element.createElement("p", { className: "wholesalefic-license-field__help" }, __("Only required if your license can't be verified using the key alone.", 'wooptions-pro'))),
+                                    wp.element.createElement("button", { type: "submit", id: "license_key_submit", className: "button wholesalefic-license-button wholesalefic-license-button--primary", disabled: busy }, busy ? __('Activating…', 'wooptions-pro') : __('Activate License', 'wooptions-pro'))),
+                                wp.element.createElement("div", { id: "wholesalefic_error_wrapper", role: "alert", "aria-live": "polite" }, notice && (wp.element.createElement("div", { className: notice.type === 'success' ? 'wholesalefic_success_notice' : 'wholesalefic_error_notice' }, notice.text))))))),
+                        wp.element.createElement("aside", { className: "wholesalefic-license-aside" },
+                            wp.element.createElement("div", { className: "wholesalefic-license-aside__icon", "aria-hidden": "true" },
+                                wp.element.createElement("svg", { width: "26", height: "26", viewBox: "0 0 26 26", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
+                                    wp.element.createElement("path", { d: "M13 2.5L16.05 5.02L20 4.76L20.98 8.6L24.5 10.5L23 14.17L24.5 17.84L20.98 19.74L20 23.58L16.05 23.32L13 25.84L9.95 23.32L6 23.58L5.02 19.74L1.5 17.84L3 14.17L1.5 10.5L5.02 8.6L6 4.76L9.95 5.02L13 2.5Z", stroke: "white", strokeWidth: "1.8", strokeLinejoin: "round" }),
+                                    wp.element.createElement("path", { d: "M13 8.4L14.55 11.55L18 12.05L15.5 14.48L16.09 17.91L13 16.29L9.91 17.91L10.5 14.48L8 12.05L11.45 11.55L13 8.4Z", stroke: "white", strokeWidth: "1.5", strokeLinejoin: "round" }))),
+                            isActivated ? (wp.element.createElement(wp.element.Fragment, null,
+                                wp.element.createElement("h3", null, __('License Benefits', 'wooptions-pro')),
+                                wp.element.createElement("p", null, __('Manage your license or access your WooOptions Pro account', 'wooptions-pro')),
+                                wp.element.createElement("ul", { className: "wholesalefic-license-feature-list" },
+                                    wp.element.createElement("li", null, __('Automatic plugin updates are enabled', 'wooptions-pro')),
+                                    wp.element.createElement("li", null, __('All premium features are available on this site', 'wooptions-pro')),
+                                    wp.element.createElement("li", null, __('You can deactivate or transfer this license later if needed', 'wooptions-pro'))),
+                                wp.element.createElement("div", { className: "wholesalefic-license-action-box" },
+                                    wp.element.createElement("button", { type: "button", id: "wholesalefic_deactivate_license", className: "button wholesalefic-license-button wholesalefic-license-button--danger", onClick: handleDeactivate, disabled: busy }, busy ? __('Processing…', 'wooptions-pro') : __('Deactivate License', 'wooptions-pro')),
+                                    wp.element.createElement("a", { className: "button wholesalefic-license-button wholesalefic-license-button--ghost", rel: "noopener noreferrer", target: "_blank", href: accountUrl }, __('Open My Account', 'wooptions-pro'))),
+                                wp.element.createElement("div", { id: "wholesalefic_error_wrapper_active", role: "alert", "aria-live": "polite" }, notice && (wp.element.createElement("div", { className: notice.type === 'success' ? 'wholesalefic_success_notice' : 'wholesalefic_error_notice' }, notice.text))))) : (wp.element.createElement(wp.element.Fragment, null,
+                                wp.element.createElement("h3", null, __("After activation, you'll get", 'wooptions-pro')),
+                                wp.element.createElement("p", null, __('Activate your license to keep your store updated and unlock premium features.', 'wooptions-pro')),
+                                wp.element.createElement("ul", { className: "wholesalefic-license-feature-list" },
+                                    wp.element.createElement("li", null, __('Automatic plugin updates', 'wooptions-pro')),
+                                    wp.element.createElement("li", null, __('Access to all premium features', 'wooptions-pro')),
+                                    wp.element.createElement("li", null, __('License management for this website', 'wooptions-pro'))),
+                                wp.element.createElement("div", { className: "wholesalefic-license-purchase-card" },
+                                    wp.element.createElement("div", { className: "wholesalefic-license-purchase-card__content" },
+                                        wp.element.createElement("span", null, __("DON'T HAVE A LICENSE YET?", 'wooptions-pro')),
+                                        wp.element.createElement("strong", null, __('Get WooOptions Pro Premium', 'wooptions-pro'))),
+                                    wp.element.createElement("a", { className: "wholesalefic-license-purchase-card__button", rel: "noopener noreferrer", target: "_blank", href: purchaseUrl }, __('Purchase License', 'wooptions-pro'))))))))));
+        }
+        Pages.LicensePage = LicensePage;
     })(Pages = WooOptionsPro.Pages || (WooOptionsPro.Pages = {}));
 })(WooOptionsPro || (WooOptionsPro = {}));
 var WooOptionsPro;
@@ -7880,9 +8300,19 @@ var WooOptionsPro;
                     .finally(() => active && setLoading(false));
                 return () => { active = false; };
             }, [props.uuid]);
+            const licenseInfo = window.WooOptionsProAdmin?.license;
+            const isLicenseActive = licenseInfo?.active === true && !!licenseInfo?.key;
+            const canConfigure = licenseInfo?.canConfigure !== false && isLicenseActive;
+            const [overlayDismissed, setOverlayDismissed] = useState(false);
             const saveNow = useCallback(async (note = 'Manual save') => {
                 if (savePromise.current)
                     return savePromise.current;
+                if (!canConfigure) {
+                    const msg = licenseInfo?.message || __('Activate your WooOptions Pro license to create and edit product option sets.', 'wooptions-pro');
+                    actions.setSaveStatus('error');
+                    WooOptionsPro.Toast.error(msg, __('License Required', 'wooptions-pro'));
+                    throw new Error(msg);
+                }
                 if (!state.optionSet || !state.document)
                     throw new Error(__('The builder is not ready.', 'wooptions-pro'));
                 actions.setSaveStatus('saving');
@@ -7901,7 +8331,7 @@ var WooOptionsPro;
                 finally {
                     savePromise.current = null;
                 }
-            }, [state.optionSet, state.document]);
+            }, [state.optionSet, state.document, canConfigure]);
             /* Autosave removed — saves are now manual via "Save draft" button */
             useEffect(() => {
                 if (!state.document || !state.optionSet)
@@ -7914,6 +8344,11 @@ var WooOptionsPro;
                 return () => window.clearTimeout(timeout);
             }, [state.document, state.optionSet]);
             const publish = async () => {
+                if (!canConfigure) {
+                    const msg = licenseInfo?.message || __('Activate your WooOptions Pro license to create and edit product option sets.', 'wooptions-pro');
+                    WooOptionsPro.Toast.error(msg, __('License Required', 'wooptions-pro'));
+                    return;
+                }
                 if (!state.optionSet || !state.document)
                     return;
                 if (state.errors.length) {
@@ -7972,7 +8407,8 @@ var WooOptionsPro;
             const selectedField = WooOptionsPro.Utils.fieldByUuid(state.document, state.selectedUuid);
             const addField = (field, index, parentUuid) => { actions.addField(field, index, parentUuid); actions.selectField(field.uuid); actions.setInspectorTab('content'); };
             const duplicateSelected = () => selectedField && addField(WooOptionsPro.FieldFactory.duplicate(selectedField));
-            return wp.element.createElement("div", { className: "wof-builder" },
+            const showOverlay = !canConfigure && !overlayDismissed;
+            return wp.element.createElement("div", { className: `wof-builder ${showOverlay ? 'wof-builder--locked' : ''}` },
                 wp.element.createElement("header", { className: "wof-builder-topbar" },
                     wp.element.createElement("div", { className: "wof-builder-context" },
                         wp.element.createElement("button", { type: "button", className: "wof-builder-brand", onClick: () => props.navigate('dashboard') },
@@ -8011,11 +8447,14 @@ var WooOptionsPro;
                             __('Assignments', 'wooptions-pro')),
                         wp.element.createElement(Button, { variant: "secondary", className: "wof-header-action wof-header-save", isBusy: state.saveStatus === 'saving', onClick: () => saveNow('Manual save').then(() => WooOptionsPro.Toast.success(__('Draft saved.', 'wooptions-pro'))).catch(() => undefined) }, state.saveStatus === 'saving' ? __('Saving…', 'wooptions-pro') : __('Save draft', 'wooptions-pro')),
                         wp.element.createElement(Button, { variant: "primary", className: "wof-header-publish", isBusy: publishBusy, disabled: state.errors.length > 0 || publishBusy, onClick: publish }, publishBusy ? __('Publishing…', 'wooptions-pro') : __('Publish', 'wooptions-pro')))),
-                wp.element.createElement("div", { className: "wof-builder-workspace" },
+                wp.element.createElement("div", { className: "wof-builder-workspace", inert: showOverlay ? true : undefined },
                     wp.element.createElement(Builder.ElementsPanel, { onAdd: addField, onOpenStyle: () => { actions.selectField(null); actions.setInspectorTab('style'); } }),
                     wp.element.createElement(Builder.Canvas, { document: state.document, selectedUuid: state.selectedUuid, device: state.device, onSelect: (uuid) => { actions.selectField(uuid); actions.setInspectorTab('content'); }, onAdd: addField, onAddChild: (parentUuid, field, index) => addField(field, index, parentUuid), onMove: actions.moveField, onMoveChild: actions.moveChildField, onMoveToParent: actions.moveFieldToParent, onDuplicate: (field) => addField(WooOptionsPro.FieldFactory.duplicate(field)), onDelete: setDeleteUuid }),
                     wp.element.createElement(Builder.Inspector, { field: selectedField, document: state.document, tab: state.inspectorTab, onTabChange: actions.setInspectorTab, onFieldChange: (field) => actions.replaceField(field.uuid, field), onDocumentChange: actions.updateDocument, onDuplicate: duplicateSelected, onDelete: () => selectedField && setDeleteUuid(selectedField.uuid) })),
-                historyOpen ? wp.element.createElement(Builder.HistoryModal, { revisions: revisions, busy: modalBusy, onClose: () => setHistoryOpen(false), onRollback: async (revisionUuid) => { setModalBusy(true); try {
+                historyOpen ? wp.element.createElement(Builder.HistoryModal, { revisions: revisions, busy: modalBusy, onClose: () => setHistoryOpen(false), onRollback: async (revisionUuid) => { if (!canConfigure) {
+                        WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to rollback revisions.', 'wooptions-pro'));
+                        return;
+                    } setModalBusy(true); try {
                         const result = await WooOptionsPro.Api.rollback(state.optionSet.uuid, revisionUuid);
                         actions.loadSet(result);
                         setHistoryOpen(false);
@@ -8024,7 +8463,10 @@ var WooOptionsPro;
                     finally {
                         setModalBusy(false);
                     } } }) : null,
-                assignmentOpen ? wp.element.createElement(Builder.AssignmentsModal, { assignments: assignments, busy: modalBusy, onClose: () => setAssignmentOpen(false), onSave: async (nextAssignments) => { setModalBusy(true); try {
+                assignmentOpen ? wp.element.createElement(Builder.AssignmentsModal, { assignments: assignments, busy: modalBusy, onClose: () => setAssignmentOpen(false), onSave: async (nextAssignments) => { if (!canConfigure) {
+                        WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to save assignments.', 'wooptions-pro'));
+                        return;
+                    } setModalBusy(true); try {
                         const response = await WooOptionsPro.Api.saveAssignments(state.optionSet.uuid, nextAssignments);
                         setAssignments(response.items);
                         setAssignmentOpen(false);
@@ -8033,7 +8475,8 @@ var WooOptionsPro;
                     finally {
                         setModalBusy(false);
                     } } }) : null,
-                deleteUuid ? wp.element.createElement(WooOptionsPro.Components.ConfirmModal, { title: __('Delete field?', 'wooptions-pro'), message: __('Delete this field and its configuration? This can be undone until you leave the builder.', 'wooptions-pro'), confirmLabel: __('Delete field', 'wooptions-pro'), destructive: true, onCancel: () => setDeleteUuid(null), onConfirm: () => { actions.deleteField(deleteUuid); setDeleteUuid(null); } }) : null);
+                deleteUuid ? wp.element.createElement(WooOptionsPro.Components.ConfirmModal, { title: __('Delete field?', 'wooptions-pro'), message: __('Delete this field and its configuration? This can be undone until you leave the builder.', 'wooptions-pro'), confirmLabel: __('Delete field', 'wooptions-pro'), destructive: true, onCancel: () => setDeleteUuid(null), onConfirm: () => { actions.deleteField(deleteUuid); setDeleteUuid(null); } }) : null,
+                showOverlay && (wp.element.createElement(WooOptionsPro.Components.LicenseOverlayModal, { featureTitle: __('Precision Option Builder', 'wooptions-pro'), onActivate: () => props.navigate('license'), onDismiss: () => setOverlayDismissed(true) })));
         }
         Builder.BuilderPage = BuilderPage;
     })(Builder = WooOptionsPro.Builder || (WooOptionsPro.Builder = {}));
@@ -8127,6 +8570,9 @@ var WooOptionsPro;
                     break;
                 case 'settings':
                     page = wp.element.createElement(WooOptionsPro.Pages.Settings, null);
+                    break;
+                case 'license':
+                    page = wp.element.createElement(WooOptionsPro.Pages.LicensePage, null);
                     break;
                 default: page = wp.element.createElement("div", { className: "wof-fatal" },
                     wp.element.createElement("h1", null, __('Page not found', 'wooptions-pro')),

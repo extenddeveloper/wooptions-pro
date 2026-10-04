@@ -138,6 +138,9 @@ final class PublicController {
 
 	public function configuration(\WP_REST_Request $request): \WP_REST_Response|\WP_Error {
 		return $this->respond(function () use ($request): array {
+			if (class_exists('\WooOptionsPro_License_Gate') && ! \WooOptionsPro_License_Gate::can_run_saved_configuration()) {
+				throw new NotFoundException('wooptions-pro_license_inactive');
+			}
 			$product_id   = (int) $request['id'];
 			$variation_id = (int) ($request['variationId'] ?? 0);
 			$this->assert_product($product_id);
@@ -152,6 +155,9 @@ final class PublicController {
 
 	public function quote(\WP_REST_Request $request): \WP_REST_Response|\WP_Error {
 		return $this->respond(function () use ($request): array {
+			if (class_exists('\WooOptionsPro_License_Gate') && ! \WooOptionsPro_License_Gate::can_run_saved_configuration()) {
+				throw new NotFoundException('wooptions-pro_license_inactive');
+			}
 			$this->guard_payload($request);
 			$body         = $this->body($request);
 			$product_id   = (int) $request['id'];
@@ -231,6 +237,9 @@ final class PublicController {
 			$body         = $this->body($request);
 			$product_id   = max(1, (int) ($body['productId'] ?? 0));
 			$variation_id = max(0, (int) ($body['variationId'] ?? 0));
+			if (class_exists('\WooOptionsPro_License_Gate') && ! \WooOptionsPro_License_Gate::can_run_saved_configuration()) {
+				throw new NotFoundException('wooptions-pro_license_inactive');
+			}
 			$this->assert_product($product_id);
 			$context      = $this->context($product_id, $variation_id, 1);
 			$config       = $this->quotes->configuration($context);
@@ -257,6 +266,9 @@ final class PublicController {
 
 	public function upload_complete(\WP_REST_Request $request): \WP_REST_Response|\WP_Error {
 		return $this->respond(function () use ($request): array {
+			if (class_exists('\WooOptionsPro_License_Gate') && ! \WooOptionsPro_License_Gate::can_run_saved_configuration()) {
+				throw new NotFoundException('wooptions-pro_license_inactive');
+			}
 			$uuid    = (string) $request['opaque_id'];
 			$session = $this->sessions->session_hash();
 			$record  = $this->uploads->intent_record($uuid, get_current_user_id(), $session);

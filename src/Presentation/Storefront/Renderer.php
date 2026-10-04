@@ -31,6 +31,9 @@ final class Renderer {
 	}
 
 	public function render_for_current_product(): void {
+		if (class_exists('\WooOptionsPro_License_Gate') && ! \WooOptionsPro_License_Gate::can_run_saved_configuration()) {
+			return;
+		}
 		global $product;
 		if (! $product instanceof \WC_Product) {
 			return;
@@ -39,6 +42,9 @@ final class Renderer {
 	}
 
 	public function render_block(array $attributes = []): string {
+		if (class_exists('\WooOptionsPro_License_Gate') && ! \WooOptionsPro_License_Gate::can_run_saved_configuration()) {
+			return '';
+		}
 		$product_id = max(0, (int) ($attributes['productId'] ?? get_the_ID()));
 		ob_start();
 		$this->render($product_id);
@@ -47,6 +53,9 @@ final class Renderer {
 
 	public function render(int $product_id): void {
 		if ($product_id <= 0 || isset($this->rendered_products[$product_id])) {
+			return;
+		}
+		if (class_exists('\WooOptionsPro_License_Gate') && ! \WooOptionsPro_License_Gate::can_run_saved_configuration()) {
 			return;
 		}
 		try {

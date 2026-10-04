@@ -295,8 +295,32 @@ final class AdminController
 		]));
 	}
 
+	private function enforce_license(): ?\WP_Error
+	{
+		if (class_exists('\WooOptionsPro\License\LicenseGate') && ! \WooOptionsPro\License\LicenseGate::can_configure()) {
+			$msg = \WooOptionsPro\License\LicenseGate::locked_message();
+			return new \WP_Error(
+				'wooptions_pro_license_required',
+				$msg ?: __('Activate your WooOptions Pro license to create and edit product option sets.', 'wooptions-pro'),
+				['status' => 403]
+			);
+		}
+		if (class_exists('\WooOptionsPro_License_Gate') && ! \WooOptionsPro_License_Gate::can_configure()) {
+			$msg = \WooOptionsPro_License_Gate::locked_message();
+			return new \WP_Error(
+				'wooptions_pro_license_required',
+				$msg ?: __('Activate your WooOptions Pro license to create and edit product option sets.', 'wooptions-pro'),
+				['status' => 403]
+			);
+		}
+		return null;
+	}
+
 	public function create_option_set(\WP_REST_Request $request): \WP_REST_Response|\WP_Error
 	{
+		if ($err = $this->enforce_license()) {
+			return $err;
+		}
 		return $this->respond(
 			fn(): array => $this->option_sets->create((string) $request['title'], get_current_user_id()),
 			201
@@ -310,6 +334,9 @@ final class AdminController
 
 	public function update_option_set(\WP_REST_Request $request): \WP_REST_Response|\WP_Error
 	{
+		if ($err = $this->enforce_license()) {
+			return $err;
+		}
 		return $this->respond(function () use ($request): array {
 			$set = $this->option_sets->get((string) $request['uuid']);
 			$body = $this->body($request);
@@ -336,16 +363,25 @@ final class AdminController
 
 	public function archive_option_set(\WP_REST_Request $request): \WP_REST_Response|\WP_Error
 	{
+		if ($err = $this->enforce_license()) {
+			return $err;
+		}
 		return $this->respond(fn(): array => $this->option_sets->archive((string) $request['uuid'], get_current_user_id()));
 	}
 
 	public function duplicate_option_set(\WP_REST_Request $request): \WP_REST_Response|\WP_Error
 	{
+		if ($err = $this->enforce_license()) {
+			return $err;
+		}
 		return $this->respond(fn(): array => $this->option_sets->duplicate((string) $request['uuid'], get_current_user_id()), 201);
 	}
 
 	public function delete_option_set_permanently(\WP_REST_Request $request): \WP_REST_Response|\WP_Error
 	{
+		if ($err = $this->enforce_license()) {
+			return $err;
+		}
 		return $this->respond(fn(): array => $this->option_sets->delete_permanently((string) $request['uuid']));
 	}
 
@@ -356,6 +392,9 @@ final class AdminController
 
 	public function save_revision(\WP_REST_Request $request): \WP_REST_Response|\WP_Error
 	{
+		if ($err = $this->enforce_license()) {
+			return $err;
+		}
 		return $this->respond(function () use ($request): array {
 			$body = $this->body($request);
 			return $this->option_sets->save_draft(
@@ -375,6 +414,9 @@ final class AdminController
 
 	public function publish_option_set(\WP_REST_Request $request): \WP_REST_Response|\WP_Error
 	{
+		if ($err = $this->enforce_license()) {
+			return $err;
+		}
 		return $this->respond(function () use ($request): array {
 			$body = $this->body($request);
 			return $this->option_sets->publish(
@@ -388,6 +430,9 @@ final class AdminController
 
 	public function rollback_option_set(\WP_REST_Request $request): \WP_REST_Response|\WP_Error
 	{
+		if ($err = $this->enforce_license()) {
+			return $err;
+		}
 		return $this->respond(function () use ($request): array {
 			$body = $this->body($request);
 			return $this->option_sets->rollback(
@@ -589,6 +634,9 @@ final class AdminController
 
 	public function put_assignments(\WP_REST_Request $request): \WP_REST_Response|\WP_Error
 	{
+		if ($err = $this->enforce_license()) {
+			return $err;
+		}
 		return $this->respond(function () use ($request): array {
 			$body = $this->body($request);
 			return ['items' => $this->assignments->replace((string) $request['uuid'], (array) ($body['assignments'] ?? []))];
@@ -820,6 +868,9 @@ final class AdminController
 
 	public function import_template(\WP_REST_Request $request): \WP_REST_Response|\WP_Error
 	{
+		if ($err = $this->enforce_license()) {
+			return $err;
+		}
 		return $this->respond(function () use ($request): array {
 			$body = $this->body($request);
 			return $this->templates->import((string) ($body['slug'] ?? ''), get_current_user_id());
@@ -845,6 +896,9 @@ final class AdminController
 
 	public function commit_import(\WP_REST_Request $request): \WP_REST_Response|\WP_Error
 	{
+		if ($err = $this->enforce_license()) {
+			return $err;
+		}
 		return $this->respond(function () use ($request): array {
 			$body = $this->body($request);
 			$definition = (array) ($body['optionSet']['definition'] ?? $body['definition'] ?? []);
@@ -876,6 +930,9 @@ final class AdminController
 
 	public function update_settings(\WP_REST_Request $request): \WP_REST_Response|\WP_Error
 	{
+		if ($err = $this->enforce_license()) {
+			return $err;
+		}
 		return $this->respond(function () use ($request): array {
 			$settings = Settings::sanitize($this->body($request));
 			update_option(Settings::OPTION, $settings, false);

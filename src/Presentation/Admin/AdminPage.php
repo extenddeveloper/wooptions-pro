@@ -127,7 +127,7 @@ final class AdminPage {
 		}
 
 		$page         = isset($_GET['page']) ? sanitize_key(wp_unslash($_GET['page'])) : 'wooptions-pro'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$initial_route= 'wooptions-pro' === $page ? 'dashboard' : str_replace('wooptions-pro-', '', $page);
+		$initial_route= 'wooptions-pro-license' === $page ? 'license' : ('wooptions-pro' === $page ? 'dashboard' : str_replace('wooptions-pro-', '', $page));
 		wp_add_inline_script(
 			'wooptions-pro-admin',
 			'window.WooOptionsProAdmin=' . wp_json_encode(
@@ -140,6 +140,21 @@ final class AdminPage {
 					'palettes'      => is_array($palettes) ? $palettes : [],
 					'fontCatalog'   => is_array($font_catalog) ? $font_catalog : [],
 					'settings'      => Settings::all(),
+					'license'       => [
+						'active'         => class_exists('\WooOptionsPro\License\LicenseManager') ? \WooOptionsPro\License\LicenseManager::is_active() : true,
+						'canConfigure'   => class_exists('\WooOptionsPro\License\LicenseGate') ? \WooOptionsPro\License\LicenseGate::can_configure() : true,
+						'state'          => class_exists('\WooOptionsPro\License\LicenseGate') ? \WooOptionsPro\License\LicenseGate::state() : 'active',
+						'message'        => class_exists('\WooOptionsPro\License\LicenseGate') ? \WooOptionsPro\License\LicenseGate::locked_message() : '',
+						'key'            => class_exists('\WooOptionsPro\License\LicenseManager') ? \WooOptionsPro\License\LicenseManager::get_masked_key() : '',
+						'expires'        => class_exists('\WooOptionsPro\License\LicenseManager') ? \WooOptionsPro\License\LicenseManager::get_expiry() : '',
+						'licenseTitle'   => class_exists('\WooOptionsPro\License\LicenseManager') ? \WooOptionsPro\License\LicenseManager::get_license_title() : 'Unlimited Site (Lifetime)',
+						'supportExpires' => class_exists('\WooOptionsPro\License\LicenseManager') ? \WooOptionsPro\License\LicenseManager::get_support_expiry() : 'Unlimited',
+						'accountUrl'     => 'https://portal.themefic.com/my-account/',
+						'purchaseUrl'    => 'https://themefic.com/plugins/woooptions-pro/',
+						'licenseUrl'     => admin_url('admin.php?page=wooptions-pro-license'),
+						'ajaxUrl'        => admin_url('admin-ajax.php'),
+						'nonce'          => wp_create_nonce('wooptions_pro_license_nonce'),
+					],
 					'wooAvailable'  => Requirements::woocommerce_is_available(),
 					'currency'        => Requirements::woocommerce_is_available() && function_exists('get_woocommerce_currency') ? (string) get_woocommerce_currency() : 'USD',
 					'currencySymbol'  => Requirements::woocommerce_is_available() && function_exists('get_woocommerce_currency_symbol') ? html_entity_decode((string) get_woocommerce_currency_symbol(), ENT_QUOTES, 'UTF-8') : '$',
@@ -149,8 +164,9 @@ final class AdminPage {
 						'name' => wp_get_current_user()->display_name,
 					],
 					'urls'          => [
-						'products' => admin_url('edit.php?post_type=product'),
+						'products'  => admin_url('edit.php?post_type=product'),
 						'siteHealth'=> admin_url('site-health.php'),
+						'license'   => admin_url('admin.php?page=wooptions-pro-license'),
 					],
 					'pluginUrl'     => WOOPTIONS_PRO_URL,
 					'assetsUrl'     => WOOPTIONS_PRO_URL . 'assets/',

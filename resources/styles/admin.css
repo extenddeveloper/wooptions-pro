@@ -16079,4 +16079,858 @@ body.rtl .wof-toast__progress-bar,
 .wof-nested-canvas-field.is-selected {
 	border-color: #4f46e5;
 	box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+
+/* License Alert Banner in Admin Shell */
+.wof-license-banner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 12px 20px;
+	margin: 16px 24px 0;
+	background: #fffbeb;
+	border: 1px solid #fde68a;
+	border-radius: 8px;
+	box-shadow: 0 1px 2px rgba(245, 158, 11, 0.05);
+	font-size: 13.5px;
+	color: #92400e;
+}
+
+.wof-license-banner__content {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-weight: 500;
+}
+
+.wof-license-banner__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: #d97706;
+}
+
+.wof-license-banner__button {
+	display: inline-flex;
+	align-items: center;
+	padding: 6px 14px;
+	background: #d97706;
+	color: #ffffff !important;
+	border-radius: 6px;
+	font-weight: 600;
+	font-size: 13px;
+	text-decoration: none;
+	white-space: nowrap;
+	transition: background 0.15s ease;
+	border: none;
+}
+
+.wof-license-banner__button:hover {
+	background: #b45309;
+	color: #ffffff !important;
+}
+
+/* ==========================================================================
+   WooOptions Pro License Screen & WholesaleFic Modal Overlay
+   ========================================================================== */
+
+/* WholesaleFic-style Modal Overlay */
+.ws-license-overlay,
+.wof-license-overlay {
+	position: absolute;
+	inset: 0;
+	z-index: 50;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	background: rgba(246, 248, 251, 0.74);
+	backdrop-filter: blur(3px);
+	padding: 40px 16px 60px;
+	box-sizing: border-box;
+}
+
+.ws-license-overlay__card,
+.wof-license-overlay__card {
+	width: min(560px, 100%);
+	border: 1px solid rgba(223, 227, 234, 0.9);
+	border-radius: 18px;
+	background: #ffffff;
+	box-shadow: 0 20px 55px rgba(16, 24, 40, 0.14);
+	overflow: hidden;
+	text-align: center;
+	font-family: inherit;
+	animation: wofOverlayPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes wofOverlayPop {
+	from {
+		opacity: 0;
+		transform: scale(0.96) translateY(8px);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+}
+
+.ws-license-overlay__body,
+.wof-license-overlay__body {
+	padding: 32px 40px 24px;
+}
+
+.ws-license-overlay__icon,
+.wof-license-overlay__icon {
+	margin: 0 auto 2px;
+	display: flex;
+	justify-content: center;
+}
+
+.ws-license-overlay__icon img,
+.wof-license-overlay__icon img {
+	display: block;
+	width: 132px;
+	height: 100px;
+	object-fit: contain;
+}
+
+.ws-license-overlay__icon svg,
+.wof-license-overlay__icon svg {
+	display: block;
+	width: 64px;
+	height: 64px;
+}
+
+.ws-license-overlay__topline,
+.wof-license-overlay__topline {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	gap: 7px;
+	padding: 4px 12px;
+	border-radius: 9999px;
+	background: #EFF6FF;
+	color: #2563EB;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 12px;
+	letter-spacing: 0.6px;
+	text-transform: uppercase;
+}
+
+.ws-license-overlay__badge,
+.wof-license-overlay__badge {
+	display: inline-grid;
+	place-items: center;
+	width: 18px;
+	height: 18px;
+	color: #2f6bf4;
+}
+
+.ws-license-overlay__badge svg,
+.wof-license-overlay__badge svg {
+	display: block;
+	width: 18px;
+	height: 18px;
+}
+
+.ws-license-overlay__dot,
+.wof-license-overlay__dot {
+	font-size: 16px;
+	font-weight: 700;
+	transform: translateY(-1px);
+}
+
+.ws-license-overlay h2,
+.wof-license-overlay h2 {
+	margin: 24px auto 0;
+	color: #31343F;
+	text-align: center;
+	font-size: 25px;
+	font-weight: 700;
+	line-height: 140%;
+	letter-spacing: -0.5px;
+}
+
+.ws-license-overlay p,
+.wof-license-overlay p {
+	margin: 0;
+	color: #656b76;
+	font-size: 17px;
+	line-height: 1.55;
+}
+
+.ws-license-overlay__message,
+.wof-license-overlay__message {
+	max-width: 448px;
+	margin: 16px auto 0 !important;
+	color: #585C5F;
+	font-size: 16px;
+	line-height: 140%;
+}
+
+.ws-license-overlay__features,
+.wof-license-overlay__features {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 12px;
+	margin-top: 24px;
+	text-align: left;
+}
+
+.ws-license-overlay__feature,
+.wof-license-overlay__feature {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 16px;
+	border: 1px solid #e3e8f5;
+	border-radius: 11px;
+	background: #fbfcff;
+	font-size: 16px;
+	font-weight: 600;
+	color: #31343F;
+	line-height: 140%;
+}
+
+.ws-license-overlay__feature-icon,
+.wof-license-overlay__feature-icon {
+	flex: 0 0 auto;
+	display: grid;
+	place-items: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 10px;
+	background: #eef2ff;
+	color: #5271ff;
+}
+
+.ws-license-overlay__feature-icon svg,
+.wof-license-overlay__feature-icon svg {
+	width: 20px;
+	height: 20px;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.8;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.ws-license-overlay__actions,
+.wof-license-overlay__actions {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 18px;
+	margin-top: 24px;
+}
+
+.ws-license-overlay__actions .wholesalefic-btn,
+.wof-license-overlay__actions .wholesalefic-btn {
+	flex: 1 1 0;
+	min-height: 40px;
+	padding: 0px 20px;
+	border-radius: 10px;
+	font-size: 16px;
+	font-weight: 600;
+	border: 0;
+	cursor: pointer;
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	white-space: nowrap;
+	box-sizing: border-box;
+}
+
+.ws-license-overlay__actions .wholesalefic-btn--primary,
+.wof-license-overlay__actions .wholesalefic-btn--primary {
+	background: #5271ff;
+	color: #fff;
+}
+
+.ws-license-overlay__actions .wholesalefic-btn--primary:hover,
+.wof-license-overlay__actions .wholesalefic-btn--primary:hover {
+	background: #4161f2;
+}
+
+.ws-license-overlay__actions .wholesalefic-btn--secondary,
+.wof-license-overlay__actions .wholesalefic-btn--secondary {
+	border-color: transparent;
+	background: #eef1ff;
+	color: #5271ff;
+}
+
+.ws-license-overlay__actions .wholesalefic-btn--secondary:hover,
+.wof-license-overlay__actions .wholesalefic-btn--secondary:hover {
+	background: #e6eaff;
+	color: #405fdc;
+}
+
+.ws-license-overlay__footer,
+.wof-license-overlay__footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	padding: 16px 32px;
+	background: #f3f4f6;
+	text-align: left;
+}
+
+.ws-license-overlay__help,
+.wof-license-overlay__help {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	color: #353a45;
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.ws-license-overlay__help:hover,
+.wof-license-overlay__help:hover {
+	color: #2f6bf4;
+}
+
+.ws-license-overlay__help svg,
+.wof-license-overlay__help svg {
+	width: 20px;
+	height: 20px;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.8;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.ws-license-overlay__dismiss,
+.wof-license-overlay__dismiss {
+	padding: 4px 0;
+	border: 0;
+	background: transparent;
+	color: #353a45;
+	font: inherit;
+	font-size: 14px;
+	font-weight: 650;
+	cursor: pointer;
+}
+
+.ws-license-overlay__dismiss:hover,
+.wof-license-overlay__dismiss:hover {
+	color: #2f6bf4;
+}
+
+/* Page content locked preview */
+.wof-admin__body {
+	position: relative;
+}
+
+.wof-admin__body--locked {
+	position: relative;
+	min-height: 720px;
+}
+
+.wof-admin__body--locked .wof-admin__content {
+	filter: blur(2px) grayscale(10%);
+	pointer-events: none;
+	user-select: none;
+	opacity: 0.65;
+}
+
+.wof-builder--locked {
+	position: relative;
+}
+
+.wof-builder--locked .ws-license-overlay,
+.wof-builder--locked .wof-license-overlay {
+	top: 56px;
+}
+
+.wof-builder--locked .wof-builder-workspace {
+	filter: blur(2px) grayscale(10%);
+	pointer-events: none;
+	user-select: none;
+	opacity: 0.65;
+}
+
+/* ==========================================================================
+   License Page Layout (WholesaleFic exact design match)
+   ========================================================================== */
+.wholesalefic_licensing_wrap.wof-license-wrap {
+	--ws-license-primary: #5271ff;
+	--ws-license-primary-soft: #eef1ff;
+	--ws-license-text: #31343F;
+	--ws-license-muted: #48525B;
+	--ws-license-subtle: #979ba5;
+	--ws-license-border: #e5e8ef;
+	--ws-license-success: #0aa34f;
+	max-width: 1060px;
+	width: calc(100% - 40px);
+	margin: 56px auto 48px;
+	box-sizing: border-box;
+	color: var(--ws-license-text);
+	font-family: inherit;
+}
+
+#wholesalefic_license_body {
+	position: relative;
+}
+
+#wholesalefic_license_body.wholesalefic_loading {
+	pointer-events: none;
+}
+
+#wholesalefic_license_body.wholesalefic_loading::before {
+	content: "";
+	position: absolute;
+	inset: -8px;
+	z-index: 10;
+	border-radius: 16px;
+	background: rgba(247, 248, 252, .62);
+	backdrop-filter: blur(1px);
+}
+
+.wholesalefic-license-layout {
+	display: grid;
+	grid-template-columns: minmax(500px, 1fr) minmax(440px, 1fr);
+	gap: 24px;
+	align-items: start;
+}
+
+.wholesalefic-license-main {
+	overflow: hidden;
+	border: 1px solid var(--ws-license-border);
+	border-radius: 15px;
+	background: #fff;
+	box-shadow: 0 1px 2px rgba(16, 24, 40, .02);
+}
+
+.wholesalefic-license-main__header {
+	padding: 32px 40px;
+	border-bottom: 1px solid #eceef3;
+}
+
+.wholesalefic-license-main__header h2 {
+	margin: 0 0 7px;
+	color: var(--ws-license-text, #31343F);
+	font-size: 25px;
+	font-weight: 700;
+	line-height: 140%;
+	letter-spacing: -0.5px;
+}
+
+.wholesalefic-license-main__header p,
+.wholesalefic-license-section-description,
+.wholesalefic-license-aside > p {
+	margin: 0;
+	color: var(--ws-license-muted, #48525B);
+	font-size: 16px;
+	line-height: 150%;
+}
+
+.wholesalefic-license-title-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 7px;
+}
+
+.wholesalefic-license-title-row h2 {
+	margin: 0;
+}
+
+.wholesalefic-license-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 3px 8px;
+	border-radius: 999px;
+	background: #F1FEF5;
+	color: #019337;
+	font-size: 11px;
+	font-weight: 500;
+	line-height: 1.4;
+	white-space: nowrap;
+}
+
+.wholesalefic-license-badge__dot {
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	background: #019337;
+}
+
+.wholesalefic-license-main__body {
+	padding: 56px 40px;
+}
+
+.wholesalefic-license-main__body.wholesalefic-license-main__body--active {
+	padding-top: 20px;
+	padding-bottom: 32px;
+}
+
+.wholesalefic-license-section-title {
+	margin: 0 0 5px;
+	color: var(--ws-license-text);
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 1.4;
+}
+
+.wholesalefic-license-info-list {
+	margin-top: 16px;
+}
+
+.wholesalefic-license-info-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	padding: 16px 0;
+	border-bottom: 1px solid #eceef3;
+}
+
+.wholesalefic-license-info-row:last-child {
+	border-bottom: 0;
+	padding-bottom: 0;
+}
+
+.wholesalefic-license-info-row .label {
+	font-weight: 600;
+	color: var(--ws-license-text);
+	font-size: 13px;
+	line-height: 1.45;
+}
+
+.wholesalefic-license-info-row .value {
+	max-width: 62%;
+	color: #424650;
+	text-align: right;
+	word-break: break-word;
+	font-size: 13px;
+	line-height: 1.45;
+}
+
+.wholesalefic-license-info-row .value.license-key {
+	font-family: inherit;
+	letter-spacing: 0.5px;
+}
+
+.wholesalefic-license-aside {
+	padding: 24px;
+}
+
+.wholesalefic-license-aside__icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	margin-bottom: 24px;
+	border-radius: 10px;
+	background: #6c84ff;
+}
+
+.wholesalefic-license-aside h3 {
+	margin: 0 0 5px;
+	color: var(--ws-license-text);
+	font-size: 18px;
+	font-weight: 700;
+	line-height: 1.4;
+}
+
+.wholesalefic-license-feature-list {
+	display: grid;
+	gap: 20px;
+	margin: 23px 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.wholesalefic-license-feature-list li {
+	position: relative;
+	margin: 0;
+	padding-left: 24px;
+	color: var(--ws-license-text, #31343F);
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 140%;
+}
+
+.wholesalefic-license-feature-list li::before {
+	content: "+";
+	position: absolute;
+	left: 1px;
+	top: -6px;
+	color: var(--ws-license-success);
+	font-size: 30px;
+	font-weight: 400;
+	line-height: 1;
+	width: 20px;
+	height: 20px;
+}
+
+.wholesalefic-license-action-box {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 14px;
+	margin-top: 22px;
+	padding: 29px;
+	border-radius: 11px;
+	background: #fff;
+	box-shadow: 0 1px 2px rgba(16, 24, 40, .02);
+}
+
+.wholesalefic-license-button {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	min-height: 40px;
+	padding: 0px 20px !important;
+	border: 0 !important;
+	text-decoration: none;
+	white-space: nowrap;
+	color: #fff;
+	font-size: 16px !important;
+	font-weight: 600 !important;
+	line-height: 140% !important;
+	border-radius: 8px !important;
+	background: var(--ws-license-primary, #5271FF);
+	cursor: pointer;
+	box-sizing: border-box;
+	transition: background 0.15s ease, opacity 0.15s ease;
+}
+
+.wholesalefic-license-button:disabled {
+	opacity: 0.65;
+	cursor: not-allowed;
+}
+
+.wholesalefic-license-button:focus {
+	outline: 2px solid rgba(82, 113, 255, .28) !important;
+	outline-offset: 2px;
+	box-shadow: none !important;
+}
+
+.wholesalefic-license-button--primary {
+	background: var(--ws-license-primary) !important;
+	color: #fff !important;
+}
+
+.wholesalefic-license-button--primary:hover:not(:disabled) {
+	background: #4161f2 !important;
+	color: #fff !important;
+}
+
+.wholesalefic-license-button--danger {
+	background: #e92222 !important;
+	color: #fff !important;
+}
+
+.wholesalefic-license-button--danger:hover:not(:disabled) {
+	background: #d71919 !important;
+	color: #fff !important;
+}
+
+.wholesalefic-license-button--ghost {
+	background: var(--ws-license-primary-soft) !important;
+	color: var(--ws-license-primary) !important;
+}
+
+.wholesalefic-license-button--ghost:hover:not(:disabled) {
+	background: #e2e7ff !important;
+	color: #4161f2 !important;
+}
+
+.wholesalefic_licensing_form {
+	display: flex;
+	align-items: flex-start;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.wholesalefic-license-field {
+	width: 100%;
+}
+
+.wholesalefic-license-field__label-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 7px;
+}
+
+.wholesalefic-license-field__label-row label,
+.wholesalefic-license-field__link {
+	color: var(--ws-license-text, #31343F);
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 150%;
+	letter-spacing: 0.26px;
+}
+
+.wholesalefic-license-field__label-row label span {
+	color: var(--ws-license-subtle);
+	font-weight: 400;
+}
+
+.wholesalefic-license-field__link {
+	color: var(--ws-license-primary);
+	text-decoration: none;
+}
+
+.wholesalefic-license-field__link:hover {
+	color: #4161f2;
+	text-decoration: underline;
+}
+
+.license-input {
+	display: flex;
+	align-items: center;
+	gap: 7px;
+	width: 100%;
+	min-height: 38px;
+	padding: 0 10px;
+	border: 1px solid #dfe3eb;
+	border-radius: 6px;
+	background: #f8f9fc;
+	box-sizing: border-box;
+	transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+.license-input:focus-within {
+	border-color: var(--ws-license-primary);
+	background: #fff;
+	box-shadow: 0 0 0 2px rgba(82, 113, 255, .18);
+}
+
+.license-input.license-input--error {
+	border-color: #e92222 !important;
+	background: #fff !important;
+	box-shadow: 0 0 0 2px rgba(233, 34, 34, .18) !important;
+}
+
+.license-input__icon {
+	display: inline-flex;
+	flex: 0 0 16px;
+	color: #9a9ea8;
+	line-height: 0;
+}
+
+.license-input input {
+	width: 100% !important;
+	min-height: 40px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: 0 !important;
+	outline: 0 !important;
+	background: transparent !important;
+	box-shadow: none !important;
+	color: #41454e !important;
+	font-size: 14px !important;
+	line-height: 1.4 !important;
+}
+
+.license-input input::placeholder {
+	color: #a1a5af;
+}
+
+.wholesalefic-license-field__help {
+	margin: 6px 0 0;
+	color: var(--ws-license-subtle, #9999A1);
+	font-size: 12px;
+	line-height: 150%;
+	letter-spacing: 0.24px;
+}
+
+.wholesalefic-license-purchase-card {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 22px;
+	margin-top: 24px;
+	padding: 32px;
+	border-radius: 12px;
+	background: #6d84f8;
+}
+
+.wholesalefic-license-purchase-card__content {
+	display: grid;
+	gap: 4px;
+	min-width: 0;
+}
+
+.wholesalefic-license-purchase-card__content span {
+	color: #EDF0FF;
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 150%;
+	text-transform: uppercase;
+}
+
+.wholesalefic-license-purchase-card__content strong {
+	color: #FFF;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 150%;
+}
+
+.wholesalefic-license-purchase-card__button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 40px;
+	padding: 0 20px;
+	border-radius: 8px;
+	background: #eef1ff;
+	color: var(--ws-license-primary);
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.35;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.wholesalefic-license-purchase-card__button:hover {
+	background: #fff;
+	color: #4161f2;
+}
+
+.wholesalefic_success_notice {
+	margin-top: 14px;
+	border: 1px solid #a9e9c2;
+	background: #ecfbf2;
+	color: #087a3c;
+	padding: 10px 12px;
+	border-radius: 6px;
+	font-size: 12px;
+	line-height: 1.5;
+}
+
+.wholesalefic_error_notice {
+	margin-top: 14px;
+	border: 1px solid #ffc9c5;
+	background: #fff2f1;
+	color: #b42318;
+	padding: 10px 12px;
+	border-radius: 6px;
+	font-size: 12px;
+	line-height: 1.5;
+}
+
+@media (max-width: 1080px) {
+	.wholesalefic_licensing_wrap.wof-license-wrap {
+		max-width: 760px;
+	}
+	.wholesalefic-license-layout {
+		grid-template-columns: 1fr;
+	}
+	.wholesalefic-license-aside {
+		padding: 0;
+	}
 }

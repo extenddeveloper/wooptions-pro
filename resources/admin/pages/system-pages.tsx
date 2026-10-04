@@ -52,7 +52,13 @@ namespace WooOptionsPro.Pages {
       styleTag.textContent = css;
     }, [props.fonts, name, files, weight, style]);
 
+    const canConfigure = !!(window as any).WooOptionsProAdmin?.license?.canConfigure;
+
     const openMediaUploader = () => {
+      if (!canConfigure) {
+        WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to manage custom fonts.', 'wooptions-pro'));
+        return;
+      }
       if (!wp.media) {
         WooOptionsPro.Toast.error(__('WordPress Media Library is unavailable.', 'wooptions-pro'));
         return;
@@ -97,6 +103,10 @@ namespace WooOptionsPro.Pages {
     };
 
     const addFont = () => {
+      if (!canConfigure) {
+        WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to add custom fonts.', 'wooptions-pro'));
+        return;
+      }
       const trimmedName = name.trim();
       if (!trimmedName) {
         WooOptionsPro.Toast.error(__('Please enter a font name.', 'wooptions-pro'));
@@ -130,6 +140,10 @@ namespace WooOptionsPro.Pages {
     };
 
     const removeFont = (index: number) => {
+      if (!canConfigure) {
+        WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to remove custom fonts.', 'wooptions-pro'));
+        return;
+      }
       if (window.confirm(__('Are you sure you want to remove this custom font?', 'wooptions-pro'))) {
         const next = props.fonts.filter((_, i) => i !== index);
         props.onChange(next);
@@ -378,9 +392,18 @@ namespace WooOptionsPro.Pages {
       );
     }
 
-    const set = (key: string, value: unknown) => setSettings({ ...settings, [key]: value });
+    const canConfigure = !!(window as any).WooOptionsProAdmin?.license?.canConfigure;
+
+    const set = (key: string, value: unknown) => {
+      if (!canConfigure) return;
+      setSettings({ ...settings, [key]: value });
+    };
 
     const save = async () => {
+      if (!canConfigure) {
+        WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to save settings.', 'wooptions-pro'));
+        return;
+      }
       setSaving(true);
       try {
         const saved = await WooOptionsPro.Api.saveSettings(settings);
@@ -435,8 +458,9 @@ namespace WooOptionsPro.Pages {
             <Button
               variant="primary"
               isBusy={saving}
-              disabled={saving}
+              disabled={!canConfigure || saving}
               onClick={save}
+              title={!canConfigure ? __('Activate your license to save settings', 'wooptions-pro') : undefined}
             >
               {saving ? __('Saving…', 'wooptions-pro') : __('Save settings', 'wooptions-pro')}
             </Button>
@@ -466,6 +490,51 @@ namespace WooOptionsPro.Pages {
 
           {/* Settings Content Panel */}
           <main className="wof-settings-panel">
+            {!canConfigure && (
+              <div
+                className="wof-settings-readonly-banner"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '12px',
+                  padding: '12px 18px',
+                  marginBottom: '20px',
+                  borderRadius: '8px',
+                  background: '#eff6ff',
+                  border: '1px solid #bfdbfe',
+                  color: '#1e40af',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                  <span>{__('WooOptions Pro license is not active. Settings are in read-only preview mode.', 'wooptions-pro')}</span>
+                </div>
+                <button
+                  type="button"
+                  style={{
+                    background: '#2563eb',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '6px',
+                    padding: '6px 14px',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                  }}
+                  onClick={() => { window.location.hash = '#license'; }}
+                >
+                  {__('Activate License', 'wooptions-pro')}
+                </button>
+              </div>
+            )}
+            <fieldset disabled={!canConfigure} style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}>
             {activeTab === 'cleanup' && (
               <section aria-labelledby="wof-cleanup-heading">
                 <div className="wof-settings-panel__header">
@@ -787,6 +856,7 @@ namespace WooOptionsPro.Pages {
                 </div>
               </section>
             )}
+            </fieldset>
           </main>
         </div>
       </div>

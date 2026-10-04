@@ -75,6 +75,7 @@ namespace WooOptionsPro {
         case 'templates': page = <WooOptionsPro.Pages.Templates navigate={navigate} />; break;
         case 'analytics': page = <WooOptionsPro.Pages.Analytics navigate={navigate} />; break;
         case 'settings': page = <WooOptionsPro.Pages.Settings />; break;
+        case 'license': page = <WooOptionsPro.Pages.LicensePage />; break;
         default: page = <div className="wof-fatal"><h1>{__('Page not found', 'wooptions-pro')}</h1><p>{__('This WooOptions Pro route does not exist.', 'wooptions-pro')}</p><button type="button" onClick={() => navigate('dashboard')}>{__('Open dashboard', 'wooptions-pro')}</button></div>;
       }
     }

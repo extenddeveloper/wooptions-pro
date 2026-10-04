@@ -40,6 +40,7 @@ namespace WooOptionsPro.Pages {
     const [createTitle, setCreateTitle] = useState('');
     const [busy, setBusy] = useState(false);
     const [deleteTarget, setDeleteTarget] = useState<WooOptionsPro.OptionSetRecord | null>(null);
+    const canConfigure = !!(window as any).WooOptionsProAdmin?.license?.canConfigure;
 
     const load = useCallback(() => {
       setLoading(true);
@@ -64,6 +65,10 @@ namespace WooOptionsPro.Pages {
 
     const create = async () => {
       if (!createTitle.trim()) return;
+      if (!canConfigure) {
+        WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to create option sets.', 'wooptions-pro'));
+        return;
+      }
       setBusy(true);
       try {
         const result = await WooOptionsPro.Api.createOptionSet(createTitle);
@@ -78,10 +83,18 @@ namespace WooOptionsPro.Pages {
     };
 
     const updateStatus = async (uuid: string, nextStatus: WooOptionsPro.OptionSetStatus) => {
+      if (!canConfigure) {
+        WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to modify option sets.', 'wooptions-pro'));
+        return;
+      }
       await WooOptionsPro.Api.updateOptionSet(uuid, { status: nextStatus });
     };
 
     const rowAction = async (item: WooOptionsPro.OptionSetRecord, action: string) => {
+      if (action !== 'export' && action !== 'edit' && !canConfigure) {
+        WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to modify option sets.', 'wooptions-pro'));
+        return;
+      }
       setBusy(true);
       try {
         if (action === 'edit') props.navigate(`builder/${item.uuid}`);
@@ -98,6 +111,10 @@ namespace WooOptionsPro.Pages {
 
     const bulk = async (action: BulkAction) => {
       if (!selected.length) return;
+      if (action !== 'export' && !canConfigure) {
+        WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to modify option sets.', 'wooptions-pro'));
+        return;
+      }
       if (action === 'delete') {
         const target = collection.items.find((item) => item.uuid === selected[0]);
         if (target) setDeleteTarget({ ...target, title: selected.length > 1 ? `${selected.length} selected option sets` : target.title });
@@ -114,6 +131,10 @@ namespace WooOptionsPro.Pages {
 
     const confirmDelete = async () => {
       if (!deleteTarget) return;
+      if (!canConfigure) {
+        WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to delete option sets.', 'wooptions-pro'));
+        return;
+      }
       setBusy(true);
       try {
         const targets = deleteTarget.title.includes('selected option sets') ? selected : [deleteTarget.uuid];
@@ -132,7 +153,7 @@ namespace WooOptionsPro.Pages {
     }, [page, totalPages]);
 
     return <div className="wof-page">
-      <WooOptionsPro.Components.PageHeader eyebrow={__('Configuration library', 'wooptions-pro')} title={__('Option Sets', 'wooptions-pro')} description={__('Design once, assign precisely, and preserve every published revision.', 'wooptions-pro')} actions={<><Button variant="secondary" onClick={() => props.navigate('templates')}>{__('Browse templates', 'wooptions-pro')}</Button><Button variant="primary" onClick={() => setCreateOpen(true)}><WooOptionsPro.Components.Dashicon name="plus-alt2" />{__('New option set', 'wooptions-pro')}</Button></>} />
+      <WooOptionsPro.Components.PageHeader eyebrow={__('Configuration library', 'wooptions-pro')} title={__('Option Sets', 'wooptions-pro')} description={__('Design once, assign precisely, and preserve every published revision.', 'wooptions-pro')} actions={<><Button variant="secondary" onClick={() => props.navigate('templates')}>{__('Browse templates', 'wooptions-pro')}</Button><Button variant="primary" onClick={() => { if (!canConfigure) { WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to create option sets.', 'wooptions-pro')); return; } setCreateOpen(true); }}><WooOptionsPro.Components.Dashicon name="plus-alt2" />{__('New option set', 'wooptions-pro')}</Button></>} />
       {error ? <WooOptionsPro.Components.InlineNotice type="error" onClose={() => setError('')}>{error}</WooOptionsPro.Components.InlineNotice> : null}
       <section className="wof-panel wof-library-panel">
         <div className="wof-library-toolbar">

@@ -73,11 +73,14 @@ add_action(
 add_filter(
 	'plugin_action_links_' . WOOPTIONS_PRO_BASENAME,
 	static function (array $links): array {
-		$url = admin_url('admin.php?page=wooptions-pro#/settings');
-		$label = did_action('init') ? esc_html__('Settings', 'wooptions-pro') : 'Settings';
+		$license_url   = admin_url('admin.php?page=wooptions-pro-license');
+		$settings_url  = admin_url('admin.php?page=wooptions-pro#/settings');
+		$label         = did_action('init') ? esc_html__('Settings', 'wooptions-pro') : 'Settings';
+		$license_label = did_action('init') ? esc_html__('License', 'wooptions-pro') : 'License';
 		array_unshift(
 			$links,
-			'<a href="' . esc_url($url) . '">' . $label . '</a>'
+			'<a href="' . esc_url($settings_url) . '">' . $label . '</a>',
+			'<a href="' . esc_url($license_url) . '">' . $license_label . '</a>'
 		);
 		return $links;
 	}

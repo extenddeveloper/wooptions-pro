@@ -142,6 +142,9 @@ final class CartIntegration {
 		if (! $passed || $this->adding_linked) {
 			return $passed;
 		}
+		if (class_exists('\WooOptionsPro_License_Gate') && ! \WooOptionsPro_License_Gate::can_run_saved_configuration()) {
+			return $passed;
+		}
 
 		try {
 			$context = $this->context($product_id, $variation_id, $quantity);
@@ -184,6 +187,9 @@ final class CartIntegration {
 		int $quantity
 	): array {
 		if ($this->adding_linked || isset($cart_item_data['wooptions-pro_child'])) {
+			return $cart_item_data;
+		}
+		if (class_exists('\WooOptionsPro_License_Gate') && ! \WooOptionsPro_License_Gate::can_run_saved_configuration()) {
 			return $cart_item_data;
 		}
 		try {

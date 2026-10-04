@@ -53,8 +53,17 @@ use WooOptionsPro\Presentation\Storefront\Assets;
 use WooOptionsPro\Presentation\Storefront\BlockIntegration;
 use WooOptionsPro\Presentation\Storefront\Renderer;
 
+use WooOptionsPro\License\LicenseGate;
+use WooOptionsPro\License\LicenseManager;
+
 final class Plugin {
+	private ?LicenseManager $license = null;
+
 	public function boot(): void {
+		// Licensing boots first so the gate reflects the real state and the License admin page is always reachable.
+		$this->license = new LicenseManager();
+		$this->license->init();
+
 		Schema::migrate();
 		CustomFontService::register();
 
