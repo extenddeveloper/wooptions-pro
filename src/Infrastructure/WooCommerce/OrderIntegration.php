@@ -14,6 +14,34 @@ use WooOptionsPro\Application\UploadService;
 use WooOptionsPro\Infrastructure\WordPress\SessionGuard;
 
 final class OrderIntegration {
+	/**
+	 * Order item meta keys that store internal technical data.
+	 *
+	 * @var list<string>
+	 */
+	private const HIDDEN_META_KEYS = [
+		'_wooptions-pro_snapshot',
+		'_wooptions-pro_price',
+		'_wooptions-pro_upload_refs',
+		'_wooptions-pro_schema_version',
+		'_wooptions-pro_linked_child',
+		'_wooptions_pro_snapshot',
+		'_wooptions_pro_price',
+		'_wooptions_pro_upload_refs',
+		'_wooptions_pro_schema_version',
+		'_wooptions_pro_linked_child',
+		'wooptions-pro_snapshot',
+		'wooptions-pro_price',
+		'wooptions-pro_upload_refs',
+		'wooptions-pro_schema_version',
+		'wooptions-pro_linked_child',
+		'wooptions_pro_snapshot',
+		'wooptions_pro_price',
+		'wooptions_pro_upload_refs',
+		'wooptions_pro_schema_version',
+		'wooptions_pro_linked_child',
+	];
+
 	public function __construct(
 		private readonly UploadService $uploads,
 		private readonly AnalyticsService $analytics,
@@ -26,6 +54,8 @@ final class OrderIntegration {
 		add_action('woocommerce_checkout_order_created', [$this, 'order_created'], 20);
 		add_action('woocommerce_after_order_itemmeta', [$this, 'render_admin_uploads'], 20, 3);
 		add_action('woocommerce_order_item_meta_end', [$this, 'render_customer_uploads'], 20, 4);
+		add_filter('woocommerce_hidden_order_itemmeta', [$this, 'hidden_order_itemmeta'], 20, 1);
+		add_filter('woocommerce_order_item_get_formatted_meta_data', [$this, 'hide_technical_formatted_meta'], 20, 2);
 	}
 
 	/**
@@ -204,4 +234,51 @@ final class OrderIntegration {
 				. '</strong> ' . wp_kses_post(implode(', ', $links)) . '</div>';
 		}
 	}
+
+	/**
+	 * Hide internal technical metadata from the WooCommerce admin order edit screen.
+	 *
+	 * @param array<int|string,mixed> $hidden_meta Array of hidden meta keys.
+	 * @return array<int|string,mixed> Filtered hidden meta keys.
+	 */
+	public function hidden_order_itemmeta(array $hidden_meta): array {
+		if (apply_filters('wooptions-pro_show_internal_order_itemmeta', false)) {
+			return $hidden_meta;
+		}
+
+		return array_values(array_unique(array_merge($hidden_meta, self::HIDDEN_META_KEYS)));
+	}
+
+	/**
+	 * Strip internal technical order item meta from formatted metadata output.
+	 *
+	 * @param array<int|string,mixed> $formatted_meta Formatted meta data.
+	 * @param \WC_Order_Item $item The order item object.
+	 * @return array<int|string,mixed> Filtered formatted meta data.
+	 */
+	public function hide_technical_formatted_meta(array $formatted_meta, \WC_Order_Item $item): array {
+		unset($item);
+		if (apply_filters('wooptions-pro_show_internal_order_itemmeta', false)) {
+			return $formatted_meta;
+		}
+
+		foreach ($formatted_meta as $meta_id => $meta) {
+			$key = is_object($meta) ? (string) ($meta->key ?? '') : (is_array($meta) ? (string) ($meta['key'] ?? '') : '');
+			if ('' === $key) {
+				continue;
+			}
+			if (
+				str_starts_with($key, '_wooptions-pro_') ||
+				str_starts_with($key, '_wooptions_pro_') ||
+				str_starts_with($key, 'wooptions-pro_') ||
+				str_starts_with($key, 'wooptions_pro_') ||
+				in_array($key, self::HIDDEN_META_KEYS, true)
+			) {
+				unset($formatted_meta[$meta_id]);
+			}
+		}
+
+		return $formatted_meta;
+	}
 }
+

@@ -134,6 +134,7 @@ final class Plugin {
 		add_action('admin_menu', [$admin, 'register_menu']);
 		add_action('admin_enqueue_scripts', [$admin, 'enqueue']);
 		add_action('admin_notices', [$admin, 'activated_notice']);
+		add_filter('admin_body_class', [$admin, 'admin_body_class']);
 
 		$site_health = new SiteHealth($diagnostics);
 		$site_health->register();

@@ -3,6 +3,57 @@
  * Run npm run build after changing this file.
  */
 
+/* WordPress Admin Shell Integration for WooOptions Pro */
+body.wooptions-pro-admin-page,
+body[class*="page_wooptions-pro"],
+body[class*="wooptions-pro"] {
+	background: var(--wof-admin-canvas, #f5f6fa);
+}
+
+body.wooptions-pro-admin-page #wpcontent,
+body[class*="page_wooptions-pro"] #wpcontent,
+body[class*="wooptions-pro"] #wpcontent {
+	background: var(--wof-admin-canvas, #f5f6fa);
+	padding-left: 0;
+}
+
+body.wooptions-pro-admin-page #wpbody-content,
+body[class*="page_wooptions-pro"] #wpbody-content,
+body[class*="wooptions-pro"] #wpbody-content {
+	padding-bottom: 0;
+	float: none;
+}
+
+body.wooptions-pro-admin-page #wpfooter,
+body[class*="page_wooptions-pro"] #wpfooter,
+body[class*="wooptions-pro"] #wpfooter {
+	background: transparent;
+	color: var(--wof-admin-muted, #657086);
+	position: static;
+	padding: 16px 28px 24px;
+	margin-top: auto;
+}
+
+/* Builder Mode: seamless full-viewport workshop with no bottom gap */
+body.wof-is-builder,
+body.wof-is-builder #wpcontent,
+body:has(.wof-builder),
+body:has(.wof-builder) #wpcontent {
+	background: #eef0f5 !important;
+}
+
+body.wof-is-builder #wpfooter,
+body:has(.wof-builder) #wpfooter,
+body:has(.is-builder) #wpfooter {
+	display: none !important;
+}
+
+body.wof-is-builder #wpbody-content,
+body:has(.wof-builder) #wpbody-content,
+body:has(.is-builder) #wpbody-content {
+	padding-bottom: 0 !important;
+}
+
 .wof-admin-wrap {
 	--wof-admin-canvas: #f5f6fa;
 	--wof-admin-surface: #fff;
@@ -29,9 +80,28 @@
 	color: var(--wof-admin-ink);
 	font-family: Avenir Next, Segoe UI Variable, Segoe UI, system-ui, sans-serif;
 	font-size: 15px;
-	margin: 0 0 0 -20px;
+	margin: 0;
 	min-height: calc(100vh - 32px);
+	display: flex;
+	flex-direction: column;
 }
+
+#wooptions-pro-admin-root {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	min-height: 0;
+	width: 100%;
+}
+
+.wof-admin {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	min-height: 0;
+	width: 100%;
+}
+
 
 .wof-admin-wrap *,
 .wof-admin-wrap :after,
@@ -359,18 +429,25 @@
 }
 
 .wof-admin__body {
-	display: block;
-	min-height: calc(100vh - 102px);
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	min-height: 0;
 	width: 100%;
 }
 
 .wof-admin__content {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	min-height: 0;
 	min-width: 0;
+	width: 100%;
 }
 
 .wof-page {
 	margin: 0 auto;
-	padding: 40px 0 72px;
+	padding: 32px 0 36px;
 	width: min(1220px, calc(100% - 56px));
 }
 
@@ -2164,8 +2241,8 @@
 
 .wof-builder {
 	background: #eef0f5;
-	min-height: calc(100vh - 102px);
-	padding-bottom: 48px;
+	min-height: calc(100vh - 32px);
+	padding-bottom: 0;
 	position: relative;
 }
 
@@ -2181,7 +2258,7 @@
 	min-height: 66px;
 	padding: 9px 18px;
 	position: sticky;
-	top: 102px;
+	top: 32px;
 	z-index: 50;
 }
 
@@ -2339,17 +2416,17 @@
 	align-items: start;
 	display: grid;
 	grid-template-columns: 248px minmax(460px, 1fr) 350px;
-	min-height: calc(100vh - 168px);
+	min-height: calc(100vh - 98px);
 }
 
 .wof-builder-inspector,
 .wof-builder-palette {
 	background: var(--wof-admin-surface);
 	border-right: 1px solid var(--wof-admin-line);
-	height: calc(100vh - 216px);
+	height: calc(100vh - 98px);
 	overflow: auto;
 	position: sticky;
-	top: 168px;
+	top: 98px;
 }
 
 .wof-builder-inspector {
@@ -4903,9 +4980,10 @@
 
 	.wof-builder-inspector {
 		box-shadow: -12px 0 30px rgba(23, 32, 51, .12);
+		height: calc(100vh - 98px);
 		position: fixed;
 		right: 0;
-		top: 168px;
+		top: 98px;
 		width: 340px;
 		z-index: 55;
 	}
@@ -4922,7 +5000,7 @@
 
 @media (max-width:782px) {
 	.wof-admin-wrap {
-		margin-left: -10px;
+		margin-left: 0;
 		min-height: calc(100vh - 46px);
 	}
 
@@ -5010,8 +5088,8 @@
 	}
 
 	.wof-builder-inspector {
-		height: calc(100vh - 218px);
-		top: 170px;
+		height: calc(100vh - 110px);
+		top: 110px;
 		width: min(92vw, 350px);
 	}
 
@@ -16677,7 +16755,7 @@ body.rtl .wof-toast__progress-bar,
 	--ws-license-success: #0aa34f;
 	max-width: 1060px;
 	width: calc(100% - 40px);
-	margin: 56px auto 48px;
+	margin: 36px auto 32px;
 	box-sizing: border-box;
 	color: var(--ws-license-text);
 	font-family: inherit;

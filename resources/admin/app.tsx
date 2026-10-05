@@ -74,6 +74,11 @@ namespace WooOptionsPro {
 
   export function App(): any {
     const [route, setRoute] = useState(routeFromLocation());
+
+    useEffect(() => {
+      document.body.classList.toggle('wof-is-builder', route.startsWith('builder/'));
+    }, [route]);
+
     useEffect(() => {
       const update = () => setRoute(routeFromLocation());
       window.addEventListener('hashchange', update);
@@ -93,6 +98,7 @@ namespace WooOptionsPro {
       }
 
       return () => {
+        document.body.classList.remove('wof-is-builder');
         window.removeEventListener('hashchange', update);
         window.removeEventListener('popstate', update);
       };

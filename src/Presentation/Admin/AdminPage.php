@@ -214,4 +214,15 @@ final class AdminPage {
 		);
 		echo '</p></div>';
 	}
+
+	public function admin_body_class(string $classes): string {
+		$screen = function_exists('get_current_screen') ? get_current_screen() : null;
+		if ($screen && (str_contains((string) $screen->id, 'wooptions-pro') || str_contains((string) $screen->base, 'wooptions-pro'))) {
+			$classes .= ' wooptions-pro-admin-page';
+		} elseif (isset($_GET['page']) && str_starts_with((string) $_GET['page'], 'wooptions-pro')) {
+			$classes .= ' wooptions-pro-admin-page';
+		}
+		return $classes;
+	}
 }
+
