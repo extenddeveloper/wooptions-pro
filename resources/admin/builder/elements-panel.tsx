@@ -40,7 +40,7 @@ namespace WooOptionsPro.Builder {
       return map;
     }, [search]);
     return <aside className="wof-builder-palette">
-      <div className="wof-builder-pane__heading wof-palette-heading"><div><h2>{__('Elements', 'wooptions-pro')}</h2><p>{__('Drag or click to add to the live product form', 'wooptions-pro')}</p></div><button type="button" className="wof-pane-action" onClick={props.onOpenStyle} aria-label={__('Open Style Studio', 'wooptions-pro')}><WooOptionsPro.Components.Dashicon name="ellipsis" /></button></div>
+      <div className="wof-builder-pane__heading wof-palette-heading"><div><h2>{__('Elements', 'wooptions-pro')}</h2><p>{__('Drag or click to add to the live product form', 'wooptions-pro')}</p></div><button type="button" className="wof-pane-action" onClick={props.onOpenStyle} aria-label={__('Open Style Studio', 'wooptions-pro')} title={__('Open Style Studio', 'wooptions-pro')}><WooOptionsPro.Components.PaletteIcon size={18} /></button></div>
       <SearchControl label={__('Search field types', 'wooptions-pro')} value={search} onChange={setSearch} placeholder={__('Find a field…', 'wooptions-pro')} />
       <div className="wof-palette-groups">{Array.from(groups.entries()).map(([group, items]) => <section key={group}><h3>{groupLabels[group] ?? group}</h3><div>{items.map((item) => <ElementItem key={item.type} type={item.type} label={item.label} onAdd={props.onAdd} />)}</div></section>)}{!groups.size ? <p className="wof-palette-empty">{__('No fields match that search.', 'wooptions-pro')}</p> : null}</div>
       <p className="wof-palette-tip"><WooOptionsPro.Components.GripIcon />{__('Click to add, or drag a field onto the canvas.', 'wooptions-pro')}</p>

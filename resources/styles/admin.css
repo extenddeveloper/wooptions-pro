@@ -5858,16 +5858,24 @@ body:has(.is-builder) #wpbody-content {
 	background: transparent;
 	border: 0;
 	border-radius: 7px;
-	color: #111827;
+	color: #475569;
 	cursor: pointer;
 	display: inline-flex;
 	height: 32px;
 	justify-content: center;
+	transition: background-color .15s ease, color .15s ease;
 	width: 32px;
 }
 
 .wof-pane-action:hover {
-	background: #f3f5f9;
+	background: #f1f5f9;
+	color: var(--wof-admin-primary, #5b4ff5);
+}
+
+.wof-pane-action svg {
+	display: block;
+	height: 18px;
+	width: 18px;
 }
 
 .wof-pane-action .dashicons {
