@@ -265,7 +265,7 @@ namespace WooOptionsPro.Pages {
             </div>
 
             {/* Recently Edited Card */}
-            <section className="wof-dashboard-card">
+            <section className={WooOptionsPro.Utils.classNames('wof-dashboard-card', activeMenuUuid && 'has-open-menu')}>
               <div className="wof-card-header">
                 <div>
                   <h2 className="wof-card-header__title">{__('Recently Edited', 'wooptions-pro')}</h2>
@@ -339,7 +339,10 @@ namespace WooOptionsPro.Pages {
                             <time className="wof-recent-time">{WooOptionsPro.Utils.formatDate(item.updatedAtGmt)}</time>
                           </td>
                           <td className="wof-col-actions">
-                            <div className="wof-row-menu" onClick={(e: any) => e.stopPropagation()}>
+                            <div
+                              className={WooOptionsPro.Utils.classNames('wof-row-menu', activeMenuUuid === item.uuid && 'is-open')}
+                              onClick={(e: any) => e.stopPropagation()}
+                            >
                               <button
                                 type="button"
                                 className="wof-row-menu__toggle"

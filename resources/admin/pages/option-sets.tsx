@@ -136,7 +136,7 @@ namespace WooOptionsPro.Pages {
       document.addEventListener('click', close);
       return () => document.removeEventListener('click', close);
     }, [open]);
-    return <div className="wof-row-menu" onClick={(event: Event) => event.stopPropagation()}>
+    return <div className={WooOptionsPro.Utils.classNames('wof-row-menu', open && 'is-open')} onClick={(event: Event) => event.stopPropagation()}>
       <button type="button" className="wof-row-menu__toggle" aria-expanded={open} onClick={() => setOpen(!open)}><WooOptionsPro.Components.Dashicon name="ellipsis" /></button>
       {open ? <div className="wof-row-menu__popover">
         <button type="button" onClick={() => props.onAction('edit')}><WooOptionsPro.Components.Dashicon name="edit" />{__('Edit', 'wooptions-pro')}</button>

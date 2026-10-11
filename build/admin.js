@@ -1746,7 +1746,7 @@ var WooOptionsPro;
                                 wp.element.createElement("div", { className: "wof-stat-card__info" },
                                     wp.element.createElement("h4", { className: "wof-stat-card__title" }, __('Commerce Ready', 'wooptions-pro')),
                                     wp.element.createElement("p", { className: "wof-stat-card__desc" }, __('Works with your WooCommerce store', 'wooptions-pro'))))),
-                        wp.element.createElement("section", { className: "wof-dashboard-card" },
+                        wp.element.createElement("section", { className: WooOptionsPro.Utils.classNames('wof-dashboard-card', activeMenuUuid && 'has-open-menu') },
                             wp.element.createElement("div", { className: "wof-card-header" },
                                 wp.element.createElement("div", null,
                                     wp.element.createElement("h2", { className: "wof-card-header__title" }, __('Recently Edited', 'wooptions-pro')),
@@ -1781,7 +1781,7 @@ var WooOptionsPro;
                                         wp.element.createElement("td", { className: "wof-col-updated" },
                                             wp.element.createElement("time", { className: "wof-recent-time" }, WooOptionsPro.Utils.formatDate(item.updatedAtGmt))),
                                         wp.element.createElement("td", { className: "wof-col-actions" },
-                                            wp.element.createElement("div", { className: "wof-row-menu", onClick: (e) => e.stopPropagation() },
+                                            wp.element.createElement("div", { className: WooOptionsPro.Utils.classNames('wof-row-menu', activeMenuUuid === item.uuid && 'is-open'), onClick: (e) => e.stopPropagation() },
                                                 wp.element.createElement("button", { type: "button", className: "wof-row-menu__toggle", "aria-expanded": activeMenuUuid === item.uuid, onClick: () => setActiveMenuUuid(activeMenuUuid === item.uuid ? null : item.uuid), title: __('Actions', 'wooptions-pro') },
                                                     wp.element.createElement(WooOptionsPro.Components.Dashicon, { name: "ellipsis" })),
                                                 activeMenuUuid === item.uuid ? (wp.element.createElement("div", { className: "wof-row-menu__popover" },
@@ -1995,7 +1995,7 @@ var WooOptionsPro;
                 document.addEventListener('click', close);
                 return () => document.removeEventListener('click', close);
             }, [open]);
-            return wp.element.createElement("div", { className: "wof-row-menu", onClick: (event) => event.stopPropagation() },
+            return wp.element.createElement("div", { className: WooOptionsPro.Utils.classNames('wof-row-menu', open && 'is-open'), onClick: (event) => event.stopPropagation() },
                 wp.element.createElement("button", { type: "button", className: "wof-row-menu__toggle", "aria-expanded": open, onClick: () => setOpen(!open) },
                     wp.element.createElement(WooOptionsPro.Components.Dashicon, { name: "ellipsis" })),
                 open ? wp.element.createElement("div", { className: "wof-row-menu__popover" },
@@ -5130,7 +5130,7 @@ var WooOptionsPro;
                 props.field.help && props.field.helpTextPosition === 'below_field' && !isContentBlock ? (wp.element.createElement("p", { className: "wof-canvas-field__help-text wof-canvas-field__help-text--below-field" }, props.field.help)) : null);
         }
         function Canvas(props) {
-            const [zoom, setZoom] = useState(100);
+            const zoom = props.zoom ?? 100;
             const [dragActive, setDragActive] = useState(false);
             const palette = window.WooOptionsProAdmin.palettes[props.document.style.palette] ?? window.WooOptionsProAdmin.palettes['iris-studio'];
             const tokens = { ...(palette?.tokens ?? {}), ...(props.document.style.overrides ?? {}) };
@@ -5196,22 +5196,6 @@ var WooOptionsPro;
                 setDragActive(false);
             };
             return wp.element.createElement("section", { className: WooOptionsPro.Utils.classNames('wof-builder-canvas', 'is-edit-mode', dragActive && 'is-drag-active') },
-                wp.element.createElement("div", { className: "wof-canvas-toolbar" },
-                    wp.element.createElement("div", { className: "wof-canvas-toolbar__copy" },
-                        wp.element.createElement("h2", null, __('Live storefront canvas', 'wooptions-pro')),
-                        wp.element.createElement("p", null, __('The builder and product page use the same component stylesheet.', 'wooptions-pro'))),
-                    wp.element.createElement("div", { className: "wof-canvas-toolbar__controls" },
-                        wp.element.createElement("div", { className: "wof-zoom-control" },
-                            wp.element.createElement("button", { type: "button", disabled: zoom <= 75, onClick: () => setZoom(Math.max(75, zoom - 10)) },
-                                wp.element.createElement(WooOptionsPro.Components.Dashicon, { name: "minus" })),
-                            wp.element.createElement("output", null,
-                                zoom,
-                                "%"),
-                            wp.element.createElement("button", { type: "button", disabled: zoom >= 125, onClick: () => setZoom(Math.min(125, zoom + 10)) },
-                                wp.element.createElement(WooOptionsPro.Components.Dashicon, { name: "plus-alt2" }))),
-                        wp.element.createElement("span", { className: "wof-interactive-status" },
-                            wp.element.createElement("i", null),
-                            __('Interactive', 'wooptions-pro')))),
                 wp.element.createElement("div", { className: `wof-canvas-device is-${props.device}`, style: style },
                     wp.element.createElement("div", { className: "wof-canvas-device__chrome" },
                         wp.element.createElement("span", null, __('Live customer preview', 'wooptions-pro')),
@@ -5234,7 +5218,6 @@ var WooOptionsPro;
                                             wp.element.createElement(WooOptionsPro.Components.Dashicon, { name: "format-image" })))),
                                 wp.element.createElement("div", { className: "wof-product-shell__content" },
                                     wp.element.createElement("div", { className: "wof-product-preview-meta" },
-                                        wp.element.createElement("span", { className: "wof-product-preview-meta__eyebrow" }, __('Live product preview', 'wooptions-pro')),
                                         wp.element.createElement("h1", null, __('WooOptionsPro Product (Preview)', 'wooptions-pro')),
                                         wp.element.createElement("strong", { className: "wof-product-preview-meta__price" }, `20.00 ${window.WooOptionsProAdmin?.currency || 'USD'}`)),
                                     props.document.fields.length ? wp.element.createElement("div", { className: `wof-canvas-fields is-${props.document.layout.type}`, style: { display: 'flex', flexWrap: 'wrap', gap: '14px', alignItems: 'flex-start' } },
@@ -8525,6 +8508,7 @@ var WooOptionsPro;
             const [modalBusy, setModalBusy] = useState(false);
             const [deleteUuid, setDeleteUuid] = useState(null);
             const [publishBusy, setPublishBusy] = useState(false);
+            const [zoom, setZoom] = useState(100);
             const savePromise = useRef(null);
             useEffect(() => {
                 let active = true;
@@ -8676,6 +8660,14 @@ var WooOptionsPro;
                                 wp.element.createElement(WooOptionsPro.Components.Dashicon, { name: "undo" })),
                             wp.element.createElement("button", { type: "button", disabled: !state.future.length, onClick: actions.redo },
                                 wp.element.createElement(WooOptionsPro.Components.Dashicon, { name: "redo" }))),
+                        wp.element.createElement("div", { className: "wof-tool-group wof-zoom-control" },
+                            wp.element.createElement("button", { type: "button", disabled: zoom <= 75, onClick: () => setZoom(Math.max(75, zoom - 10)), title: __('Zoom out', 'wooptions-pro'), "aria-label": __('Zoom out', 'wooptions-pro') },
+                                wp.element.createElement(WooOptionsPro.Components.Dashicon, { name: "minus" })),
+                            wp.element.createElement("output", null,
+                                zoom,
+                                "%"),
+                            wp.element.createElement("button", { type: "button", disabled: zoom >= 125, onClick: () => setZoom(Math.min(125, zoom + 10)), title: __('Zoom in', 'wooptions-pro'), "aria-label": __('Zoom in', 'wooptions-pro') },
+                                wp.element.createElement(WooOptionsPro.Components.Dashicon, { name: "plus-alt2" }))),
                         wp.element.createElement("div", { className: "wof-tool-group wof-device-switcher" }, ['desktop', 'tablet', 'mobile'].map((device) => wp.element.createElement("button", { type: "button", key: device, className: state.device === device ? 'is-active' : '', onClick: () => actions.setDevice(device) },
                             wp.element.createElement(WooOptionsPro.Components.Dashicon, { name: device === 'desktop' ? 'desktop' : device === 'tablet' ? 'tablet' : 'smartphone' })))),
                         wp.element.createElement(Button, { variant: "tertiary", className: "wof-header-action", onClick: openHistory },
@@ -8692,7 +8684,7 @@ var WooOptionsPro;
                         wp.element.createElement(Button, { variant: "primary", className: "wof-header-publish", isBusy: publishBusy, disabled: state.errors.length > 0 || publishBusy, onClick: publish }, publishBusy ? __('Publishing…', 'wooptions-pro') : __('Publish', 'wooptions-pro')))),
                 wp.element.createElement("div", { className: "wof-builder-workspace", inert: showOverlay ? true : undefined },
                     wp.element.createElement(Builder.ElementsPanel, { onAdd: addField, onOpenStyle: () => { actions.selectField(null); actions.setInspectorTab('style'); } }),
-                    wp.element.createElement(Builder.Canvas, { document: state.document, selectedUuid: state.selectedUuid, device: state.device, onSelect: (uuid) => { actions.selectField(uuid); actions.setInspectorTab('content'); }, onAdd: addField, onAddChild: (parentUuid, field, index) => addField(field, index, parentUuid), onMove: actions.moveField, onMoveChild: actions.moveChildField, onMoveToParent: actions.moveFieldToParent, onDuplicate: (field) => addField(WooOptionsPro.FieldFactory.duplicate(field)), onDelete: setDeleteUuid }),
+                    wp.element.createElement(Builder.Canvas, { document: state.document, selectedUuid: state.selectedUuid, device: state.device, zoom: zoom, onSelect: (uuid) => { actions.selectField(uuid); actions.setInspectorTab('content'); }, onAdd: addField, onAddChild: (parentUuid, field, index) => addField(field, index, parentUuid), onMove: actions.moveField, onMoveChild: actions.moveChildField, onMoveToParent: actions.moveFieldToParent, onDuplicate: (field) => addField(WooOptionsPro.FieldFactory.duplicate(field)), onDelete: setDeleteUuid }),
                     wp.element.createElement(Builder.Inspector, { field: selectedField, document: state.document, tab: state.inspectorTab, onTabChange: actions.setInspectorTab, onFieldChange: (field) => actions.replaceField(field.uuid, field), onDocumentChange: actions.updateDocument, onDuplicate: duplicateSelected, onDelete: () => selectedField && setDeleteUuid(selectedField.uuid) })),
                 historyOpen ? wp.element.createElement(Builder.HistoryModal, { revisions: revisions, busy: modalBusy, onClose: () => setHistoryOpen(false), onRollback: async (revisionUuid) => { if (!canConfigure) {
                         WooOptionsPro.Toast.error(__('Activate your WooOptions Pro license to rollback revisions.', 'wooptions-pro'));
